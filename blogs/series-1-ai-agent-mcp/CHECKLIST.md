@@ -8,11 +8,12 @@ Complete all items in a part's checklist before starting the next part.
 
 | Part | Title | Blog | Code | Published |
 |------|-------|------|------|-----------|
-| 1 | Clean Architecture Foundation with HR Domain | ⬜ | ⬜ | ⬜ |
+| 1 | Clean Architecture Foundation with HR Domain | ⬜ | ✅ | ⬜ |
 | 2 | Introduction to Model Context Protocol | ⬜ | ⬜ | ⬜ |
 | 3 | Building an MCP Server in .NET 10 | ⬜ | ⬜ | ⬜ |
 | 4 | AI Agent with Microsoft.Extensions.AI + Ollama | ⬜ | ⬜ | ⬜ |
 | 5 | Claude Desktop Integration & End-to-End Demo | ⬜ | ⬜ | ⬜ |
+| 6 | Securing the MCP Server with OIDC | ⬜ | ⬜ | ⬜ |
 
 ---
 
@@ -45,7 +46,7 @@ Complete all items in a part's checklist before starting the next part.
 ### Publish Gate
 - [ ] All blog content and code items above are checked
 - [ ] `data/usajobs-seed.json` generated and committed (if Step 8 is included)
-- [ ] GitHub commit tagged: `part-1`
+- [x] GitHub commit tagged: `part-1`
 - [ ] Blog post published to target platform
 - [ ] GitHub repo link in blog post verified and live
 
@@ -59,15 +60,15 @@ Complete all items in a part's checklist before starting the next part.
 **Code:** None (concepts-only post)
 
 ### Blog Content
-- [ ] N×M integration problem explained with diagram
-- [ ] MCP primitives defined: Tools, Resources, Prompts
-- [ ] Architecture diagram present (Host → Client → Server)
-- [ ] stdio vs HTTP/SSE transports explained
-- [ ] MCP vs other patterns comparison table present
-- [ ] .NET NuGet package (`ModelContextProtocol`) mentioned
-- [ ] Preview of Part 3 tools listed: `GetOpenPositions`, `GetHiringOrganizations`, `GetPositionsByOrganization`, `WriteJobDescription`
-- [ ] "Next Up" footer links to Part 3
-- [ ] No code blocks (this is a concepts post — verify none crept in)
+- [x] N×M integration problem explained with diagram
+- [x] MCP primitives defined: Tools, Resources, Prompts
+- [x] Architecture diagram present (Host → Client → Server)
+- [x] stdio vs HTTP/SSE transports explained
+- [x] MCP vs other patterns comparison present (as prose sections — no table, Medium-compatible)
+- [x] .NET NuGet package (`ModelContextProtocol`) mentioned
+- [x] Preview of Part 3 tools listed: `GetOpenPositions`, `GetHiringOrganizations`, `GetPositionsByOrganization`, `WriteJobDescription`
+- [x] "Next Up" footer links to Part 3
+- [x] No code blocks (verified — 0 code fences)
 
 ### Code
 - [ ] N/A — no code deliverable for this part
@@ -88,17 +89,18 @@ Complete all items in a part's checklist before starting the next part.
 **Code:** `src/HrMcp.McpServer/Tools/`
 
 ### Blog Content
-- [ ] `ModelContextProtocol` and `ModelContextProtocol.AspNetCore` package install commands included
-- [ ] All 3 tool classes shown: `PositionTools`, `HiringOrganizationTools`, `JobDescriptionTools`
-- [ ] `WriteJobDescription` clearly marked as a stub (LLM added in Part 4)
-- [ ] Both transports explained: stdio and HTTP/SSE
-- [ ] `Program.cs` updated version shown (with `--stdio` flag detection)
-- [ ] MCP Inspector test walkthrough included with expected output for all 4 tools
-- [ ] "Next Up" footer links to Part 4
-- [ ] Sources section complete
+- [x] `ModelContextProtocol` and `ModelContextProtocol.AspNetCore` package install commands included
+- [x] All 3 tool classes shown: `PositionTools`, `HiringOrganizationTools`, `JobDescriptionTools`
+- [x] `WriteJobDescription` clearly marked as a stub (LLM added in Part 4)
+- [x] Both transports explained: stdio and HTTP/SSE
+- [x] `Program.cs` updated version shown (with `--stdio` flag detection)
+- [x] **MCP Inspector section** — full named section "Testing with MCP Inspector — Your MCP Postman + Swagger"; includes: Swagger UI + Postman analogy, Node.js 22.7.5+ prerequisite, `npx @modelcontextprotocol/inspector http://localhost:5100/mcp` run command, walkthrough calling all 4 tools with expected output
+- [x] **Alternative callout**: `DotnetFastMCP` (community package, `tekspry/DotnetFastMCP`) mentioned as attribute-based alternative — 1 paragraph, link to repo, note it targets net8.0 and uses static methods (less Clean Architecture-friendly), recommended for production scenarios needing OAuth/observability
+- [x] "Next Up" footer links to Part 4
+- [x] Sources section complete (include MCP Inspector GitHub link)
 
 ### Code
-- [ ] `dotnet build DotnetAiAgentMcp.sln` → 0 errors
+- [x] `dotnet build DotnetAiAgentMcp.sln` → 0 errors
 - [ ] Server starts on `http://localhost:5100`
 - [ ] `npx @modelcontextprotocol/inspector http://localhost:5100/mcp` shows 4 tools
 - [ ] `GetHiringOrganizations` returns 4 organizations
@@ -106,7 +108,7 @@ Complete all items in a part's checklist before starting the next part.
 - [ ] `GetPositionById` returns full position detail
 - [ ] `WriteJobDescription` returns stub output (not LLM-generated yet)
 - [ ] `--stdio` flag silences all logging (stdout clean for JSON-RPC)
-- [ ] Code in blog matches code in repo exactly — no drift
+- [x] Code in blog matches code in repo exactly — no drift
 
 ### Publish Gate
 - [ ] All blog content and code items above are checked
@@ -124,25 +126,25 @@ Complete all items in a part's checklist before starting the next part.
 **Code:** `src/HrMcp.Agent/`, `src/HrMcp.McpServer/Tools/JobDescriptionTools.cs` (upgraded)
 
 ### Blog Content
-- [ ] Ollama setup commands included (`ollama pull llama3.2`, sanity check curl)
-- [ ] All 4 NuGet packages for `HrMcp.Agent` listed with version constraints
-- [ ] `HrAgent.cs` shown in full with system prompt
-- [ ] `Program.cs` for `HrMcp.Agent` shown in full
-- [ ] `WriteJobDescription` upgrade shown: before (stub) and after (LLM)
-- [ ] `IChatClient` registration in `McpServer/Program.cs` shown
-- [ ] Sample conversation transcript included (at least 2 turns)
-- [ ] `Microsoft.Extensions.AI` used as abstraction — Ollama is a detail, not the focus
-- [ ] "Next Up" footer links to Part 5
-- [ ] Sources section complete
+- [x] Ollama setup commands included (`ollama pull llama3.2`, sanity check curl)
+- [x] All 4 NuGet packages for `HrMcp.Agent` listed with version constraints
+- [x] `HrAgent.cs` shown in full with system prompt
+- [x] `Program.cs` for `HrMcp.Agent` shown in full
+- [x] `WriteJobDescription` upgrade shown: before (stub) and after (LLM)
+- [x] `IChatClient` registration in `McpServer/Program.cs` shown
+- [x] Sample conversation transcript included (at least 2 turns)
+- [x] `Microsoft.Extensions.AI` used as abstraction — Ollama is a detail, not the focus
+- [x] "Next Up" footer links to Part 5
+- [x] Sources section complete
 
 ### Code
-- [ ] `dotnet build DotnetAiAgentMcp.sln` → 0 errors
+- [x] `dotnet build DotnetAiAgentMcp.slnx` → 0 errors
 - [ ] `ollama run llama3.2` available locally before testing
 - [ ] Agent connects to MCP server and lists tools on startup
 - [ ] Agent answers "What positions are open?" using `GetOpenPositions`
 - [ ] Agent answers org-scoped questions using `GetHiringOrganizations` + `GetPositionsByOrganization`
 - [ ] `WriteJobDescription` returns real LLM-generated content (not stub)
-- [ ] Code in blog matches code in repo exactly — no drift
+- [x] Code in blog matches code in repo exactly — no drift
 
 ### Publish Gate
 - [ ] All blog content and code items above are checked
@@ -160,19 +162,21 @@ Complete all items in a part's checklist before starting the next part.
 **Code:** `publish/McpServer/` (release build), `.vscode/mcp.json`
 
 ### Blog Content
-- [ ] How stdio transport works with Claude Desktop explained (diagram present)
-- [ ] `dotnet publish` command for self-contained win-x64 executable included
-- [ ] `claude_desktop_config.json` location shown for both Windows and macOS
-- [ ] Full `claude_desktop_config.json` snippet shown
-- [ ] "Restart Claude Desktop" step and hammer icon confirmation mentioned
-- [ ] Live demo walkthrough table present (prompt → tools called → result)
-- [ ] VS Code Copilot section present with `.vscode/mcp.json` snippet
-- [ ] Debugging table present (5 common problems with causes and fixes)
-- [ ] stdout contamination pitfall explicitly called out
-- [ ] Series recap "What was built" summary present
-- [ ] "Next Steps" section lists future topics
-- [ ] No "Next Up" footer (this is the final part)
-- [ ] Sources section complete
+- [x] How stdio transport works with Claude Desktop explained (diagram present)
+- [x] `dotnet publish` command for self-contained win-x64 executable included
+- [x] `claude_desktop_config.json` location shown for both Windows and macOS
+- [x] Full `claude_desktop_config.json` snippet shown
+- [x] "Restart Claude Desktop" step and hammer icon confirmation mentioned
+- [x] Live demo walkthrough present as prose sections (prompt → tools called → result; no markdown table — Medium-compatible)
+- [x] VS Code Copilot section present with `.vscode/mcp.json` snippet
+- [x] Debugging section present (5 common problems with causes and fixes; bullet list — no markdown table)
+- [x] stdout contamination pitfall explicitly called out
+- [x] **Inspector as first debugging step** — "Tools not showing in Claude Desktop? Test with MCP Inspector in HTTP mode first to isolate server vs transport issues"
+- [x] Series recap "What was built" summary present
+- [x] "Next Steps" section lists future topics
+- [x] No "Next Up" footer (this is the final part)
+- [x] **Tease Part 6** — "Next Steps" section mentions adding OIDC security as the next evolution
+- [x] Sources section complete
 
 ### Code
 - [ ] `dotnet publish` produces a runnable `HrMcp.McpServer.exe`
@@ -186,6 +190,47 @@ Complete all items in a part's checklist before starting the next part.
 ### Publish Gate
 - [ ] All blog content and code items above are checked
 - [ ] GitHub commit tagged: `part-5`
+- [ ] Blog post published to target platform
+- [ ] GitHub repo link in blog post verified and live
+- [ ] Series Status table at top of this file fully complete
+
+**Update Series Status table ↑ when this gate is cleared.**
+
+---
+
+## Part 6 — Securing the MCP Server with OIDC
+
+**File:** `blogs/series-1-ai-agent-mcp/part-6-mcp-security-oidc.md`  
+**Code:** `src/HrMcp.McpServer/Program.cs` (auth middleware), `src/HrMcp.Agent/Program.cs` (token acquisition)
+
+### Blog Content
+- [x] Problem framing: why unauthenticated MCP servers are a risk in real deployments
+- [x] Architecture diagram: OIDC provider → Agent (client credentials) → McpServer (resource server)
+- [x] Provider options compared (Okta, Duende IdentityServer, Azure AD/Entra, DotnetFastMCP built-in) — as bullet list, not table
+- [x] JWT Bearer middleware added to `HrMcp.McpServer/Program.cs` shown
+- [x] `app.MapMcp("/mcp").RequireAuthorization()` change shown
+- [x] `appsettings.json` snippet for `Authority` and `Audience` shown
+- [x] Agent token acquisition shown: client credentials flow against chosen provider
+- [x] `HttpClientTransportOptions.AdditionalHeaders` snippet shown (Authorization: Bearer) — note: `SseClientTransportOptions` renamed to `HttpClientTransportOptions` in ModelContextProtocol 1.x
+- [x] Optional: tool-level role check via `IHttpContextAccessor` shown
+- [x] DotnetFastMCP callout: note it has built-in OAuth support as an alternative
+- [x] Okta free-tier setup walkthrough (or IdentityServer dev license note)
+- [x] "What We Built" summary present
+- [x] No "Next Up" footer (this is the final part)
+- [x] Sources section complete
+
+### Code
+- [x] `dotnet build DotnetAiAgentMcp.slnx` → 0 errors after auth middleware added
+- [x] Unauthenticated request to `/mcp` returns `401 Unauthorized`
+- [x] Agent successfully acquires token and calls MCP server end-to-end
+- [x] `GetOpenPositions` and at least one other tool verified with auth in place
+- [ ] Role-based tool guard verified (if included)
+- [x] `appsettings.Development.json` has placeholder values only — no real secrets committed
+- [x] Code in blog matches code in repo exactly — no drift
+
+### Publish Gate
+- [ ] All blog content and code items above are checked
+- [ ] GitHub commit tagged: `part-6`
 - [ ] Blog post published to target platform
 - [ ] GitHub repo link in blog post verified and live
 - [ ] Series Status table at top of this file fully complete

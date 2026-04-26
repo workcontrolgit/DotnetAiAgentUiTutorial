@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\HrMcp.Application\HrMcp.Application.csproj" />
-    <ProjectReference Include="..\HrMcp.Infrastructure.Persistence\HrMcp.Infrastructure.Persistence.csproj" />
+    <PackageReference Include="Microsoft.Extensions.AI" Version="10.*" />
+    <PackageReference Include="OllamaSharp" Version="5.*" />
+    <PackageReference Include="ModelContextProtocol" Version="1.*" />
   </ItemGroup>
 
   <PropertyGroup>
