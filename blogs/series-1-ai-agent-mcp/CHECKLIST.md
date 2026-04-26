@@ -94,6 +94,7 @@ Complete all items in a part's checklist before starting the next part.
 - [ ] Both transports explained: stdio and HTTP/SSE
 - [ ] `Program.cs` updated version shown (with `--stdio` flag detection)
 - [ ] MCP Inspector test walkthrough included with expected output for all 4 tools
+- [ ] **Alternative callout**: `DotnetFastMCP` (community package, `tekspry/DotnetFastMCP`) mentioned as attribute-based alternative — 1 paragraph, link to repo, note it targets net8.0 and uses static methods (less Clean Architecture-friendly), recommended for production scenarios needing OAuth/observability
 - [ ] "Next Up" footer links to Part 4
 - [ ] Sources section complete
 
