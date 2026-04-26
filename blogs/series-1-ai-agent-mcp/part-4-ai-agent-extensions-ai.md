@@ -60,7 +60,7 @@ Ollama runs a local HTTP server on port `11434`. The `OllamaChatClient` points a
 
 ```bash
 dotnet add src/HrMcp.Agent package Microsoft.Extensions.AI --version 9.*
-dotnet add src/HrMcp.Agent package Microsoft.Extensions.AI.Ollama --prerelease
+dotnet add src/HrMcp.Agent package OllamaSharp --version 5.*
 dotnet add src/HrMcp.Agent package ModelContextProtocol --version 1.*
 ```
 
@@ -69,18 +69,18 @@ The agent is a pure MCP client — it has no direct database access. The two pro
 Why three packages:
 
 - **`Microsoft.Extensions.AI`** — `IChatClient`, `ChatMessage`, `ChatOptions`, `AITool` abstractions
-- **`Microsoft.Extensions.AI.Ollama`** — `OllamaChatClient`, the Ollama provider implementation
+- **`OllamaSharp`** — `OllamaApiClient`, the GA-recommended Ollama provider; implements `IChatClient` natively
 - **`ModelContextProtocol`** — `McpClient`, `HttpClientTransport`, `McpClientTool`; the client half of the MCP SDK
 
-> **Note:** `Microsoft.Extensions.AI.Ollama` is currently in preview. The `--prerelease` flag is required. The abstraction (`IChatClient`) is stable — swapping the provider later requires no changes to `HrAgent.cs`.
+> **Note:** `Microsoft.Extensions.AI.Ollama` was the early preview provider and is now deprecated in the GA release. The official Microsoft.Extensions.AI GA guidance recommends `OllamaSharp` instead. `OllamaApiClient` (from `OllamaSharp`) implements `IChatClient` directly — no wrapper needed.
 
 ### `HrMcp.McpServer`
 
 ```bash
-dotnet add src/HrMcp.McpServer package Microsoft.Extensions.AI.Ollama --prerelease
+dotnet add src/HrMcp.McpServer package OllamaSharp --version 5.*
 ```
 
-The server needs `OllamaChatClient` to power the `WriteJobDescription` tool upgrade.
+The server needs `OllamaApiClient` to power the `WriteJobDescription` tool upgrade.
 
 ---
 
@@ -158,6 +158,7 @@ Design notes:
 // src/HrMcp.Agent/Program.cs
 using Microsoft.Extensions.AI;
 using ModelContextProtocol.Client;
+using OllamaSharp;
 using HrMcp.Agent;
 
 // Connect to the MCP server (must be running on http://localhost:5100)
@@ -170,9 +171,11 @@ await using var mcpClient = await McpClient.CreateAsync(
 var mcpTools = await mcpClient.ListToolsAsync();
 Console.WriteLine($"Connected. Tools: {string.Join(", ", mcpTools.Select(t => t.Name))}\n");
 
-// Ollama chat client with automatic function-call middleware
-IChatClient chatClient = new OllamaChatClient(
-        new Uri("http://localhost:11434"), "llama3.2")
+// OllamaApiClient implements IChatClient natively.
+// Cast to IChatClient explicitly — OllamaApiClient also implements IEmbeddingGenerator,
+// so the cast resolves the AsBuilder() overload ambiguity.
+IChatClient chatClient = ((IChatClient)new OllamaApiClient(
+        new Uri("http://localhost:11434"), "llama3.2"))
     .AsBuilder()
     .UseFunctionInvocation()
     .Build();
@@ -185,6 +188,7 @@ What each piece does:
 
 - **`McpClient.CreateAsync`** — creates an MCP client connected to the running server via `HttpClientTransport`. In `ModelContextProtocol` 1.x, this replaces the earlier `McpClientFactory.CreateAsync` + `SseClientTransport` pattern.
 - **`mcpClient.ListToolsAsync()`** — fetches the tool list from the server. Returns `IList<McpClientTool>`. Each `McpClientTool` is an `AIFunction` (which is an `AITool`) — this is the bridge between the MCP protocol and `Microsoft.Extensions.AI`.
+- **`OllamaApiClient`** — the GA-recommended Ollama provider from `OllamaSharp`. Implements `IChatClient` (and `IEmbeddingGenerator`) natively. The explicit `(IChatClient)` cast resolves the `AsBuilder()` overload ambiguity.
 - **`UseFunctionInvocation()`** — middleware that intercepts tool-call requests from the model, dispatches them to the MCP server through the `McpClientTool` implementations, and feeds results back into the conversation automatically.
 - **`mcpTools.Cast<AITool>()`** — `McpClientTool` inherits from `AIFunction` which inherits from `AITool`, so the cast is safe. `HrAgent` only needs the `AITool` abstraction.
 
@@ -276,6 +280,7 @@ using HrMcp.Infrastructure.Persistence;
 using HrMcp.McpServer.Tools;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.AI;
+using OllamaSharp;
 
 var isStdio = args.Contains("--stdio");
 
@@ -295,7 +300,7 @@ builder.Services.AddScoped<HiringOrganizationService>();
 
 // IChatClient used by WriteJobDescription tool to generate LLM narratives
 builder.Services.AddSingleton<IChatClient>(
-    new OllamaChatClient(new Uri("http://localhost:11434"), "llama3.2"));
+    new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.2"));
 
 var mcp = builder.Services
     .AddMcpServer()
@@ -324,7 +329,7 @@ if (!isStdio)
 await app.RunAsync();
 ```
 
-`IChatClient` is registered as `Singleton` because `OllamaChatClient` wraps an `HttpClient` and is thread-safe. `JobDescriptionTools` is scoped (registered via `WithTools<>`), so it receives the singleton through normal DI — no lifetime mismatch.
+`IChatClient` is registered as `Singleton` because `OllamaApiClient` wraps an `HttpClient` and is thread-safe. `JobDescriptionTools` is scoped (registered via `WithTools<>`), so it receives the singleton through normal DI — no lifetime mismatch.
 
 ---
 
@@ -498,7 +503,7 @@ professional AI host with no agent code required.
 ## Sources
 
 - [Microsoft.Extensions.AI — NuGet](https://www.nuget.org/packages/Microsoft.Extensions.AI)
-- [Microsoft.Extensions.AI.Ollama — NuGet](https://www.nuget.org/packages/Microsoft.Extensions.AI.Ollama)
+- [OllamaSharp — NuGet](https://www.nuget.org/packages/OllamaSharp)
 - [ModelContextProtocol — NuGet](https://www.nuget.org/packages/ModelContextProtocol)
 - [ModelContextProtocol C# SDK — GitHub](https://github.com/modelcontextprotocol/csharp-sdk)
 - [Ollama — Download](https://ollama.com)
