@@ -13,6 +13,7 @@ Complete all items in a part's checklist before starting the next part.
 | 3 | Building an MCP Server in .NET 10 | ⬜ | ⬜ | ⬜ |
 | 4 | AI Agent with Microsoft.Extensions.AI + Ollama | ⬜ | ⬜ | ⬜ |
 | 5 | Claude Desktop Integration & End-to-End Demo | ⬜ | ⬜ | ⬜ |
+| 6 | Securing the MCP Server with OIDC | ⬜ | ⬜ | ⬜ |
 
 ---
 
@@ -174,6 +175,7 @@ Complete all items in a part's checklist before starting the next part.
 - [ ] Series recap "What was built" summary present
 - [ ] "Next Steps" section lists future topics
 - [ ] No "Next Up" footer (this is the final part)
+- [ ] **Tease Part 6** — "Next Steps" section mentions adding OIDC security as the next evolution
 - [ ] Sources section complete
 
 ### Code
@@ -188,6 +190,47 @@ Complete all items in a part's checklist before starting the next part.
 ### Publish Gate
 - [ ] All blog content and code items above are checked
 - [ ] GitHub commit tagged: `part-5`
+- [ ] Blog post published to target platform
+- [ ] GitHub repo link in blog post verified and live
+- [ ] Series Status table at top of this file fully complete
+
+**Update Series Status table ↑ when this gate is cleared.**
+
+---
+
+## Part 6 — Securing the MCP Server with OIDC
+
+**File:** `blogs/series-1-ai-agent-mcp/part-6-mcp-security-oidc.md`  
+**Code:** `src/HrMcp.McpServer/Program.cs` (auth middleware), `src/HrMcp.Agent/Program.cs` (token acquisition)
+
+### Blog Content
+- [ ] Problem framing: why unauthenticated MCP servers are a risk in real deployments
+- [ ] Architecture diagram: OIDC provider → Agent (client credentials) → McpServer (resource server)
+- [ ] Provider options compared (Okta, Duende IdentityServer, Azure AD/Entra, DotnetFastMCP built-in) — as bullet list, not table
+- [ ] JWT Bearer middleware added to `HrMcp.McpServer/Program.cs` shown
+- [ ] `app.MapMcp("/mcp").RequireAuthorization()` change shown
+- [ ] `appsettings.json` snippet for `Authority` and `Audience` shown
+- [ ] Agent token acquisition shown: client credentials flow against chosen provider
+- [ ] `SseClientTransportOptions.AdditionalHeaders` snippet shown (Authorization: Bearer)
+- [ ] Optional: tool-level role check via `IHttpContextAccessor` shown
+- [ ] DotnetFastMCP callout: note it has built-in OAuth support as an alternative
+- [ ] Okta free-tier setup walkthrough (or IdentityServer dev license note)
+- [ ] "What We Built" summary present
+- [ ] No "Next Up" footer (this is the final part)
+- [ ] Sources section complete
+
+### Code
+- [ ] `dotnet build DotnetAiAgentMcp.slnx` → 0 errors after auth middleware added
+- [ ] Unauthenticated request to `/mcp` returns `401 Unauthorized`
+- [ ] Agent successfully acquires token and calls MCP server end-to-end
+- [ ] `GetOpenPositions` and at least one other tool verified with auth in place
+- [ ] Role-based tool guard verified (if included)
+- [ ] `appsettings.Development.json` has placeholder values only — no real secrets committed
+- [ ] Code in blog matches code in repo exactly — no drift
+
+### Publish Gate
+- [ ] All blog content and code items above are checked
+- [ ] GitHub commit tagged: `part-6`
 - [ ] Blog post published to target platform
 - [ ] GitHub repo link in blog post verified and live
 - [ ] Series Status table at top of this file fully complete
