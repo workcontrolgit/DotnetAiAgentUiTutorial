@@ -88,18 +88,18 @@ Complete all items in a part's checklist before starting the next part.
 **Code:** `src/HrMcp.McpServer/Tools/`
 
 ### Blog Content
-- [ ] `ModelContextProtocol` and `ModelContextProtocol.AspNetCore` package install commands included
-- [ ] All 3 tool classes shown: `PositionTools`, `HiringOrganizationTools`, `JobDescriptionTools`
-- [ ] `WriteJobDescription` clearly marked as a stub (LLM added in Part 4)
-- [ ] Both transports explained: stdio and HTTP/SSE
-- [ ] `Program.cs` updated version shown (with `--stdio` flag detection)
-- [ ] **MCP Inspector section** — full named section "Testing with MCP Inspector — Your MCP Postman + Swagger"; includes: Swagger UI + Postman analogy, Node.js 22.7.5+ prerequisite, `npx @modelcontextprotocol/inspector http://localhost:5100/mcp` run command, walkthrough calling all 4 tools with expected output
-- [ ] **Alternative callout**: `DotnetFastMCP` (community package, `tekspry/DotnetFastMCP`) mentioned as attribute-based alternative — 1 paragraph, link to repo, note it targets net8.0 and uses static methods (less Clean Architecture-friendly), recommended for production scenarios needing OAuth/observability
-- [ ] "Next Up" footer links to Part 4
-- [ ] Sources section complete (include MCP Inspector GitHub link)
+- [x] `ModelContextProtocol` and `ModelContextProtocol.AspNetCore` package install commands included
+- [x] All 3 tool classes shown: `PositionTools`, `HiringOrganizationTools`, `JobDescriptionTools`
+- [x] `WriteJobDescription` clearly marked as a stub (LLM added in Part 4)
+- [x] Both transports explained: stdio and HTTP/SSE
+- [x] `Program.cs` updated version shown (with `--stdio` flag detection)
+- [x] **MCP Inspector section** — full named section "Testing with MCP Inspector — Your MCP Postman + Swagger"; includes: Swagger UI + Postman analogy, Node.js 22.7.5+ prerequisite, `npx @modelcontextprotocol/inspector http://localhost:5100/mcp` run command, walkthrough calling all 4 tools with expected output
+- [x] **Alternative callout**: `DotnetFastMCP` (community package, `tekspry/DotnetFastMCP`) mentioned as attribute-based alternative — 1 paragraph, link to repo, note it targets net8.0 and uses static methods (less Clean Architecture-friendly), recommended for production scenarios needing OAuth/observability
+- [x] "Next Up" footer links to Part 4
+- [x] Sources section complete (include MCP Inspector GitHub link)
 
 ### Code
-- [ ] `dotnet build DotnetAiAgentMcp.sln` → 0 errors
+- [x] `dotnet build DotnetAiAgentMcp.sln` → 0 errors
 - [ ] Server starts on `http://localhost:5100`
 - [ ] `npx @modelcontextprotocol/inspector http://localhost:5100/mcp` shows 4 tools
 - [ ] `GetHiringOrganizations` returns 4 organizations
@@ -107,7 +107,7 @@ Complete all items in a part's checklist before starting the next part.
 - [ ] `GetPositionById` returns full position detail
 - [ ] `WriteJobDescription` returns stub output (not LLM-generated yet)
 - [ ] `--stdio` flag silences all logging (stdout clean for JSON-RPC)
-- [ ] Code in blog matches code in repo exactly — no drift
+- [x] Code in blog matches code in repo exactly — no drift
 
 ### Publish Gate
 - [ ] All blog content and code items above are checked
