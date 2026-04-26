@@ -61,46 +61,56 @@ Here is how the layers relate in this project:
 
 ## Understanding Federal Job Announcement Fields
 
-Before writing code, it helps to understand what USAJobs requires. Every posting on [usajobs.gov](https://www.usajobs.gov) contains these fields — and our domain model maps to them directly using the **official USAJobs API field names** from [developer.usajobs.gov](https://developer.usajobs.gov/api-reference/):
+Before writing code, it helps to understand what USAJobs requires. Every posting on [usajobs.gov](https://www.usajobs.gov) contains these fields — and our domain model maps to them directly using the **official USAJobs API field names** from [developer.usajobs.gov](https://developer.usajobs.gov/api-reference/).
 
-| USAJobs API Field | Our Domain Property | Notes |
-|---|---|---|
-| `OrganizationName` | `HiringOrganization.OrganizationName` | The hiring office e.g. "Office of IT" |
-| `DepartmentName` | `HiringOrganization.DepartmentName` | Cabinet-level parent e.g. "Dept of Defense" |
-| `PositionTitle` | `Position.Title` | Official job title |
-| `JobSummary` | `Position.Description` | Shown in search results |
-| `MajorDuties` | `Position.Duties` | Full duties narrative |
-| `Qualifications` | `Position.Qualifications` | OPM minimum quals text |
-| `JobCategories[].Code` | `Position.OccupationalSeries` | 4-digit code e.g. "2210" |
-| `PayPlan` + `LowGrade` | `Position.PayGradeMin` | e.g. "GS-09" |
-| `PayPlan` + `HighGrade` | `Position.PayGradeMax` | e.g. "GS-11" |
-| `PositionRemuneration[].MinimumRange` | `PositionRemuneration.MinimumRange` | Dollar amount |
-| `PositionRemuneration[].MaximumRange` | `PositionRemuneration.MaximumRange` | Dollar amount |
-| `PositionRemuneration[].RateIntervalCode` | `PositionRemuneration.RateIntervalCode` | `"PA"` = Per Annum |
-| `appointmentType` | `Position.AppointmentType` | Permanent / Temporary / Term |
-| `workSchedule` | `Position.WorkSchedule` | Full-time / Part-time |
-| `positionOpenDate` | `Position.OpenDate` | |
-| `positionCloseDate` | `Position.CloseDate` | Nullable |
-| `WhoMayApply.Name` | `Position.WhoMayApply` | |
-| `PositionLocation[].CityName` | `Position.DutyLocation` | |
-| `teleworkEligible` | `Position.TeleworkEligible` | bool |
-| `travelRequirement` | `Position.TravelRequired` | enum |
-| `securityClearance` | `Position.SecurityClearance` | enum |
-| `supervisoryStatus` | `Position.SupervisoryStatus` | bool |
-| `relocationExpensesReimbursed` | `Position.RelocationAuthorized` | bool |
-| `drugTestRequired` | `Position.DrugTestRequired` | bool |
+**Organization**
+
+- `OrganizationName` → `HiringOrganization.OrganizationName` — the hiring office, e.g. "Office of IT"
+- `DepartmentName` → `HiringOrganization.DepartmentName` — cabinet-level parent, e.g. "Dept of Defense"
+
+**Position Identity**
+
+- `PositionTitle` → `Position.Title` — official job title
+- `JobSummary` → `Position.Description` — shown in search results
+- `MajorDuties` → `Position.Duties` — full duties narrative
+- `Qualifications` → `Position.Qualifications` — OPM minimum quals text
+- `JobCategories[].Code` → `Position.OccupationalSeries` — 4-digit code e.g. "2210"
+
+**Pay**
+
+- `PayPlan` + `LowGrade` → `Position.PayGradeMin` — e.g. "GS-09"
+- `PayPlan` + `HighGrade` → `Position.PayGradeMax` — e.g. "GS-11"
+- `PositionRemuneration[].MinimumRange` → `PositionRemuneration.MinimumRange` — dollar amount
+- `PositionRemuneration[].MaximumRange` → `PositionRemuneration.MaximumRange` — dollar amount
+- `PositionRemuneration[].RateIntervalCode` → `PositionRemuneration.RateIntervalCode` — `"PA"` = Per Annum
+
+**Schedule & Appointment**
+
+- `appointmentType` → `Position.AppointmentType` — Permanent / Temporary / Term
+- `workSchedule` → `Position.WorkSchedule` — Full-time / Part-time
+- `positionOpenDate` → `Position.OpenDate`
+- `positionCloseDate` → `Position.CloseDate` — nullable
+- `WhoMayApply.Name` → `Position.WhoMayApply`
+
+**Location & Logistics**
+
+- `PositionLocation[].CityName` → `Position.DutyLocation`
+- `teleworkEligible` → `Position.TeleworkEligible` — bool
+- `travelRequirement` → `Position.TravelRequired` — enum
+- `securityClearance` → `Position.SecurityClearance` — enum
+- `supervisoryStatus` → `Position.SupervisoryStatus` — bool
+- `relocationExpensesReimbursed` → `Position.RelocationAuthorized` — bool
+- `drugTestRequired` → `Position.DrugTestRequired` — bool
 
 ---
 
 ## Prerequisites
 
-| Tool | Version | Check |
-|------|---------|-------|
-| .NET SDK | 10.0 or later | `dotnet --version` |
-| SQL Server 2025 LocalDB | Ships with VS 2026 | `sqllocaldb info` |
-| EF Core CLI tools | Latest | `dotnet ef --version` |
-| VS Code or Visual Studio | 2026+ | — |
-| Git | Any | `git --version` |
+- **.NET SDK 10.0+** — `dotnet --version`
+- **SQL Server 2025 LocalDB** (ships with VS 2026) — `sqllocaldb info`
+- **EF Core CLI tools** (latest) — `dotnet ef --version`
+- **VS Code or Visual Studio 2026+**
+- **Git** — `git --version`
 
 Install EF Core CLI tools if missing:
 
@@ -847,21 +857,6 @@ dotnet new console -n UsaJobsFetcher -o tools/UsaJobsFetcher
 
 **`tools/UsaJobsFetcher/UsaJobsFetcher.csproj`**
 
-No extra packages — `System.Text.Json` ships with the runtime:
-
-```xml
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
-</Project>
-```
-
-**`tools/UsaJobsFetcher/UsaJobsFetcher.csproj`**
-
 Add `UserSecretsId` and the configuration packages — credentials never touch the command line:
 
 ```xml
@@ -1386,13 +1381,11 @@ If the file is absent the server falls back to the 5 hand-crafted positions — 
 
 ## What We Built
 
-| Project | Purpose | Dependencies |
-|---------|---------|-------------|
-| `HrMcp.Core` | Domain entities, enums, repository interfaces | None |
-| `HrMcp.Application` | Use cases (PositionService, HiringOrganizationService) | Core |
-| `HrMcp.Infrastructure.Persistence` | EF Core implementation | Core, EF Core |
-| `HrMcp.McpServer` | Web host (MCP tools added in Part 3) | Application, Infrastructure |
-| `HrMcp.Agent` | Console agent (built in Part 4) | Application, Infrastructure |
+- **`HrMcp.Core`** — Domain entities, enums, repository interfaces. No dependencies.
+- **`HrMcp.Application`** — Use cases (PositionService, HiringOrganizationService). Depends on: Core.
+- **`HrMcp.Infrastructure.Persistence`** — EF Core implementation. Depends on: Core, EF Core.
+- **`HrMcp.McpServer`** — Web host (MCP tools added in Part 3). Depends on: Application, Infrastructure.
+- **`HrMcp.Agent`** — Console agent (built in Part 4). Depends on: Application, Infrastructure.
 
 The AI knows nothing about this yet. In Part 3, we expose these positions as MCP tools so that Claude Desktop and any MCP-compatible client can query, filter, and generate USAJobs-format announcements from this data.
 
