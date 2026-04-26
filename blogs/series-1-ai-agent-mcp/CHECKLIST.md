@@ -126,25 +126,25 @@ Complete all items in a part's checklist before starting the next part.
 **Code:** `src/HrMcp.Agent/`, `src/HrMcp.McpServer/Tools/JobDescriptionTools.cs` (upgraded)
 
 ### Blog Content
-- [ ] Ollama setup commands included (`ollama pull llama3.2`, sanity check curl)
-- [ ] All 4 NuGet packages for `HrMcp.Agent` listed with version constraints
-- [ ] `HrAgent.cs` shown in full with system prompt
-- [ ] `Program.cs` for `HrMcp.Agent` shown in full
-- [ ] `WriteJobDescription` upgrade shown: before (stub) and after (LLM)
-- [ ] `IChatClient` registration in `McpServer/Program.cs` shown
-- [ ] Sample conversation transcript included (at least 2 turns)
-- [ ] `Microsoft.Extensions.AI` used as abstraction — Ollama is a detail, not the focus
-- [ ] "Next Up" footer links to Part 5
-- [ ] Sources section complete
+- [x] Ollama setup commands included (`ollama pull llama3.2`, sanity check curl)
+- [x] All 4 NuGet packages for `HrMcp.Agent` listed with version constraints
+- [x] `HrAgent.cs` shown in full with system prompt
+- [x] `Program.cs` for `HrMcp.Agent` shown in full
+- [x] `WriteJobDescription` upgrade shown: before (stub) and after (LLM)
+- [x] `IChatClient` registration in `McpServer/Program.cs` shown
+- [x] Sample conversation transcript included (at least 2 turns)
+- [x] `Microsoft.Extensions.AI` used as abstraction — Ollama is a detail, not the focus
+- [x] "Next Up" footer links to Part 5
+- [x] Sources section complete
 
 ### Code
-- [ ] `dotnet build DotnetAiAgentMcp.sln` → 0 errors
+- [x] `dotnet build DotnetAiAgentMcp.slnx` → 0 errors
 - [ ] `ollama run llama3.2` available locally before testing
 - [ ] Agent connects to MCP server and lists tools on startup
 - [ ] Agent answers "What positions are open?" using `GetOpenPositions`
 - [ ] Agent answers org-scoped questions using `GetHiringOrganizations` + `GetPositionsByOrganization`
 - [ ] `WriteJobDescription` returns real LLM-generated content (not stub)
-- [ ] Code in blog matches code in repo exactly — no drift
+- [x] Code in blog matches code in repo exactly — no drift
 
 ### Publish Gate
 - [ ] All blog content and code items above are checked

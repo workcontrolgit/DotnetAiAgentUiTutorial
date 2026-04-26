@@ -3,6 +3,7 @@ using HrMcp.Application.Services;
 using HrMcp.Infrastructure.Persistence;
 using HrMcp.McpServer.Tools;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.AI;
 
 var isStdio = args.Contains("--stdio");
 
@@ -21,6 +22,10 @@ builder.Services.AddPersistence(
     builder.Configuration.GetConnectionString("DefaultConnection")!);
 builder.Services.AddScoped<PositionService>();
 builder.Services.AddScoped<HiringOrganizationService>();
+
+// IChatClient used by WriteJobDescription tool to generate LLM narratives
+builder.Services.AddSingleton<IChatClient>(
+    new OllamaChatClient(new Uri("http://localhost:11434"), "llama3.2"));
 
 var mcp = builder.Services
     .AddMcpServer()
