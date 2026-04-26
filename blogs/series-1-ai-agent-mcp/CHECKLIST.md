@@ -204,23 +204,23 @@ Complete all items in a part's checklist before starting the next part.
 **Code:** `src/HrMcp.McpServer/Program.cs` (auth middleware), `src/HrMcp.Agent/Program.cs` (token acquisition)
 
 ### Blog Content
-- [ ] Problem framing: why unauthenticated MCP servers are a risk in real deployments
-- [ ] Architecture diagram: OIDC provider → Agent (client credentials) → McpServer (resource server)
-- [ ] Provider options compared (Okta, Duende IdentityServer, Azure AD/Entra, DotnetFastMCP built-in) — as bullet list, not table
-- [ ] JWT Bearer middleware added to `HrMcp.McpServer/Program.cs` shown
-- [ ] `app.MapMcp("/mcp").RequireAuthorization()` change shown
-- [ ] `appsettings.json` snippet for `Authority` and `Audience` shown
-- [ ] Agent token acquisition shown: client credentials flow against chosen provider
-- [ ] `SseClientTransportOptions.AdditionalHeaders` snippet shown (Authorization: Bearer)
-- [ ] Optional: tool-level role check via `IHttpContextAccessor` shown
-- [ ] DotnetFastMCP callout: note it has built-in OAuth support as an alternative
-- [ ] Okta free-tier setup walkthrough (or IdentityServer dev license note)
-- [ ] "What We Built" summary present
-- [ ] No "Next Up" footer (this is the final part)
-- [ ] Sources section complete
+- [x] Problem framing: why unauthenticated MCP servers are a risk in real deployments
+- [x] Architecture diagram: OIDC provider → Agent (client credentials) → McpServer (resource server)
+- [x] Provider options compared (Okta, Duende IdentityServer, Azure AD/Entra, DotnetFastMCP built-in) — as bullet list, not table
+- [x] JWT Bearer middleware added to `HrMcp.McpServer/Program.cs` shown
+- [x] `app.MapMcp("/mcp").RequireAuthorization()` change shown
+- [x] `appsettings.json` snippet for `Authority` and `Audience` shown
+- [x] Agent token acquisition shown: client credentials flow against chosen provider
+- [x] `HttpClientTransportOptions.AdditionalHeaders` snippet shown (Authorization: Bearer) — note: `SseClientTransportOptions` renamed to `HttpClientTransportOptions` in ModelContextProtocol 1.x
+- [x] Optional: tool-level role check via `IHttpContextAccessor` shown
+- [x] DotnetFastMCP callout: note it has built-in OAuth support as an alternative
+- [x] Okta free-tier setup walkthrough (or IdentityServer dev license note)
+- [x] "What We Built" summary present
+- [x] No "Next Up" footer (this is the final part)
+- [x] Sources section complete
 
 ### Code
-- [ ] `dotnet build DotnetAiAgentMcp.slnx` → 0 errors after auth middleware added
+- [x] `dotnet build DotnetAiAgentMcp.slnx` → 0 errors after auth middleware added
 - [ ] Unauthenticated request to `/mcp` returns `401 Unauthorized`
 - [ ] Agent successfully acquires token and calls MCP server end-to-end
 - [ ] `GetOpenPositions` and at least one other tool verified with auth in place

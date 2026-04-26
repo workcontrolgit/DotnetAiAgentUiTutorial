@@ -2,6 +2,7 @@
 using HrMcp.Application.Services;
 using HrMcp.Infrastructure.Persistence;
 using HrMcp.McpServer.Tools;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.AI;
 using OllamaSharp;
@@ -28,6 +29,16 @@ builder.Services.AddScoped<HiringOrganizationService>();
 builder.Services.AddSingleton<IChatClient>(
     new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.2"));
 
+// JWT Bearer authentication — validates tokens issued by the configured OIDC provider
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = builder.Configuration["Oidc:Authority"];
+        options.Audience  = builder.Configuration["Oidc:Audience"];
+    });
+builder.Services.AddAuthorization();
+
 var mcp = builder.Services
     .AddMcpServer()
     .WithTools<PositionTools>()
@@ -51,7 +62,10 @@ using (var scope = app.Services.CreateScope())
     DbSeeder.Seed(db, seedPath);
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 if (!isStdio)
-    app.MapMcp("/mcp");
+    app.MapMcp("/mcp").RequireAuthorization();
 
 await app.RunAsync();
