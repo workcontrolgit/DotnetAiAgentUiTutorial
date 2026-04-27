@@ -13,6 +13,8 @@ By the end of this post you will have a running MCP server that exposes four too
 
 The server lives in `HrMcp.McpServer`, the project we scaffolded in Part 1. All we are adding is the MCP SDK and three tool classes.
 
+![Part 3 steps overview — swim lane across Developer, MCP Server, and MCP Inspector](diagrams/part-3-diagram-1-build-steps.png)
+
 ---
 
 ## Step 1 — Install the SDK
@@ -353,13 +355,9 @@ The inspector starts on `http://localhost:6274`. Open it in a browser.
 
 ### What you will see
 
-The **Tools** tab lists all four tools auto-discovered from the server:
+The **Tools** tab lists all five tools auto-discovered from the server. Click any tool to see its description and a **Run Tool** button. The right panel shows the live JSON-RPC response.
 
-- `GetOpenPositions`
-- `GetHiringOrganizations`
-- `GetPositionsByOrganization`
-- `GetPositionById`
-- `WriteJobDescription`
+![MCP Inspector connected to HrMcp.McpServer — all 5 tools listed, GetHiringOrganizations result shown](diagrams/part-3-diagram-2-inspector-tools.png)
 
 ### Calling `GetHiringOrganizations`
 

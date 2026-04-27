@@ -1,0 +1,168 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - heading "MCP Inspector v0.21.2" [level=1] [ref=e8]
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - text: Transport Type
+            - combobox "Transport Type" [ref=e12] [cursor=pointer]:
+              - generic: Streamable HTTP
+              - img [ref=e13]
+          - generic [ref=e15]:
+            - text: URL
+            - textbox "URL" [ref=e16]: http://localhost:5100/mcp
+          - generic [ref=e17]:
+            - text: Connection Type
+            - combobox "Connection Type" [ref=e18] [cursor=pointer]:
+              - generic: Via Proxy
+              - img [ref=e19]
+          - generic [ref=e21]:
+            - button "Server Entry" [ref=e22] [cursor=pointer]:
+              - img [ref=e23]
+              - text: Server Entry
+            - button "Servers File" [ref=e26] [cursor=pointer]:
+              - img [ref=e27]
+              - text: Servers File
+          - button "Authentication" [ref=e31] [cursor=pointer]:
+            - img [ref=e32]
+            - text: Authentication
+          - button "Configuration" [ref=e35] [cursor=pointer]:
+            - img [ref=e36]
+            - img [ref=e38]
+            - text: Configuration
+          - generic [ref=e41]:
+            - generic [ref=e115]:
+              - button "Reconnect" [ref=e116] [cursor=pointer]:
+                - img [ref=e117]
+                - text: Reconnect
+              - button "Disconnect" [ref=e120] [cursor=pointer]:
+                - img [ref=e121]
+                - text: Disconnect
+            - generic [ref=e47]: Connected
+            - generic [ref=e129]:
+              - generic [ref=e130]:
+                - img [ref=e131]
+                - generic [ref=e134]: HrMcp.McpServer
+              - generic [ref=e135]: "Version: 1.0.0.0"
+            - generic [ref=e136]:
+              - text: Logging Level
+              - combobox "Logging Level" [ref=e137] [cursor=pointer]:
+                - generic: debug
+                - img [ref=e138]
+        - generic [ref=e49]:
+          - combobox [ref=e50] [cursor=pointer]:
+            - generic: System
+            - img [ref=e51]
+          - generic [ref=e53]:
+            - link "Inspector Documentation" [ref=e54] [cursor=pointer]:
+              - /url: https://modelcontextprotocol.io/docs/tools/inspector
+              - img [ref=e55]
+            - link "Debugging Guide" [ref=e58] [cursor=pointer]:
+              - /url: https://modelcontextprotocol.io/docs/tools/debugging
+              - img [ref=e59]
+            - link "Report bugs or contribute on GitHub" [ref=e68] [cursor=pointer]:
+              - /url: https://github.com/modelcontextprotocol/inspector
+              - img [ref=e69]
+      - generic "Resize sidebar" [ref=e72]
+    - generic [ref=e73]:
+      - generic [ref=e140]:
+        - tablist [ref=e141]:
+          - tab "Resources" [disabled]:
+            - img
+            - text: Resources
+          - tab "Prompts" [disabled]:
+            - img
+            - text: Prompts
+          - tab "Tools" [selected] [ref=e142] [cursor=pointer]:
+            - img [ref=e143]
+            - text: Tools
+          - tab "Tasks" [disabled]:
+            - img
+            - text: Tasks
+          - tab "Apps" [ref=e147] [cursor=pointer]:
+            - img [ref=e148]
+            - text: Apps
+          - tab "Ping" [ref=e150] [cursor=pointer]:
+            - img [ref=e151]
+            - text: Ping
+          - tab "Sampling" [ref=e154] [cursor=pointer]:
+            - img [ref=e155]
+            - text: Sampling
+          - tab "Elicitations" [ref=e158] [cursor=pointer]:
+            - img [ref=e159]
+            - text: Elicitations
+          - tab "Roots" [ref=e161] [cursor=pointer]:
+            - img [ref=e162]
+            - text: Roots
+          - tab "Auth" [ref=e167] [cursor=pointer]:
+            - img [ref=e168]
+            - text: Auth
+          - tab "Metadata" [ref=e172] [cursor=pointer]:
+            - img [ref=e173]
+            - text: Metadata
+        - tabpanel "Tools" [ref=e177]:
+          - generic [ref=e178]:
+            - generic [ref=e179]:
+              - generic [ref=e181]:
+                - heading "Tools" [level=3] [ref=e182]
+                - button "Search" [ref=e184] [cursor=pointer]:
+                  - img [ref=e185]
+              - generic [ref=e188]:
+                - button "List Tools" [disabled]
+                - button "Clear" [ref=e207] [cursor=pointer]
+                - generic [ref=e208]:
+                  - generic [ref=e210] [cursor=pointer]:
+                    - generic [ref=e211]:
+                      - generic [ref=e212]: GetOpenPositions
+                      - generic [ref=e213]: Returns all currently open federal job positions including title, pay grade, duty location, and security clearance requirements.
+                    - img [ref=e214]
+                  - generic [ref=e217] [cursor=pointer]:
+                    - generic [ref=e218]:
+                      - generic [ref=e219]: WriteJobDescription
+                      - generic [ref=e220]: Generates a USAJobs-style job announcement for the specified position using AI. Returns a fully written narrative with Summary, Duties, Qualifications, and How to Apply sections.
+                    - img [ref=e221]
+                  - generic [ref=e224] [cursor=pointer]:
+                    - generic [ref=e225]:
+                      - generic [ref=e226]: GetPositionById
+                      - generic [ref=e227]: Returns full details for a specific position by its ID, including duties, qualifications, and pay information.
+                    - img [ref=e228]
+                  - generic [ref=e231] [cursor=pointer]:
+                    - generic [ref=e232]:
+                      - generic [ref=e233]: GetHiringOrganizations
+                      - generic [ref=e234]: Returns all federal hiring organizations in the database with their department affiliations, IDs, and open position count.
+                    - img [ref=e235]
+                  - generic [ref=e238] [cursor=pointer]:
+                    - generic [ref=e239]:
+                      - generic [ref=e240]: GetPositionsByOrganization
+                      - generic [ref=e241]: Returns all positions for a specific federal hiring organization. Use GetHiringOrganizations first to get valid organization IDs.
+                    - img [ref=e242]
+            - generic [ref=e190]:
+              - heading "Select a tool" [level=3] [ref=e193]
+              - alert [ref=e195]:
+                - generic [ref=e196]: Select a tool from the list to view its details and run it
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - heading "History" [level=2] [ref=e87]
+            - button "Clear" [ref=e197] [cursor=pointer]
+          - list [ref=e198]:
+            - listitem [ref=e199]:
+              - generic [ref=e200] [cursor=pointer]:
+                - generic [ref=e201]: 3. tools/list
+                - generic [ref=e202]: ▶
+            - listitem [ref=e203]:
+              - generic [ref=e204] [cursor=pointer]:
+                - generic [ref=e205]: 2. logging/setLevel
+                - generic [ref=e206]: ▶
+            - listitem [ref=e244]:
+              - generic [ref=e245] [cursor=pointer]:
+                - generic [ref=e246]: 1. initialize
+                - generic [ref=e247]: ▶
+        - generic [ref=e89]:
+          - generic [ref=e90]:
+            - heading "Server Notifications" [level=2] [ref=e91]
+            - button "Clear" [disabled]
+          - paragraph [ref=e92]: No notifications yet
+  - region "Notifications (F8)":
+    - list

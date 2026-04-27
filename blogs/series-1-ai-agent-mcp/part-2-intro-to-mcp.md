@@ -72,6 +72,8 @@ They are useful for encoding domain knowledge that should stay close to the data
 
 ## Architecture: Host → Client → Server
 
+![MCP Architecture: Host, Client, and Server roles](diagrams/part-2-diagram-1-host-client-server.png)
+
 MCP defines three roles in every interaction.
 
 **Host** is the AI application the user interacts with — Claude Desktop, VS Code Copilot Chat, a custom .NET console agent. The host embeds one or more MCP clients and decides which tools to surface to the language model.

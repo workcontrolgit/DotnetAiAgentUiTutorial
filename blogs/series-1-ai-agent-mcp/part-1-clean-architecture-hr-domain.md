@@ -33,27 +33,7 @@ Clean Architecture enforces this by making the **Core** (domain + application) i
 
 Here is how the layers relate in this project:
 
-```text
-┌─────────────────────────────────────────────────────────────────┐
-│      HrMcp.McpServer                 HrMcp.Agent               │
-│      (MCP tools, HTTP)               (Console agent)           │
-└────────────────────────┬────────────────────────────────────────┘
-                         │  depends on
-┌────────────────────────▼────────────────────────────────────────┐
-│                    HrMcp.Application                            │
-│       (PositionService, HiringOrganizationService)              │
-└────────────────────────┬────────────────────────────────────────┘
-                         │  depends on
-┌────────────────────────▼────────────────────────────────────────┐
-│                      HrMcp.Core                                 │
-│       (Entities, Enums, Repository Interfaces)                  │
-└────────────────────────▲────────────────────────────────────────┘
-                         │  implements
-┌────────────────────────┴────────────────────────────────────────┐
-│            HrMcp.Infrastructure.Persistence                     │
-│                 (EF Core, SQL Server)                           │
-└─────────────────────────────────────────────────────────────────┘
-```
+![Clean Architecture layers for the HR MCP solution](diagrams/part-1-diagram-1-clean-architecture.png)
 
 **Key rule:** AI infrastructure (Ollama client, MCP SDK) lives only in the outermost projects. Core and Application have zero knowledge of AI.
 
