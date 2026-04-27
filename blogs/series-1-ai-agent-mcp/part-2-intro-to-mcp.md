@@ -72,6 +72,8 @@ They are useful for encoding domain knowledge that should stay close to the data
 
 ## Architecture: Host → Client → Server
 
+![MCP Architecture: Host, Client, and Server roles](diagrams/part-2-diagram-1-host-client-server.png)
+
 MCP defines three roles in every interaction.
 
 **Host** is the AI application the user interacts with — Claude Desktop, VS Code Copilot Chat, a custom .NET console agent. The host embeds one or more MCP clients and decides which tools to surface to the language model.
@@ -145,8 +147,6 @@ Both are maintained at [github.com/modelcontextprotocol/csharp-sdk](https://gith
 
 We use these in Part 3. The SDK handles JSON-RPC serialization, session management, capability negotiation, and transport routing — we write C# classes with attributes, and the protocol plumbing is invisible.
 
-> **Community alternative:** If you prefer an attribute-first approach with built-in OAuth and OpenTelemetry, the community package [DotnetFastMCP](https://github.com/tekspry/DotnetFastMCP) offers `[McpTool]` decorators and assembly-scanning auto-discovery. It targets .NET 8+ and favors static methods over class-based DI, which trades some Clean Architecture alignment for less ceremony. Worth evaluating for production scenarios that need auth and observability out of the box. This series uses the official SDK to stay on the primary learning path.
-
 ---
 
 ## Preview: What We Build in Part 3
@@ -177,4 +177,3 @@ We install the official `ModelContextProtocol` SDK, implement the four tool clas
 - [ModelContextProtocol C# SDK — GitHub](https://github.com/modelcontextprotocol/csharp-sdk)
 - [ModelContextProtocol NuGet Package](https://www.nuget.org/packages/ModelContextProtocol)
 - [Anthropic MCP Announcement — November 2024](https://www.anthropic.com/news/model-context-protocol)
-- [DotnetFastMCP — Community Alternative](https://github.com/tekspry/DotnetFastMCP)

@@ -1,0 +1,72 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - heading "MCP Inspector v0.21.2" [level=1] [ref=e8]
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - text: Transport Type
+            - combobox "Transport Type" [ref=e12] [cursor=pointer]:
+              - generic: Streamable HTTP
+              - img [ref=e13]
+          - generic [ref=e15]:
+            - text: URL
+            - textbox "URL" [ref=e16]: http://localhost:5100/mcp
+          - generic [ref=e17]:
+            - text: Connection Type
+            - combobox "Connection Type" [active] [ref=e18] [cursor=pointer]:
+              - generic: Via Proxy
+              - img [ref=e19]
+          - generic [ref=e21]:
+            - button "Server Entry" [ref=e22] [cursor=pointer]:
+              - img [ref=e23]
+              - text: Server Entry
+            - button "Servers File" [ref=e26] [cursor=pointer]:
+              - img [ref=e27]
+              - text: Servers File
+          - button "Authentication" [ref=e31] [cursor=pointer]:
+            - img [ref=e32]
+            - text: Authentication
+          - button "Configuration" [ref=e35] [cursor=pointer]:
+            - img [ref=e36]
+            - img [ref=e38]
+            - text: Configuration
+          - generic [ref=e41]:
+            - button "Connect" [ref=e42] [cursor=pointer]:
+              - img [ref=e43]
+              - text: Connect
+            - generic [ref=e47]: Connection Error - Check if your MCP server is running and proxy token is correct
+        - generic [ref=e49]:
+          - combobox [ref=e50] [cursor=pointer]:
+            - generic: System
+            - img [ref=e51]
+          - generic [ref=e53]:
+            - link "Inspector Documentation" [ref=e54] [cursor=pointer]:
+              - /url: https://modelcontextprotocol.io/docs/tools/inspector
+              - img [ref=e55]
+            - link "Debugging Guide" [ref=e58] [cursor=pointer]:
+              - /url: https://modelcontextprotocol.io/docs/tools/debugging
+              - img [ref=e59]
+            - link "Report bugs or contribute on GitHub" [ref=e68] [cursor=pointer]:
+              - /url: https://github.com/modelcontextprotocol/inspector
+              - img [ref=e69]
+      - generic "Resize sidebar" [ref=e72]
+    - generic [ref=e73]:
+      - generic [ref=e75]:
+        - paragraph [ref=e76]: Connect to an MCP server to start inspecting
+        - generic [ref=e77]:
+          - paragraph [ref=e78]: Need to configure authentication?
+          - button "Open Auth Settings" [ref=e79] [cursor=pointer]
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - heading "History" [level=2] [ref=e87]
+            - button "Clear" [disabled]
+          - paragraph [ref=e88]: No history yet
+        - generic [ref=e89]:
+          - generic [ref=e90]:
+            - heading "Server Notifications" [level=2] [ref=e91]
+            - button "Clear" [disabled]
+          - paragraph [ref=e92]: No notifications yet
+  - region "Notifications (F8)":
+    - list

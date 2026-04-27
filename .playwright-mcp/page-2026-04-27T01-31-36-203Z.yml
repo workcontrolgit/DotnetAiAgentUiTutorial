@@ -1,0 +1,320 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - heading "MCP Inspector v0.21.2" [level=1] [ref=e8]
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - text: Transport Type
+            - combobox "Transport Type" [ref=e12] [cursor=pointer]:
+              - generic: Streamable HTTP
+              - img [ref=e13]
+          - generic [ref=e15]:
+            - text: URL
+            - textbox "URL" [ref=e16]: http://localhost:5100/mcp
+          - generic [ref=e17]:
+            - text: Connection Type
+            - combobox "Connection Type" [ref=e18] [cursor=pointer]:
+              - generic: Via Proxy
+              - img [ref=e19]
+          - generic [ref=e21]:
+            - button "Server Entry" [ref=e22] [cursor=pointer]:
+              - img [ref=e23]
+              - text: Server Entry
+            - button "Servers File" [ref=e26] [cursor=pointer]:
+              - img [ref=e27]
+              - text: Servers File
+          - button "Authentication" [ref=e31] [cursor=pointer]:
+            - img [ref=e32]
+            - text: Authentication
+          - button "Configuration" [ref=e35] [cursor=pointer]:
+            - img [ref=e36]
+            - img [ref=e38]
+            - text: Configuration
+          - generic [ref=e41]:
+            - generic [ref=e115]:
+              - button "Reconnect" [ref=e116] [cursor=pointer]:
+                - img [ref=e117]
+                - text: Reconnect
+              - button "Disconnect" [ref=e120] [cursor=pointer]:
+                - img [ref=e121]
+                - text: Disconnect
+            - generic [ref=e47]: Connected
+            - generic [ref=e129]:
+              - generic [ref=e130]:
+                - img [ref=e131]
+                - generic [ref=e134]: HrMcp.McpServer
+              - generic [ref=e135]: "Version: 1.0.0.0"
+            - generic [ref=e136]:
+              - text: Logging Level
+              - combobox "Logging Level" [ref=e137] [cursor=pointer]:
+                - generic: debug
+                - img [ref=e138]
+        - generic [ref=e49]:
+          - combobox [ref=e50] [cursor=pointer]:
+            - generic: System
+            - img [ref=e51]
+          - generic [ref=e53]:
+            - link "Inspector Documentation" [ref=e54] [cursor=pointer]:
+              - /url: https://modelcontextprotocol.io/docs/tools/inspector
+              - img [ref=e55]
+            - link "Debugging Guide" [ref=e58] [cursor=pointer]:
+              - /url: https://modelcontextprotocol.io/docs/tools/debugging
+              - img [ref=e59]
+            - link "Report bugs or contribute on GitHub" [ref=e68] [cursor=pointer]:
+              - /url: https://github.com/modelcontextprotocol/inspector
+              - img [ref=e69]
+      - generic "Resize sidebar" [ref=e72]
+    - generic [ref=e73]:
+      - generic [ref=e140]:
+        - tablist [ref=e141]:
+          - tab "Resources" [disabled]:
+            - img
+            - text: Resources
+          - tab "Prompts" [disabled]:
+            - img
+            - text: Prompts
+          - tab "Tools" [selected] [ref=e142] [cursor=pointer]:
+            - img [ref=e143]
+            - text: Tools
+          - tab "Tasks" [disabled]:
+            - img
+            - text: Tasks
+          - tab "Apps" [ref=e147] [cursor=pointer]:
+            - img [ref=e148]
+            - text: Apps
+          - tab "Ping" [ref=e150] [cursor=pointer]:
+            - img [ref=e151]
+            - text: Ping
+          - tab "Sampling" [ref=e154] [cursor=pointer]:
+            - img [ref=e155]
+            - text: Sampling
+          - tab "Elicitations" [ref=e158] [cursor=pointer]:
+            - img [ref=e159]
+            - text: Elicitations
+          - tab "Roots" [ref=e161] [cursor=pointer]:
+            - img [ref=e162]
+            - text: Roots
+          - tab "Auth" [ref=e167] [cursor=pointer]:
+            - img [ref=e168]
+            - text: Auth
+          - tab "Metadata" [ref=e172] [cursor=pointer]:
+            - img [ref=e173]
+            - text: Metadata
+        - tabpanel "Tools" [ref=e177]:
+          - generic [ref=e178]:
+            - generic [ref=e179]:
+              - generic [ref=e181]:
+                - heading "Tools" [level=3] [ref=e182]
+                - button "Search" [ref=e184] [cursor=pointer]:
+                  - img [ref=e185]
+              - generic [ref=e188]:
+                - button "List Tools" [disabled]
+                - button "Clear" [ref=e207] [cursor=pointer]
+                - generic [ref=e208]:
+                  - generic [ref=e210] [cursor=pointer]:
+                    - generic [ref=e211]:
+                      - generic [ref=e212]: GetOpenPositions
+                      - generic [ref=e213]: Returns all currently open federal job positions including title, pay grade, duty location, and security clearance requirements.
+                    - img [ref=e214]
+                  - generic [ref=e217] [cursor=pointer]:
+                    - generic [ref=e218]:
+                      - generic [ref=e219]: WriteJobDescription
+                      - generic [ref=e220]: Generates a USAJobs-style job announcement for the specified position using AI. Returns a fully written narrative with Summary, Duties, Qualifications, and How to Apply sections.
+                    - img [ref=e221]
+                  - generic [ref=e224] [cursor=pointer]:
+                    - generic [ref=e225]:
+                      - generic [ref=e226]: GetPositionById
+                      - generic [ref=e227]: Returns full details for a specific position by its ID, including duties, qualifications, and pay information.
+                    - img [ref=e228]
+                  - generic [ref=e231] [cursor=pointer]:
+                    - generic [ref=e232]:
+                      - generic [ref=e233]: GetHiringOrganizations
+                      - generic [ref=e234]: Returns all federal hiring organizations in the database with their department affiliations, IDs, and open position count.
+                    - img [ref=e235]
+                  - generic [ref=e238] [cursor=pointer]:
+                    - generic [ref=e239]:
+                      - generic [ref=e240]: GetPositionsByOrganization
+                      - generic [ref=e241]: Returns all positions for a specific federal hiring organization. Use GetHiringOrganizations first to get valid organization IDs.
+                    - img [ref=e242]
+            - generic [ref=e190]:
+              - heading "GetHiringOrganizations" [level=3] [ref=e248]
+              - generic [ref=e249]:
+                - paragraph [ref=e250]: Returns all federal hiring organizations in the database with their department affiliations, IDs, and open position count.
+                - generic [ref=e251]:
+                  - 'generic "Tool does not modify its environment Value: No (implied default)" [ref=e252]': ✗ Read-only
+                  - 'generic "Tool may perform destructive updates (delete/overwrite data) Value: Yes (implied default)" [ref=e253]': ✓ Destructive
+                  - 'generic "Calling repeatedly with same args has no additional effect Value: No (implied default)" [ref=e254]': ✗ Idempotent
+                  - 'generic "Tool may interact with external entities beyond its local environment Value: Yes (implied default)" [ref=e255]': ✓ Open-world
+                - generic [ref=e256]:
+                  - generic [ref=e257]:
+                    - heading "Tool-specific Metadata:" [level=4] [ref=e258]
+                    - button "Add Pair" [ref=e259] [cursor=pointer]
+                  - paragraph [ref=e260]: No metadata pairs.
+                - button "Run Tool" [ref=e261] [cursor=pointer]:
+                  - img [ref=e270]
+                  - text: Run Tool
+                - button "Copy Input" [ref=e266] [cursor=pointer]:
+                  - img [ref=e267]
+                  - text: Copy Input
+                - 'heading "Tool Result: Success" [level=4] [ref=e273]'
+                - generic [ref=e276]:
+                  - button [ref=e277] [cursor=pointer]:
+                    - img [ref=e278]
+                  - generic [ref=e282]:
+                    - generic [ref=e284] [cursor=pointer]: "["
+                    - generic [ref=e285]:
+                      - generic [ref=e287]:
+                        - generic [ref=e288] [cursor=pointer]:
+                          - generic [ref=e289]: "0:"
+                          - generic [ref=e290]: "{"
+                        - generic [ref=e291]:
+                          - generic [ref=e293]:
+                            - generic [ref=e294]: "id:"
+                            - generic [ref=e295]: "1"
+                            - button "Copy value of id" [ref=e296] [cursor=pointer]:
+                              - img [ref=e297]
+                          - generic [ref=e301]:
+                            - generic [ref=e302]: "organizationName:"
+                            - generic [ref=e303]: "\"Office of Information Technology\""
+                            - button "Copy value of organizationName" [ref=e304] [cursor=pointer]:
+                              - img [ref=e305]
+                          - generic [ref=e309]:
+                            - generic [ref=e310]: "departmentName:"
+                            - generic [ref=e311]: "\"Department of Homeland Security\""
+                            - button "Copy value of departmentName" [ref=e312] [cursor=pointer]:
+                              - img [ref=e313]
+                          - generic [ref=e317]:
+                            - generic [ref=e318]: "agencyDescription:"
+                            - generic [ref=e319]: "\"IT infrastructure, cybersecurity, and enterprise systems\""
+                            - button "Copy value of agencyDescription" [ref=e320] [cursor=pointer]:
+                              - img [ref=e321]
+                          - generic [ref=e325]:
+                            - generic [ref=e326]: "openPositionCount:"
+                            - generic [ref=e327]: "1"
+                            - button "Copy value of openPositionCount" [ref=e328] [cursor=pointer]:
+                              - img [ref=e329]
+                        - generic [ref=e332]: "}"
+                      - generic [ref=e334]:
+                        - generic [ref=e335] [cursor=pointer]:
+                          - generic [ref=e336]: "1:"
+                          - generic [ref=e337]: "{"
+                        - generic [ref=e338]:
+                          - generic [ref=e340]:
+                            - generic [ref=e341]: "id:"
+                            - generic [ref=e342]: "2"
+                            - button "Copy value of id" [ref=e343] [cursor=pointer]:
+                              - img [ref=e344]
+                          - generic [ref=e348]:
+                            - generic [ref=e349]: "organizationName:"
+                            - generic [ref=e350]: "\"Office of Human Resources\""
+                            - button "Copy value of organizationName" [ref=e351] [cursor=pointer]:
+                              - img [ref=e352]
+                          - generic [ref=e356]:
+                            - generic [ref=e357]: "departmentName:"
+                            - generic [ref=e358]: "\"Department of Homeland Security\""
+                            - button "Copy value of departmentName" [ref=e359] [cursor=pointer]:
+                              - img [ref=e360]
+                          - generic [ref=e364]:
+                            - generic [ref=e365]: "agencyDescription:"
+                            - generic [ref=e366]: "\"Federal workforce management and talent acquisition\""
+                            - button "Copy value of agencyDescription" [ref=e367] [cursor=pointer]:
+                              - img [ref=e368]
+                          - generic [ref=e372]:
+                            - generic [ref=e373]: "openPositionCount:"
+                            - generic [ref=e374]: "1"
+                            - button "Copy value of openPositionCount" [ref=e375] [cursor=pointer]:
+                              - img [ref=e376]
+                        - generic [ref=e379]: "}"
+                      - generic [ref=e381]:
+                        - generic [ref=e382] [cursor=pointer]:
+                          - generic [ref=e383]: "2:"
+                          - generic [ref=e384]: "{"
+                        - generic [ref=e385]:
+                          - generic [ref=e387]:
+                            - generic [ref=e388]: "id:"
+                            - generic [ref=e389]: "3"
+                            - button "Copy value of id" [ref=e390] [cursor=pointer]:
+                              - img [ref=e391]
+                          - generic [ref=e395]:
+                            - generic [ref=e396]: "organizationName:"
+                            - generic [ref=e397]: "\"Office of Policy Development\""
+                            - button "Copy value of organizationName" [ref=e398] [cursor=pointer]:
+                              - img [ref=e399]
+                          - generic [ref=e403]:
+                            - generic [ref=e404]: "departmentName:"
+                            - generic [ref=e405]: "\"Department of Homeland Security\""
+                            - button "Copy value of departmentName" [ref=e406] [cursor=pointer]:
+                              - img [ref=e407]
+                          - generic [ref=e411]:
+                            - generic [ref=e412]: "agencyDescription:"
+                            - generic [ref=e413]: "\"Federal policy analysis and regulatory affairs\""
+                            - button "Copy value of agencyDescription" [ref=e414] [cursor=pointer]:
+                              - img [ref=e415]
+                          - generic [ref=e419]:
+                            - generic [ref=e420]: "openPositionCount:"
+                            - generic [ref=e421]: "1"
+                            - button "Copy value of openPositionCount" [ref=e422] [cursor=pointer]:
+                              - img [ref=e423]
+                        - generic [ref=e426]: "}"
+                      - generic [ref=e428]:
+                        - generic [ref=e429] [cursor=pointer]:
+                          - generic [ref=e430]: "3:"
+                          - generic [ref=e431]: "{"
+                        - generic [ref=e432]:
+                          - generic [ref=e434]:
+                            - generic [ref=e435]: "id:"
+                            - generic [ref=e436]: "4"
+                            - button "Copy value of id" [ref=e437] [cursor=pointer]:
+                              - img [ref=e438]
+                          - generic [ref=e442]:
+                            - generic [ref=e443]: "organizationName:"
+                            - generic [ref=e444]: "\"Office of the Chief Financial Officer\""
+                            - button "Copy value of organizationName" [ref=e445] [cursor=pointer]:
+                              - img [ref=e446]
+                          - generic [ref=e450]:
+                            - generic [ref=e451]: "departmentName:"
+                            - generic [ref=e452]: "\"Department of Homeland Security\""
+                            - button "Copy value of departmentName" [ref=e453] [cursor=pointer]:
+                              - img [ref=e454]
+                          - generic [ref=e458]:
+                            - generic [ref=e459]: "agencyDescription:"
+                            - generic [ref=e460]: "\"Federal financial management and budget oversight\""
+                            - button "Copy value of agencyDescription" [ref=e461] [cursor=pointer]:
+                              - img [ref=e462]
+                          - generic [ref=e466]:
+                            - generic [ref=e467]: "openPositionCount:"
+                            - generic [ref=e468]: "1"
+                            - button "Copy value of openPositionCount" [ref=e469] [cursor=pointer]:
+                              - img [ref=e470]
+                        - generic [ref=e473]: "}"
+                    - generic [ref=e474]: "]"
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - heading "History" [level=2] [ref=e87]
+            - button "Clear" [ref=e197] [cursor=pointer]
+          - list [ref=e198]:
+            - listitem [ref=e199]:
+              - generic [ref=e200] [cursor=pointer]:
+                - generic [ref=e201]: 4. tools/call
+                - generic [ref=e202]: ▶
+            - listitem [ref=e203]:
+              - generic [ref=e204] [cursor=pointer]:
+                - generic [ref=e205]: 3. tools/list
+                - generic [ref=e206]: ▶
+            - listitem [ref=e244]:
+              - generic [ref=e245] [cursor=pointer]:
+                - generic [ref=e246]: 2. logging/setLevel
+                - generic [ref=e247]: ▶
+            - listitem [ref=e475]:
+              - generic [ref=e476] [cursor=pointer]:
+                - generic [ref=e477]: 1. initialize
+                - generic [ref=e478]: ▶
+        - generic [ref=e89]:
+          - generic [ref=e90]:
+            - heading "Server Notifications" [level=2] [ref=e91]
+            - button "Clear" [disabled]
+          - paragraph [ref=e92]: No notifications yet
+  - region "Notifications (F8)":
+    - list

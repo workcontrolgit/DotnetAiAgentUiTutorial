@@ -13,6 +13,8 @@ By the end of this post you will have a running MCP server that exposes four too
 
 The server lives in `HrMcp.McpServer`, the project we scaffolded in Part 1. All we are adding is the MCP SDK and three tool classes.
 
+![Part 3 steps overview — swim lane across Developer, MCP Server, and MCP Inspector](diagrams/part-3-diagram-1-build-steps.png)
+
 ---
 
 ## Step 1 — Install the SDK
@@ -353,13 +355,9 @@ The inspector starts on `http://localhost:6274`. Open it in a browser.
 
 ### What you will see
 
-The **Tools** tab lists all four tools auto-discovered from the server:
+The **Tools** tab lists all five tools auto-discovered from the server. Click any tool to see its description and a **Run Tool** button. The right panel shows the live JSON-RPC response.
 
-- `GetOpenPositions`
-- `GetHiringOrganizations`
-- `GetPositionsByOrganization`
-- `GetPositionById`
-- `WriteJobDescription`
+![MCP Inspector connected to HrMcp.McpServer — all 5 tools listed, GetHiringOrganizations result shown](diagrams/part-3-diagram-2-inspector-tools.png)
 
 ### Calling `GetHiringOrganizations`
 
@@ -423,14 +421,6 @@ No ASP.NET Core startup output appears on stdout. The process blocks waiting for
 
 ---
 
-## Alternative: DotnetFastMCP
-
-If you prefer an attribute-first approach with built-in OAuth and OpenTelemetry, the community package [DotnetFastMCP](https://github.com/tekspry/DotnetFastMCP) offers `[McpTool]` decorators and assembly-scanning auto-discovery. Setup reduces to a few lines and no explicit `WithTools<T>()` registrations. It targets .NET 8+ and favors static methods over constructor injection, which is less natural with Clean Architecture's scoped services but requires less boilerplate for simple servers. Worth evaluating for production scenarios that need auth and observability without custom middleware.
-
-This series uses the official SDK to stay on the primary learning path and to keep tool classes as first-class DI citizens.
-
----
-
 ## What We Built
 
 - **`ModelContextProtocol.AspNetCore` 1.2.0** installed in `HrMcp.McpServer`
@@ -457,5 +447,4 @@ We build the `HrMcp.Agent` console app: connect it to the MCP server, register O
 - [ModelContextProtocol NuGet Package](https://www.nuget.org/packages/ModelContextProtocol)
 - [ModelContextProtocol.AspNetCore NuGet Package](https://www.nuget.org/packages/ModelContextProtocol.AspNetCore)
 - [MCP Inspector — GitHub](https://github.com/modelcontextprotocol/inspector)
-- [DotnetFastMCP — Community Alternative](https://github.com/tekspry/DotnetFastMCP)
 - [MCP Specification — Transports](https://spec.modelcontextprotocol.io/specification/basic/transports/)
