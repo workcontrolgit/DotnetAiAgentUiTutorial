@@ -1,0 +1,1184 @@
+- generic [active] [ref=e1]:
+  - banner:
+    - generic [ref=e2]:
+      - iframe [ref=e7]:
+        
+      - navigation [ref=e8]:
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - generic [ref=e12]:
+              - button "Open Menu Icon" [ref=e13]:
+                - img [ref=e14]
+              - link "CNN logo" [ref=e17] [cursor=pointer]:
+                - /url: https://www.cnn.com
+                - img [ref=e19]
+            - generic [ref=e22]:
+              - link "Watch" [ref=e23] [cursor=pointer]:
+                - /url: https://www.cnn.com/subscription/all-access
+              - link "Subscribe Button" [ref=e24] [cursor=pointer]: Subscribe
+              - navigation "User Account Nav" [ref=e26]:
+                - link "User Account Log In Button" [ref=e28] [cursor=pointer]: Sign in
+          - separator [ref=e29]
+  - generic [ref=e30]:
+    - generic [ref=e34]:
+      - generic [ref=e36]: Start the day here
+      - link "Press dinner shooting suspect due in court. Tornadoes, damaging winds threaten Midwest. King Charles to meet with Trump." [ref=e38] [cursor=pointer]:
+        - /url: https://www.cnn.com/2026/04/27/us/5-things-to-know-for-april-27-press-dinner-shooting-severe-weather-king-charles-iran-war-fossil-fuel-profits
+    - main [ref=e41]:
+      - generic [ref=e45]:
+        - list [ref=e52]:
+          - listitem [ref=e53]:
+            - 'link "Live Updates : War with Iran |" [ref=e54] [cursor=pointer]':
+              - /url: /2026/04/27/world/live-news/iran-war-trump-israel
+              - generic [ref=e55]:
+                - generic [ref=e56]:
+                  - generic [ref=e57]: "Live Updates :"
+                  - text: War with Iran
+                - text: "|"
+          - listitem [ref=e58]:
+            - link "White House Correspondents’ Dinner shooting |" [ref=e59] [cursor=pointer]:
+              - /url: /2026/04/27/politics/live-news/correspondents-dinner-shooting-suspect-court
+              - generic [ref=e60]:
+                - generic [ref=e61]: White House Correspondents’ Dinner shooting
+                - text: "|"
+          - listitem [ref=e62]:
+            - 'link "Trending: Oil prices |" [ref=e63] [cursor=pointer]':
+              - /url: /2026/04/26/business/oil-prices-stock-futures-iran-war
+              - generic [ref=e64]:
+                - generic [ref=e65]:
+                  - generic [ref=e66]: "Trending:"
+                  - text: Oil prices
+                - text: "|"
+          - listitem [ref=e67]:
+            - link "King Charles US visit |" [ref=e68] [cursor=pointer]:
+              - /url: /2026/04/27/world/king-charles-us-state-visit-intl
+              - generic [ref=e69]:
+                - generic [ref=e70]: King Charles US visit
+                - text: "|"
+          - listitem [ref=e71]:
+            - 'link "CNN Underscored: Mother’s Day gifts" [ref=e72] [cursor=pointer]':
+              - /url: https://www.cnn.com/cnn-underscored/gifts/mothers-day-2026
+              - generic [ref=e74]:
+                - generic [ref=e75]: "CNN Underscored:"
+                - text: Mother’s Day gifts
+        - generic [ref=e79]:
+          - generic [ref=e82]:
+            - list [ref=e86]:
+              - listitem [ref=e87]:
+                - link "Britain's King Charles III leaves the British Museum after viewing the final design for the Queen Elizabeth Memorial, in central London on April 21, 2026, on the day marking what would have been the late monarch's 100th birthday. Adrian Dennis/AFP/Getty Images" [ref=e88] [cursor=pointer]:
+                  - /url: /2026/04/27/world/king-charles-us-state-visit-intl
+                  - generic [ref=e90]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "Britain's King Charles III leaves the British Museum after viewing the final design for the Queen Elizabeth Memorial, in central London on April 21, 2026, on the day marking what would have been the late monarch's 100th birthday."
+                      - generic:
+                        - generic: Adrian Dennis/AFP/Getty Images
+                - link "King Charles set to meet Trump for toughest mission of his reign" [ref=e91] [cursor=pointer]:
+                  - /url: /2026/04/27/world/king-charles-us-state-visit-intl
+                  - generic [ref=e93]: King Charles set to meet Trump for toughest mission of his reign
+            - list [ref=e97]:
+              - listitem [ref=e98]:
+                - link "An employee adjusts Roundup products on a shelf at a store in San Rafael, California, on July, 9, 2018. A lawyer for a California groundskeeper dying of cancer took aim at Monsanto on July 9, 2019 as a jury began hearing the lawsuit accusing the chemical giant of ignoring health risks of its top-selling weed killer Roundup. Josh Edelson/AFP/Getty Images" [ref=e99] [cursor=pointer]:
+                  - /url: /2026/04/27/politics/roundup-pesticides-maha-supreme-court
+                  - generic [ref=e101]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "An employee adjusts Roundup products on a shelf at a store in San Rafael, California, on July, 9, 2018. A lawyer for a California groundskeeper dying of cancer took aim at Monsanto on July 9, 2019 as a jury began hearing the lawsuit accusing the chemical giant of ignoring health risks of its top-selling weed killer Roundup."
+                      - generic:
+                        - generic: Josh Edelson/AFP/Getty Images
+                - link "Supreme Court case over pesticides is bringing out the ‘MAHA moms’ — and threats of consequences for midterms" [ref=e102] [cursor=pointer]:
+                  - /url: /2026/04/27/politics/roundup-pesticides-maha-supreme-court
+                  - generic [ref=e104]: Supreme Court case over pesticides is bringing out the ‘MAHA moms’ — and threats of consequences for midterms
+              - listitem [ref=e105]:
+                - link "Supreme Court to debate whether police may seek sweeping cellphone location data in investigations" [ref=e106] [cursor=pointer]:
+                  - /url: /2026/04/27/politics/geofencing-supreme-geofencing-cellphone-data
+                  - generic [ref=e108]: Supreme Court to debate whether police may seek sweeping cellphone location data in investigations
+            - list [ref=e112]:
+              - listitem [ref=e113]:
+                - link "David Blaine wasn’t the only prominent magician who turned up repeatedly in the files. David Copperfield was featured in numerous photos and messages released by the DOJ, and federal investigators examined his friendship with Epstein. Getty Images" [ref=e114] [cursor=pointer]:
+                  - /url: /2026/04/27/politics/david-blaine-david-copperfield-epstein-files
+                  - generic [ref=e116]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "David Blaine wasn’t the only prominent magician who turned up repeatedly in the files. David Copperfield was featured in numerous photos and messages released by the DOJ, and federal investigators examined his friendship with Epstein."
+                      - generic:
+                        - generic: Getty Images
+                - link "Epstein files show extent of his unsavory relationships with magicians David Blaine and David Copperfield" [ref=e117] [cursor=pointer]:
+                  - /url: /2026/04/27/politics/david-blaine-david-copperfield-epstein-files
+                  - generic [ref=e119]: ": Epstein files show extent of his unsavory relationships with magicians David Blaine and David Copperfield"
+          - generic [ref=e122]:
+            - generic [ref=e123]:
+              - link "Authorities review writings of teacher suspected of press dinner shooting" [ref=e125] [cursor=pointer]:
+                - /url: /2026/04/26/us/white-house-correspondents-dinner-shooter-teacher-invs
+                - heading "Authorities review writings of teacher suspected of press dinner shooting" [level=2] [ref=e126]
+              - list [ref=e129]:
+                - listitem [ref=e130]:
+                  - link "This photo of the suspect in the incident at the White House Correspondents Dinner incident was posted to President Donald Trump's Truth Social account on Saturday, April 25, 2026. CNN Investigates Donald Trump/Truth Social" [ref=e131] [cursor=pointer]:
+                    - /url: /2026/04/26/us/white-house-correspondents-dinner-shooter-teacher-invs
+                    - generic [ref=e133]:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - img "This photo of the suspect in the incident at the White House Correspondents Dinner incident was posted to President Donald Trump's Truth Social account on Saturday, April 25, 2026."
+                        - generic:
+                          - generic:
+                            - generic: CNN Investigates
+                        - generic:
+                          - generic: Donald Trump/Truth Social
+                  - link "‘I don’t expect forgiveness,’ the suspect allegedly wrote in a note he sent his family outlining his intention to target admin officials" [ref=e134] [cursor=pointer]:
+                    - /url: /2026/04/26/us/white-house-correspondents-dinner-shooter-teacher-invs
+                    - generic [ref=e136]: ": ‘I don’t expect forgiveness,’ the suspect allegedly wrote in a note he sent his family outlining his intention to target admin officials"
+                - listitem [ref=e137]:
+                  - 'link "Live Updates : Shooting suspect to be arraigned in court today" [ref=e138] [cursor=pointer]':
+                    - /url: /2026/04/27/politics/live-news/correspondents-dinner-shooting-suspect-court
+                    - generic [ref=e140]:
+                      - generic [ref=e141]: "Live Updates :"
+                      - text: Shooting suspect to be arraigned in court today
+                - listitem [ref=e142]:
+                  - 'link "Analysis : Press dinner shooting is an attack on the rituals of US democracy" [ref=e143] [cursor=pointer]':
+                    - /url: /2026/04/27/politics/trump-white-house-correspondents-dinner-attack-analysis
+                    - generic [ref=e145]:
+                      - generic [ref=e146]: "Analysis :"
+                      - text: Press dinner shooting is an attack on the rituals of US democracy
+                - listitem [ref=e147]:
+                  - link "Trump calls CBS correspondent Norah O’Donnell a ‘disgrace’ 1:01" [ref=e148] [cursor=pointer]:
+                    - /url: /2026/04/27/us/video/trump-calls-cbs-correspondent-norah-odonnell-a-disgrace-60-minutes-digvid-vrtc-hnk
+                    - generic [ref=e150]:
+                      - text: Trump calls CBS correspondent Norah O’Donnell a ‘disgrace’
+                      - generic [ref=e151]: 1:01
+            - list [ref=e156]:
+              - listitem [ref=e157]:
+                - link "First lady Melania Trump, right, attends President Donald Trump's press conference at the White House Saturday evening alongside members of his administration." [ref=e158] [cursor=pointer]:
+                  - /url: /2026/04/27/politics/melania-trump-shooting-reaction
+                  - generic [ref=e160]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "First lady Melania Trump, right, attends President Donald Trump's press conference at the White House Saturday evening alongside members of his administration."
+                - link "Security has long been top of mind for Melania Trump. She faced those concerns in a new way this weekend" [ref=e161] [cursor=pointer]:
+                  - /url: /2026/04/27/politics/melania-trump-shooting-reaction
+                  - generic [ref=e163]: Security has long been top of mind for Melania Trump. She faced those concerns in a new way this weekend
+              - listitem [ref=e164]:
+                - link "2:43" [ref=e165] [cursor=pointer]:
+                  - /url: /2026/04/26/us/video/trump-white-house-correspondents-dinner-shooting-timeline-digvid
+                  - generic [ref=e167]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: 2:43
+                - link "Timeline of shooting incident at White House Correspondents’ Dinner" [ref=e168] [cursor=pointer]:
+                  - /url: /2026/04/26/us/video/trump-white-house-correspondents-dinner-shooting-timeline-digvid
+                  - generic [ref=e170]: Timeline of shooting incident at White House Correspondents’ Dinner
+              - listitem [ref=e171]:
+                - link "20260426-whcd-floorplan-GRAY-hp2.png" [ref=e172] [cursor=pointer]:
+                  - /url: /2026/04/26/politics/map-white-house-correspondents-dinner-trump-vis
+                  - generic [ref=e174]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "20260426-whcd-floorplan-GRAY-hp2.png"
+                - link "Visualizing the shooting incident in maps" [ref=e175] [cursor=pointer]:
+                  - /url: /2026/04/26/politics/map-white-house-correspondents-dinner-trump-vis
+                  - generic [ref=e177]: Visualizing the shooting incident in maps
+          - generic [ref=e180]:
+            - list [ref=e184]:
+              - listitem [ref=e185]:
+                - generic [ref=e191]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "CNNHeadlines_WebDTC_1x1.jpg"
+                - link "Catch up on today’s headlines" [ref=e192] [cursor=pointer]:
+                  - /url: https://www.cnn.com/watch
+                  - generic [ref=e194]: Catch up on today’s headlines
+            - list [ref=e198]:
+              - listitem [ref=e199]:
+                - link "freshmen_instafriends_profiles.jpg Illustration by Leah Abucayan/CNN/Adobe" [ref=e200] [cursor=pointer]:
+                  - /url: /2026/04/26/health/making-college-friends-online-wellness
+                  - generic [ref=e202]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "freshmen_instafriends_profiles.jpg"
+                      - generic:
+                        - generic: Illustration by Leah Abucayan/CNN/Adobe
+                - 'link "A new source of social anxiety for high school seniors: Incoming class Instagram pages" [ref=e203] [cursor=pointer]':
+                  - /url: /2026/04/26/health/making-college-friends-online-wellness
+                  - generic [ref=e205]: "A new source of social anxiety for high school seniors: Incoming class Instagram pages"
+              - listitem [ref=e206]:
+                - link "Climber left his girlfriend to die on Austria’s tallest mountain. Other stories of ‘Alpine divorce’ are emerging" [ref=e207] [cursor=pointer]:
+                  - /url: /2026/04/26/world/alpine-divorce-grossglockner-intl
+                  - generic [ref=e209]: Climber left his girlfriend to die on Austria’s tallest mountain. Other stories of ‘Alpine divorce’ are emerging
+            - generic [ref=e210]:
+              - heading "Streaming now" [level=2] [ref=e212]
+              - list [ref=e215]:
+                - listitem [ref=e216]:
+                  - link "CNN Films" [ref=e217] [cursor=pointer]:
+                    - /url: https://www.cnn.com/videos/title-2586908
+                    - generic [ref=e219]:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic: CNN Films
+                  - link "How America’s pastime became a Japanese tradition" [ref=e220] [cursor=pointer]:
+                    - /url: https://www.cnn.com/videos/title-2586908
+                    - generic [ref=e222]: How America’s pastime became a Japanese tradition
+        - generic [ref=e225]:
+          - heading "Streaming Now" [level=2] [ref=e226]:
+            - link "Streaming Now" [ref=e227] [cursor=pointer]:
+              - /url: https://www.cnn.com/watch
+          - list [ref=e235]:
+            - listitem [ref=e236]:
+              - link "CNN_Disaster_DigitalSpec_1440x810_HomepageFeatureCard_MG_v1.png" [ref=e237] [cursor=pointer]:
+                - /url: https://cnn.com/videos/title-2555474
+                - generic [ref=e239]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "CNN_Disaster_DigitalSpec_1440x810_HomepageFeatureCard_MG_v1.png"
+              - link "The Chernobyl reactor meltdown marked the world’s worst nuclear disaster" [ref=e240] [cursor=pointer]:
+                - /url: https://cnn.com/videos/title-2555474
+                - generic [ref=e242]: The Chernobyl reactor meltdown marked the world’s worst nuclear disaster
+            - listitem [ref=e243]:
+              - link "Donald & Melania.jpg" [ref=e244] [cursor=pointer]:
+                - /url: https://www.cnn.com/videos/title-2586297
+                - generic [ref=e246]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "Donald & Melania.jpg"
+              - link "In 2005 interview, Donald and Melania Trump tell Larry King about their marriage" [ref=e247] [cursor=pointer]:
+                - /url: https://www.cnn.com/videos/title-2586297
+                - generic [ref=e249]: In 2005 interview, Donald and Melania Trump tell Larry King about their marriage
+            - listitem [ref=e250]:
+              - link "HMDK_ Ep. 16 (2) (1).jpg" [ref=e251] [cursor=pointer]:
+                - /url: https://www.cnn.com/videos/title-2584430
+                - generic [ref=e253]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "HMDK_ Ep. 16 (2) (1).jpg"
+              - link "Hasan Minhaj and Ben McKenzie on use cases for crypto" [ref=e254] [cursor=pointer]:
+                - /url: https://www.cnn.com/videos/title-2584430
+                - generic [ref=e256]: Hasan Minhaj and Ben McKenzie on use cases for crypto
+            - listitem [ref=e257]:
+              - link "Live" [ref=e258] [cursor=pointer]:
+                - /url: https://www.cnn.com/watch?source=sub_web_wa
+                - generic [ref=e260]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: Live
+              - link "Watch CNN" [ref=e261] [cursor=pointer]:
+                - /url: https://www.cnn.com/watch?source=sub_web_wa
+                - generic [ref=e263]: ": Watch CNN"
+        - generic [ref=e267]:
+          - generic [ref=e271]:
+            - heading "More Top Stories" [level=2] [ref=e273]
+            - list [ref=e276]:
+              - listitem [ref=e277]:
+                - link "CNN Weather" [ref=e278] [cursor=pointer]:
+                  - /url: /2026/04/27/weather/severe-storms-tornadoes-oklahoma-texas-central-us-climate-hnk
+                  - generic [ref=e280]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic: CNN Weather
+                - link "Multi-day severe storm outbreak builds toward dangerous peak today" [ref=e281] [cursor=pointer]:
+                  - /url: /2026/04/27/weather/severe-storms-tornadoes-oklahoma-texas-central-us-climate-hnk
+                  - generic [ref=e283]: Multi-day severe storm outbreak builds toward dangerous peak today
+              - listitem [ref=e284]:
+                - link "Twin tornadoes spotted in northern Oklahoma 0:31" [ref=e285] [cursor=pointer]:
+                  - /url: /2026/04/27/weather/video/twin-tornadoes-foraker-oklahoma-midwest-hnk-digvid
+                  - generic [ref=e287]:
+                    - text: Twin tornadoes spotted in northern Oklahoma
+                    - generic [ref=e288]: 0:31
+              - listitem [ref=e290]:
+                - link "Elon Musk and Sam Altman are about to face off in court. Is an impartial jury even possible?" [ref=e291] [cursor=pointer]:
+                  - /url: /2026/04/27/tech/elon-musk-sam-altman-openai-lawsuit
+                  - generic [ref=e293]: Elon Musk and Sam Altman are about to face off in court. Is an impartial jury even possible?
+              - listitem [ref=e294]:
+                - link "Indiana GOP lawmakers defied Trump on redistricting. Now GOP voters may thwart his push for revenge" [ref=e295] [cursor=pointer]:
+                  - /url: /2026/04/26/politics/indiana-redistricting-primaries-trump-revenge
+                  - generic [ref=e297]: Indiana GOP lawmakers defied Trump on redistricting. Now GOP voters may thwart his push for revenge
+              - listitem [ref=e298]:
+                - link "A record-breaking measles outbreak in the US has ended. It may have helped drive a spike in vaccination rates" [ref=e299] [cursor=pointer]:
+                  - /url: /2026/04/27/health/south-carolina-measles-outbreak-over
+                  - generic [ref=e301]: A record-breaking measles outbreak in the US has ended. It may have helped drive a spike in vaccination rates
+              - listitem [ref=e302]:
+                - link "Prosecutors say suspect gave shifting accounts in Florida doctoral student killing case" [ref=e303] [cursor=pointer]:
+                  - /url: /2026/04/26/us/usf-students-dead-missing-suspect
+                  - generic [ref=e305]: Prosecutors say suspect gave shifting accounts in Florida doctoral student killing case
+          - generic [ref=e309]:
+            - generic [ref=e310]:
+              - heading "War with Iran" [level=2] [ref=e312]
+              - list [ref=e315]:
+                - listitem [ref=e316]:
+                  - link "• Live Updates Telegram/s_a_araghchi" [ref=e317] [cursor=pointer]:
+                    - /url: /2026/04/27/world/live-news/iran-war-trump-israel
+                    - generic [ref=e319]:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic: •
+                              - text: Live Updates
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic: Telegram/s_a_araghchi
+                  - link "Iran’s top diplomat in Russia for Putin meeting as US peace talks stall" [ref=e320] [cursor=pointer]:
+                    - /url: /2026/04/27/world/live-news/iran-war-trump-israel
+                    - generic [ref=e322]: ": Iran’s top diplomat in Russia for Putin meeting as US peace talks stall"
+                - listitem [ref=e323]:
+                  - link "Giant fossil fuel companies made about $12,000 in the time it took you to read this headline" [ref=e324] [cursor=pointer]:
+                    - /url: /2026/04/27/climate/fossil-fuel-companies-profits-war-conflict
+                    - generic [ref=e326]: Giant fossil fuel companies made about $12,000 in the time it took you to read this headline
+                - listitem [ref=e327]:
+                  - link "How China can benefit from the energy crisis 0:52" [ref=e328] [cursor=pointer]:
+                    - /url: /2026/04/26/business/video/china-solar-clean-energy-global-oil-crisis-stephanie-yang-hnk-vrtc-digvid
+                    - generic [ref=e330]:
+                      - text: How China can benefit from the energy crisis
+                      - generic [ref=e331]: 0:52
+            - list [ref=e336]:
+              - listitem [ref=e337]:
+                - link "People walk past an electronic quotation board displaying the Nikkei Stock Average on the Tokyo Stock Exchange along a street in Tokyo on April 27, 2026. (Photo by Kazuhiro NOGI / AFP via Getty Images)" [ref=e338] [cursor=pointer]:
+                  - /url: https://www.cnn.com/2026/04/27/world/live-news/iran-war-trump-israel?post-id=cmogx5o0f00003b6qlox1q8zk
+                  - generic [ref=e340]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "People walk past an electronic quotation board displaying the Nikkei Stock Average on the Tokyo Stock Exchange along a street in Tokyo on April 27, 2026. (Photo by Kazuhiro NOGI / AFP via Getty Images)"
+                - link "Oil at a three-week high after peace talks stall" [ref=e341] [cursor=pointer]:
+                  - /url: https://www.cnn.com/2026/04/27/world/live-news/iran-war-trump-israel?post-id=cmogx5o0f00003b6qlox1q8zk
+                  - generic [ref=e343]: Oil at a three-week high after peace talks stall
+              - listitem [ref=e344]:
+                - link [ref=e345] [cursor=pointer]:
+                  - /url: /2026/04/27/asia/eopl-oil-iran-shadow-fleet-war-intl-hnk
+                - link "The lawless floating gas station where Iranian oil changes hands" [ref=e348] [cursor=pointer]:
+                  - /url: /2026/04/27/asia/eopl-oil-iran-shadow-fleet-war-intl-hnk
+                  - generic [ref=e350]: The lawless floating gas station where Iranian oil changes hands
+          - generic [ref=e356]:
+            - heading "CNN Underscored" [level=2] [ref=e360]
+            - list [ref=e363]:
+              - listitem [ref=e364]:
+                - link "White sneakers on feet with wooden deck in the background" [ref=e365] [cursor=pointer]:
+                  - /url: /cnn-underscored/reviews/allswifit-shoes
+                  - generic [ref=e367]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "White sneakers on feet with wooden deck in the background"
+                - link "Can these $60 sneakers deliver the same comfort as Hokas? Here’s what I found out" [ref=e368] [cursor=pointer]:
+                  - /url: /cnn-underscored/reviews/allswifit-shoes
+                  - generic [ref=e370]: Can these $60 sneakers deliver the same comfort as Hokas? Here’s what I found out
+              - listitem [ref=e371]:
+                - link "Two printers on table." [ref=e372] [cursor=pointer]:
+                  - /url: /cnn-underscored/reviews/best-printer
+                  - generic [ref=e374]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "Two printers on table."
+                - link "Printers are still a home must-have. So we found 2 that are worth your money" [ref=e375] [cursor=pointer]:
+                  - /url: /cnn-underscored/reviews/best-printer
+                  - generic [ref=e377]: Printers are still a home must-have. So we found 2 that are worth your money
+              - listitem [ref=e378]:
+                - link "blue mesh organizer bin on white desk" [ref=e379] [cursor=pointer]:
+                  - /url: /cnn-underscored/home/under-50-home-upgrades
+                  - generic [ref=e381]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "blue mesh organizer bin on white desk"
+                - link "18 products under $50 that’ll make a big difference in your home" [ref=e382] [cursor=pointer]:
+                  - /url: /cnn-underscored/home/under-50-home-upgrades
+                  - generic [ref=e384]: 18 products under $50 that’ll make a big difference in your home
+        - generic [ref=e389]:
+          - generic [ref=e393]:
+            - heading "Check these out" [level=2] [ref=e395]
+            - list [ref=e398]:
+              - listitem [ref=e399]:
+                - link "Photographer Ejatu Shaw uses self-portraiture as a means of exploration of identity... it can also be seen as a performance, she says. Here Shaw uses a handheld air release cable to take a self-portrait with one of her film cameras. Ejatu Shaw" [ref=e400] [cursor=pointer]:
+                  - /url: /world/ejatu-shaw-poised-to-become-a-doctor-then-she-picked-up-a-camera-spc
+                  - generic [ref=e402]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "Photographer Ejatu Shaw uses self-portraiture as a means of exploration of identity... it can also be seen as a performance, she says. Here Shaw uses a handheld air release cable to take a self-portrait with one of her film cameras."
+                      - generic:
+                        - generic: Ejatu Shaw
+                - link "Her family wanted her to be a doctor. She chose a different path" [ref=e403] [cursor=pointer]:
+                  - /url: /world/ejatu-shaw-poised-to-become-a-doctor-then-she-picked-up-a-camera-spc
+                  - generic [ref=e405]: Her family wanted her to be a doctor. She chose a different path
+              - listitem [ref=e406]:
+                - link [ref=e407] [cursor=pointer]:
+                  - /url: /2026/04/26/style/video/eva-longoria-trench-coat-french-style-digvid
+                - link "Eva Longoria learns the one key secret to French style 1:57" [ref=e410] [cursor=pointer]:
+                  - /url: /2026/04/26/style/video/eva-longoria-trench-coat-french-style-digvid
+                  - generic [ref=e412]:
+                    - text: Eva Longoria learns the one key secret to French style
+                    - generic [ref=e413]: 1:57
+              - listitem [ref=e415]:
+                - link "watch style.jpg" [ref=e416] [cursor=pointer]:
+                  - /url: /style/buying-your-first-luxury-watch
+                  - generic [ref=e418]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "watch style.jpg"
+                - link "How to buy your first luxury watch" [ref=e419] [cursor=pointer]:
+                  - /url: /style/buying-your-first-luxury-watch
+                  - generic [ref=e421]: How to buy your first luxury watch
+              - listitem [ref=e422]:
+                - link "119136_TiramisuRecord thmb.jpg" [ref=e423] [cursor=pointer]:
+                  - /url: /2026/04/26/travel/video/longest-tiramisu-guinness-world-record-london-vrtc
+                  - generic [ref=e425]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "119136_TiramisuRecord thmb.jpg"
+                - link "World’s longest tiramisu stretches over four football fields 0:44" [ref=e426] [cursor=pointer]:
+                  - /url: /2026/04/26/travel/video/longest-tiramisu-guinness-world-record-london-vrtc
+                  - generic [ref=e428]:
+                    - text: World’s longest tiramisu stretches over four football fields
+                    - generic [ref=e429]: 0:44
+              - listitem [ref=e431]:
+                - link "Crêpe Suzette Sauce agrumes et Rhum et Framboises pour la Chandeleur" [ref=e432] [cursor=pointer]:
+                  - /url: /travel/worlds-most-delicious-pancakes
+                  - generic [ref=e434]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "Crêpe Suzette Sauce agrumes et Rhum et Framboises pour la Chandeleur"
+                - link "The world’s most delicious pancakes" [ref=e435] [cursor=pointer]:
+                  - /url: /travel/worlds-most-delicious-pancakes
+                  - generic [ref=e437]: The world’s most delicious pancakes
+          - generic [ref=e440]:
+            - generic [ref=e441]:
+              - heading "People we've lost" [level=2] [ref=e443]
+              - list [ref=e446]:
+                - listitem [ref=e447]:
+                  - link "Nedra Talley (left), Ronnie Spector (center) and Estelle Bennett (right) shot to fame as The Ronettes. Pictorial Press Ltd/Alamy" [ref=e448] [cursor=pointer]:
+                    - /url: /2026/04/27/entertainment/nedra-talley-ross-ronette-dies-scli-intl
+                    - generic [ref=e450]:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - img "Nedra Talley (left), Ronnie Spector (center) and Estelle Bennett (right) shot to fame as The Ronettes."
+                        - generic:
+                          - generic: Pictorial Press Ltd/Alamy
+                  - link "Nedra Talley Ross, last surviving Ronette, dies at 80" [ref=e451] [cursor=pointer]:
+                    - /url: /2026/04/27/entertainment/nedra-talley-ross-ronette-dies-scli-intl
+                    - generic [ref=e453]: Nedra Talley Ross, last surviving Ronette, dies at 80
+            - generic [ref=e454]:
+              - heading "The 1 on 1 with CNN" [level=2] [ref=e456]
+              - list [ref=e459]:
+                - listitem [ref=e460]:
+                  - link "ONE0002_ReadyMagdon-Ismail_Logo_16x9.jpg 2:26" [ref=e461] [cursor=pointer]:
+                    - /url: /2026/04/13/business/video/venmo-pinterest-ceo-app-almost-went-broke-1on1-vod
+                    - generic [ref=e463]:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - img "ONE0002_ReadyMagdon-Ismail_Logo_16x9.jpg"
+                        - generic:
+                          - generic:
+                            - generic: 2:26
+                  - link "How this money app almost ran out of cash" [ref=e464] [cursor=pointer]:
+                    - /url: /2026/04/13/business/video/venmo-pinterest-ceo-app-almost-went-broke-1on1-vod
+                    - generic [ref=e466]: How this money app almost ran out of cash
+                - listitem [ref=e467]:
+                  - link "ONE0002_ReadyMagdon-Ismail_Clean_01.png Streaming Now" [ref=e468] [cursor=pointer]:
+                    - /url: https://www.cnn.com/videos/title-2598623
+                    - generic [ref=e470]:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - img "ONE0002_ReadyMagdon-Ismail_Clean_01.png"
+                        - generic:
+                          - generic:
+                            - generic: Streaming Now
+                  - link "Pinterest CEO talks start-ups with Venmo co-founder" [ref=e471] [cursor=pointer]:
+                    - /url: https://www.cnn.com/videos/title-2598623
+                    - generic [ref=e473]: ": Pinterest CEO talks start-ups with Venmo co-founder"
+                - listitem [ref=e474]:
+                  - link "ONE0002_ReadyMagdon-Ismail_Clean_03.png 2:46" [ref=e475] [cursor=pointer]:
+                    - /url: /2026/04/21/business/video/venmo-founder-pinterest-ceo-controversial-social-feed-1on1-vod
+                    - generic [ref=e477]:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - img "ONE0002_ReadyMagdon-Ismail_Clean_03.png"
+                        - generic:
+                          - generic:
+                            - generic: 2:46
+                  - link "Why Venmo’s social feed was so controversial at first" [ref=e478] [cursor=pointer]:
+                    - /url: /2026/04/21/business/video/venmo-founder-pinterest-ceo-controversial-social-feed-1on1-vod
+                    - generic [ref=e480]: Why Venmo’s social feed was so controversial at first
+          - generic [ref=e484]:
+            - heading "For Subscribers" [level=2] [ref=e486]
+            - list [ref=e489]:
+              - listitem [ref=e490]:
+                - link "20260417-crime-detroit-investigator-1.jpg Photo Illustration by Alberto Mier/CNN/Eric Seals/Detroit Free Press/USA Today Network via Imagn Images/Wolf Mueller" [ref=e491] [cursor=pointer]:
+                  - /url: /2026/04/26/us/detroit-barbara-simon-exonerations
+                  - generic [ref=e493]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "20260417-crime-detroit-investigator-1.jpg"
+                      - generic:
+                        - generic: Photo Illustration by Alberto Mier/CNN/Eric Seals/Detroit Free Press/USA Today Network via Imagn Images/Wolf Mueller
+                - link "Convictions overturned in cases tied to Detroit homicide investigator known as ‘The Closer’" [ref=e494] [cursor=pointer]:
+                  - /url: /2026/04/26/us/detroit-barbara-simon-exonerations
+                  - generic [ref=e496]: ": Convictions overturned in cases tied to Detroit homicide investigator known as ‘The Closer’"
+              - listitem [ref=e497]:
+                - link "Former Venezuelan intelligence chief Hugo Carvajal (center) appears at the Manhattan Federal Court for a hearing after his extradition from Spain in 2023. REUTERS/Jane Rosenberg" [ref=e498] [cursor=pointer]:
+                  - /url: /2026/04/26/americas/carvajal-pollo-maduro-venezuela-trial-latam-intl
+                  - generic [ref=e500]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "Former Venezuelan intelligence chief Hugo Carvajal (center) appears at the Manhattan Federal Court for a hearing after his extradition from Spain in 2023. REUTERS/Jane Rosenberg"
+                - link "A man named ‘the Chicken’ was Venezuela’s top spy. Could he testify against Nicolas Maduro?" [ref=e501] [cursor=pointer]:
+                  - /url: /2026/04/26/americas/carvajal-pollo-maduro-venezuela-trial-latam-intl
+                  - generic [ref=e503]: ": A man named ‘the Chicken’ was Venezuela’s top spy. Could he testify against Nicolas Maduro?"
+              - listitem [ref=e504]:
+                - link "Emma Coronel Aispuro, wife of Joaquin 'El Chapo' Guzman, exits the U.S. District Court for the Eastern District of New York, February 11, 2019 in the Brooklyn borough of New York City. El Chapo was accused of trafficking over 440,000 pounds of cocaine, in addition to other drugs, and exerting power through murders and kidnappings as he led the Sinaloa Cartel." [ref=e505] [cursor=pointer]:
+                  - /url: /2026/04/25/americas/cartel-wives-latin-america-drugs-narcos-intl-latam
+                  - generic [ref=e507]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "Emma Coronel Aispuro, wife of Joaquin 'El Chapo' Guzman, exits the U.S. District Court for the Eastern District of New York, February 11, 2019 in the Brooklyn borough of New York City. El Chapo was accused of trafficking over 440,000 pounds of cocaine, in addition to other drugs, and exerting power through murders and kidnappings as he led the Sinaloa Cartel."
+                - link "Four of the most notorious women behind Latin America’s cartel underworld" [ref=e508] [cursor=pointer]:
+                  - /url: /2026/04/25/americas/cartel-wives-latin-america-drugs-narcos-intl-latam
+                  - generic [ref=e510]: ": Four of the most notorious women behind Latin America’s cartel underworld"
+              - listitem [ref=e511]:
+                - link "A \"For Lease\" sign is posted outside a house available for rent on March 15, 2022 in Los Angeles, California. Single-family rental home prices are soaring and increased a record 12.6 percent in January compared to the previous year, according to new data from CoreLogic." [ref=e512] [cursor=pointer]:
+                  - /url: /2026/04/24/business/housing-renting-affordability-congress
+                  - generic [ref=e514]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img "A \"For Lease\" sign is posted outside a house available for rent on March 15, 2022 in Los Angeles, California. Single-family rental home prices are soaring and increased a record 12.6 percent in January compared to the previous year, according to new data from CoreLogic."
+                - link "The clash between renters and owners living in America’s single-family homes" [ref=e515] [cursor=pointer]:
+                  - /url: /2026/04/24/business/housing-renting-affordability-congress
+                  - generic [ref=e517]: ": The clash between renters and owners living in America’s single-family homes"
+        - heading "CNN Underscored" [level=2] [ref=e520]:
+          - link "CNN Underscored" [ref=e521] [cursor=pointer]:
+            - /url: https://www.cnn.com/cnn-underscored
+        - generic [ref=e560]:
+          - heading "CNN Shorts" [level=2] [ref=e562]
+          - list [ref=e566]:
+            - listitem [ref=e567]:
+              - link "119139_TrumpNorahDisgrace_Vertical_Clean_Thumb.jpg 1:01" [ref=e568] [cursor=pointer]:
+                - /url: /2026/04/27/us/video/trump-calls-cbs-correspondent-norah-odonnell-a-disgrace-60-minutes-digvid-vrtc-hnk
+                - generic [ref=e570]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119139_TrumpNorahDisgrace_Vertical_Clean_Thumb.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 1:01
+              - link "Trump calls CBS correspondent Norah O’Donnell a ‘disgrace’" [ref=e571] [cursor=pointer]:
+                - /url: /2026/04/27/us/video/trump-calls-cbs-correspondent-norah-odonnell-a-disgrace-60-minutes-digvid-vrtc-hnk
+                - generic:
+                  - generic: Trump calls CBS correspondent Norah O’Donnell a ‘disgrace’
+            - listitem [ref=e572]:
+              - link "119138_FBIWHCDGunman vrtc.jpg 1:37" [ref=e573] [cursor=pointer]:
+                - /url: /2026/04/26/us/video/what-we-know-white-house-correspondents-dinner-shooting-suspect-kyung-lah-vrtc-digvid
+                - generic [ref=e575]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119138_FBIWHCDGunman vrtc.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 1:37
+              - link "What we know about the WHDC shooting suspect" [ref=e576] [cursor=pointer]:
+                - /url: /2026/04/26/us/video/what-we-know-white-house-correspondents-dinner-shooting-suspect-kyung-lah-vrtc-digvid
+                - generic:
+                  - generic: What we know about the WHDC shooting suspect
+            - listitem [ref=e577]:
+              - link "119137_KingCharlesUSTrip-vrtc-digvid_THUMB_CLEAN.jpg 1:19" [ref=e578] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/king-charles-us-visit-happening-despite-whcd-shooting-digvid-vrtc
+                - generic [ref=e580]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119137_KingCharlesUSTrip-vrtc-digvid_THUMB_CLEAN.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 1:19
+              - link "King Charles’ US visit happening despite shooting" [ref=e581] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/king-charles-us-visit-happening-despite-whcd-shooting-digvid-vrtc
+                - generic:
+                  - generic: King Charles’ US visit happening despite shooting
+            - listitem [ref=e582]:
+              - link "119142_ForakerOKTwinTornadoes vrtc clean.jpg 0:31" [ref=e583] [cursor=pointer]:
+                - /url: /2026/04/27/weather/video/twin-tornadoes-foraker-oklahoma-midwest-hnk-vrtc-digvid
+                - generic [ref=e585]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119142_ForakerOKTwinTornadoes vrtc clean.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 0:31
+              - link "Twin tornadoes spotted in northern Oklahoma" [ref=e586] [cursor=pointer]:
+                - /url: /2026/04/27/weather/video/twin-tornadoes-foraker-oklahoma-midwest-hnk-vrtc-digvid
+                - generic:
+                  - generic: Twin tornadoes spotted in northern Oklahoma
+            - listitem [ref=e587]:
+              - link "drug strike 1.jpg 0:20" [ref=e588] [cursor=pointer]:
+                - /url: /2026/04/27/us/video/us-strikes-alleged-drug-boat-ldn-digvid-vrtc
+                - generic [ref=e590]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "drug strike 1.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 0:20
+              - link "US kills 3 in strike on alleged drug boat" [ref=e591] [cursor=pointer]:
+                - /url: /2026/04/27/us/video/us-strikes-alleged-drug-boat-ldn-digvid-vrtc
+                - generic:
+                  - generic: US kills 3 in strike on alleged drug boat
+            - listitem [ref=e592]:
+              - link "119141_DCShooterManifesto_vrtc_clean.00_00_01_06.Still001.jpg 2:03" [ref=e593] [cursor=pointer]:
+                - /url: /2026/04/27/us/video/white-house-correspondents-dinner-shooter-message-writings-vrtc-ldn-digvid
+                - generic [ref=e595]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119141_DCShooterManifesto_vrtc_clean.00_00_01_06.Still001.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 2:03
+              - link "Analyzing the writings of the WHCD suspected shooter" [ref=e596] [cursor=pointer]:
+                - /url: /2026/04/27/us/video/white-house-correspondents-dinner-shooter-message-writings-vrtc-ldn-digvid
+                - generic:
+                  - generic: Analyzing the writings of the WHCD suspected shooter
+            - listitem [ref=e597]:
+              - link "119076_ChinaSolarPowerIran vrtc.jpg 0:52" [ref=e598] [cursor=pointer]:
+                - /url: /2026/04/26/business/video/china-solar-clean-energy-global-oil-crisis-stephanie-yang-hnk-vrtc-digvid
+                - generic [ref=e600]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119076_ChinaSolarPowerIran vrtc.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 0:52
+              - link "How China can benefit from the energy crisis" [ref=e601] [cursor=pointer]:
+                - /url: /2026/04/26/business/video/china-solar-clean-energy-global-oil-crisis-stephanie-yang-hnk-vrtc-digvid
+                - generic:
+                  - generic: How China can benefit from the energy crisis
+            - listitem [ref=e602]:
+              - link "119136_TiramisuRecord thmb.jpg 0:44" [ref=e603] [cursor=pointer]:
+                - /url: /2026/04/26/travel/video/longest-tiramisu-guinness-world-record-london-vrtc
+                - generic [ref=e605]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119136_TiramisuRecord thmb.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 0:44
+              - link "World’s longest tiramisu stretches over four football fields" [ref=e606] [cursor=pointer]:
+                - /url: /2026/04/26/travel/video/longest-tiramisu-guinness-world-record-london-vrtc
+                - generic:
+                  - generic: World’s longest tiramisu stretches over four football fields
+            - listitem [ref=e607]:
+              - link "119110_PigImitationContest_Clean Thumbnail vrtc0.jpg 1:13" [ref=e608] [cursor=pointer]:
+                - /url: /2026/04/26/world/video/pig-squealing-competition-estonia-vrtc
+                - generic [ref=e610]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119110_PigImitationContest_Clean Thumbnail vrtc0.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 1:13
+              - link "Competitors ham it up at pig squealing contest" [ref=e611] [cursor=pointer]:
+                - /url: /2026/04/26/world/video/pig-squealing-competition-estonia-vrtc
+                - generic:
+                  - generic: Competitors ham it up at pig squealing contest
+            - listitem [ref=e612]:
+              - link "119133_ColombiaBombingWave_vrtc_thumbnail.jpg 0:40" [ref=e613] [cursor=pointer]:
+                - /url: /2026/04/26/world/video/119133-colombiabombingwave-vrtc
+                - generic [ref=e615]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119133_ColombiaBombingWave_vrtc_thumbnail.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 0:40
+              - link "Video shows deadly highway bombing in Colombia" [ref=e616] [cursor=pointer]:
+                - /url: /2026/04/26/world/video/119133-colombiabombingwave-vrtc
+                - generic:
+                  - generic: Video shows deadly highway bombing in Colombia
+            - listitem [ref=e617]:
+              - link "260425_ATI_Kristen2_clean_thumb.png 0:52" [ref=e618] [cursor=pointer]:
+                - /url: /2026/04/26/us/video/young-widow-experience-grief-vrtc
+                - generic [ref=e620]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "260425_ATI_Kristen2_clean_thumb.png"
+                    - generic:
+                      - generic:
+                        - generic: 0:52
+              - link "A young widow’s ‘surprising’ experience with grief" [ref=e621] [cursor=pointer]:
+                - /url: /2026/04/26/us/video/young-widow-experience-grief-vrtc
+                - generic:
+                  - generic: A young widow’s ‘surprising’ experience with grief
+            - listitem [ref=e622]:
+              - link "260426_OzPearlmanIntv_vrtc_THUMB.jpg 1:35" [ref=e623] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/shooting-oz-pearlman-secret-service-trump-vrtc
+                - generic [ref=e625]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "260426_OzPearlmanIntv_vrtc_THUMB.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 1:35
+              - link "Performer close to Trump during shooting describes what happened" [ref=e626] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/shooting-oz-pearlman-secret-service-trump-vrtc
+                - generic:
+                  - generic: Performer close to Trump during shooting describes what happened
+            - listitem [ref=e627]:
+              - link "119128_WHCDShootingTimeline.00_01_25_08.Still002.jpg 2:43" [ref=e628] [cursor=pointer]:
+                - /url: /2026/04/26/us/video/trump-white-house-correspondents-dinner-shooting-timeline-vrtc-digvid
+                - generic [ref=e630]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119128_WHCDShootingTimeline.00_01_25_08.Still002.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 2:43
+              - link "Timeline of shooting incident at the White house Correspondents’ Dinner" [ref=e631] [cursor=pointer]:
+                - /url: /2026/04/26/us/video/trump-white-house-correspondents-dinner-shooting-timeline-vrtc-digvid
+                - generic:
+                  - generic: Timeline of shooting incident at the White house Correspondents’ Dinner
+            - listitem [ref=e632]:
+              - link "119116_WHCDEvacuationSideView thumb clean.jpg 0:28" [ref=e633] [cursor=pointer]:
+                - /url: /2026/04/25/politics/video/vice-president-jd-vance-escorted-out-of-whcd-digvid-vrtc
+                - generic [ref=e635]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119116_WHCDEvacuationSideView thumb clean.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 0:28
+              - link "Trump and VP Vance rushed out of White House Correspondents’ Dinner" [ref=e636] [cursor=pointer]:
+                - /url: /2026/04/25/politics/video/vice-president-jd-vance-escorted-out-of-whcd-digvid-vrtc
+                - generic:
+                  - generic: Trump and VP Vance rushed out of White House Correspondents’ Dinner
+            - listitem [ref=e637]:
+              - link "119131_BlancheSOTU vrtc thumb cln.png 1:03" [ref=e638] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/blanche-suspect-target-trump-admin-vrtc
+                - generic [ref=e640]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119131_BlancheSOTU vrtc thumb cln.png"
+                    - generic:
+                      - generic:
+                        - generic: 1:03
+              - link "Blanche says it appears suspect was targeting Trump admin. members" [ref=e641] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/blanche-suspect-target-trump-admin-vrtc
+                - generic:
+                  - generic: Blanche says it appears suspect was targeting Trump admin. members
+            - listitem [ref=e642]:
+              - link "fire age thumb.jpg 1:50" [ref=e643] [cursor=pointer]:
+                - /url: /2026/04/26/world/video/theres-a-new-playbook-to-fight-catastrophic-wildfires-digvid-vrtc
+                - generic [ref=e645]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "fire age thumb.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 1:50
+              - link "There’s a new playbook to fight catastrophic wildfires" [ref=e646] [cursor=pointer]:
+                - /url: /2026/04/26/world/video/theres-a-new-playbook-to-fight-catastrophic-wildfires-digvid-vrtc
+                - generic:
+                  - generic: There’s a new playbook to fight catastrophic wildfires
+            - listitem [ref=e647]:
+              - link "119126_Kyung WH suspect Allen home_Clean_Thumb.jpg 0:56" [ref=e648] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/lah-whcd-home-linked-whcd-shooting-suspect-digivid-vrtc
+                - generic [ref=e650]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119126_Kyung WH suspect Allen home_Clean_Thumb.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 0:56
+              - link "CNN outside home linked to WHCD shooting suspect" [ref=e651] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/lah-whcd-home-linked-whcd-shooting-suspect-digivid-vrtc
+                - generic:
+                  - generic: CNN outside home linked to WHCD shooting suspect
+            - listitem [ref=e652]:
+              - link "119125_TrumpSpeakAfterWHCD vrtc.jpg 1:37" [ref=e653] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/trump-responds-to-white-house-correspondents-dinner-shooting-incident-digvid-vrtc-hnk
+                - generic [ref=e655]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119125_TrumpSpeakAfterWHCD vrtc.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 1:37
+              - link "Trump responds to WHCD attack" [ref=e656] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/trump-responds-to-white-house-correspondents-dinner-shooting-incident-digvid-vrtc-hnk
+                - generic:
+                  - generic: Trump responds to WHCD attack
+            - listitem [ref=e657]:
+              - link "119124_FireAtWHCD_Vertical_Clean_Thumb.jpg 0:35" [ref=e658] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/video-shows-moment-gunfire-was-heard-at-white-house-correspondents-dinner-digvid-vrtc-hnk
+                - generic [ref=e660]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119124_FireAtWHCD_Vertical_Clean_Thumb.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 0:35
+              - link "Video shows moment gunfire was heard at White House Correspondents’ Dinner" [ref=e661] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/video-shows-moment-gunfire-was-heard-at-white-house-correspondents-dinner-digvid-vrtc-hnk
+                - generic:
+                  - generic: Video shows moment gunfire was heard at White House Correspondents’ Dinner
+            - listitem [ref=e662]:
+              - link "119119_ErikaKirkWHDinner vrtc.jpg 0:54" [ref=e663] [cursor=pointer]:
+                - /url: /2026/04/26/us/video/erika-kirk-leaves-the-white-house-correspondents-dinner-in-tears-digvid-vrtc-hnk
+                - generic [ref=e665]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119119_ErikaKirkWHDinner vrtc.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 0:54
+              - link "Erika Kirk leaves the White House Correspondents’ Dinner in tears" [ref=e666] [cursor=pointer]:
+                - /url: /2026/04/26/us/video/erika-kirk-leaves-the-white-house-correspondents-dinner-in-tears-digvid-vrtc-hnk
+                - generic:
+                  - generic: Erika Kirk leaves the White House Correspondents’ Dinner in tears
+            - listitem [ref=e667]:
+              - link "119122_KCTrumpPresser VV thumb clean.jpg 1:04" [ref=e668] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/trump-says-no-threats-warning-before-whcd-shooting-digvid-vrtc
+                - generic [ref=e670]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119122_KCTrumpPresser VV thumb clean.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 1:04
+              - link "Trump says no warning of threats before WHCD shooting incident" [ref=e671] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/trump-says-no-threats-warning-before-whcd-shooting-digvid-vrtc
+                - generic:
+                  - generic: Trump says no warning of threats before WHCD shooting incident
+            - listitem [ref=e672]:
+              - link "119129_WHCD Shooting Suspect Footage Clean Thumbnail vrtc0.jpg 0:25" [ref=e673] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/gunman-video-white-house-correspondents-dinner-vrtc
+                - generic [ref=e675]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119129_WHCD Shooting Suspect Footage Clean Thumbnail vrtc0.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 0:25
+              - link "President Trump posts video of Secret Service response to gunman" [ref=e676] [cursor=pointer]:
+                - /url: /2026/04/26/politics/video/gunman-video-white-house-correspondents-dinner-vrtc
+                - generic:
+                  - generic: President Trump posts video of Secret Service response to gunman
+            - listitem [ref=e677]:
+              - link "WCHDLockdown_Thumb_Clean2.jpg 0:58" [ref=e678] [cursor=pointer]:
+                - /url: /2026/04/26/us/video/inside-whcd-lockdown-digvid-vrtc
+                - generic [ref=e680]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "WCHDLockdown_Thumb_Clean2.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 0:58
+              - link "What guests saw inside the WHCD lockdown" [ref=e681] [cursor=pointer]:
+                - /url: /2026/04/26/us/video/inside-whcd-lockdown-digvid-vrtc
+                - generic:
+                  - generic: What guests saw inside the WHCD lockdown
+            - listitem [ref=e682]:
+              - link "119119_ErikaKirkWHDinner vrtc.jpg 0:54" [ref=e683] [cursor=pointer]:
+                - /url: /2026/04/25/politics/video/white-house-correspondents-dinner-erika-kirk-digvid-vrtc
+                - generic [ref=e685]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "119119_ErikaKirkWHDinner vrtc.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 0:54
+              - link "Erika Kirk leaves the White House Correspondents’ Dinner in tears" [ref=e686] [cursor=pointer]:
+                - /url: /2026/04/25/politics/video/white-house-correspondents-dinner-erika-kirk-digvid-vrtc
+                - generic:
+                  - generic: Erika Kirk leaves the White House Correspondents’ Dinner in tears
+            - listitem [ref=e687]:
+              - link "kaitlan whcd thumb.jpg 1:23" [ref=e688] [cursor=pointer]:
+                - /url: /2026/04/25/us/video/kaitlan-collins-describes-scene-moments-after-shooting-at-whcd-digvid-vrtc
+                - generic [ref=e690]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "kaitlan whcd thumb.jpg"
+                    - generic:
+                      - generic:
+                        - generic: 1:23
+              - link "Kaitlan Collins describes scene moments after shooting at WHCD" [ref=e691] [cursor=pointer]:
+                - /url: /2026/04/25/us/video/kaitlan-collins-describes-scene-moments-after-shooting-at-whcd-digvid-vrtc
+                - generic:
+                  - generic: Kaitlan Collins describes scene moments after shooting at WHCD
+        - iframe [ref=e706]:
+          - list [ref=f1e3]:
+            - listitem [ref=f1e4]:
+              - link "Getting long-term relief from nasal polyps" [ref=f1e6] [cursor=pointer]:
+                - /url: https://healthguides.cnn.com/treating-nasal-polyps/getting-long-term-relief-from-nasal-polyps?did=t1_rss5
+        - heading "Paid Content" [level=2] [ref=e733]
+        - heading "More from CNN" [level=2] [ref=e736]
+        - heading "Paid Partner Content" [level=2] [ref=e750]
+        - generic [ref=e754]:
+          - heading "CNN Games + Quizzes" [level=2] [ref=e756]
+          - list [ref=e759]:
+            - listitem [ref=e760]:
+              - link "CNN Games card_Sudoku.jpg Sudoku" [ref=e761] [cursor=pointer]:
+                - /url: https://www.cnn.com/games/play/daily-sudoku
+                - generic [ref=e763]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "CNN Games card_Sudoku.jpg"
+                    - generic:
+                      - generic:
+                        - generic: Sudoku
+              - link "A cross-number crossword that will challenge your brain" [ref=e764] [cursor=pointer]:
+                - /url: https://www.cnn.com/games/play/daily-sudoku
+                - generic [ref=e766]: ": A cross-number crossword that will challenge your brain"
+            - listitem [ref=e767]:
+              - link "CNN Games card_Sudoblock.jpg Sudoblock" [ref=e768] [cursor=pointer]:
+                - /url: https://www.cnn.com/games/play/sudoblock?utm_source=games_acq_web_homepage_morezone
+                - generic [ref=e770]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "CNN Games card_Sudoblock.jpg"
+                    - generic:
+                      - generic:
+                        - generic: Sudoblock
+              - link "Sudoku + Blocks = addictive tile-matching puzzle" [ref=e771] [cursor=pointer]:
+                - /url: https://www.cnn.com/games/play/sudoblock?utm_source=games_acq_web_homepage_morezone
+                - generic [ref=e773]: ": Sudoku + Blocks = addictive tile-matching puzzle"
+            - listitem [ref=e774]:
+              - link "CNN Games card_Crossword.jpg Today's crossword" [ref=e775] [cursor=pointer]:
+                - /url: https://www.cnn.com/games/play/daily-crossword?utm_source=games_acq_web_homepage_morezone
+                - generic [ref=e777]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "CNN Games card_Crossword.jpg"
+                    - generic:
+                      - generic:
+                        - generic: Today's crossword
+              - link "No pencil or eraser required" [ref=e778] [cursor=pointer]:
+                - /url: https://www.cnn.com/games/play/daily-crossword?utm_source=games_acq_web_homepage_morezone
+                - generic [ref=e780]: ": No pencil or eraser required"
+            - listitem [ref=e781]:
+              - link "CNN Games card_JumbleCrossword.jpg Jumble Crossword" [ref=e782] [cursor=pointer]:
+                - /url: https://www.cnn.com/games/play/jumble-crossword-daily
+                - generic [ref=e784]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "CNN Games card_JumbleCrossword.jpg"
+                    - generic:
+                      - generic:
+                        - generic: Jumble Crossword
+              - link "Test your smarts with this scrambled word game" [ref=e785] [cursor=pointer]:
+                - /url: https://www.cnn.com/games/play/jumble-crossword-daily
+                - generic [ref=e787]: ": Test your smarts with this scrambled word game"
+        - heading "In case you missed it" [level=2] [ref=e791]
+    - contentinfo [ref=e800]:
+      - generic [ref=e801]:
+        - search [ref=e803]:
+          - textbox "Search" [ref=e804]:
+            - /placeholder: Search CNN...
+          - button "Submit" [ref=e805]
+        - link "Subscribe Button" [ref=e806] [cursor=pointer]: Subscribe
+        - navigation "User Account Nav" [ref=e808]:
+          - link "User Account Log In Button" [ref=e810] [cursor=pointer]: Sign in
+        - separator [ref=e811]
+        - link "Audio" [ref=e812] [cursor=pointer]:
+          - /url: https://www.cnn.com/audio
+          - text: Listen
+        - link "Video" [ref=e813] [cursor=pointer]:
+          - /url: https://www.cnn.com/watch
+          - text: Watch
+        - separator [ref=e814]
+        - navigation [ref=e816]:
+          - list [ref=e817]:
+            - listitem [ref=e818]:
+              - link "US" [ref=e819] [cursor=pointer]:
+                - /url: https://www.cnn.com/us
+            - listitem [ref=e820]:
+              - link "World" [ref=e821] [cursor=pointer]:
+                - /url: https://www.cnn.com/world
+            - listitem [ref=e822]:
+              - link "Politics" [ref=e823] [cursor=pointer]:
+                - /url: https://www.cnn.com/politics
+            - listitem [ref=e824]:
+              - link "Business" [ref=e825] [cursor=pointer]:
+                - /url: https://www.cnn.com/business
+            - listitem [ref=e826]:
+              - link "Markets" [ref=e827] [cursor=pointer]:
+                - /url: https://www.cnn.com/markets
+            - listitem [ref=e828]:
+              - link "Health" [ref=e829] [cursor=pointer]:
+                - /url: https://www.cnn.com/health
+            - listitem [ref=e830]:
+              - link "CNN Underscored" [ref=e831] [cursor=pointer]:
+                - /url: https://www.cnn.com/cnn-underscored
+            - listitem [ref=e832]:
+              - link "Entertainment" [ref=e833] [cursor=pointer]:
+                - /url: https://www.cnn.com/entertainment
+            - listitem [ref=e834]:
+              - link "Tech" [ref=e835] [cursor=pointer]:
+                - /url: https://www.cnn.com/business/tech
+            - listitem [ref=e836]:
+              - link "Style" [ref=e837] [cursor=pointer]:
+                - /url: https://www.cnn.com/style
+            - listitem [ref=e838]:
+              - link "Travel" [ref=e839] [cursor=pointer]:
+                - /url: https://www.cnn.com/travel
+            - listitem [ref=e840]:
+              - link "Sports" [ref=e841] [cursor=pointer]:
+                - /url: https://www.cnn.com/sports
+            - listitem [ref=e842]:
+              - link "Science" [ref=e843] [cursor=pointer]:
+                - /url: https://www.cnn.com/science
+            - listitem [ref=e844]:
+              - link "Climate" [ref=e845] [cursor=pointer]:
+                - /url: https://www.cnn.com/climate
+            - listitem [ref=e846]:
+              - link "Weather" [ref=e847] [cursor=pointer]:
+                - /url: https://www.cnn.com/weather
+            - listitem [ref=e848]:
+              - link "Ukraine-Russia War" [ref=e849] [cursor=pointer]:
+                - /url: https://www.cnn.com/world/europe/ukraine
+            - listitem [ref=e850]:
+              - link "Israel-Hamas War" [ref=e851] [cursor=pointer]:
+                - /url: https://www.cnn.com/world/middleeast/israel
+            - listitem [ref=e852]:
+              - link "Watch" [ref=e853] [cursor=pointer]:
+                - /url: https://www.cnn.com/watch
+            - listitem [ref=e854]:
+              - link "Listen" [ref=e855] [cursor=pointer]:
+                - /url: https://www.cnn.com/audio
+            - listitem [ref=e856]:
+              - link "Games" [ref=e857] [cursor=pointer]:
+                - /url: https://www.cnn.com/games
+            - listitem [ref=e858]:
+              - link "About CNN" [ref=e859] [cursor=pointer]:
+                - /url: https://www.cnn.com/about
+        - separator [ref=e860]
+        - generic [ref=e861]:
+          - link "CNN logo" [ref=e864] [cursor=pointer]:
+            - /url: https://www.cnn.com
+            - img [ref=e866]
+          - generic [ref=e874]:
+            - text: Follow CNN
+            - list [ref=e875]:
+              - listitem [ref=e876]:
+                - link "Visit us on Facebook" [ref=e877] [cursor=pointer]:
+                  - /url: https://facebook.com/CNN
+                  - img [ref=e878]
+              - listitem [ref=e880]:
+                - link "Visit us on X" [ref=e881] [cursor=pointer]:
+                  - /url: https://twitter.com/CNN
+                  - img [ref=e882]
+              - listitem [ref=e884]:
+                - link "Visit us on Instagram" [ref=e885] [cursor=pointer]:
+                  - /url: https://instagram.com/CNN
+                  - img [ref=e886]
+              - listitem [ref=e888]:
+                - link "TikTok" [ref=e889] [cursor=pointer]:
+                  - /url: https://www.tiktok.com/@cnn?lang=en
+                  - img "TikTok" [ref=e890]
+              - listitem [ref=e892]:
+                - link "LinkedIn" [ref=e893] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/company/cnn
+                  - img "LinkedIn" [ref=e894]
+              - listitem [ref=e896]:
+                - link "Visit us on Threads" [ref=e897] [cursor=pointer]:
+                  - /url: https://www.threads.com/@cnn
+                  - img [ref=e898]
+        - generic [ref=e902]:
+          - generic [ref=e903]: Download the CNN app
+          - generic [ref=e904]:
+            - link "Download on Apple App Store" [ref=e905] [cursor=pointer]:
+              - /url: https://cnn.onelink.me/PVpf/q9j1odhf
+              - img [ref=e906]
+            - link "Get it on Google Play" [ref=e941] [cursor=pointer]:
+              - /url: https://cnn.onelink.me/PVpf/43qg6lsp
+              - img [ref=e942]
+        - separator [ref=e957]
+        - navigation [ref=e958]:
+          - link "Terms of Use" [ref=e959] [cursor=pointer]:
+            - /url: https://www.cnn.com/terms
+          - link "Privacy Policy" [ref=e960] [cursor=pointer]:
+            - /url: https://www.cnn.com/privacy
+          - link "Do Not Sell Or Share My Personal Information" [ref=e961] [cursor=pointer]:
+            - /url: "#"
+          - link "Ad Choices" [ref=e962] [cursor=pointer]:
+            - /url: https://www.cnn.com/ad-choices
+          - link "Accessibility & CC" [ref=e963] [cursor=pointer]:
+            - /url: https://www.cnn.com/accessibility
+          - link "About" [ref=e964] [cursor=pointer]:
+            - /url: https://www.cnn.com/about
+          - link "Subscribe" [ref=e965] [cursor=pointer]:
+            - /url: https://www.cnn.com/subscription?source=sub_web_footerlink-link
+          - link "Newsletters" [ref=e966] [cursor=pointer]:
+            - /url: https://www.cnn.com/newsletters
+          - link "Transcripts" [ref=e967] [cursor=pointer]:
+            - /url: https://www.cnn.com/transcripts
+          - link "Help Center" [ref=e968] [cursor=pointer]:
+            - /url: https://help.cnn.com/
+        - paragraph [ref=e969]:
+          - text: © 2026 Cable News Network. A Warner Bros. Discovery Company. All Rights Reserved.
+          - text: CNN Sans ™ & © 2016 Cable News Network.
+  - dialog [ref=e971]:
+    - img [ref=e972]
+    - heading [level=2] [ref=e973]: Legal Terms and Privacy
+    - document [ref=e974]:
+      - text: By clicking "Agree", you have read and agree to the
+      - link [ref=e975] [cursor=pointer]:
+        - /url: /terms
+        - text: Terms of Use
+      - text: and agree to the collection and use of your information by cookies and similar technologies, as set forth in our
+      - link [ref=e976] [cursor=pointer]:
+        - /url: /privacy
+        - text: Privacy Policy
+      - text: .
+    - button [ref=e977] [cursor=pointer]: Agree
+  - generic: "Yes"
