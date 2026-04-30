@@ -59,3 +59,13 @@ MCP Inspector is a browser-based visual debugger for MCP servers. Connect it to 
 I caught a malformed tool description that would have confused the LLM — spotted it immediately in the Inspector's tool list. Saved me an hour of prompt debugging that I didn't even know I was about to do.
 
 **Get it:** `npx @modelcontextprotocol/inspector`
+
+---
+
+These five tools aren't the whole MCP ecosystem — it's growing fast. But they're the ones that made MCP stop feeling like a spec to me and start feeling like a platform. If you're a .NET developer and you haven't wired any of these up yet, now's a good time to start.
+
+If you want to see them in action together, I've been writing a hands-on series building a real AI Agent with MCP in .NET from scratch — starting with Clean Architecture and working up through Claude Desktop integration and OIDC security. [Check out Part 1 here.]
+
+---
+
+*Tags: .NET, AI, MCP, Model Context Protocol, Software Development*
