@@ -47,3 +47,15 @@ Playwright MCP wraps the Playwright browser automation library as an MCP server.
 I used it to have an agent screenshot a competitor's pricing page and summarize the changes. Two MCP tool calls. No Selenium setup, no browser driver config, no headache.
 
 **Get it:** [github.com/microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp)
+
+---
+
+## 5. MCP Inspector
+
+**See exactly what your MCP server is doing — before your agent does.**
+
+MCP Inspector is a browser-based visual debugger for MCP servers. Connect it to any running server and it lists all available tools, lets you invoke them manually, and shows the full JSON-RPC traffic in real time. It's the first thing I open after `dotnet run`.
+
+I caught a malformed tool description that would have confused the LLM — spotted it immediately in the Inspector's tool list. Saved me an hour of prompt debugging that I didn't even know I was about to do.
+
+**Get it:** `npx @modelcontextprotocol/inspector`
