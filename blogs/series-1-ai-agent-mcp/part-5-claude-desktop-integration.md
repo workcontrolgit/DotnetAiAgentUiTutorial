@@ -47,7 +47,7 @@ if (isStdio)
 Claude Desktop needs a single executable it can launch. Publish a self-contained win-x64 binary so the target machine does not need the .NET runtime installed.
 
 ```bash
-dotnet publish src/HrMcp.McpServer \
+dotnet publish DotnetAiAgentMcp/src/HrMcp.McpServer/HrMcp.McpServer.csproj \
   -c Release \
   -r win-x64 \
   --self-contained true \
@@ -78,7 +78,10 @@ If the file does not exist, create it.
   "mcpServers": {
     "hr-mcp": {
       "command": "C:\\apps\\DotnetMcpTutorial\\publish\\McpServer\\HrMcp.McpServer.exe",
-      "args": ["--stdio"]
+      "args": ["--stdio"],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
     }
   }
 }
@@ -93,7 +96,10 @@ Replace the `command` path with the actual path on your machine. Use double back
   "mcpServers": {
     "hr-mcp": {
       "command": "/Users/yourname/projects/DotnetMcpTutorial/publish/McpServer/HrMcp.McpServer",
-      "args": ["--stdio"]
+      "args": ["--stdio"],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
     }
   }
 }
@@ -157,11 +163,13 @@ VS Code Copilot Chat also supports MCP servers via a workspace-level config file
 VS Code uses the HTTP transport (not stdio), so the MCP server must be running before you open Copilot Chat. Start it with:
 
 ```bash
-dotnet run --project src/HrMcp.McpServer
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer/HrMcp.McpServer.csproj
 ```
 
 In VS Code, open Copilot Chat, switch to **Agent** mode, and type `@hr-mcp` to invoke the server. The HR tools appear in the tool picker.
 
+> **Note:** In the current repo, `appsettings.json` enables OIDC by default. For local Copilot and Inspector testing, run with `ASPNETCORE_ENVIRONMENT=Development` so `appsettings.Development.json` disables OIDC unless you have already completed Part 6 and configured tokens.
+>
 > **Note:** The `.vscode/mcp.json` format is specific to VS Code's MCP extension. It is separate from `claude_desktop_config.json`.
 
 ---
@@ -173,7 +181,7 @@ In VS Code, open Copilot Chat, switch to **Agent** mode, and type `@hr-mcp` to i
 Before digging into logs, test the server in HTTP mode with MCP Inspector:
 
 ```bash
-dotnet run --project src/HrMcp.McpServer
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer/HrMcp.McpServer.csproj
 npx @modelcontextprotocol/inspector http://localhost:5100/mcp
 ```
 
@@ -190,7 +198,8 @@ If the tools appear and work in MCP Inspector, the server is healthy. Any proble
 **Hammer icon present but tools fail silently**
 
 - SQL Server is not running or the connection string is wrong. Start SQL Server and verify the `DefaultConnection` in `appsettings.json`.
-- The database has not been migrated. Run `dotnet ef database update --project src/HrMcp.McpServer` once manually.
+- The database has not been migrated. Run `dotnet ef database update --project DotnetAiAgentMcp/src/HrMcp.McpServer/HrMcp.McpServer.csproj` once manually.
+- OIDC is enabled in `appsettings.json`. For local testing without tokens, use `ASPNETCORE_ENVIRONMENT=Development` so `Features:EnableOidc` is `false`.
 
 **Garbled output / JSON parse errors in Claude Desktop**
 
