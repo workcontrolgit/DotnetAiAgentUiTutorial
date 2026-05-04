@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-04T12:04:06.819Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-04T12:21:38.773Z
 > Files: 25 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
@@ -170,7 +170,7 @@
 ## blogs/standalone/
 
 - `5-mcp-tools-dotnet.md` — 6 MCP Tools Every .NET Developer Should Know (From Someone Who's Actually Used Them) (~1303 tok)
-- `7-mcp-tools-dotnet.md` — Magnificent 7 Tools Every .NET MCP Developer Should Know (~1701 tok)
+- `7-mcp-tools-dotnet.md` — Magnificent 7 Tools Every .NET MCP Developer Should Know (~1720 tok)
 
 ## docs/
 

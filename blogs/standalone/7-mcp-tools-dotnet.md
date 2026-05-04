@@ -32,7 +32,7 @@ I used this to expose an HR query service as an MCP server. The LLM called it li
 
 Claude Desktop is an MCP host. Point it at your server via `claude_desktop_config.json` and it wires up your tools automatically - no agent code, no client boilerplate. It's the fastest feedback loop I've found for MCP development.
 
-I had a Claude Desktop session calling my locally-running .NET MCP server in under 10 minutes. It felt like cheating. If you're building an MCP server and haven't tested it here yet, you're missing out.
+I had a Claude Desktop session calling my locally-running .NET MCP server in under 10 minutes. That first tool call felt like unlocking a superpower — the AI was reaching directly into my system. If you're building an MCP server and haven't tested it here yet, you're missing out.
 
 ![Claude Desktop calling the HR MCP server and returning open positions](screenshots/tool-2-claude-desktop.png)
 
