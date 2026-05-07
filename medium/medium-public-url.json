@@ -1,0 +1,80 @@
+[
+  {
+    "series": "Series 1: AI Agents & MCP with .NET 10",
+    "part": "preface",
+    "title": "AI Agents & MCP with .NET 10 — Preface",
+    "editId": "64314313e3e7",
+    "editUrl": "https://medium.com/p/64314313e3e7/edit",
+    "draftUrl": "https://medium.com/scrum-and-coke/ai-agents-mcp-with-net-10-preface-64314313e3e7"
+  },
+  {
+    "series": "Series 1: AI Agents & MCP with .NET 10",
+    "part": "part-1",
+    "title": "Part 1: Clean Architecture Foundation with HR Domain",
+    "editId": "f43127400757",
+    "editUrl": "https://medium.com/p/f43127400757/edit",
+    "draftUrl": "https://medium.com/scrum-and-coke/part-1-clean-architecture-foundation-with-hr-domain-f43127400757"
+  },
+  {
+    "series": "Series 1: AI Agents & MCP with .NET 10",
+    "part": "part-2",
+    "title": "Part 2: Introduction to Model Context Protocol",
+    "editId": "64e70a034ea3",
+    "editUrl": "https://medium.com/p/64e70a034ea3/edit",
+    "draftUrl": "https://medium.com/scrum-and-coke/part-2-introduction-to-model-context-protocol-64e70a034ea3"
+  },
+  {
+    "series": "Series 1: AI Agents & MCP with .NET 10",
+    "part": "part-3",
+    "title": "Part 3: Building an MCP Server in .NET 10",
+    "editId": "81964133d3b8",
+    "editUrl": "https://medium.com/p/81964133d3b8/edit",
+    "draftUrl": "https://medium.com/scrum-and-coke/part-3-building-an-mcp-server-in-net-10-81964133d3b8"
+  },
+  {
+    "series": "Series 1: AI Agents & MCP with .NET 10",
+    "part": "part-4",
+    "title": "Part 4: AI Agent with Microsoft.Extensions.AI + Ollama",
+    "editId": "b41d0b722b90",
+    "editUrl": "https://medium.com/p/b41d0b722b90/edit",
+    "draftUrl": "https://medium.com/scrum-and-coke/part-4-ai-agent-with-microsoft-extensions-ai-ollama-b41d0b722b90"
+  },
+  {
+    "series": "Series 1: AI Agents & MCP with .NET 10",
+    "part": "part-5",
+    "title": "Part 5: Claude Desktop Integration & End-to-End Demo",
+    "editId": "fc985ed7cbf5",
+    "editUrl": "https://medium.com/p/fc985ed7cbf5/edit",
+    "draftUrl": "https://medium.com/scrum-and-coke/part-5-claude-desktop-integration-end-to-end-demo-fc985ed7cbf5"
+  },
+  {
+    "series": "Series 1: AI Agents & MCP with .NET 10",
+    "part": "part-6",
+    "title": "Part 6: Securing the MCP Server with OIDC",
+    "editId": "5ee56af86160",
+    "editUrl": "https://medium.com/p/5ee56af86160/edit",
+    "draftUrl": "https://medium.com/scrum-and-coke/part-6-securing-the-mcp-server-with-oidc-5ee56af86160"
+  },
+  {
+    "series": "Standalone",
+    "part": "standalone-1",
+    "title": "6 MCP Tools Every .NET Developer Should Know (From Someone Who's Actually Used Them)",
+    "editId": "46c20739d9e7",
+    "editUrl": "https://medium.com/p/46c20739d9e7/edit",
+    "draftUrl": "",
+    "status": "pending-review",
+    "publication": "Scrum and Coke",
+    "topics": ["Artificial Intelligence", "Dotnet", "Programming", "Software Engineering", "Technology"]
+  },
+  {
+    "series": "Standalone",
+    "part": "standalone-2",
+    "title": "Magnificent 7 MCP Tools Every .NET Developer Should Know (From Someone Who's Actually Used Them)",
+    "editId": "316c7075971e",
+    "editUrl": "https://medium.com/p/316c7075971e/edit",
+    "draftUrl": "",
+    "status": "pending-review",
+    "publication": "Scrum and Coke",
+    "topics": ["Artificial Intelligence", "Dotnet", "Programming", "Software Engineering", "Technology"]
+  }
+]

@@ -1,0 +1,60 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - generic [ref=e9]:
+      - link "Medium Logo" [ref=e11] [cursor=pointer]:
+        - /url: /
+        - img "Medium Logo" [ref=e12]
+      - generic [ref=e14]:
+        - paragraph [ref=e17]:
+          - link "Our story" [ref=e18] [cursor=pointer]:
+            - /url: /about?autoplay=1
+        - paragraph [ref=e21]:
+          - link "Membership" [ref=e22] [cursor=pointer]:
+            - /url: /membership
+        - paragraph [ref=e25]:
+          - link "Write" [ref=e27] [cursor=pointer]:
+            - /url: /m/signin?operation=register&redirect=https%3A%2F%2Fmedium.com%2Fnew-story&source=--------------------------new_post_topnav------------------
+        - paragraph [ref=e30]:
+          - link "Sign in" [ref=e32] [cursor=pointer]:
+            - /url: /m/signin?operation=login&redirect=https%3A%2F%2Fmedium.com%2F&source=--------------------------lo_home_nav------------------
+        - link "Get started" [ref=e35] [cursor=pointer]:
+          - /url: /m/signin?operation=register&redirect=https%3A%2F%2Fmedium.com%2F&source=--------------------------lo_home_nav------------------
+          - button "Get started" [ref=e36]
+    - generic [ref=e39]:
+      - img "Brand image" [ref=e41]
+      - heading "Human stories & ideas" [level=2] [ref=e44]:
+        - text: Human
+        - text: stories & ideas
+      - heading "A place to read, write, and deepen your understanding" [level=3] [ref=e46]
+      - button "Start reading" [ref=e50]
+  - generic [ref=e56]:
+    - link "Help" [ref=e58] [cursor=pointer]:
+      - /url: https://help.medium.com/hc/en-us
+      - paragraph [ref=e59]: Help
+    - link "Status" [ref=e61] [cursor=pointer]:
+      - /url: https://status.medium.com
+      - paragraph [ref=e62]: Status
+    - link "About" [ref=e64] [cursor=pointer]:
+      - /url: /about?autoplay=1
+      - paragraph [ref=e65]: About
+    - link "Careers" [ref=e67] [cursor=pointer]:
+      - /url: /jobs-at-medium/work-at-medium-959d1a85284e
+      - paragraph [ref=e68]: Careers
+    - link "Press" [ref=e70] [cursor=pointer]:
+      - /url: mailto:pressinquiries@medium.com
+      - paragraph [ref=e71]: Press
+    - link "Blog" [ref=e73] [cursor=pointer]:
+      - /url: https://blog.medium.com
+      - paragraph [ref=e74]: Blog
+    - link "Privacy" [ref=e76] [cursor=pointer]:
+      - /url: https://policy.medium.com/medium-privacy-policy-f03bf92035c9
+      - paragraph [ref=e77]: Privacy
+    - link "Rules" [ref=e79] [cursor=pointer]:
+      - /url: https://policy.medium.com/medium-rules-30e5502c4eb4
+      - paragraph [ref=e80]: Rules
+    - link "Terms" [ref=e82] [cursor=pointer]:
+      - /url: https://policy.medium.com/medium-terms-of-service-9db0094a1e0f
+      - paragraph [ref=e83]: Terms
+    - link "Text to speech" [ref=e85] [cursor=pointer]:
+      - /url: https://speechify.com/medium
+      - paragraph [ref=e86]: Text to speech

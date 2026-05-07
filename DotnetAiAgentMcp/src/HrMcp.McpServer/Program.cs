@@ -5,8 +5,13 @@ using HrMcp.McpServer.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using OllamaSharp;
 using Serilog;
+using System.Net;
+using System.Net.NetworkInformation;
 
 var isStdio = args.Contains("--stdio");
 
@@ -48,20 +53,30 @@ Log.Logger = new LoggerConfiguration()
 
 try
 {
+    if (isStdio)
+    {
+        var hostBuilder = Host.CreateApplicationBuilder(args);
+        hostBuilder.Services.AddSerilog();
+
+        ConfigureCommonServices(hostBuilder.Services, hostBuilder.Configuration);
+
+        hostBuilder.Services
+            .AddMcpServer()
+            .WithTools<PositionTools>()
+            .WithTools<HiringOrganizationTools>()
+            .WithTools<JobDescriptionTools>()
+            .WithStdioServerTransport();
+
+        using var host = hostBuilder.Build();
+        await InitializeDatabaseAsync(host.Services);
+        await host.RunAsync();
+        return;
+    }
+
     var builder = WebApplication.CreateBuilder(args);
     builder.Host.UseSerilog();
 
-    if (isStdio)
-        builder.WebHost.UseUrls(); // no HTTP listener in stdio mode
-
-    builder.Services.AddPersistence(
-        builder.Configuration.GetConnectionString("DefaultConnection")!);
-    builder.Services.AddScoped<PositionService>();
-    builder.Services.AddScoped<HiringOrganizationService>();
-
-    // IChatClient used by WriteJobDescription tool to generate LLM narratives
-    builder.Services.AddSingleton<IChatClient>(
-        new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.2"));
+    ConfigureCommonServices(builder.Services, builder.Configuration);
 
     // ── OIDC feature flag ────────────────────────────────────────────────────
     // Set Features:EnableOidc = false in appsettings.Development.json to run
@@ -88,28 +103,15 @@ try
         builder.Services.AddAuthorization();
     }
 
-    var mcp = builder.Services
+    builder.Services
         .AddMcpServer()
         .WithTools<PositionTools>()
         .WithTools<HiringOrganizationTools>()
-        .WithTools<JobDescriptionTools>();
-
-    if (isStdio)
-        mcp.WithStdioServerTransport();
-    else
-        mcp.WithHttpTransport();
+        .WithTools<JobDescriptionTools>()
+        .WithHttpTransport();
 
     var app = builder.Build();
-
-    using (var scope = app.Services.CreateScope())
-    {
-        var db = scope.ServiceProvider.GetRequiredService<HrDbContext>();
-        db.Database.Migrate();
-
-        // Looks for data/usajobs-seed.json in the working directory (solution root when using dotnet run)
-        var seedPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "usajobs-seed.json");
-        DbSeeder.Seed(db, seedPath);
-    }
+    await InitializeDatabaseAsync(app.Services);
 
     if (enableOidc)
     {
@@ -126,7 +128,67 @@ try
 
     await app.RunAsync();
 }
+catch (IOException ex) when (!isStdio && TryDescribePortConflict(ex, out var conflictMessage))
+{
+    Log.Fatal(ex, "{ConflictMessage}", conflictMessage);
+    Console.Error.WriteLine(conflictMessage);
+    Environment.ExitCode = 1;
+}
 finally
 {
     await Log.CloseAndFlushAsync();
+}
+
+static void ConfigureCommonServices(IServiceCollection services, IConfiguration configuration)
+{
+    services.AddPersistence(
+        configuration.GetConnectionString("DefaultConnection")!);
+    services.AddScoped<PositionService>();
+    services.AddScoped<HiringOrganizationService>();
+
+    // IChatClient used by WriteJobDescription tool to generate LLM narratives
+    services.AddSingleton<IChatClient>(
+        new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.2"));
+}
+
+static async Task InitializeDatabaseAsync(IServiceProvider services)
+{
+    using var scope = services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<HrDbContext>();
+
+    await db.Database.MigrateAsync();
+
+    // Looks for data/usajobs-seed.json in the working directory (solution root when using dotnet run)
+    var seedPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "usajobs-seed.json");
+    DbSeeder.Seed(db, seedPath);
+}
+
+static bool TryDescribePortConflict(IOException ex, out string message)
+{
+    const int defaultPort = 5100;
+    const string defaultUrl = "http://127.0.0.1:5100";
+
+    if (!ex.Message.Contains(defaultUrl, StringComparison.OrdinalIgnoreCase) &&
+        !ex.Message.Contains("address already in use", StringComparison.OrdinalIgnoreCase))
+    {
+        message = string.Empty;
+        return false;
+    }
+
+    var conflict = IPGlobalProperties.GetIPGlobalProperties()
+        .GetActiveTcpListeners()
+        .FirstOrDefault(endpoint =>
+            endpoint.Port == defaultPort &&
+            IPAddress.IsLoopback(endpoint.Address));
+
+    if (conflict is null)
+    {
+        message =
+            $"Port {defaultPort} is already in use. Stop the existing listener or change the configured MCP server URL.";
+        return true;
+    }
+
+    message =
+        $"Port {defaultPort} is already in use on a loopback interface. Stop the running server or change the configured URL before starting another instance.";
+    return true;
 }

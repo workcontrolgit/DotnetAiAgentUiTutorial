@@ -40,3 +40,14 @@ node_modules/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Playwright
+.playwright-mcp/
+
+# OpenWolf
+.wolf/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

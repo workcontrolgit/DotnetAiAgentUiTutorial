@@ -1,0 +1,918 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link "Homepage" [ref=e9] [cursor=pointer]:
+          - /url: https://medium.com/
+          - img [ref=e11]
+          - generic: Homepage
+        - link "Scrum and Coke" [ref=e17] [cursor=pointer]:
+          - /url: https://medium.com/scrum-and-coke?source=logo-4b79cc017e83---6c43d7988985
+          - generic [ref=e18]: Scrum and Coke
+        - generic [ref=e20]: Draft in Scrum and CokeSaved
+      - generic [ref=e21]:
+        - button "Decline" [ref=e23] [cursor=pointer]
+        - button "Publish" [ref=e25] [cursor=pointer]
+        - button [ref=e27] [cursor=pointer]:
+          - img [ref=e29]
+        - generic [ref=e32]:
+          - button "Notifications" [ref=e445] [cursor=pointer]:
+            - generic:
+              - generic: "6"
+              - generic: "New notifications: 6"
+          - button "Fuji Nguyen" [ref=e37] [cursor=pointer]:
+            - img "Fuji Nguyen" [ref=e39]
+          - button "Scrum and Coke" [ref=e40] [cursor=pointer]:
+            - img "Scrum and Coke" [ref=e42]
+    - list [ref=e448]:
+      - listitem [ref=e449] [cursor=pointer]:
+        - button "Share draft link" [ref=e450]
+      - listitem [ref=e451] [cursor=pointer]:
+        - button "Share to X" [ref=e452]
+      - listitem [ref=e453] [cursor=pointer]:
+        - button "Manage unlisted setting" [ref=e454]
+      - listitem [ref=e455] [cursor=pointer]:
+        - button "Change featured image" [ref=e456]
+      - listitem [ref=e457] [cursor=pointer]:
+        - button "Change display title / subtitle" [ref=e458]
+      - listitem [ref=e459] [cursor=pointer]:
+        - button "Change topics" [ref=e460]
+      - listitem [ref=e461] [cursor=pointer]:
+        - button "See revision history" [ref=e462]
+      - listitem [ref=e463] [cursor=pointer]:
+        - link "More settings" [ref=e464]:
+          - /url: https://medium.com/p/b41d0b722b90/settings
+      - listitem [ref=e465]
+      - listitem [ref=e466] [cursor=pointer]:
+        - button "Hints and keyboard shortcuts" [ref=e467]
+      - listitem [ref=e468] [cursor=pointer]:
+        - link "More help" [ref=e469]:
+          - /url: https://medium.zendesk.com/hc/en-us/categories/200058025-Writing
+  - main [ref=e44]:
+    - article [ref=e45]:
+      - textbox [active] [ref=e46]:
+        - generic [ref=e47]:
+          - text: ...
+          - generic [ref=e49]:
+            - 'heading "Part 4: AI Agent with Microsoft.Extensions.AI + Ollama" [level=3] [ref=e50]':
+              - text: "Part 4: AI Agent with"
+              - link "Microsoft.Extensions.AI" [ref=e51]:
+                - /url: https://medium.com/r/?url=http%3A%2F%2Fmicrosoft.extensions.ai%2F
+              - text: + Ollama
+            - paragraph [ref=e52]:
+              - strong [ref=e53]: "Series:"
+              - text: AI Agents & MCP with .NET 10 |
+              - strong [ref=e54]: Part 4 of 6
+              - strong [ref=e55]: "GitHub:"
+              - link "workcontrolgit/DotnetAiAgentMcp" [ref=e56]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fworkcontrolgit%2FDotnetAiAgentMcp
+        - generic [ref=e57]:
+          - generic:
+            - separator: ...
+          - generic [ref=e59]:
+            - heading "Introduction" [level=3] [ref=e60]
+            - paragraph [ref=e61]: In Part 3 we built an MCP server with five tools and verified them with MCP Inspector. The tools work — but no AI is involved yet. That changes now.
+            - paragraph [ref=e62]:
+              - text: In this part we wire up the
+              - code [ref=e63]: HrMcp.Agent
+              - text: "console app: it connects to the MCP server over HTTP, hands the tools to an Ollama-backed"
+              - code [ref=e64]: IChatClient
+              - text: ", and holds a live conversation where the AI decides which tools to call and when. We also upgrade"
+              - code [ref=e65]: WriteJobDescription
+              - text: from a static template to a real LLM-generated narrative.
+            - paragraph [ref=e66]: By the end you will have a running AI agent that answers HR questions by calling your MCP tools — no hard-coded logic, no manual tool routing.
+        - generic [ref=e67]:
+          - generic:
+            - separator: ...
+          - generic [ref=e69]:
+            - heading "The Architecture" [level=3] [ref=e70]
+            - figure "Type caption for image (optional)" [ref=e71]:
+              - img [ref=e74]
+            - paragraph [ref=e75]:
+              - code [ref=e76]: Microsoft.Extensions.AI
+              - text: is the abstraction layer. Ollama is the provider — swap it for Azure OpenAI or any other provider without touching
+              - code [ref=e77]: HrAgent.cs
+              - text: .
+            - paragraph [ref=e78]:
+              - code [ref=e79]: McpClientTool
+              - text: "bridges the two worlds: it is an"
+              - code [ref=e80]: AIFunction
+              - text: (a
+              - code [ref=e81]: Microsoft.Extensions.AI
+              - text: type) that dispatches calls to the MCP server over the wire. The chat client's function-invocation middleware handles the loop — call tool, send result back to model, repeat until the model stops calling tools.
+        - generic [ref=e82]:
+          - generic:
+            - separator: ...
+          - generic [ref=e84]:
+            - heading "Prerequisites" [level=3] [ref=e85]
+            - paragraph [ref=e86]:
+              - text: Before running
+              - code [ref=e87]: HrMcp.Agent
+              - text: ", you need Ollama running locally with the"
+              - code [ref=e88]: llama3.2
+              - text: "model pulled:"
+            - list [ref=e89]:
+              - listitem [ref=e90]:
+                - text: •
+                - strong [ref=e91]: Install Ollama
+                - text: — download from
+                - link "ollama.com" [ref=e92]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Follama.com%2F
+                - text: and install
+              - listitem [ref=e93]:
+                - text: •
+                - strong [ref=e94]: Pull the model
+                - text: —
+                - code [ref=e95]: ollama pull llama3.2
+              - listitem [ref=e96]:
+                - text: •
+                - strong [ref=e97]: Verify
+                - text: —
+                - code [ref=e98]: ollama run llama3.2 "Say hello"
+                - text: (should print a greeting)
+              - listitem [ref=e99]:
+                - text: •
+                - strong [ref=e100]: Confirm the API is up
+                - text: —
+                - code [ref=e101]: curl http://localhost:11434/api/tags
+                - text: (lists pulled models)
+            - paragraph [ref=e102]:
+              - text: Ollama runs a local HTTP server on port
+              - code [ref=e103]: "11434"
+              - text: . The
+              - code [ref=e104]: OllamaChatClient
+              - text: points at this address. Nothing leaves your machine.
+        - generic [ref=e105]:
+          - generic:
+            - separator: ...
+          - generic [ref=e107]:
+            - heading "Step 1 — Packages" [level=3] [ref=e108]
+            - heading "HrMcp.Agent" [level=3] [ref=e109]:
+              - code [ref=e110]: HrMcp.Agent
+            - generic [ref=e111]:
+              - generic [ref=e112]:
+                - text: dotnet add src/HrMcp.Agent package Microsoft.Extensions.AI --version 9.*
+                - text: dotnet add src/HrMcp.Agent package OllamaSharp --version 5.*
+                - text: dotnet add src/HrMcp.Agent package ModelContextProtocol --version 1.*
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - paragraph [ref=e113]:
+              - text: The agent is a pure MCP client — it has no direct database access. The two project references to
+              - code [ref=e114]: HrMcp.Application
+              - text: and
+              - code [ref=e115]: HrMcp.Infrastructure.Persistence
+              - text: that were scaffolded in Part 1 are removed.
+            - paragraph [ref=e116]: "Why three packages:"
+            - list [ref=e117]:
+              - listitem [ref=e118]:
+                - text: •
+                - code [ref=e119]:
+                  - strong [ref=e120]: Microsoft.Extensions.AI
+                - text: —
+                - code [ref=e121]: IChatClient
+                - text: ","
+                - code [ref=e122]: ChatMessage
+                - text: ","
+                - code [ref=e123]: ChatOptions
+                - text: ","
+                - code [ref=e124]: AITool
+                - text: abstractions
+              - listitem [ref=e125]:
+                - text: •
+                - code [ref=e126]:
+                  - strong [ref=e127]: OllamaSharp
+                - text: —
+                - code [ref=e128]: OllamaApiClient
+                - text: ", the GA-recommended Ollama provider; implements"
+                - code [ref=e129]: IChatClient
+                - text: natively
+              - listitem [ref=e130]:
+                - text: •
+                - code [ref=e131]:
+                  - strong [ref=e132]: ModelContextProtocol
+                - text: —
+                - code [ref=e133]: McpClient
+                - text: ","
+                - code [ref=e134]: HttpClientTransport
+                - text: ","
+                - code [ref=e135]: McpClientTool
+                - text: ; the client half of the MCP SDK
+            - blockquote [ref=e136]:
+              - strong [ref=e137]:
+                - emphasis [ref=e138]: "Note:"
+              - emphasis [ref=e139]
+              - code [ref=e140]:
+                - emphasis [ref=e141]: Microsoft.Extensions.AI.Ollama
+              - emphasis [ref=e142]: was the early preview provider and is now deprecated in the GA release. The official
+              - link "Microsoft.Extensions.AI" [ref=e143]:
+                - /url: https://medium.com/r/?url=http%3A%2F%2Fmicrosoft.extensions.ai%2F
+                - emphasis [ref=e144]: Microsoft.Extensions.AI
+              - emphasis [ref=e145]: GA guidance recommends
+              - code [ref=e146]:
+                - emphasis [ref=e147]: OllamaSharp
+              - emphasis [ref=e148]: instead.
+              - code [ref=e149]:
+                - emphasis [ref=e150]: OllamaApiClient
+              - emphasis [ref=e151]: (from
+              - code [ref=e152]:
+                - emphasis [ref=e153]: OllamaSharp
+              - emphasis [ref=e154]: ) implements
+              - code [ref=e155]:
+                - emphasis [ref=e156]: IChatClient
+              - emphasis [ref=e157]: directly — no wrapper needed.
+            - heading "HrMcp.McpServer" [level=3] [ref=e158]:
+              - code [ref=e159]: HrMcp.McpServer
+            - generic [ref=e160]:
+              - generic [ref=e161]: dotnet add src/HrMcp.McpServer package OllamaSharp --version 5.*
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - paragraph [ref=e162]:
+              - text: The server needs
+              - code [ref=e163]: OllamaApiClient
+              - text: to power the
+              - code [ref=e164]: WriteJobDescription
+              - text: tool upgrade.
+        - generic [ref=e165]:
+          - generic:
+            - separator: ...
+          - generic [ref=e167]:
+            - heading "Step 2 — HrAgent.cs" [level=3] [ref=e168]:
+              - text: Step 2 —
+              - code [ref=e169]: HrAgent.cs
+            - paragraph [ref=e170]:
+              - text: Create
+              - code [ref=e171]: src/HrMcp.Agent/HrAgent.cs
+              - text: . This class owns the conversation loop and keeps message history. It takes
+              - code [ref=e172]: IChatClient
+              - text: and the list of MCP tools as constructor parameters — both are wired in
+              - code [ref=e173]: Program.cs
+              - text: .
+            - generic [ref=e174]:
+              - generic [ref=e175]:
+                - text: // src/HrMcp.Agent/HrAgent.cs
+                - text: using Microsoft.Extensions.AI;
+                - text: namespace HrMcp.Agent;
+                - text: public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools)
+                - text: "{"
+                - text: private const string SystemPrompt =
+                - generic [ref=e176]:
+                  - text: "\"\"\""
+                  - text: You are an HR assistant for a U.S. federal agency. You help users explore open job
+                  - text: positions, hiring organizations, and generate job announcements.
+                  - text: "Guidelines:"
+                  - text: "- Always call GetHiringOrganizations before GetPositionsByOrganization to get valid IDs."
+                  - text: "- When asked about open positions, use GetOpenPositions first for an overview, then"
+                  - text: GetPositionById for full detail on a specific role.
+                  - text: "- When asked to write or generate a job description, call WriteJobDescription with the"
+                  - text: position ID — do not write one yourself.
+                  - text: "- Present pay ranges in a readable format (e.g., \"$85,000 – $110,000 per year\")."
+                  - text: "- Keep answers concise; offer to go deeper when the user wants more detail."
+                  - text: "\"\"\""
+                - text: ;
+                - text: private readonly List<ChatMessage> _history =
+                - text: "["
+                - text: new(ChatRole.System, SystemPrompt)
+                - text: "];"
+                - text: public async Task RunAsync(CancellationToken ct = default)
+                - text: "{"
+                - text: Console.WriteLine("HR Assistant ready. Ask about open positions, organizations, or job descriptions.");
+                - text: Console.WriteLine("Type 'exit' to quit.\n");
+                - text: while (!ct.IsCancellationRequested)
+                - text: "{"
+                - text: "Console.Write(\"You: \");"
+                - text: var input = Console.ReadLine();
+                - text: if (string.IsNullOrWhiteSpace(input)) continue;
+                - text: if (input.Equals("exit", StringComparison.OrdinalIgnoreCase)) break;
+                - text: _history.Add(new ChatMessage(ChatRole.User, input));
+                - text: var response = await chatClient.GetResponseAsync(
+                - text: _history,
+                - text: "new ChatOptions { Tools = tools },"
+                - text: ct);
+                - text: _history.AddMessages(response);
+                - text: "Console.WriteLine($\"\\nAssistant: {response.Text}\\n\");"
+                - text: "}"
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (Python)
+                - generic:
+                  - img
+            - paragraph [ref=e177]: "Design notes:"
+            - list [ref=e178]:
+              - listitem [ref=e179]:
+                - text: •
+                - code [ref=e180]:
+                  - strong [ref=e181]: IList<AITool> tools
+                - text: — typed as
+                - code [ref=e182]: AITool
+                - text: (the
+                - link "M.E.AI" [ref=e183]:
+                  - /url: https://medium.com/r/?url=http%3A%2F%2Fm.e.ai%2F
+                - text: abstraction), not
+                - code [ref=e184]: McpClientTool
+                - text: .
+                - code [ref=e185]: HrAgent
+                - text: doesn't know or care that the tools come from MCP.
+              - listitem [ref=e186]:
+                - text: •
+                - code [ref=e187]:
+                  - strong [ref=e188]: _history.AddMessages(response)
+                - text: — adds all messages from the response (including any tool-call/tool-result messages the middleware appended) back into history for the next turn.
+              - listitem [ref=e189]:
+                - text: •
+                - code [ref=e190]:
+                  - strong [ref=e191]: GetResponseAsync
+                - text: — the
+                - code [ref=e192]: IChatClient
+                - text: interface method in
+                - code [ref=e193]: Microsoft.Extensions.AI
+                - text: 9.x. Returns
+                - code [ref=e194]: ChatResponse
+                - text: ;
+                - code [ref=e195]: .Text
+                - text: is the assistant's final text.
+              - listitem [ref=e196]:
+                - text: •
+                - code [ref=e197]:
+                  - strong [ref=e198]: UseFunctionInvocation
+                - strong [ref=e199]: middleware
+                - text: (set up in
+                - code [ref=e200]: Program.cs
+                - text: ) intercepts tool-call messages, dispatches them to the MCP server, injects the results, and loops until the model produces a text response — all transparently.
+        - generic [ref=e201]:
+          - generic:
+            - separator: ...
+          - generic [ref=e203]:
+            - heading "Step 3 — Program.cs for HrMcp.Agent" [level=3] [ref=e204]:
+              - text: Step 3 —
+              - code [ref=e205]: Program.cs
+              - text: for
+              - code [ref=e206]: HrMcp.Agent
+            - generic [ref=e207]:
+              - generic [ref=e208]:
+                - text: // src/HrMcp.Agent/Program.cs
+                - text: using Microsoft.Extensions.AI;
+                - text: using ModelContextProtocol.Client;
+                - text: using OllamaSharp;
+                - text: using HrMcp.Agent;
+                - text: // Connect to the MCP server (must be running on http://localhost:5100)
+                - text: await using var mcpClient = await McpClient.CreateAsync(
+                - text: new HttpClientTransport(new HttpClientTransportOptions
+                - text: "{"
+                - text: Endpoint = new Uri("http://localhost:5100/mcp")
+                - text: "}));"
+                - text: var mcpTools = await mcpClient.ListToolsAsync();
+                - text: Console.WriteLine(
+                - generic [ref=e209]:
+                  - text: "$\"Connected. Tools:"
+                  - generic [ref=e210]: "{string.Join(\", \", mcpTools.Select(t => t.Name))}"
+                  - text: \n"
+                - text: );
+                - text: // OllamaApiClient implements IChatClient natively.
+                - text: // Cast to IChatClient explicitly — OllamaApiClient also implements IEmbeddingGenerator,
+                - text: // so the cast resolves the AsBuilder() overload ambiguity.
+                - text: IChatClient chatClient = ((IChatClient)new OllamaApiClient(
+                - text: new Uri("http://localhost:11434"), "llama3.2"))
+                - text: .AsBuilder()
+                - text: .UseFunctionInvocation()
+                - text: .Build();
+                - text: var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList());
+                - text: await agent.RunAsync();
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - paragraph [ref=e211]: "What each piece does:"
+            - list [ref=e212]:
+              - listitem [ref=e213]:
+                - text: •
+                - code [ref=e214]:
+                  - strong [ref=e215]: McpClient.CreateAsync
+                - text: — creates an MCP client connected to the running server via
+                - code [ref=e216]: HttpClientTransport
+                - text: . In
+                - code [ref=e217]: ModelContextProtocol
+                - text: 1.x, this replaces the earlier
+                - code [ref=e218]: McpClientFactory.CreateAsync
+                - text: +
+                - code [ref=e219]: SseClientTransport
+                - text: pattern.
+              - listitem [ref=e220]:
+                - text: •
+                - code [ref=e221]:
+                  - strong [ref=e222]: mcpClient.ListToolsAsync()
+                - text: — fetches the tool list from the server. Returns
+                - code [ref=e223]: IList<McpClientTool>
+                - text: . Each
+                - code [ref=e224]: McpClientTool
+                - text: is an
+                - code [ref=e225]: AIFunction
+                - text: (which is an
+                - code [ref=e226]: AITool
+                - text: ) — this is the bridge between the MCP protocol and
+                - code [ref=e227]: Microsoft.Extensions.AI
+                - text: .
+              - listitem [ref=e228]:
+                - text: •
+                - code [ref=e229]:
+                  - strong [ref=e230]: OllamaApiClient
+                - text: — the GA-recommended Ollama provider from
+                - code [ref=e231]: OllamaSharp
+                - text: . Implements
+                - code [ref=e232]: IChatClient
+                - text: (and
+                - code [ref=e233]: IEmbeddingGenerator
+                - text: ) natively. The explicit
+                - code [ref=e234]: (IChatClient)
+                - text: cast resolves the
+                - code [ref=e235]: AsBuilder()
+                - text: overload ambiguity.
+              - listitem [ref=e236]:
+                - text: •
+                - code [ref=e237]:
+                  - strong [ref=e238]: UseFunctionInvocation()
+                - text: — middleware that intercepts tool-call requests from the model, dispatches them to the MCP server through the
+                - code [ref=e239]: McpClientTool
+                - text: implementations, and feeds results back into the conversation automatically.
+              - listitem [ref=e240]:
+                - text: •
+                - code [ref=e241]:
+                  - strong [ref=e242]: mcpTools.Cast<AITool>()
+                - text: —
+                - code [ref=e243]: McpClientTool
+                - text: inherits from
+                - code [ref=e244]: AIFunction
+                - text: which inherits from
+                - code [ref=e245]: AITool
+                - text: ", so the cast is safe."
+                - code [ref=e246]: HrAgent
+                - text: only needs the
+                - code [ref=e247]: AITool
+                - text: abstraction.
+        - generic [ref=e248]:
+          - generic:
+            - separator: ...
+          - generic [ref=e250]:
+            - heading "Step 4 — Upgrade WriteJobDescription to LLM Output" [level=3] [ref=e251]:
+              - text: Step 4 — Upgrade
+              - code [ref=e252]: WriteJobDescription
+              - text: to LLM Output
+            - heading "Before (Part 3 stub)" [level=3] [ref=e253]
+            - generic [ref=e254]:
+              - generic [ref=e255]:
+                - text: // Returns a hand-crafted Markdown template
+                - text: return $
+                - generic [ref=e256]:
+                  - text: "\"\"\""
+                  - text: "## {p.Title}"
+                  - text: ...
+                  - text: "*[Stub — LLM-generated narrative added in Part 4]*"
+                  - text: "\"\"\""
+                - text: ;
+              - generic:
+                - text: Auto (Python)
+                - generic:
+                  - img
+            - heading "After (Part 4 — LLM-generated)" [level=3] [ref=e257]
+            - paragraph [ref=e258]:
+              - code [ref=e259]: JobDescriptionTools.cs
+              - text: now injects
+              - code [ref=e260]: IChatClient
+              - text: "and calls Ollama to write the narrative:"
+            - generic [ref=e261]:
+              - generic [ref=e262]:
+                - text: // src/HrMcp.McpServer/Tools/JobDescriptionTools.cs
+                - text: using System.ComponentModel;
+                - text: using HrMcp.Application.Services;
+                - text: using Microsoft.Extensions.AI;
+                - text: using ModelContextProtocol.Server;
+                - text: namespace HrMcp.McpServer.Tools;
+                - text: "[McpServerToolType]"
+                - text: public sealed class JobDescriptionTools(PositionService positions, IChatClient chatClient)
+                - text: "{"
+                - text: "[McpServerTool(Name = \"WriteJobDescription\"),"
+                - text: Description("Generates a USAJobs-style job announcement for the specified position using AI. Returns a fully written narrative with Summary, Duties, Qualifications, and How to Apply sections.")]
+                - text: public async Task<string> WriteJobDescription(
+                - text: "[Description(\"The numeric ID of the position to write a description for\")] int positionId,"
+                - text: CancellationToken ct = default)
+                - text: "{"
+                - text: var p = await positions.GetPositionByIdAsync(positionId, ct);
+                - text: "if (p is null) return $\"Position {positionId} not found.\";"
+                - text: var prompt = $
+                - generic [ref=e263]:
+                  - text: "\"\"\""
+                  - text: Write a compelling USAJobs-style job announcement for the following federal position.
+                  - text: Use professional government HR writing style. Be specific and engaging.
+                  - text: "Position Data:"
+                  - text: "- Title: {p.Title}"
+                  - text: "- Department: {p.HiringOrganization?.DepartmentName}"
+                  - text: "- Organization: {p.HiringOrganization?.OrganizationName}"
+                  - text: "- Series & Grade: {p.OccupationalSeries} | {p.PayGradeMin}–{p.PayGradeMax}"
+                  - text: "- Salary: ${p.PositionRemuneration?.MinimumRange:N0} – ${p.PositionRemuneration?.MaximumRange:N0} per year"
+                  - text: "- Location: {p.DutyLocation}"
+                  - text: "- Telework: {(p.TeleworkEligible ? \"Eligible\" : \"Not eligible\")}"
+                  - text: "- Security Clearance: {p.SecurityClearance}"
+                  - text: "- Who May Apply: {p.WhoMayApply}"
+                  - text: "- Description: {p.Description}"
+                  - text: "- Duties: {p.Duties}"
+                  - text: "- Qualifications: {p.Qualifications}"
+                  - text: "Format the output as a complete job announcement with these sections:"
+                  - text: "## Summary"
+                  - text: "## Duties"
+                  - text: "## Qualifications Required"
+                  - text: "## How to Apply"
+                  - text: "\"\"\""
+                - text: ;
+                - text: var response = await chatClient.GetResponseAsync(
+                - text: "[new ChatMessage(ChatRole.User, prompt)],"
+                - text: "cancellationToken: ct);"
+                - text: "return response.Text ?? $\"Unable to generate description for position {positionId}.\";"
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (Kotlin)
+                - generic:
+                  - img
+            - paragraph [ref=e264]:
+              - text: The
+              - code [ref=e265]: IChatClient
+              - text: is registered in
+              - code [ref=e266]: McpServer/Program.cs
+              - text: as a singleton (shown in Step 5). The tool gets it via constructor injection — no change to how tools are registered with
+              - code [ref=e267]: WithTools<JobDescriptionTools>()
+              - text: .
+        - generic [ref=e268]:
+          - generic:
+            - separator: ...
+          - generic [ref=e270]:
+            - heading "Step 5 — Register IChatClient in McpServer/Program.cs" [level=3] [ref=e271]:
+              - text: Step 5 — Register
+              - code [ref=e272]: IChatClient
+              - text: in
+              - code [ref=e273]: McpServer/Program.cs
+            - paragraph [ref=e274]: "Add one line to the services block:"
+            - generic [ref=e275]:
+              - generic [ref=e276]:
+                - text: // src/HrMcp.McpServer/Program.cs
+                - text: using HrMcp.Application.Services;
+                - text: using HrMcp.Infrastructure.Persistence;
+                - text: using HrMcp.McpServer.Tools;
+                - text: using Microsoft.EntityFrameworkCore;
+                - text: using Microsoft.Extensions.AI;
+                - text: using OllamaSharp;
+                - text: var isStdio = args.Contains("--stdio");
+                - text: var builder = WebApplication.CreateBuilder(args);
+                - text: if (isStdio)
+                - text: "{"
+                - text: builder.Logging.ClearProviders();
+                - text: builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = Microsoft.Extensions.Logging.LogLevel.Trace);
+                - text: builder.WebHost.UseUrls();
+                - text: "}"
+                - text: builder.Services.AddPersistence(
+                - text: builder.Configuration.GetConnectionString("DefaultConnection")!);
+                - text: builder.Services.AddScoped<PositionService>();
+                - text: builder.Services.AddScoped<HiringOrganizationService>();
+                - text: // IChatClient used by WriteJobDescription tool to generate LLM narratives
+                - text: builder.Services.AddSingleton<IChatClient>(
+                - text: new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.2"));
+                - text: var mcp = builder.Services
+                - text: .AddMcpServer()
+                - text: .WithTools<PositionTools>()
+                - text: .WithTools<HiringOrganizationTools>()
+                - text: .WithTools<JobDescriptionTools>();
+                - text: if (isStdio)
+                - text: mcp.WithStdioServerTransport();
+                - text: else
+                - text: mcp.WithHttpTransport();
+                - text: var app = builder.Build();
+                - text: using (var scope = app.Services.CreateScope())
+                - text: "{"
+                - text: var db = scope.ServiceProvider.GetRequiredService<HrDbContext>();
+                - text: db.Database.Migrate();
+                - text: var seedPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "usajobs-seed.json");
+                - text: DbSeeder.Seed(db, seedPath);
+                - text: "}"
+                - text: if (!isStdio)
+                - text: app.MapMcp("/mcp");
+                - text: await app.RunAsync();
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - paragraph [ref=e277]:
+              - code [ref=e278]: IChatClient
+              - text: is registered as
+              - code [ref=e279]: Singleton
+              - text: because
+              - code [ref=e280]: OllamaApiClient
+              - text: wraps an
+              - code [ref=e281]: HttpClient
+              - text: and is thread-safe.
+              - code [ref=e282]: JobDescriptionTools
+              - text: is scoped (registered via
+              - code [ref=e283]: WithTools<>
+              - text: ), so it receives the singleton through normal DI — no lifetime mismatch.
+        - generic [ref=e284]:
+          - generic:
+            - separator: ...
+          - generic [ref=e286]:
+            - heading "Step 6 — Build" [level=3] [ref=e287]
+            - generic [ref=e288]:
+              - generic [ref=e289]: "dotnet build DotnetAiAgentMcp.slnx # 0 errors, 0 warnings"
+              - generic:
+                - text: Auto (Bash)
+                - generic:
+                  - img
+        - generic [ref=e290]:
+          - generic:
+            - separator: ...
+          - generic [ref=e292]:
+            - heading "Step 7 — Run a Conversation" [level=3] [ref=e293]
+            - paragraph [ref=e294]: "Start the MCP server in one terminal:"
+            - generic [ref=e295]:
+              - generic [ref=e296]: dotnet run --project src/HrMcp.McpServer
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - paragraph [ref=e297]: "In a second terminal, start the agent:"
+            - generic [ref=e298]:
+              - generic [ref=e299]: dotnet run --project src/HrMcp.Agent
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - paragraph [ref=e300]: "You should see:"
+            - generic [ref=e301]:
+              - generic [ref=e302]:
+                - text: "Connected. Tools: GetOpenPositions, GetPositionById, GetPositionsByOrganization, GetHiringOrganizations, WriteJobDescription"
+                - text: HR Assistant ready. Ask about open positions, organizations, or job descriptions.
+                - text: Type 'exit' to quit.
+                - text: "You:"
+              - generic:
+                - text: Auto (Python)
+                - generic:
+                  - img
+            - heading "Sample conversation" [level=3] [ref=e303]
+            - generic [ref=e304]:
+              - generic [ref=e305]:
+                - text: "You: What organizations are hiring right now?"
+                - text: "Assistant: Here are the federal hiring organizations currently in the database:"
+                - text: "- **U.S. Citizenship and Immigration Services** (Dept. of Homeland Security) — 4 open positions"
+                - text: "- **Transportation Security Administration** (Dept. of Homeland Security) — 3 open positions"
+                - text: "- **U.S. Coast Guard** (Dept. of Homeland Security) — 2 open positions"
+                - text: "- **Federal Emergency Management Agency** (Dept. of Homeland Security) — 1 open position"
+                - text: Would you like to see specific positions for any of these organizations?
+                - text: "You: Show me the IT positions at USCIS"
+                - text: "Assistant: I found 2 IT positions at USCIS:"
+                - text: 1. **IT Specialist (SYSADMIN)** — GS-2210-11/12, $73,000–$110,000/yr, Washington DC, Telework eligible
+                - text: 2. **IT Specialist (NETWORK)** — GS-2210-09/11, $60,000–$85,000/yr, National Capital Region, Telework not eligible
+                - text: Both require a Secret security clearance. Would you like full details on either, or shall I write a job announcement for one of them?
+                - text: "You: Write a job description for the SYSADMIN role, position ID 1"
+                - text: "Assistant: [Calls WriteJobDescription(positionId: 1) — Ollama generates narrative]"
+                - text: "## IT Specialist (SYSADMIN)"
+                - text: "### Summary"
+                - text: U.S. Citizenship and Immigration Services (USCIS), within the Department of Homeland Security,
+                - text: is seeking a highly skilled IT Specialist (Systems Administration) to join our technology team.
+                - text: In this role, you will be responsible for maintaining the integrity and availability of critical
+                - text: government systems that support the nationapos;s immigration processing mission...
+                - text: "### Duties"
+                - text: "- Administer and maintain Windows Server environments supporting mission-critical applications"
+                - text: "- Monitor system performance, implement patches, and coordinate planned maintenance windows"
+                - text: "- Collaborate with security teams to ensure systems meet NIST 800-53 control requirements"
+                - text: "- Document configurations, change procedures, and incident responses per agency standards"
+                - text: ...
+                - text: "### Qualifications Required"
+                - text: Applicants must have one year of specialized experience equivalent to at least the GS-10 level...
+                - text: "### How to Apply"
+                - text: Apply through USAJOBS at www.usajobs.gov. Submit your resume, transcripts, and SF-50 if applicable.
+                - text: The narrative is generated by llama3.2 running locally through Ollama. Each run will produce slightly different output — that is the nature of a language model.
+              - generic:
+                - text: Auto (SQL)
+                - generic:
+                  - img
+        - generic [ref=e306]:
+          - generic:
+            - separator: ...
+          - generic [ref=e308]:
+            - heading "What Happened Under the Hood" [level=3] [ref=e309]
+            - paragraph [ref=e310]: "For the question “Show me IT positions at USCIS”, the model made two tool calls before answering:"
+            - list [ref=e311]:
+              - listitem [ref=e312]:
+                - code [ref=e313]:
+                  - strong [ref=e314]: GetHiringOrganizations
+                - text: — to find the USCIS organization ID (following the system prompt guideline)
+              - listitem [ref=e315]:
+                - code [ref=e316]:
+                  - strong [ref=e317]: "GetPositionsByOrganization(organizationId: 1)"
+                - text: — to retrieve USCIS-specific positions
+            - paragraph [ref=e318]:
+              - text: The
+              - code [ref=e319]: UseFunctionInvocation
+              - text: middleware handled both dispatches automatically. Your code in
+              - code [ref=e320]: HrAgent.cs
+              - text: called
+              - code [ref=e321]: GetResponseAsync
+              - text: once and got back the final answer — the middleware looped through tool calls transparently.
+            - paragraph [ref=e322]:
+              - text: For
+              - code [ref=e323]: WriteJobDescription
+              - text: ", the tool itself calls Ollama internally (server-side), so from the agent's perspective it is just another tool call that returns a string."
+        - generic [ref=e324]:
+          - generic:
+            - separator: ...
+          - generic [ref=e326]:
+            - heading "What Changed in the SDK (M.E.AI 9.x)" [level=3] [ref=e327]:
+              - text: What Changed in the SDK (
+              - link "M.E.AI" [ref=e328]:
+                - /url: https://medium.com/r/?url=http%3A%2F%2Fm.e.ai%2F
+              - text: 9.x)
+            - paragraph [ref=e329]:
+              - text: If you have seen older
+              - code [ref=e330]: Microsoft.Extensions.AI
+              - text: "examples, two things changed in 9.x:"
+            - list [ref=e331]:
+              - listitem [ref=e332]:
+                - text: •
+                - code [ref=e333]:
+                  - strong [ref=e334]: CompleteAsync
+                - strong [ref=e335]: →
+                - code [ref=e336]:
+                  - strong [ref=e337]: GetResponseAsync
+                - text: — the method on
+                - code [ref=e338]: IChatClient
+                - text: was renamed
+              - listitem [ref=e339]:
+                - text: •
+                - code [ref=e340]:
+                  - strong [ref=e341]: ChatCompletion
+                - strong [ref=e342]: →
+                - code [ref=e343]:
+                  - strong [ref=e344]: ChatResponse
+                - text: — the return type was renamed; use
+                - code [ref=e345]: .Text
+                - text: for the assistant's text
+              - listitem [ref=e346]:
+                - text: •
+                - code [ref=e347]:
+                  - strong [ref=e348]: McpClientFactory
+                - strong [ref=e349]: +
+                - code [ref=e350]:
+                  - strong [ref=e351]: SseClientTransport
+                - strong [ref=e352]: →
+                - code [ref=e353]:
+                  - strong [ref=e354]: McpClient.CreateAsync
+                - strong [ref=e355]: +
+                - code [ref=e356]:
+                  - strong [ref=e357]: HttpClientTransport
+                - text: — the MCP client API was updated in
+                - code [ref=e358]: ModelContextProtocol.Core
+                - text: 1.x
+            - paragraph [ref=e359]: The underlying concepts are identical — the renames are surfaced here so you know why the older patterns no longer compile.
+        - generic [ref=e360]:
+          - generic:
+            - separator: ...
+          - generic [ref=e362]:
+            - heading "Swapping Providers" [level=3] [ref=e363]
+            - paragraph [ref=e364]:
+              - code [ref=e365]: HrAgent.cs
+              - text: depends only on
+              - code [ref=e366]: IChatClient
+              - text: . To switch from Ollama to another provider, change three lines in
+              - code [ref=e367]: Program.cs
+              - text: "— nothing else:"
+            - paragraph [ref=e368]:
+              - strong [ref=e369]: "Azure OpenAI:"
+            - generic [ref=e370]:
+              - generic [ref=e371]:
+                - text: IChatClient chatClient = new AzureOpenAIClient(
+                - text: new Uri("https://YOUR-RESOURCE.openai.azure.com"),
+                - text: new AzureKeyCredential(Environment.GetEnvironmentVariable("AZURE_OPENAI_KEY")!))
+                - text: .AsChatClient("gpt-4o")
+                - text: .AsBuilder()
+                - text: .UseFunctionInvocation()
+                - text: .Build();
+              - generic:
+                - text: Auto (Java)
+                - generic:
+                  - img
+            - paragraph [ref=e372]:
+              - strong [ref=e373]: "OpenAI:"
+            - generic [ref=e374]:
+              - generic [ref=e375]:
+                - text: IChatClient chatClient = new OpenAIClient(
+                - text: new ApiKeyCredential(Environment.GetEnvironmentVariable("OPENAI_KEY")!))
+                - text: .AsChatClient("gpt-4o-mini")
+                - text: .AsBuilder()
+                - text: .UseFunctionInvocation()
+                - text: .Build();
+              - generic:
+                - text: Auto (Java)
+                - generic:
+                  - img
+            - paragraph [ref=e376]:
+              - text: The required packages (
+              - code [ref=e377]: Microsoft.Extensions.AI.AzureAIInference
+              - text: or
+              - code [ref=e378]: Microsoft.Extensions.AI.OpenAI
+              - text: ) are the only addition.
+              - code [ref=e379]: HrAgent
+              - text: ","
+              - code [ref=e380]: HrMcp.McpServer
+              - text: ", and all tool classes are untouched."
+        - generic [ref=e381]:
+          - generic:
+            - separator: ...
+          - generic [ref=e383]:
+            - heading "What We Built" [level=3] [ref=e384]
+            - list [ref=e385]:
+              - listitem [ref=e386]:
+                - text: •
+                - code [ref=e387]:
+                  - strong [ref=e388]: HrMcp.Agent
+                - text: — console AI agent using
+                - code [ref=e389]: IChatClient
+                - text: + MCP tools
+              - listitem [ref=e390]:
+                - text: •
+                - code [ref=e391]:
+                  - strong [ref=e392]: HrAgent.cs
+                - text: — conversation loop with system prompt and full history management
+              - listitem [ref=e393]:
+                - text: •
+                - code [ref=e394]:
+                  - strong [ref=e395]: McpClient
+                - strong [ref=e396]: +
+                - code [ref=e397]:
+                  - strong [ref=e398]: HttpClientTransport
+                - text: — MCP client connected to the running server
+              - listitem [ref=e399]:
+                - text: •
+                - code [ref=e400]:
+                  - strong [ref=e401]: UseFunctionInvocation
+                - strong [ref=e402]: middleware
+                - text: — automatic tool dispatch, no manual routing
+              - listitem [ref=e403]:
+                - text: •
+                - code [ref=e404]:
+                  - strong [ref=e405]: WriteJobDescription
+                - strong [ref=e406]: upgraded
+                - text: — from static stub to LLM-generated USAJobs narrative
+              - listitem [ref=e407]:
+                - text: •
+                - code [ref=e408]:
+                  - strong [ref=e409]: IChatClient
+                - strong [ref=e410]: in McpServer
+                - text: — Ollama registered as singleton, injected into the tool
+              - listitem [ref=e411]:
+                - text: •
+                - strong [ref=e412]: Build
+                - text: — 0 errors, 0 warnings
+        - generic [ref=e413]:
+          - generic:
+            - separator: ...
+          - generic [ref=e415]:
+            - heading "Next Up" [level=3] [ref=e416]
+            - paragraph [ref=e417]:
+              - 'link "Part 5: Claude Desktop Integration & End-to-End Demo →" [ref=e418]':
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fworkcontrolgit%2FDotnetAiAgentMcp%2Frefs%2Fheads%2Fmaster%2Fblogs%2Fseries-1-ai-agent-mcp%2Fpart-5-claude-desktop-integration.md
+                - strong [ref=e419]: "Part 5: Claude Desktop Integration & End-to-End Demo →"
+            - paragraph [ref=e420]:
+              - text: We publish the MCP server as a self-contained executable, add it to
+              - code [ref=e421]: claude_desktop_config.json
+              - text: ", and verify the full end-to-end flow from Claude Desktop — the same tools, now callable from a professional AI host with no agent code required."
+        - generic [ref=e422]:
+          - generic:
+            - separator: ...
+          - generic [ref=e424]:
+            - heading "Sources" [level=3] [ref=e425]
+            - list [ref=e426]:
+              - listitem [ref=e427]:
+                - text: •
+                - link "Microsoft.Extensions.AI — NuGet" [ref=e428]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FMicrosoft.Extensions.AI
+              - listitem [ref=e429]:
+                - text: •
+                - link "OllamaSharp — NuGet" [ref=e430]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FOllamaSharp
+              - listitem [ref=e431]:
+                - text: •
+                - link "ModelContextProtocol — NuGet" [ref=e432]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FModelContextProtocol
+              - listitem [ref=e433]:
+                - text: •
+                - link "ModelContextProtocol C# SDK — GitHub" [ref=e434]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fmodelcontextprotocol%2Fcsharp-sdk
+              - listitem [ref=e435]:
+                - text: •
+                - link "Ollama — Download" [ref=e436]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Follama.com%2F
+              - listitem [ref=e437]:
+                - text: •
+                - link "Microsoft.Extensions.AI — Announcement Blog" [ref=e438]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fdevblogs.microsoft.com%2Fdotnet%2Fintroducing-microsoft-extensions-ai-preview%2F
+      - generic [ref=e441]: Title

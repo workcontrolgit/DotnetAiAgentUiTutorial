@@ -1,0 +1,867 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link "Homepage" [ref=e9] [cursor=pointer]:
+          - /url: https://medium.com/
+          - img [ref=e11]
+          - generic: Homepage
+        - link "Scrum and Coke" [ref=e17] [cursor=pointer]:
+          - /url: https://medium.com/scrum-and-coke?source=logo-4b79cc017e83---6c43d7988985
+          - generic [ref=e18]: Scrum and Coke
+        - generic [ref=e20]: Draft in Scrum and CokeSaved
+      - generic [ref=e21]:
+        - button "Decline" [ref=e23] [cursor=pointer]
+        - button "Publish" [ref=e25] [cursor=pointer]
+        - button [ref=e27] [cursor=pointer]:
+          - img [ref=e29]
+        - generic [ref=e32]:
+          - button "Notifications" [ref=e33] [cursor=pointer]:
+            - generic:
+              - generic: "6"
+              - generic: "New notifications: 6"
+          - button "Fuji Nguyen" [ref=e34] [cursor=pointer]:
+            - img "Fuji Nguyen" [ref=e36]
+          - button "Scrum and Coke" [ref=e37] [cursor=pointer]:
+            - img "Scrum and Coke" [ref=e39]
+    - list [ref=e415]:
+      - listitem [ref=e416] [cursor=pointer]:
+        - button "Share draft link" [ref=e417]
+      - listitem [ref=e418] [cursor=pointer]:
+        - button "Share to X" [ref=e419]
+      - listitem [ref=e420] [cursor=pointer]:
+        - button "Manage unlisted setting" [ref=e421]
+      - listitem [ref=e422] [cursor=pointer]:
+        - button "Change featured image" [ref=e423]
+      - listitem [ref=e424] [cursor=pointer]:
+        - button "Change display title / subtitle" [ref=e425]
+      - listitem [ref=e426] [cursor=pointer]:
+        - button "Change topics" [ref=e427]
+      - listitem [ref=e428] [cursor=pointer]:
+        - button "See revision history" [ref=e429]
+      - listitem [ref=e430] [cursor=pointer]:
+        - link "More settings" [ref=e431]:
+          - /url: https://medium.com/p/5ee56af86160/settings
+      - listitem [ref=e432]
+      - listitem [ref=e433] [cursor=pointer]:
+        - button "Hints and keyboard shortcuts" [ref=e434]
+      - listitem [ref=e435] [cursor=pointer]:
+        - link "More help" [ref=e436]:
+          - /url: https://medium.zendesk.com/hc/en-us/categories/200058025-Writing
+  - main [ref=e41]:
+    - article [ref=e42]:
+      - textbox [active] [ref=e43]:
+        - generic [ref=e44]:
+          - text: ...
+          - generic [ref=e46]:
+            - 'heading "Part 6: Securing the MCP Server with OIDC" [level=3] [ref=e47]'
+            - paragraph [ref=e48]:
+              - strong [ref=e49]: "Series:"
+              - text: AI Agents & MCP with .NET 10 |
+              - strong [ref=e50]: Part 6 of 6
+              - strong [ref=e51]: "GitHub:"
+              - link "workcontrolgit/DotnetAiAgentMcp" [ref=e52]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fworkcontrolgit%2FDotnetAiAgentMcp
+        - generic [ref=e53]:
+          - generic:
+            - separator: ...
+          - generic [ref=e55]:
+            - heading "Introduction" [level=3] [ref=e56]
+            - paragraph [ref=e57]:
+              - text: The MCP server we built in Parts 3–5 listens on
+              - code [ref=e58]: http://localhost:5100/mcp
+              - text: with no authentication. On a developer laptop that is fine — nothing reaches the port except local processes. But the moment you deploy the server to a shared environment, a container, or a cloud VM, any process that can reach the network can call your HR tools, read position data, and trigger AI generation at your cost.
+            - paragraph [ref=e59]:
+              - text: This part adds JWT Bearer authentication using OpenID Connect (OIDC). The pattern is standard
+              - link "ASP.NET" [ref=e60]:
+                - /url: https://medium.com/r/?url=http%3A%2F%2Fasp.net%2F
+              - text: "Core:"
+            - list [ref=e61]:
+              - listitem [ref=e62]:
+                - text: • The MCP server becomes a
+                - strong [ref=e63]: resource server
+                - text: — it validates JWT tokens on every request.
+              - listitem [ref=e64]:
+                - text: • The agent (or any client) becomes an
+                - strong [ref=e65]: OAuth2 client
+                - text: — it acquires a token via the client credentials flow before connecting.
+              - listitem [ref=e66]:
+                - text: • An external
+                - strong [ref=e67]: OIDC provider
+                - text: issues and validates tokens.
+            - paragraph [ref=e68]:
+              - text: The working example uses
+              - strong [ref=e69]: Duende IdentityServer
+              - text: running in Docker — a self-hosted .NET identity server you control completely. Because the code speaks standard OIDC, swapping to a cloud provider (Okta, Azure Entra ID, Google) requires only two config values. That swap is covered at the end of this part.
+            - paragraph [ref=e70]:
+              - text: "The surface area of change is small: four lines in"
+              - code [ref=e71]: Program.cs
+              - text: ", two values in"
+              - code [ref=e72]: appsettings.Development.json
+              - text: ", and token acquisition in the agent."
+        - generic [ref=e73]:
+          - generic:
+            - separator: ...
+          - generic [ref=e75]:
+            - heading "Architecture" [level=3] [ref=e76]
+            - figure "Type caption for image (optional)" [ref=e77]:
+              - img [ref=e80]
+            - paragraph [ref=e81]: The OIDC provider is the only component that changes between deployments. The server and agent code are provider-agnostic — they speak standard JWT Bearer and OAuth2 client credentials.
+        - generic [ref=e82]:
+          - generic:
+            - separator: ...
+          - generic [ref=e84]:
+            - heading "Provider Options" [level=3] [ref=e85]
+            - paragraph [ref=e86]: Any standards-compliant OIDC provider works. This part uses Duende IdentityServer because it runs locally in Docker with no external accounts or network dependencies.
+            - list [ref=e87]:
+              - listitem [ref=e88]:
+                - text: •
+                - strong [ref=e89]: Duende IdentityServer
+                - text: — open-source .NET identity server; runs in Docker; full control over clients, scopes, and users; free community license for development; production license required for revenue-generating use. This is the provider used in this walkthrough.
+              - listitem [ref=e90]:
+                - text: •
+                - strong [ref=e91]: Okta
+                - text: — free developer account supports up to 1,000 monthly active users; well-documented client credentials setup; hosted, no infrastructure required.
+              - listitem [ref=e92]:
+                - text: •
+                - strong [ref=e93]: Azure Entra ID (formerly Azure AD)
+                - text: — use App Registrations with a client secret; integrates with MSAL and Azure RBAC; free tier available in Azure portal.
+              - listitem [ref=e94]:
+                - text: •
+                - strong [ref=e95]: Google Cloud Identity Platform
+                - text: — OAuth2 service accounts support client credentials; configure via Google Cloud Console.
+        - generic [ref=e96]:
+          - generic:
+            - separator: ...
+          - generic [ref=e98]:
+            - heading "Step 1 — Add JWT Bearer to HrMcp.McpServer" [level=3] [ref=e99]:
+              - text: Step 1 — Add JWT Bearer to
+              - code [ref=e100]: HrMcp.McpServer
+            - generic [ref=e101]:
+              - generic [ref=e102]: dotnet add src/HrMcp.McpServer package Microsoft.AspNetCore.Authentication.JwtBearer --version 9.*
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - blockquote [ref=e103]:
+              - strong [ref=e104]:
+                - emphasis [ref=e105]: "Note:"
+              - emphasis [ref=e106]
+              - code [ref=e107]:
+                - emphasis [ref=e108]: Microsoft.AspNetCore.Authentication.JwtBearer
+              - emphasis [ref=e109]: ships as a standalone NuGet package. For .NET 10 projects targeting
+              - link "ASP.NET" [ref=e110]:
+                - /url: https://medium.com/r/?url=http%3A%2F%2Fasp.net%2F
+                - emphasis [ref=e111]: ASP.NET
+              - emphasis [ref=e112]: Core, version
+              - code [ref=e113]:
+                - emphasis [ref=e114]: 9.*
+              - emphasis [ref=e115]: is the current stable release that works on net10.0.
+        - generic [ref=e116]:
+          - generic:
+            - separator: ...
+          - generic [ref=e118]:
+            - heading "Step 2 — Update appsettings.json" [level=3] [ref=e119]:
+              - text: Step 2 — Update
+              - code [ref=e120]: appsettings.json
+            - paragraph [ref=e121]:
+              - text: Add the
+              - code [ref=e122]: Oidc
+              - text: section with placeholder values. Real values go in
+              - code [ref=e123]: appsettings.Development.json
+              - text: "(gitignored) or environment variables — never committed:"
+            - generic [ref=e124]:
+              - generic [ref=e125]:
+                - text: "{"
+                - text: "\"ConnectionStrings\": {"
+                - text: "\"DefaultConnection\":"
+                - generic [ref=e126]: "\"Server=(localdb)\\\\mssqllocaldb;Database=HrMcpDb;Trusted_Connection=True;\""
+                - text: "},"
+                - text: "\"Urls\": \"http://localhost:5100\","
+                - text: "\"Oidc\": {"
+                - text: "\"Authority\": \"https://YOUR-OIDC-PROVIDER\","
+                - text: "\"Audience\": \"hr-mcp\""
+                - text: "},"
+                - text: "\"Logging\": {"
+                - text: "\"LogLevel\": {"
+                - text: "\"Default\": \"Information\","
+                - text: "\"Microsoft.AspNetCore\": \"Warning\""
+                - text: "}"
+                - text: "},"
+                - text: "\"AllowedHosts\": \"*\""
+                - text: "}"
+              - generic:
+                - text: Auto (Swift)
+                - generic:
+                  - img
+            - paragraph [ref=e127]:
+              - text: For local development with the Duende Docker container, override in
+              - code [ref=e128]: appsettings.Development.json
+              - text: "(gitignored):"
+            - generic [ref=e129]:
+              - generic [ref=e130]:
+                - text: "{"
+                - text: "\"Oidc\": {"
+                - text: "\"Authority\": \"https://localhost:44310\","
+                - text: "\"Audience\": \"hr-mcp\""
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (JSON)
+                - generic:
+                  - img
+            - paragraph [ref=e131]:
+              - text: The
+              - code [ref=e132]: Authority
+              - text: is the base URL of the IdentityServer — the JWT Bearer middleware fetches the JWKS automatically from
+              - code [ref=e133]: "{Authority}/.well-known/openid-configuration"
+              - text: . The
+              - code [ref=e134]: Audience
+              - text: must match the API Resource name registered in the identity server.
+        - generic [ref=e135]:
+          - generic:
+            - separator: ...
+          - generic [ref=e137]:
+            - heading "Step 3 — Add Authentication Middleware to Program.cs" [level=3] [ref=e138]:
+              - text: Step 3 — Add Authentication Middleware to
+              - code [ref=e139]: Program.cs
+            - paragraph [ref=e140]:
+              - text: The full updated
+              - code [ref=e141]: Program.cs
+              - text: . The four new lines are marked
+              - code [ref=e142]: // NEW
+              - text: and one line is marked
+              - code [ref=e143]: // CHANGED
+              - text: ":"
+            - generic [ref=e144]:
+              - generic [ref=e145]:
+                - text: // src/HrMcp.McpServer/Program.cs
+                - text: using HrMcp.Application.Services;
+                - text: using HrMcp.Infrastructure.Persistence;
+                - text: using HrMcp.McpServer.Tools;
+                - text: using Microsoft.AspNetCore.Authentication.JwtBearer; // NEW
+                - text: using Microsoft.EntityFrameworkCore;
+                - text: using Microsoft.Extensions.AI;
+                - text: using OllamaSharp;
+                - text: var isStdio = args.Contains("--stdio");
+                - text: var builder = WebApplication.CreateBuilder(args);
+                - text: if (isStdio)
+                - text: "{"
+                - text: builder.Logging.ClearProviders();
+                - text: builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = Microsoft.Extensions.Logging.LogLevel.Trace);
+                - text: builder.WebHost.UseUrls();
+                - text: "}"
+                - text: builder.Services.AddPersistence(
+                - text: builder.Configuration.GetConnectionString("DefaultConnection")!);
+                - text: builder.Services.AddScoped<PositionService>();
+                - text: builder.Services.AddScoped<HiringOrganizationService>();
+                - text: builder.Services.AddSingleton<IChatClient>(
+                - text: new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.2"));
+                - text: // NEW — JWT Bearer authentication
+                - text: builder.Services
+                - text: .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                - text: .AddJwtBearer(options =>
+                - text: "{"
+                - text: options.Authority = builder.Configuration["Oidc:Authority"];
+                - text: options.Audience = builder.Configuration["Oidc:Audience"];
+                - text: // Trust self-signed certificates when running against a local
+                - text: // Duende IdentityServer Docker container in Development.
+                - text: // Remove this block when pointing at a cloud provider or a
+                - text: // production server with a trusted certificate.
+                - text: if (builder.Environment.IsDevelopment())
+                - text: options.BackchannelHttpHandler = new HttpClientHandler
+                - text: "{"
+                - text: ServerCertificateCustomValidationCallback =
+                - text: HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                - text: "};"
+                - text: "});"
+                - text: builder.Services.AddAuthorization(); // NEW
+                - text: var mcp = builder.Services
+                - text: .AddMcpServer()
+                - text: .WithTools<PositionTools>()
+                - text: .WithTools<HiringOrganizationTools>()
+                - text: .WithTools<JobDescriptionTools>();
+                - text: if (isStdio)
+                - text: mcp.WithStdioServerTransport();
+                - text: else
+                - text: mcp.WithHttpTransport();
+                - text: var app = builder.Build();
+                - text: using (var scope = app.Services.CreateScope())
+                - text: "{"
+                - text: var db = scope.ServiceProvider.GetRequiredService<HrDbContext>();
+                - text: db.Database.Migrate();
+                - text: var seedPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "usajobs-seed.json");
+                - text: DbSeeder.Seed(db, seedPath);
+                - text: "}"
+                - text: app.UseAuthentication(); // NEW
+                - text: app.UseAuthorization(); // NEW
+                - text: if (!isStdio)
+                - text: app.MapMcp("/mcp").RequireAuthorization(); // CHANGED
+                - text: await app.RunAsync();
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - paragraph [ref=e146]:
+              - text: With this in place, any HTTP request to
+              - code [ref=e147]: /mcp
+              - text: without a valid JWT returns
+              - code [ref=e148]: 401 Unauthorized
+              - text: . Stdio transport is unaffected —
+              - code [ref=e149]: MapMcp
+              - text: is not called in stdio mode.
+            - paragraph [ref=e150]:
+              - text: The
+              - code [ref=e151]: BackchannelHttpHandler
+              - text: block handles the self-signed certificate that Duende's Docker compose setup uses for the nginx reverse proxy. When you switch to a cloud provider with a trusted certificate, delete that block.
+        - generic [ref=e152]:
+          - generic:
+            - separator: ...
+          - generic [ref=e154]:
+            - heading "Step 4 — Agent Token Acquisition" [level=3] [ref=e155]
+            - paragraph [ref=e156]:
+              - text: The agent acquires a token via the OAuth2 client credentials flow and passes it as a bearer header using
+              - code [ref=e157]: HttpClientTransportOptions.AdditionalHeaders
+              - text: .
+            - blockquote [ref=e158]:
+              - strong [ref=e159]:
+                - emphasis [ref=e160]: "Package version note:"
+              - emphasis [ref=e161]: If you are using OllamaSharp 5.4 or later, set
+              - code [ref=e162]:
+                - emphasis [ref=e163]: Microsoft.Extensions.AI
+              - emphasis [ref=e164]: to version
+              - code [ref=e165]:
+                - emphasis [ref=e166]: 10.*
+              - emphasis [ref=e167]: in
+              - code [ref=e168]:
+                - emphasis [ref=e169]: HrMcp.Agent.csproj
+              - emphasis [ref=e170]: . OllamaSharp 5.4+ pulls
+              - code [ref=e171]:
+                - emphasis [ref=e172]: Microsoft.Extensions.AI.Abstractions 10.4.x
+              - emphasis [ref=e173]: transitively, which causes a
+              - code [ref=e174]:
+                - emphasis [ref=e175]: TypeLoadException
+              - emphasis [ref=e176]: at runtime when the direct package is pinned at
+              - code [ref=e177]:
+                - emphasis [ref=e178]: 9.*
+              - emphasis [ref=e179]: .
+            - generic [ref=e180]:
+              - generic [ref=e181]:
+                - text: // src/HrMcp.Agent/Program.cs
+                - text: using Microsoft.Extensions.AI;
+                - text: using ModelContextProtocol.Client;
+                - text: using OllamaSharp;
+                - text: using HrMcp.Agent;
+                - text: using System.Net.Http.Json;
+                - text: using System.Text.Json;
+                - text: // --- Token acquisition (client credentials flow) ---
+                - text: // The HttpClientHandler below trusts the self-signed certificate used by the
+                - text: // local Duende IdentityServer Docker container. Remove it when using a cloud
+                - text: // provider or a server with a trusted certificate.
+                - text: using var tokenHandler = new HttpClientHandler
+                - text: "{"
+                - text: ServerCertificateCustomValidationCallback =
+                - text: HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                - text: "};"
+                - text: using var tokenClient = new HttpClient(tokenHandler);
+                - text: var tokenResponse = await tokenClient.PostAsync(
+                - text: "\"https://localhost:44310/connect/token\","
+                - text: new FormUrlEncodedContent(new Dictionary<string, string>
+                - text: "{"
+                - text: "[\"grant_type\"] = \"client_credentials\","
+                - text: "[\"client_id\"] = \"hr-mcp-agent\","
+                - text: "[\"client_secret\"] = \"hr-mcp-agent-secret\","
+                - text: "[\"scope\"] = \"hr-mcp-api\","
+                - text: "}));"
+                - text: tokenResponse.EnsureSuccessStatusCode();
+                - text: var tokenDoc = await tokenResponse.Content.ReadFromJsonAsync<JsonElement>();
+                - text: var accessToken = tokenDoc.GetProperty("access_token").GetString()!;
+                - text: Console.WriteLine("Token acquired.\n");
+                - text: // --- Connect to MCP server with bearer token ---
+                - text: await using var mcpClient = await McpClient.CreateAsync(
+                - text: new HttpClientTransport(new HttpClientTransportOptions
+                - text: "{"
+                - text: Endpoint = new Uri("http://localhost:5100/mcp"),
+                - text: AdditionalHeaders = new Dictionary<string, string>
+                - text: "{"
+                - text: "[\"Authorization\"] ="
+                - generic [ref=e182]: "$\"Bearer {accessToken}\""
+                - text: "}"
+                - text: "}));"
+                - text: var mcpTools = await mcpClient.ListToolsAsync();
+                - text: Console.WriteLine(
+                - generic [ref=e183]:
+                  - text: "$\"Connected. Tools:"
+                  - generic [ref=e184]: "{string.Join(\", \", mcpTools.Select(t => t.Name))}"
+                  - text: \n"
+                - text: );
+                - text: IChatClient chatClient = ((IChatClient)new OllamaApiClient(
+                - text: new Uri("http://localhost:11434"), "llama3.2"))
+                - text: .AsBuilder()
+                - text: .UseFunctionInvocation()
+                - text: .Build();
+                - text: var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList());
+                - text: await agent.RunAsync();
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - paragraph [ref=e185]: "Key points:"
+            - list [ref=e186]:
+              - listitem [ref=e187]:
+                - text: •
+                - code [ref=e188]:
+                  - strong [ref=e189]: AdditionalHeaders
+                - text: "on"
+                - code [ref=e190]: HttpClientTransportOptions
+                - text: — sends the
+                - code [ref=e191]: Authorization
+                - text: header with every request to the MCP server.
+              - listitem [ref=e192]:
+                - text: •
+                - code [ref=e193]:
+                  - strong [ref=e194]: tokenHandler
+                - strong [ref=e195]: with cert bypass
+                - text: — required when the IdentityServer container uses a self-signed certificate. Remove for cloud providers.
+              - listitem [ref=e196]:
+                - text: •
+                - strong [ref=e197]: Client credentials
+                - text: — for production, move
+                - code [ref=e198]: client_id
+                - text: and
+                - code [ref=e199]: client_secret
+                - text: to environment variables or a secrets manager. Never commit credentials to source control.
+              - listitem [ref=e200]:
+                - text: •
+                - code [ref=e201]:
+                  - strong [ref=e202]: scope
+                - text: — the scope name must match what is registered in the identity server. Omit if your provider does not require scope for client credentials.
+        - generic [ref=e203]:
+          - generic:
+            - separator: ...
+          - generic [ref=e205]:
+            - heading "Duende IdentityServer Docker Setup" [level=3] [ref=e206]
+            - paragraph [ref=e207]:
+              - text: This walkthrough uses the
+              - link "Skoruba Duende IdentityServer Admin UI" [ref=e208]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fskoruba%2FDuende.IdentityServer.Admin
+              - text: Docker compose project — a production-ready identity server with a web admin panel, all running locally in Docker.
+            - paragraph [ref=e209]:
+              - strong [ref=e210]: 1. Clone and start the containers
+            - generic [ref=e211]:
+              - generic [ref=e212]:
+                - text: git clone https://github.com/skoruba/Duende.IdentityServer.Admin
+                - text: cd Duende.IdentityServer.Admin
+                - text: docker-compose up -d
+              - generic:
+                - text: Auto (Bash)
+                - generic:
+                  - img
+            - paragraph [ref=e213]:
+              - text: The nginx reverse proxy exposes the STS at
+              - code [ref=e214]: https://localhost:44310
+              - text: . The admin UI is at
+              - code [ref=e215]:
+                - link "https://localhost:44303" [ref=e216]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Flocalhost%3A44303.
+              - link "." [ref=e217]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Flocalhost%3A44303.
+            - paragraph [ref=e218]:
+              - strong [ref=e219]: 2. Add the HR MCP API scope, resource, and client
+            - paragraph [ref=e220]:
+              - text: The container seeds its database from
+              - code [ref=e221]: shared/identityserverdata.json
+              - text: on first start. Add the following entries, then restart with
+              - code [ref=e222]: docker-compose up -d --force-recreate
+              - text: "to re-seed:"
+            - paragraph [ref=e223]:
+              - text: In the
+              - code [ref=e224]: ApiScopes
+              - text: "array:"
+            - generic [ref=e225]:
+              - generic [ref=e226]:
+                - text: "{"
+                - text: "\"Name\": \"hr-mcp-api\","
+                - text: "\"DisplayName\": \"HR MCP API\","
+                - text: "\"Required\":"
+                - generic [ref=e227]: "true"
+                - text: "}"
+              - generic:
+                - text: Auto (JSON)
+                - generic:
+                  - img
+            - paragraph [ref=e228]:
+              - text: In the
+              - code [ref=e229]: ApiResources
+              - text: "array:"
+            - generic [ref=e230]:
+              - generic [ref=e231]:
+                - text: "{"
+                - text: "\"Name\": \"hr-mcp\","
+                - text: "\"Scopes\": [ \"hr-mcp-api\" ]"
+                - text: "}"
+              - generic:
+                - text: Auto (JSON)
+                - generic:
+                  - img
+            - paragraph [ref=e232]:
+              - text: In the
+              - code [ref=e233]: Clients
+              - text: "array:"
+            - generic [ref=e234]:
+              - generic [ref=e235]:
+                - text: "{"
+                - text: "\"ClientId\": \"hr-mcp-agent\","
+                - text: "\"ClientName\": \"HR MCP Agent\","
+                - text: "\"AllowedGrantTypes\": [ \"client_credentials\" ],"
+                - text: "\"RequireClientSecret\":"
+                - generic [ref=e236]: "true"
+                - text: ","
+                - text: "\"ClientSecrets\": ["
+                - text: "{ \"Value\": \"hr-mcp-agent-secret\" }"
+                - text: "],"
+                - text: "\"RequirePkce\":"
+                - generic [ref=e237]: "false"
+                - text: ","
+                - text: "\"AllowedScopes\": [ \"hr-mcp-api\" ]"
+                - text: "}"
+              - generic:
+                - text: Auto (JSON)
+                - generic:
+                  - img
+            - paragraph [ref=e238]:
+              - strong [ref=e239]: 3. Configure the MCP server
+            - paragraph [ref=e240]:
+              - code [ref=e241]: appsettings.Development.json
+              - text: "(gitignored):"
+            - generic [ref=e242]:
+              - generic [ref=e243]:
+                - text: "{"
+                - text: "\"Oidc\": {"
+                - text: "\"Authority\": \"https://localhost:44310\","
+                - text: "\"Audience\": \"hr-mcp\""
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (JSON)
+                - generic:
+                  - img
+            - paragraph [ref=e244]:
+              - text: The
+              - code [ref=e245]: Audience
+              - text: value must match the
+              - code [ref=e246]: ApiResource
+              - text: name —
+              - code [ref=e247]: hr-mcp
+              - text: — not the scope name.
+            - paragraph [ref=e248]:
+              - strong [ref=e249]: 4. Verify the token endpoint
+            - generic [ref=e250]:
+              - generic [ref=e251]:
+                - text: curl -sk -X POST https://localhost:44310/connect/token \
+                - text: "-d \"grant_type=client_credentials&client_id=hr-mcp-agent&client_secret=hr-mcp-agent-secret&scope=hr-mcp-api\""
+              - generic:
+                - text: Auto (Bash)
+                - generic:
+                  - img
+            - paragraph [ref=e252]:
+              - text: A successful response returns an
+              - code [ref=e253]: access_token
+              - text: JWT. Decode it at
+              - link "jwt.io" [ref=e254]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fjwt.io%2F
+              - text: and confirm
+              - code [ref=e255]: "aud: hr-mcp"
+              - text: and
+              - code [ref=e256]: "scope: hr-mcp-api"
+              - text: .
+            - paragraph [ref=e257]:
+              - strong [ref=e258]: 5. Verify 401 protection
+            - generic [ref=e259]:
+              - generic [ref=e260]:
+                - text: curl -i http://localhost:5100/mcp
+                - text: "# HTTP/1.1 401 Unauthorized"
+              - generic:
+                - text: Auto (Bash)
+                - generic:
+                  - img
+            - paragraph [ref=e261]:
+              - strong [ref=e262]: 6. Run the agent end-to-end
+            - generic [ref=e263]:
+              - generic [ref=e264]:
+                - text: dotnet run --project src/HrMcp.Agent
+                - text: "# Token acquired."
+                - text: "# Connected. Tools: GetOpenPositions, WriteJobDescription, ..."
+              - generic:
+                - text: Auto (Bash)
+                - generic:
+                  - img
+        - generic [ref=e265]:
+          - generic:
+            - separator: ...
+          - generic [ref=e267]:
+            - heading "Swapping to a Cloud Provider" [level=3] [ref=e268]
+            - paragraph [ref=e269]:
+              - text: Because the server and agent speak standard OIDC and OAuth2, switching providers requires changing only the
+              - code [ref=e270]: Authority
+              - text: ","
+              - code [ref=e271]: Audience
+              - text: ", and token endpoint. Remove the"
+              - code [ref=e272]: DangerousAcceptAnyServerCertificateValidator
+              - text: block — cloud providers have trusted certificates.
+            - paragraph [ref=e273]:
+              - strong [ref=e274]: Okta
+            - paragraph [ref=e275]:
+              - code [ref=e276]: appsettings.Development.json
+              - text: ":"
+            - generic [ref=e277]:
+              - generic [ref=e278]:
+                - text: "{"
+                - text: "\"Oidc\": {"
+                - text: "\"Authority\": \"https://dev-abc123.okta.com/oauth2/default\","
+                - text: "\"Audience\": \"api://default\""
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (JSON)
+                - generic:
+                  - img
+            - paragraph [ref=e279]:
+              - text: "Agent token endpoint:"
+              - code [ref=e280]:
+                - link "https://dev-abc123.okta.com/oauth2/default/v1/token" [ref=e281]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fdev-abc123.okta.com%2Foauth2%2Fdefault%2Fv1%2Ftoken
+            - paragraph [ref=e282]:
+              - text: "Setup: Okta admin console → Applications → Create App Integration → API Services. Create a custom scope"
+              - code [ref=e283]: hr-mcp-api
+              - text: under Security → API → Authorization Servers → default → Scopes.
+            - paragraph [ref=e284]:
+              - strong [ref=e285]: Azure Entra ID
+            - paragraph [ref=e286]:
+              - code [ref=e287]: appsettings.Development.json
+              - text: ":"
+            - generic [ref=e288]:
+              - generic [ref=e289]:
+                - text: "{"
+                - text: "\"Oidc\": {"
+                - text: "\"Authority\": \"https://login.microsoftonline.com/{tenant-id}/v2.0\","
+                - text: "\"Audience\": \"api://{client-id}\""
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (JSON)
+                - generic:
+                  - img
+            - paragraph [ref=e290]:
+              - text: "Agent token endpoint:"
+              - code [ref=e291]:
+                - 'link "https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token" [ref=e292]':
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Flogin.microsoftonline.com%2F%7Btenant-id%7D%2Foauth2%2Fv2.0%2Ftoken
+            - paragraph [ref=e293]:
+              - text: "Agent scope:"
+              - code [ref=e294]: "{client-id}/.default"
+            - paragraph [ref=e295]: "Setup: Azure portal → App Registrations → New registration → Certificates & secrets → Client secrets. Expose an API and add a scope."
+            - paragraph [ref=e296]:
+              - strong [ref=e297]: Google Cloud
+            - paragraph [ref=e298]:
+              - text: Google uses service accounts rather than client credentials for machine-to-machine. The OIDC discovery endpoint is
+              - code [ref=e299]: https://accounts.google.com
+              - text: . Use a service account key to exchange for a token via the Google OAuth2 token endpoint.
+        - generic [ref=e300]:
+          - generic:
+            - separator: ...
+          - generic [ref=e302]:
+            - heading "Optional — Tool-Level Role Check" [level=3] [ref=e303]
+            - paragraph [ref=e304]:
+              - text: JWT Bearer middleware secures the entire
+              - code [ref=e305]: /mcp
+              - text: endpoint. If you need finer control — for example, only users with an
+              - code [ref=e306]: hr-admin
+              - text: role can call
+              - code [ref=e307]: WriteJobDescription
+              - text: — inject
+              - code [ref=e308]: IHttpContextAccessor
+              - text: "into the tool:"
+            - generic [ref=e309]:
+              - generic [ref=e310]:
+                - text: // src/HrMcp.McpServer/Tools/JobDescriptionTools.cs
+                - text: using Microsoft.AspNetCore.Http;
+              - generic:
+                - text: Auto (C++)
+                - generic:
+                  - img
+            - generic [ref=e311]:
+              - text: "[McpServerToolType]"
+              - text: public sealed class JobDescriptionTools(
+              - text: PositionService positions,
+              - text: IChatClient chatClient,
+              - text: IHttpContextAccessor httpContextAccessor)
+              - text: "{"
+              - text: "[McpServerTool(Name = \"WriteJobDescription\"),"
+              - text: Description("Generates a USAJobs-style job announcement using AI.")]
+              - text: public async Task<string> WriteJobDescription(int positionId, CancellationToken ct = default)
+              - text: "{"
+              - text: var user = httpContextAccessor.HttpContext?.User;
+              - text: if (user?.IsInRole("hr-admin") != true)
+              - text: "return \"Unauthorized: WriteJobDescription requires the hr-admin role.\";"
+            - generic [ref=e312]:
+              - text: // ... rest of implementation
+              - text: "}"
+              - text: "}"
+            - paragraph [ref=e313]:
+              - text: Register
+              - code [ref=e314]: IHttpContextAccessor
+              - text: in
+              - code [ref=e315]: Program.cs
+              - text: ":"
+            - generic [ref=e316]:
+              - generic [ref=e317]: builder.Services.AddHttpContextAccessor();
+              - generic:
+                - text: Auto (SCSS)
+                - generic:
+                  - img
+            - paragraph [ref=e318]:
+              - text: For Duende IdentityServer, add a
+              - code [ref=e319]: role
+              - text: claim to the client token by including
+              - code [ref=e320]: "UserClaims: [ \"role\" ]"
+              - text: on the API scope and setting the
+              - code [ref=e321]: role
+              - text: property on the client. Cloud providers handle role claims differently — Okta uses
+              - code [ref=e322]: groups
+              - text: ", Entra uses app roles defined in the manifest."
+        - generic [ref=e323]:
+          - generic:
+            - separator: ...
+          - generic [ref=e325]:
+            - heading "Step 5 — Build" [level=3] [ref=e326]
+            - generic [ref=e327]:
+              - generic [ref=e328]: "dotnet build DotnetAiAgentMcp.slnx # 0 errors, 0 warnings"
+              - generic:
+                - text: Auto (Bash)
+                - generic:
+                  - img
+            - paragraph [ref=e329]:
+              - text: The JWT Bearer middleware compiles without a live provider — the
+              - code [ref=e330]: Authority
+              - text: and
+              - code [ref=e331]: Audience
+              - text: values are read at runtime. A missing or incorrect
+              - code [ref=e332]: Authority
+              - text: produces a runtime warning on first request, not a build error.
+        - generic [ref=e333]:
+          - generic:
+            - separator: ...
+          - generic [ref=e335]:
+            - heading "What We Built" [level=3] [ref=e336]
+            - paragraph [ref=e337]: "Across the six parts of this series you have built a complete, production-shaped AI agent stack:"
+            - paragraph [ref=e338]:
+              - strong [ref=e339]: Infrastructure
+            - list [ref=e340]:
+              - listitem [ref=e341]: "• Clean Architecture .NET 10 solution: Core, Application, Infrastructure.Persistence, McpServer, Agent"
+              - listitem [ref=e342]:
+                - text: • EF Core migrations, SQL Server,
+                - code [ref=e343]: DbSeeder
+                - text: with USAJobs data
+              - listitem [ref=e344]:
+                - text: • Self-contained
+                - code [ref=e345]: HrMcp.McpServer.exe
+                - text: for desktop and server deployment
+            - paragraph [ref=e346]:
+              - strong [ref=e347]: MCP Server (
+              - code [ref=e348]:
+                - strong [ref=e349]: HrMcp.McpServer
+              - strong [ref=e350]: )
+            - list [ref=e351]:
+              - listitem [ref=e352]:
+                - text: "• Five typed tools:"
+                - code [ref=e353]: GetOpenPositions
+                - text: ","
+                - code [ref=e354]: GetPositionById
+                - text: ","
+                - code [ref=e355]: GetPositionsByOrganization
+                - text: ","
+                - code [ref=e356]: GetHiringOrganizations
+                - text: ","
+                - code [ref=e357]: WriteJobDescription
+              - listitem [ref=e358]: "• Dual transport: stdio for Claude Desktop, HTTP/SSE for programmatic clients"
+              - listitem [ref=e359]:
+                - text: • JWT Bearer authentication — any OIDC provider, configured via
+                - code [ref=e360]: appsettings.json
+            - paragraph [ref=e361]:
+              - strong [ref=e362]: AI Agent (
+              - code [ref=e363]:
+                - strong [ref=e364]: HrMcp.Agent
+              - strong [ref=e365]: )
+            - list [ref=e366]:
+              - listitem [ref=e367]:
+                - text: •
+                - code [ref=e368]: IChatClient
+                - text: abstraction (
+                - link "Microsoft.Extensions.AI" [ref=e369]:
+                  - /url: https://medium.com/r/?url=http%3A%2F%2Fmicrosoft.extensions.ai%2F
+                - text: ) with
+                - code [ref=e370]: OllamaApiClient
+                - text: (OllamaSharp)
+              - listitem [ref=e371]:
+                - text: •
+                - code [ref=e372]: UseFunctionInvocation
+                - text: middleware — automatic tool dispatch, no manual routing
+              - listitem [ref=e373]: • System prompt with HR-domain guidelines
+              - listitem [ref=e374]: • Full conversation history across turns
+            - paragraph [ref=e375]:
+              - strong [ref=e376]: Integration
+            - list [ref=e377]:
+              - listitem [ref=e378]:
+                - text: • Claude Desktop — stdio transport,
+                - code [ref=e379]: claude_desktop_config.json
+                - text: ", hammer icon"
+              - listitem [ref=e380]:
+                - text: • VS Code Copilot Chat —
+                - code [ref=e381]: .vscode/mcp.json
+                - text: ", HTTP transport,"
+                - code [ref=e382]: "@hr-mcp"
+              - listitem [ref=e383]: • MCP Inspector — HTTP mode testing and debugging
+        - generic [ref=e384]:
+          - generic:
+            - separator: ...
+          - generic [ref=e386]:
+            - heading "Sources" [level=3] [ref=e387]
+            - list [ref=e388]:
+              - listitem [ref=e389]:
+                - text: •
+                - link "OpenID Connect — Introduction" [ref=e390]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fopenid.net%2Fdevelopers%2Fhow-connect-works%2F
+              - listitem [ref=e391]:
+                - text: •
+                - link "JWT Bearer — Microsoft Docs" [ref=e392]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Faspnet%2Fcore%2Fsecurity%2Fauthentication%2Fjwt-authn
+              - listitem [ref=e393]:
+                - text: •
+                - link "OAuth2 Client Credentials Flow — RFC 6749" [ref=e394]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fdatatracker.ietf.org%2Fdoc%2Fhtml%2Frfc6749%23section-4.4
+              - listitem [ref=e395]:
+                - text: •
+                - link "Duende IdentityServer — Overview" [ref=e396]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fduendesoftware.com%2Fproducts%2Fidentityserver
+              - listitem [ref=e397]:
+                - text: •
+                - link "Skoruba Duende IdentityServer Admin UI — GitHub" [ref=e398]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fskoruba%2FDuende.IdentityServer.Admin
+              - listitem [ref=e399]:
+                - text: •
+                - link "ModelContextProtocol C# SDK — GitHub" [ref=e400]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fmodelcontextprotocol%2Fcsharp-sdk
+              - listitem [ref=e401]:
+                - text: •
+                - link "Okta Developer — Client Credentials" [ref=e402]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fdeveloper.okta.com%2Fdocs%2Fguides%2Fimplement-grant-type%2Fclientcreds%2Fmain%2F
+              - listitem [ref=e403]:
+                - text: •
+                - link "Azure Entra ID — App Registrations" [ref=e404]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fentra%2Fidentity-platform%2Fquickstart-register-app
+              - listitem [ref=e405]:
+                - text: •
+                - link "Microsoft.AspNetCore.Authentication.JwtBearer — NuGet" [ref=e406]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FMicrosoft.AspNetCore.Authentication.JwtBearer
+      - generic [ref=e409]: Title

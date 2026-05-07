@@ -1,0 +1,554 @@
+- generic [ref=e4]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - link "Homepage" [ref=e9] [cursor=pointer]:
+        - /url: https://medium.com/
+        - img [ref=e11]
+        - generic: Homepage
+      - link "Scrum and Coke" [ref=e17] [cursor=pointer]:
+        - /url: https://medium.com/scrum-and-coke?source=logo-4b79cc017e83---6c43d7988985
+        - generic [ref=e18]: Scrum and Coke
+      - generic [ref=e20]: Draft in Scrum and CokeSaved
+    - generic [ref=e21]:
+      - button "Decline" [ref=e23] [cursor=pointer]
+      - button "Publish" [ref=e25] [cursor=pointer]
+      - button [ref=e27] [cursor=pointer]:
+        - img [ref=e29]
+      - generic [ref=e32]:
+        - button "Notifications" [ref=e33] [cursor=pointer]:
+          - img [ref=e35]
+        - button "Fuji Nguyen" [ref=e37] [cursor=pointer]:
+          - img "Fuji Nguyen" [ref=e39]
+        - button "Scrum and Coke" [ref=e40] [cursor=pointer]:
+          - img "Scrum and Coke" [ref=e42]
+  - main [ref=e44]:
+    - article [ref=e45]:
+      - textbox [active] [ref=e46]:
+        - generic [ref=e47]:
+          - text: ...
+          - generic [ref=e49]:
+            - 'heading "Part 5: Claude Desktop Integration & End-to-End Demo" [level=3] [ref=e50]'
+            - paragraph [ref=e51]:
+              - strong [ref=e52]: "Series:"
+              - text: AI Agents & MCP with .NET 10 |
+              - strong [ref=e53]: Part 5 of 6
+              - strong [ref=e54]: "GitHub:"
+              - link "workcontrolgit/DotnetAiAgentMcp" [ref=e55]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fworkcontrolgit%2FDotnetAiAgentMcp
+        - generic [ref=e56]:
+          - generic:
+            - separator: ...
+          - generic [ref=e58]:
+            - heading "Introduction" [level=3] [ref=e59]
+            - paragraph [ref=e60]:
+              - text: In Part 4 we built
+              - code [ref=e61]: HrMcp.Agent
+              - text: "— a console app that connects to the MCP server over HTTP and holds a live AI conversation. That is one way to consume an MCP server. This part shows another: connect the server directly to Claude Desktop so that Claude's built-in AI can call your tools with no agent code at all."
+            - paragraph [ref=e62]: "By the end you will have:"
+            - list [ref=e63]:
+              - listitem [ref=e64]:
+                - text: • A self-contained
+                - code [ref=e65]: HrMcp.McpServer.exe
+                - text: published and running under Claude Desktop
+              - listitem [ref=e66]: • The HR tools visible in Claude Desktop’s hammer icon
+              - listitem [ref=e67]:
+                - text: • A working
+                - code [ref=e68]: .vscode/mcp.json
+                - text: so VS Code Copilot Chat can also call the same server
+              - listitem [ref=e69]: • A debugging checklist for when things go wrong
+        - generic [ref=e70]:
+          - generic:
+            - separator: ...
+          - generic [ref=e72]:
+            - heading "How stdio Transport Works with Claude Desktop" [level=3] [ref=e73]
+            - paragraph [ref=e74]: When Claude Desktop launches an MCP server it does not connect over HTTP. It spawns the server as a child process and communicates over stdin/stdout using JSON-RPC 2.0. This is the stdio transport.
+            - figure "Type caption for image (optional)" [ref=e75]:
+              - img [ref=e78]
+            - paragraph [ref=e79]: "Two rules follow from this architecture:"
+            - list [ref=e80]:
+              - listitem [ref=e81]:
+                - text: •
+                - strong [ref=e82]: stdout must be clean.
+                - text: Every byte written to stdout is treated as a JSON-RPC message. Any log line, startup banner, or debug output written to stdout will corrupt the protocol stream. This is why the
+                - code [ref=e83]: "--stdio"
+                - text: flag clears all log providers and redirects them to stderr.
+              - listitem [ref=e84]:
+                - text: •
+                - strong [ref=e85]: No HTTP listener.
+                - text: In stdio mode the server does not bind a port.
+                - code [ref=e86]: builder.WebHost.UseUrls()
+                - text: with no argument prevents
+                - link "ASP.NET" [ref=e87]:
+                  - /url: https://medium.com/r/?url=http%3A%2F%2Fasp.net%2F
+                - text: Core from trying to listen on any address.
+            - paragraph [ref=e88]:
+              - text: Both are already handled in
+              - code [ref=e89]: McpServer/Program.cs
+              - text: "from Part 3:"
+            - generic [ref=e90]:
+              - generic [ref=e91]:
+                - text: if (isStdio)
+                - text: "{"
+                - text: builder.Logging.ClearProviders();
+                - text: builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = LogLevel.Trace);
+                - text: builder.WebHost.UseUrls(); // no HTTP listener
+                - text: "}"
+              - generic:
+                - text: Auto (SCSS)
+                - generic:
+                  - img
+        - generic [ref=e92]:
+          - generic:
+            - separator: ...
+          - generic [ref=e94]:
+            - heading "Step 1 — Publish a Self-Contained Executable" [level=3] [ref=e95]
+            - paragraph [ref=e96]: Claude Desktop needs a single executable it can launch. Publish a self-contained win-x64 binary so the target machine does not need the .NET runtime installed.
+            - generic [ref=e97]:
+              - generic [ref=e98]:
+                - text: dotnet publish src/HrMcp.McpServer \
+                - text: "-c Release \\"
+                - text: "-r win-x64 \\"
+                - text: "--self-contained true \\"
+                - text: "-o publish/McpServer"
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - paragraph [ref=e99]:
+              - text: After publishing you will find
+              - code [ref=e100]: HrMcp.McpServer.exe
+              - text: (and its supporting files) in
+              - code [ref=e101]: publish/McpServer/
+              - text: . Note the full path — you will need it in the next step.
+            - blockquote [ref=e102]:
+              - strong [ref=e103]:
+                - emphasis [ref=e104]: "macOS / Linux:"
+              - emphasis [ref=e105]: Replace
+              - code [ref=e106]:
+                - emphasis [ref=e107]: "-r win-x64"
+              - emphasis [ref=e108]: with
+              - code [ref=e109]:
+                - emphasis [ref=e110]: "-r osx-arm64"
+              - emphasis [ref=e111]: (Apple Silicon),
+              - code [ref=e112]:
+                - emphasis [ref=e113]: "-r osx-x64"
+              - emphasis [ref=e114]: (Intel Mac), or
+              - code [ref=e115]:
+                - emphasis [ref=e116]: "-r linux-x64"
+              - emphasis [ref=e117]: . The output binary will have no
+              - code [ref=e118]:
+                - emphasis [ref=e119]: .exe
+              - emphasis [ref=e120]: extension.
+            - blockquote [ref=e121]
+        - generic [ref=e122]:
+          - generic:
+            - separator: ...
+          - generic [ref=e124]:
+            - heading "Step 2 — Configure Claude Desktop" [level=3] [ref=e125]
+            - heading "Locate the config file" [level=3] [ref=e126]
+            - paragraph [ref=e127]:
+              - strong [ref=e128]: "Windows:"
+              - code [ref=e129]: "%APPDATA%\\Claude\\claude_desktop_config.json"
+            - list [ref=e130]:
+              - listitem [ref=e131]:
+                - text: • Paste
+                - code [ref=e132]: "%APPDATA%\\Claude\\"
+                - text: into the Windows Explorer address bar to open the folder.
+            - paragraph [ref=e133]:
+              - strong [ref=e134]: "macOS:"
+              - code [ref=e135]: ~/Library/Application Support/Claude/claude_desktop_config.json
+            - list [ref=e136]:
+              - listitem [ref=e137]:
+                - text: • In Finder, press
+                - code [ref=e138]: Cmd+Shift+G
+                - text: and paste the path.
+            - paragraph [ref=e139]: If the file does not exist, create it.
+            - heading "Add the server entry" [level=3] [ref=e140]
+            - generic [ref=e141]:
+              - generic [ref=e142]:
+                - text: "{"
+                - text: "\"mcpServers\": {"
+                - text: "\"hr-mcp\": {"
+                - text: "\"command\":"
+                - generic [ref=e143]: "\"C:\\\\apps\\\\DotnetMcpTutorial\\\\publish\\\\McpServer\\\\HrMcp.McpServer.exe\""
+                - text: ","
+                - text: "\"args\": [\"--stdio\"]"
+                - text: "}"
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (Swift)
+                - generic:
+                  - img
+            - paragraph [ref=e144]:
+              - text: Replace the
+              - code [ref=e145]: command
+              - text: path with the actual path on your machine. Use double backslashes on Windows.
+            - paragraph [ref=e146]:
+              - strong [ref=e147]: "macOS example:"
+            - generic [ref=e148]:
+              - generic [ref=e149]:
+                - text: "{"
+                - text: "\"mcpServers\": {"
+                - text: "\"hr-mcp\": {"
+                - text: "\"command\": \"/Users/yourname/projects/DotnetMcpTutorial/publish/McpServer/HrMcp.McpServer\","
+                - text: "\"args\": [\"--stdio\"]"
+                - text: "}"
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (JSON)
+                - generic:
+                  - img
+            - heading "Restart Claude Desktop" [level=3] [ref=e150]
+            - paragraph [ref=e151]:
+              - text: Fully quit Claude Desktop (system tray → Quit, not just close the window) and relaunch it. After restart, look for the
+              - strong [ref=e152]: hammer icon
+              - text: in the chat input bar. Click it — you should see all five HR tools listed.
+            - paragraph [ref=e153]: If the hammer icon is absent, see the Debugging section below.
+        - generic [ref=e154]:
+          - generic:
+            - separator: ...
+          - generic [ref=e156]:
+            - heading "Step 3 — Live Demo" [level=3] [ref=e157]
+            - paragraph [ref=e158]: "With Claude Desktop open and the tools loaded, try these prompts:"
+            - paragraph [ref=e159]:
+              - strong [ref=e160]: Prompt 1 — List organizations
+            - blockquote [ref=e161]:
+              - emphasis [ref=e162]: What federal agencies are currently hiring?
+            - paragraph [ref=e163]:
+              - text: Claude calls
+              - code [ref=e164]: GetHiringOrganizations
+              - text: and returns the four seeded organizations with their department names.
+            - paragraph [ref=e165]:
+              - strong [ref=e166]: Prompt 2 — Scoped position search
+            - blockquote [ref=e167]:
+              - emphasis [ref=e168]: Show me all open positions at USCIS
+            - paragraph [ref=e169]:
+              - text: Claude calls
+              - code [ref=e170]: GetHiringOrganizations
+              - text: first (to resolve the org ID), then
+              - code [ref=e171]: GetPositionsByOrganization
+              - text: ", and presents the matching positions with salary ranges and telework eligibility."
+            - paragraph [ref=e172]:
+              - strong [ref=e173]: Prompt 3 — Full position detail
+            - blockquote [ref=e174]:
+              - emphasis [ref=e175]: Give me full details on the IT Specialist SYSADMIN role at USCIS
+            - paragraph [ref=e176]:
+              - text: Claude calls
+              - code [ref=e177]: GetPositionById
+              - text: and returns the complete record including duty location, security clearance requirement, duties, and qualifications.
+            - paragraph [ref=e178]:
+              - strong [ref=e179]: Prompt 4 — AI-generated job announcement
+            - blockquote [ref=e180]:
+              - emphasis [ref=e181]: Write a job announcement for position ID 1
+            - paragraph [ref=e182]:
+              - text: Claude calls
+              - code [ref=e183]: "WriteJobDescription(positionId: 1)"
+              - text: . The MCP server calls Ollama internally and returns a fully written USAJobs-style narrative. Claude presents it in the chat window.
+            - paragraph [ref=e184]:
+              - text: No agent code. No
+              - code [ref=e185]: Program.cs
+              - text: . Claude Desktop handles the conversation, tool routing, and result rendering — the same tools that
+              - code [ref=e186]: HrMcp.Agent
+              - text: called in Part 4 are now accessible to a full AI host.
+        - generic [ref=e187]:
+          - generic:
+            - separator: ...
+          - generic [ref=e189]:
+            - heading "Step 4 — VS Code Copilot Chat Integration" [level=3] [ref=e190]
+            - paragraph [ref=e191]:
+              - text: VS Code Copilot Chat also supports MCP servers via a workspace-level config file. Create
+              - code [ref=e192]: .vscode/mcp.json
+              - text: "at the solution root:"
+            - generic [ref=e193]:
+              - generic [ref=e194]:
+                - text: "{"
+                - text: "\"servers\": {"
+                - text: "\"hr-mcp\": {"
+                - text: "\"type\": \"http\","
+                - text: "\"url\": \"http://localhost:5100/mcp\""
+                - text: "}"
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (JSON)
+                - generic:
+                  - img
+            - paragraph [ref=e195]: "VS Code uses the HTTP transport (not stdio), so the MCP server must be running before you open Copilot Chat. Start it with:"
+            - generic [ref=e196]:
+              - generic [ref=e197]: dotnet run --project src/HrMcp.McpServer
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - paragraph [ref=e198]:
+              - text: In VS Code, open Copilot Chat, switch to
+              - strong [ref=e199]: Agent
+              - text: mode, and type
+              - code [ref=e200]: "@hr-mcp"
+              - text: to invoke the server. The HR tools appear in the tool picker.
+            - blockquote [ref=e201]:
+              - strong [ref=e202]:
+                - emphasis [ref=e203]: "Note:"
+              - emphasis [ref=e204]: The
+              - code [ref=e205]:
+                - emphasis [ref=e206]: .vscode/mcp.json
+              - emphasis [ref=e207]: format is specific to VS Code's MCP extension. It is separate from
+              - code [ref=e208]:
+                - emphasis [ref=e209]: claude_desktop_config.json
+              - emphasis [ref=e210]: .
+        - generic [ref=e211]:
+          - generic:
+            - separator: ...
+          - generic [ref=e213]:
+            - heading "Debugging" [level=3] [ref=e214]
+            - heading "Use MCP Inspector first" [level=3] [ref=e215]
+            - paragraph [ref=e216]: "Before digging into logs, test the server in HTTP mode with MCP Inspector:"
+            - generic [ref=e217]:
+              - generic [ref=e218]:
+                - text: dotnet run --project src/HrMcp.McpServer
+                - text: npx @modelcontextprotocol/inspector http://localhost:5100/mcp
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - paragraph [ref=e219]: If the tools appear and work in MCP Inspector, the server is healthy. Any problem is in the Claude Desktop stdio transport or configuration — not in the tool logic. This isolates the failure domain immediately.
+            - heading "Common problems" [level=3] [ref=e220]
+            - paragraph [ref=e221]:
+              - strong [ref=e222]: Tools not showing in Claude Desktop (no hammer icon)
+            - list [ref=e223]:
+              - listitem [ref=e224]:
+                - text: • The most likely cause is a wrong path in
+                - code [ref=e225]: claude_desktop_config.json
+                - text: . Verify the path to the
+                - code [ref=e226]: .exe
+                - text: is correct and the file exists at that location.
+              - listitem [ref=e227]: • Claude Desktop was not fully quit and relaunched. Use the system tray Quit option, not just the window close button.
+              - listitem [ref=e228]: • The config file has a JSON syntax error. Validate it with a JSON linter.
+            - paragraph [ref=e229]:
+              - strong [ref=e230]: Hammer icon present but tools fail silently
+            - list [ref=e231]:
+              - listitem [ref=e232]:
+                - text: • SQL Server is not running or the connection string is wrong. Start SQL Server and verify the
+                - code [ref=e233]: DefaultConnection
+                - text: in
+                - code [ref=e234]: appsettings.json
+                - text: .
+              - listitem [ref=e235]:
+                - text: • The database has not been migrated. Run
+                - code [ref=e236]: dotnet ef database update --project src/HrMcp.McpServer
+                - text: once manually.
+            - paragraph [ref=e237]:
+              - strong [ref=e238]: Garbled output / JSON parse errors in Claude Desktop
+            - list [ref=e239]:
+              - listitem [ref=e240]:
+                - text: • stdout contamination. Something is writing to stdout in stdio mode. Check that
+                - code [ref=e241]: "--stdio"
+                - text: is in the
+                - code [ref=e242]: args
+                - text: array in the config and that
+                - code [ref=e243]: Program.cs
+                - text: is clearing log providers when
+                - code [ref=e244]: isStdio
+                - text: is true.
+              - listitem [ref=e245]:
+                - text: • A third-party NuGet package may be writing to stdout during startup. Add
+                - code [ref=e246]: Console.SetOut(TextWriter.Null)
+                - text: as a last resort after
+                - code [ref=e247]: builder.Logging.ClearProviders()
+                - text: .
+            - paragraph [ref=e248]:
+              - code [ref=e249]:
+                - strong [ref=e250]: WriteJobDescription
+              - strong [ref=e251]: times out or returns empty
+            - list [ref=e252]:
+              - listitem [ref=e253]:
+                - text: • Ollama is not running. Start it with
+                - code [ref=e254]: ollama serve
+                - text: and confirm
+                - code [ref=e255]: llama3.2
+                - text: is pulled (
+                - code [ref=e256]: ollama list
+                - text: ).
+              - listitem [ref=e257]:
+                - text: • The tool calls Ollama on
+                - code [ref=e258]: http://localhost:11434
+                - text: . If Ollama is on a different host or port, update the URI in
+                - code [ref=e259]: McpServer/Program.cs
+                - text: .
+            - paragraph [ref=e260]:
+              - strong [ref=e261]: Server crashes immediately on launch
+            - paragraph [ref=e262]: Check the MCP log file for the crash reason.
+            - list [ref=e263]:
+              - listitem [ref=e264]:
+                - text: "• Windows:"
+                - code [ref=e265]: "%APPDATA%\\Claude\\logs\\mcp-server-hr-mcp.log"
+              - listitem [ref=e266]:
+                - text: "• macOS:"
+                - code [ref=e267]: ~/Library/Logs/Claude/mcp-server-hr-mcp.log
+            - paragraph [ref=e268]:
+              - text: "Common crash causes: missing runtime (use"
+              - code [ref=e269]: "--self-contained true"
+              - text: at publish time), missing
+              - code [ref=e270]: appsettings.json
+              - text: next to the exe, or a startup exception in the migration block.
+        - generic [ref=e271]:
+          - generic:
+            - separator: ...
+          - generic [ref=e273]:
+            - heading "What We Built" [level=3] [ref=e274]
+            - paragraph [ref=e275]: "Across the five parts of this series:"
+            - paragraph [ref=e276]:
+              - strong [ref=e277]: Part 1 — Clean Architecture Foundation
+            - list [ref=e278]:
+              - listitem [ref=e279]:
+                - text: •
+                - code [ref=e280]: HrMcp.Core
+                - text: "— domain entities:"
+                - code [ref=e281]: Position
+                - text: ","
+                - code [ref=e282]: HiringOrganization
+                - text: ","
+                - code [ref=e283]: PositionRemuneration
+              - listitem [ref=e284]:
+                - text: •
+                - code [ref=e285]: HrMcp.Application
+                - text: —
+                - code [ref=e286]: PositionService
+                - text: ","
+                - code [ref=e287]: HiringOrganizationService
+              - listitem [ref=e288]:
+                - text: •
+                - code [ref=e289]: HrMcp.Infrastructure.Persistence
+                - text: — EF Core, SQL Server,
+                - code [ref=e290]: DbSeeder
+                - text: with USAJobs data
+            - paragraph [ref=e291]:
+              - strong [ref=e292]: Part 2 — Model Context Protocol Concepts
+            - list [ref=e293]:
+              - listitem [ref=e294]: • N×M integration problem and how MCP solves it
+              - listitem [ref=e295]: • Tools, Resources, Prompts primitives
+              - listitem [ref=e296]: • stdio vs HTTP/SSE transports
+            - paragraph [ref=e297]:
+              - strong [ref=e298]: Part 3 — MCP Server
+            - list [ref=e299]:
+              - listitem [ref=e300]:
+                - text: •
+                - code [ref=e301]: HrMcp.McpServer
+                - text: — five tools registered with
+                - code [ref=e302]: "[McpServerToolType]"
+                - text: and
+                - code [ref=e303]: "[McpServerTool]"
+              - listitem [ref=e304]: "• Dual transport: stdio for desktop clients, HTTP/SSE for programmatic clients"
+              - listitem [ref=e305]: • Verified with MCP Inspector
+            - paragraph [ref=e306]:
+              - strong [ref=e307]: Part 4 — AI Agent
+            - list [ref=e308]:
+              - listitem [ref=e309]:
+                - text: •
+                - code [ref=e310]: HrMcp.Agent
+                - text: — console agent using
+                - code [ref=e311]: IChatClient
+                - text: (
+                - link "Microsoft.Extensions.AI" [ref=e312]:
+                  - /url: https://medium.com/r/?url=http%3A%2F%2Fmicrosoft.extensions.ai%2F
+                - text: ) +
+                - code [ref=e313]: OllamaApiClient
+                - text: (OllamaSharp)
+              - listitem [ref=e314]:
+                - text: •
+                - code [ref=e315]: UseFunctionInvocation
+                - text: middleware — automatic tool dispatch
+              - listitem [ref=e316]:
+                - text: •
+                - code [ref=e317]: WriteJobDescription
+                - text: upgraded from static stub to Ollama-generated narrative
+            - paragraph [ref=e318]:
+              - strong [ref=e319]: Part 5 — Claude Desktop Integration
+            - list [ref=e320]:
+              - listitem [ref=e321]:
+                - text: • Self-contained
+                - code [ref=e322]: HrMcp.McpServer.exe
+                - text: published with
+                - code [ref=e323]: dotnet publish
+              - listitem [ref=e324]:
+                - text: •
+                - code [ref=e325]: claude_desktop_config.json
+                - text: configured for stdio transport
+              - listitem [ref=e326]:
+                - text: •
+                - code [ref=e327]: .vscode/mcp.json
+                - text: for VS Code Copilot Chat
+              - listitem [ref=e328]: "• End-to-end demo: HR tools callable from Claude Desktop"
+        - generic [ref=e329]:
+          - generic:
+            - separator: ...
+          - generic [ref=e331]:
+            - heading "Next Steps" [level=3] [ref=e332]
+            - paragraph [ref=e333]: "The server is working end-to-end. Before exposing it beyond localhost, consider these next steps:"
+            - paragraph [ref=e334]:
+              - strong [ref=e335]: Part 6 — Securing the MCP Server with OIDC
+              - text: The HTTP/SSE endpoint on
+              - code [ref=e336]: http://localhost:5100/mcp
+              - text: is unauthenticated. Part 6 adds JWT Bearer middleware to
+              - code [ref=e337]: McpServer/Program.cs
+              - text: ", configures an OIDC provider (Okta free tier, Duende IdentityServer, or Azure Entra), and updates the agent to acquire tokens via the client credentials flow before connecting. The"
+              - code [ref=e338]: .RequireAuthorization()
+              - text: call on
+              - code [ref=e339]: MapMcp
+              - text: is the only server-side change.
+            - paragraph [ref=e340]:
+              - strong [ref=e341]: "Additional directions to explore:"
+            - list [ref=e342]:
+              - listitem [ref=e343]:
+                - text: • Replace Ollama with Azure OpenAI or Claude API for production-grade LLM output — only three lines change in
+                - code [ref=e344]: Program.cs
+              - listitem [ref=e345]:
+                - text: • Add a
+                - code [ref=e346]: Resources
+                - text: endpoint to expose job postings as MCP resources (documents the model can read without explicit tool calls)
+              - listitem [ref=e347]:
+                - text: • Add
+                - code [ref=e348]: Prompts
+                - text: to pre-define common HR tasks as reusable prompt templates
+              - listitem [ref=e349]: • Package the MCP server as a Docker container for cloud deployment
+        - generic [ref=e350]:
+          - generic:
+            - separator: ...
+          - generic [ref=e352]:
+            - heading "Sources" [level=3] [ref=e353]
+            - list [ref=e354]:
+              - listitem [ref=e355]:
+                - text: •
+                - link "Model Context Protocol — Official Docs" [ref=e356]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fmodelcontextprotocol.io%2F
+              - listitem [ref=e357]:
+                - text: •
+                - link "ModelContextProtocol C# SDK — GitHub" [ref=e358]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fmodelcontextprotocol%2Fcsharp-sdk
+              - listitem [ref=e359]:
+                - text: •
+                - link "MCP Inspector — GitHub" [ref=e360]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fmodelcontextprotocol%2Finspector
+              - listitem [ref=e361]:
+                - text: •
+                - link "Claude Desktop — Download" [ref=e362]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fclaude.ai%2Fdownload
+              - listitem [ref=e363]:
+                - text: •
+                - link "VS Code MCP Extension Docs" [ref=e364]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fcode.visualstudio.com%2Fdocs%2Fcopilot%2Fchat%2Fmcp-servers
+              - listitem [ref=e365]:
+                - text: •
+                - link "Microsoft.Extensions.AI — NuGet" [ref=e366]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FMicrosoft.Extensions.AI
+              - listitem [ref=e367]:
+                - text: •
+                - link "OllamaSharp — NuGet" [ref=e368]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FOllamaSharp
+              - listitem [ref=e369]:
+                - text: •
+                - link "dotnet publish — Microsoft Docs" [ref=e370]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fdotnet%2Fcore%2Ftools%2Fdotnet-publish
+      - generic [ref=e373]: Title

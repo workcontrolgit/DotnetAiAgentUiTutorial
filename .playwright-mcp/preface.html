@@ -1,0 +1,104 @@
+<h2>Your .NET Skills Are Your AI Superpower</h2>
+<p>You already know C#. You already know dependency injection, EF Core, ASP.NET Core, and Clean Architecture. You know how to build APIs that are fast, maintainable, and production-ready.</p>
+<p>That foundation is exactly what AI integration requires — and most tutorials skip over it entirely.</p>
+<p>This series is different. We start where you are: a .NET developer with solid backend skills but little exposure to AI agents or the Model Context Protocol. By the end, you will have built a fully working AI-enabled backend from scratch — every line of code explained, every design decision justified, every tool tested.</p>
+<p>No Python. No black boxes. No hand-waving.</p>
+<hr>
+<h2>The Shift Happening Right Now</h2>
+<p>AI assistants are moving from chat windows into professional workflows. Tools like Claude Desktop, VS Code Copilot, and custom enterprise agents are being asked to do real work: query databases, generate documents, apply business rules, call APIs.</p>
+<p>For that to happen, AI needs a way to reach your application&#39;s data and logic. The old approach was to build a custom integration for each AI tool and each data source. That approach does not scale.</p>
+<p><strong>Model Context Protocol (MCP)</strong> is the standard that replaces it.</p>
+<p>[Image: Before and After MCP — N×M vs N+M integrations]</p>
+<p>MCP is to AI integration what REST was to web APIs in 2005: a shared contract that lets both sides evolve independently. Learning it now puts you ahead of the transition, not behind it.</p>
+<hr>
+<h2>What You Will Build</h2>
+<p>This series builds a federal HR MCP server — a real, runnable .NET 10 application that exposes job position data from a SQL Server database as MCP tools. The domain is modeled after <strong>USAJobs.gov</strong>, the official US federal government job board, which gives us a rich, structured data model to work with: occupational series codes, GS pay grades, security clearance levels, hiring organizations, and OPM-standard qualifications text.</p>
+<p>The final system looks like this:</p>
+<p>[Image: HR MCP Server — Full System Architecture]</p>
+<p>The five-project Clean Architecture solution:</p>
+<ul>
+<li><strong>HrMcp.Core</strong> — domain entities and repository interfaces. No dependencies.</li>
+<li><strong>HrMcp.Application</strong> — application services. Depends only on Core.</li>
+<li><strong>HrMcp.Infrastructure.Persistence</strong> — EF Core + SQL Server. Implements Core interfaces.</li>
+<li><strong>HrMcp.McpServer</strong> — ASP.NET Core MCP server. Exposes tools to AI clients.</li>
+<li><strong>HrMcp.Agent</strong> — console AI agent. Connects to the MCP server with Ollama + llama3.2.</li>
+</ul>
+<hr>
+<h2>What You Will Learn</h2>
+<p>This is not a survey course. Every skill is exercised through working code you write yourself.</p>
+<p><strong>Clean Architecture for AI backends</strong>
+How to structure a .NET solution so that domain logic is independent of both database infrastructure and AI infrastructure. Swap Ollama for Claude API without touching a single service class.</p>
+<p><strong>Model Context Protocol from first principles</strong>
+What MCP is, how JSON-RPC 2.0 messages flow between client and server, and how stdio and HTTP/SSE transports differ. You will understand the protocol, not just the SDK.</p>
+<p><strong>Building MCP tools in .NET</strong>
+How to use the <code>ModelContextProtocol.AspNetCore</code> NuGet package to turn C# methods into AI-callable tools with <code>[McpServerTool]</code> and <code>[McpServerToolType]</code>. How to write <code>[Description]</code> text that gives the AI the context it needs to call tools correctly.</p>
+<p><strong>Microsoft.Extensions.AI — the AI abstraction layer</strong>
+How <code>IChatClient</code> lets you write model-agnostic agent code. How the function-invocation middleware handles the tool-call loop automatically. How to swap providers with a single line change.</p>
+<p><strong>Local AI with Ollama</strong>
+How to run <code>llama3.2</code> on your own machine, connect it to an MCP server, and use it to generate job descriptions — with zero data leaving your environment.</p>
+<p><strong>Claude Desktop and VS Code Copilot integration</strong>
+How to configure two MCP clients to connect to the same server. How stdio transport works under the hood. How to debug the JSON-RPC stream when things go wrong.</p>
+<p><strong>OIDC security for MCP servers</strong>
+How to add JWT Bearer authentication to the MCP server using standard ASP.NET Core middleware. How the agent acquires a token via the OAuth2 client credentials flow. How to swap Duende IdentityServer for Okta or Azure Entra ID with two config values.</p>
+<hr>
+<h2>How This Applies to Your Existing Apps</h2>
+<p>The skills in this series transfer directly to production scenarios. Here is the bridge from each skill to real-world modernization:</p>
+<p><strong>You have a .NET API with business logic.</strong>
+The same pattern — <code>[McpServerTool]</code> over an application service — works for any existing API. You are not rewriting your application; you are adding an MCP surface on top of what already exists.</p>
+<p><strong>You have an ASP.NET Core web app.</strong>
+The HTTP/SSE transport in Part 3 means your existing web host can become an MCP server with one <code>builder.Services.AddMcpServer()</code> call and a route mapping. No new project required.</p>
+<p><strong>You have a SQL Server database.</strong>
+EF Core is the bridge. Your existing DbContext and repositories become the data layer behind MCP tools. The AI never touches the database directly — it calls tools, tools call services, services call repositories.</p>
+<p><strong>You use Azure AD / Entra ID for auth.</strong>
+Part 6 shows exactly how to validate JWTs from any OIDC provider using four lines of ASP.NET Core middleware. If your existing APIs already use Bearer tokens, the MCP server follows the same pattern.</p>
+<p><strong>You want to give Claude Desktop or VS Code Copilot access to your systems.</strong>
+Parts 5 and 3 cover exactly this: publish the server, configure the client, verify the tools load. The same pattern works for any internal tool you want to expose to AI assistants.</p>
+<hr>
+<h2>The Series at a Glance</h2>
+<p><strong>Part 1 — Clean Architecture Foundation with HR Domain</strong>
+Build the .NET 10 solution skeleton and the federal HR domain. Entities aligned to the USAJobs API schema. EF Core migrations and realistic seed data. The foundation every other part builds on.
+→ <em>Read Part 1</em></p>
+<hr>
+<p><strong>Part 2 — Introduction to Model Context Protocol</strong>
+No code — pure concepts. The N×M integration problem MCP solves. The three MCP primitives (Tools, Resources, Prompts). How stdio and HTTP/SSE transports work. The .NET SDK overview. Read this before writing any MCP code.
+→ <em>Read Part 2</em></p>
+<hr>
+<p><strong>Part 3 — Building an MCP Server in .NET 10</strong>
+Install <code>ModelContextProtocol.AspNetCore</code>. Write three tool classes with attribute-based registration. Configure both transports in <code>Program.cs</code>. Test with MCP Inspector — no AI host needed.
+→ <em>Read Part 3</em></p>
+<hr>
+<p><strong>Part 4 — AI Agent with Microsoft.Extensions.AI + Ollama</strong>
+Set up Ollama locally. Connect the <code>HrMcp.Agent</code> console app to the MCP server via HTTP. Wire <code>IChatClient</code> with automatic tool-call dispatch. Watch the agent call your tools and answer HR questions in natural language.
+→ <em>Read Part 4</em></p>
+<hr>
+<p><strong>Part 5 — Claude Desktop Integration &amp; End-to-End Demo</strong>
+Publish the server as a self-contained executable. Configure Claude Desktop to launch it via stdio. Configure VS Code Copilot to connect via HTTP/SSE. Debug the protocol stream. Walk through a live HR session calling all five tools.
+→ <em>Read Part 5</em></p>
+<hr>
+<p><strong>Part 6 — Securing the MCP Server with OIDC</strong>
+Add JWT Bearer authentication using four lines of ASP.NET Core middleware. Configure Duende IdentityServer in Docker as the OIDC provider. Implement the OAuth2 client credentials flow in the agent. Swap to Okta or Azure Entra ID with two config values.
+→ <em>Read Part 6</em></p>
+<hr>
+<h2>Prerequisites</h2>
+<p>You will get the most from this series if you are comfortable with:</p>
+<ul>
+<li><strong>C# and .NET</strong> — classes, interfaces, async/await, dependency injection</li>
+<li><strong>ASP.NET Core</strong> — middleware, <code>WebApplication.CreateBuilder</code>, configuration</li>
+<li><strong>EF Core basics</strong> — <code>DbContext</code>, migrations, LINQ queries</li>
+</ul>
+<p>You do not need prior experience with AI, LLMs, MCP, or OAuth2. Each concept is introduced from scratch.</p>
+<p><strong>Tools you will need:</strong></p>
+<ul>
+<li><strong>.NET 10 SDK</strong> — <code>dotnet --version</code> should show 10.x or later</li>
+<li><strong>SQL Server 2025 LocalDB</strong> — ships with Visual Studio 2022/2026; install standalone from Microsoft if needed</li>
+<li><strong>Ollama</strong> — free local LLM runtime; download from <a href="https://ollama.com">ollama.com</a></li>
+<li><strong>Claude Desktop</strong> — free download from <a href="https://claude.ai">claude.ai</a> (optional — only needed for Part 5)</li>
+<li><strong>Git</strong> — for cloning the companion repository</li>
+</ul>
+<hr>
+<h2>The Companion Repository</h2>
+<p>Every code listing in this series is in the companion GitHub repository. You can clone it and follow along, or read the posts and build from scratch — both paths arrive at the same working application.</p>
+<p>→ <strong><a href="https://github.com/workcontrolgit/DotnetAiAgentMcp">github.com/workcontrolgit/DotnetAiAgentMcp</a></strong></p>
+<hr>
+<p><em>Ready? Start with Part 1 and build the foundation.</em></p>
+<p>→ <strong>Part 1: Clean Architecture Foundation with HR Domain</strong></p>

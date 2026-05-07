@@ -1,0 +1,964 @@
+- generic [ref=e4]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - tooltip "Sidebar menu" [ref=e9]:
+        - button "Sidebar menu" [ref=e11] [cursor=pointer]:
+          - generic [ref=e12]: Sidebar menu
+          - img [ref=e13]
+      - link "Homepage" [ref=e15] [cursor=pointer]:
+        - /url: /?source=post_page---top_nav_layout_nav-----------------------------------------
+        - img "Medium Logo" [ref=e16]
+      - generic [ref=e19]:
+        - listbox
+        - img [ref=e21]
+        - combobox "search" [ref=e23]
+    - link "Write" [ref=e25] [cursor=pointer]:
+      - /url: https://medium.com/new-story?source=post_page---top_nav_layout_nav-----------------------------------------
+      - generic [ref=e26]:
+        - img [ref=e27]
+        - text: Write
+    - tooltip "Notifications 6" [ref=e32]:
+      - link "Notifications 6" [ref=e34] [cursor=pointer]:
+        - /url: /me/notifications?source=post_page---top_nav_layout_nav-----------------------------------------
+        - generic [ref=e35]:
+          - img [ref=e36]
+          - generic [ref=e39]: Notifications
+          - generic [ref=e40]: "6"
+    - tooltip "user options menu" [ref=e43]:
+      - button "user options menu" [ref=e45] [cursor=pointer]:
+        - generic [ref=e46]:
+          - img "Fuji Nguyen" [ref=e48]
+          - img [ref=e50]
+  - generic [ref=e53]:
+    - generic [ref=e57]:
+      - generic [ref=e58]:
+        - tooltip "Home" [ref=e61]:
+          - link "Home" [ref=e63] [cursor=pointer]:
+            - /url: /?source=post_page---sidebar_menu-----------------------------------------
+            - img [ref=e64]
+            - generic [ref=e66]: Home
+        - tooltip "Library" [ref=e68]:
+          - link "Library" [ref=e70] [cursor=pointer]:
+            - /url: /me/lists?source=post_page---sidebar_menu-----------------------------------------
+            - img [ref=e71]
+            - generic [ref=e74]: Library
+        - tooltip "Profile" [ref=e76]:
+          - link "Profile" [ref=e78] [cursor=pointer]:
+            - /url: /@fuji-nguyen?source=post_page---sidebar_menu-----------------------------------------
+            - img [ref=e79]
+            - generic [ref=e82]: Profile
+        - tooltip "Stories" [ref=e84]:
+          - link "Stories" [ref=e86] [cursor=pointer]:
+            - /url: /me/stories?source=post_page---sidebar_menu-----------------------------------------
+            - img [ref=e87]
+            - generic [ref=e90]: Stories
+        - tooltip "Stats" [ref=e92]:
+          - link "Stats" [ref=e94] [cursor=pointer]:
+            - /url: /me/stats?source=post_page---sidebar_menu-----------------------------------------
+            - img [ref=e95]
+            - generic [ref=e97]: Stats
+      - generic [ref=e99]:
+        - tooltip "Following" [ref=e101]:
+          - link "Following" [ref=e103] [cursor=pointer]:
+            - /url: /me/following-feed/writers?source=post_page---sidebar_menu-----------------------------------------
+            - img [ref=e104]
+            - generic [ref=e106]: Following
+        - tooltip "ITNEXT ITNEXT" [ref=e108]:
+          - link "ITNEXT ITNEXT" [ref=e110] [cursor=pointer]:
+            - /url: /me/following-feed/publications/5b301f10ddcd?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "ITNEXT" [ref=e113]
+            - generic [ref=e115]: ITNEXT
+        - tooltip "Dr. Derek Austin 🥳 Dr. Derek Austin 🥳" [ref=e118]:
+          - link "Dr. Derek Austin 🥳 Dr. Derek Austin 🥳" [ref=e120] [cursor=pointer]:
+            - /url: /me/following-feed/writers/e5294c417caf?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "Dr. Derek Austin 🥳" [ref=e123]
+            - generic [ref=e125]: Dr. Derek Austin 🥳
+        - tooltip "Data Science Collective Data Science Collective" [ref=e128]:
+          - link "Data Science Collective Data Science Collective" [ref=e130] [cursor=pointer]:
+            - /url: /me/following-feed/publications/8993e01dcfd3?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "Data Science Collective" [ref=e133]
+            - generic [ref=e135]: Data Science Collective
+        - tooltip "Dev Genius Dev Genius" [ref=e138]:
+          - link "Dev Genius Dev Genius" [ref=e140] [cursor=pointer]:
+            - /url: /me/following-feed/publications/4e2c1156667e?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "Dev Genius" [ref=e143]
+            - generic [ref=e145]: Dev Genius
+        - tooltip "Neeraja Gandla Neeraja Gandla" [ref=e148]:
+          - link "Neeraja Gandla Neeraja Gandla" [ref=e150] [cursor=pointer]:
+            - /url: /me/following-feed/writers/db8656eb692f?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "Neeraja Gandla" [ref=e153]
+            - generic [ref=e155]: Neeraja Gandla
+        - tooltip "UX Collective UX Collective" [ref=e158]:
+          - link "UX Collective UX Collective" [ref=e160] [cursor=pointer]:
+            - /url: /me/following-feed/publications/138adf9c44c?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "UX Collective" [ref=e163]
+            - generic [ref=e165]: UX Collective
+        - tooltip "CodeX CodeX" [ref=e168]:
+          - link "CodeX CodeX" [ref=e170] [cursor=pointer]:
+            - /url: /me/following-feed/publications/29038077e4c6?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "CodeX" [ref=e173]
+            - generic [ref=e175]: CodeX
+        - tooltip "Sébastien Dubois Sébastien Dubois" [ref=e178]:
+          - link "Sébastien Dubois Sébastien Dubois" [ref=e180] [cursor=pointer]:
+            - /url: /me/following-feed/writers/1ea69814e3e1?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "Sébastien Dubois" [ref=e183]
+            - generic [ref=e185]: Sébastien Dubois
+        - tooltip "Abe Jaber Abe Jaber" [ref=e188]:
+          - link "Abe Jaber Abe Jaber" [ref=e190] [cursor=pointer]:
+            - /url: /me/following-feed/writers/b4529eba4bd0?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "Abe Jaber" [ref=e193]
+            - generic [ref=e195]: Abe Jaber
+        - tooltip "Jessica Stillman Jessica Stillman" [ref=e198]:
+          - link "Jessica Stillman Jessica Stillman" [ref=e200] [cursor=pointer]:
+            - /url: /me/following-feed/writers/d85f9c2d1537?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "Jessica Stillman" [ref=e203]
+            - generic [ref=e205]: Jessica Stillman
+        - tooltip "More" [ref=e208]:
+          - button "More" [ref=e210] [cursor=pointer]:
+            - img [ref=e212]
+            - generic [ref=e215]: More
+    - generic [ref=e217]:
+      - link "Scrum and Coke" [ref=e225] [cursor=pointer]:
+        - /url: https://medium.com/scrum-and-coke?source=post_page---publication_nav-6c43d7988985-b27a7820dbc2---------------------------------------
+        - heading "Scrum and Coke" [level=2] [ref=e226]:
+          - generic [ref=e227]: Scrum and Coke
+      - generic:
+        - dialog
+      - generic [ref=e229]:
+        - link "Scrum and Coke" [ref=e230] [cursor=pointer]:
+          - /url: https://medium.com/scrum-and-coke?source=post_page---post_publication_sidebar-6c43d7988985-b27a7820dbc2---------------------------------------
+          - img "Scrum and Coke" [ref=e232]
+        - paragraph [ref=e234]: Tools and Techniques for Agile Transformation. Promote and Highlight Outstanding Opensource Projects
+        - paragraph [ref=e235]:
+          - button "Following" [ref=e236] [cursor=pointer]
+      - article [ref=e238]:
+        - generic [ref=e242]:
+          - tooltip "Member-only story" [ref=e249]:
+            - generic [ref=e251] [cursor=pointer]:
+              - img [ref=e252]
+              - paragraph [ref=e254]: Member-only story
+          - generic [ref=e257]:
+            - 'heading "Cache Your AI Responses: Save Time and API Costs" [level=1] [ref=e259]'
+            - generic [ref=e260]:
+              - heading "How to Add a Cache-Aside Layer to Your .NET LLM Service Without Changing a Single Caller" [level=2] [ref=e261]
+              - generic [ref=e264]:
+                - generic [ref=e265]:
+                  - generic [ref=e266]:
+                    - tooltip "Fuji Nguyen" [ref=e269]:
+                      - link "Fuji Nguyen" [ref=e271] [cursor=pointer]:
+                        - /url: /@fuji-nguyen?source=post_page---byline--b27a7820dbc2---------------------------------------
+                        - img "Fuji Nguyen" [ref=e274]
+                    - tooltip "Fuji Nguyen" [ref=e281]:
+                      - link "Fuji Nguyen" [ref=e284] [cursor=pointer]:
+                        - /url: /@fuji-nguyen?source=post_page---byline--b27a7820dbc2---------------------------------------
+                  - generic [ref=e287]:
+                    - generic [ref=e288]: 8 min read
+                    - generic [ref=e290]: ·
+                    - text: 1 day ago
+                - generic [ref=e291]:
+                  - generic [ref=e293]:
+                    - tooltip "clap" [ref=e299]:
+                      - generic [ref=e300]:
+                        - img "clap"
+                    - tooltip "responses" [ref=e303]:
+                      - button "responses" [ref=e305] [cursor=pointer]:
+                        - img [ref=e306]
+                  - generic [ref=e308]:
+                    - tooltip "Add to list bookmark button" [ref=e311]:
+                      - button "Add to list bookmark button" [ref=e314] [cursor=pointer]:
+                        - img [ref=e315]
+                    - tooltip "Listen" [ref=e322]:
+                      - tooltip "Listen" [ref=e324]:
+                        - button "Listen" [ref=e326] [cursor=pointer]:
+                          - img [ref=e327]
+                    - tooltip "Share Post" [ref=e331]:
+                      - button "Share Post" [ref=e333] [cursor=pointer]:
+                        - img [ref=e334]
+                    - tooltip "More options" [ref=e340]:
+                      - button "More options" [ref=e342] [cursor=pointer]:
+                        - img [ref=e343]
+            - figure [ref=e345]:
+              - button "Press enter or click to view image in full size" [ref=e346]:
+                - generic [ref=e347]: Press enter or click to view image in full size
+            - paragraph [ref=e350]:
+              - text: Every call to
+              - code [ref=e351]: ChatAsync
+              - text: hits Ollama, waits for inference, and returns a reply. For a local model that takes 2–5 seconds per response, this is noticeable. For a cloud model billed per token, it adds up fast.
+            - paragraph [ref=e352]:
+              - text: But many AI queries in a business app are
+              - strong [ref=e353]: repetitive
+              - text: . HR managers ask the same workforce questions. The natural language search bar sees the same queries. The dashboard insight is re-fetched on every page load.
+            - paragraph [ref=e354]:
+              - text: The fix is a
+              - strong [ref=e355]: cache-aside decorator
+              - text: — a wrapper around
+              - code [ref=e356]: IAiChatService
+              - text: that checks the cache first, returns instantly on a hit, and only calls Ollama on a miss. No changes to any handler, controller, or query class. The callers don't know the cache exists.
+            - paragraph [ref=e357]:
+              - text: This article shows you how to build that decorator using the EasyCaching infrastructure already in the TalentManagement API, and how to expose cache status to API consumers via an
+              - code [ref=e358]: "X-AI-Cache: HIT/MISS"
+              - text: response header.
+            - figure [ref=e359]:
+              - button "Press enter or click to view image in full size" [ref=e360]:
+                - generic [ref=e361]: Press enter or click to view image in full size
+            - paragraph [ref=e364]:
+              - text: 📖
+              - strong [ref=e365]: "Tutorial Repository:"
+              - link "AngularNetTutorial on GitHub" [ref=e366] [cursor=pointer]:
+                - /url: https://github.com/workcontrolgit/AngularNetTutorial
+          - separator [ref=e367]
+          - paragraph [ref=e374]:
+            - text: This article is part of the
+            - strong [ref=e375]: AngularNetTutorial
+            - text: series.
+            - strong [ref=e376]: This article builds on Article 6.1 (AI Foundation). The
+            - code [ref=e377]:
+              - strong [ref=e378]: IAiChatService
+            - strong [ref=e379]: ","
+            - code [ref=e380]:
+              - strong [ref=e381]: OllamaAiService
+            - strong [ref=e382]: ", and EasyCaching infrastructure created in earlier articles are reused here."
+          - separator [ref=e383]
+          - generic [ref=e389]:
+            - heading "🎓 What You’ll Learn" [level=2] [ref=e390]
+            - list [ref=e391]:
+              - listitem [ref=e392]:
+                - strong [ref=e393]: Decorator pattern for services
+                - text: — wrap an existing service implementation with new behavior without touching callers
+              - listitem [ref=e394]:
+                - strong [ref=e395]: Cache-aside with EasyCaching
+                - text: — check cache → return on hit → call service on miss → store result
+              - listitem [ref=e396]:
+                - strong [ref=e397]: SHA256 cache keys
+                - text: — deterministic, compact keys derived from the full prompt, collision-resistant
+              - listitem [ref=e398]:
+                - strong [ref=e399]: Scoped metadata services
+                - text: — carry information (cache hit status) from a service layer call to a controller response without coupling layers
+              - listitem [ref=e400]:
+                - code [ref=e401]:
+                  - strong [ref=e402]: X-AI-Cache
+                - strong [ref=e403]: response header
+                - text: — let API consumers, developers, and monitoring tools see exactly which responses came from cache
+          - separator [ref=e404]
+          - generic [ref=e410]:
+            - heading "📋 Prerequisites" [level=2] [ref=e411]
+            - paragraph [ref=e412]:
+              - strong [ref=e413]: "Before following this article, you should have:"
+            - list [ref=e414]:
+              - listitem [ref=e415]:
+                - strong [ref=e416]: Article 6.1 complete
+                - text: —
+                - code [ref=e417]: IAiChatService
+                - text: ","
+                - code [ref=e418]: OllamaAiService
+                - text: ","
+                - code [ref=e419]: AiController
+                - text: ", and EasyCaching infrastructure all in place"
+              - listitem [ref=e420]:
+                - strong [ref=e421]: EasyCaching already installed
+                - text: —
+                - code [ref=e422]: EasyCaching.Core
+                - text: and
+                - code [ref=e423]: EasyCaching.InMemory
+                - text: are already in
+                - code [ref=e424]: TalentManagementAPI.WebApi.csproj
+              - listitem [ref=e425]:
+                - code [ref=e426]:
+                  - strong [ref=e427]: "CacheEnabled: true"
+                - text: in
+                - code [ref=e428]: appsettings.json
+                - text: for local testing (the existing
+                - code [ref=e429]: CachingOptions.Enabled
+                - text: flag)
+          - separator [ref=e430]
+          - generic [ref=e436]:
+            - heading "🎯 What We’re Building" [level=2] [ref=e437]
+            - paragraph [ref=e438]:
+              - text: A
+              - strong [ref=e439]: caching decorator
+              - text: for
+              - code [ref=e440]: IAiChatService
+              - text: ":"
+            - list [ref=e441]:
+              - listitem [ref=e442]:
+                - text: Every
+                - code [ref=e443]: ChatAsync
+                - text: call produces a
+                - strong [ref=e444]: SHA256 cache key
+                - text: from the system prompt + user message
+              - listitem [ref=e445]:
+                - text: "On"
+                - strong [ref=e446]: cache hit
+                - text: — return the stored reply immediately (no Ollama call), set
+                - code [ref=e447]: "X-AI-Cache: HIT"
+              - listitem [ref=e448]:
+                - text: "On"
+                - strong [ref=e449]: cache miss
+                - text: — call
+                - code [ref=e450]: OllamaAiService.ChatAsync
+                - text: ", store the reply, set"
+                - code [ref=e451]: "X-AI-Cache: MISS"
+              - listitem [ref=e452]:
+                - text: TTL is configurable via
+                - code [ref=e453]: Ollama:CacheTtlMinutes
+                - text: in
+                - code [ref=e454]: appsettings.json
+                - text: "(default: 60 minutes)"
+              - listitem [ref=e455]:
+                - text: Zero changes to
+                - code [ref=e456]: GetHrInsightQuery
+                - text: ","
+                - code [ref=e457]: NlSearchQueryHandler
+                - text: ", or any existing handler — they all call"
+                - code [ref=e458]: IAiChatService
+                - text: and keep working unchanged
+            - paragraph [ref=e459]:
+              - strong [ref=e460]: Why a decorator and not a pipeline behavior?
+            - paragraph [ref=e461]:
+              - text: A MediatR pipeline behavior would only cache at the query level — you’d need one behavior per query type. A decorator on
+              - code [ref=e462]: IAiChatService
+              - text: "caches at the infrastructure level: every caller, every query, every endpoint, all in one place. Add it once, it covers the entire AI surface."
+            - paragraph [ref=e463]:
+              - strong [ref=e464]: Why SHA256 for the cache key?
+            - paragraph [ref=e465]: System prompts in this app can be hundreds of characters long. Using the raw prompt as a cache key is wasteful and fragile. SHA256 produces a compact 64-character hex string from any input, is deterministic (same inputs always produce the same key), and has no practical collisions.
+          - separator [ref=e466]
+          - generic [ref=e472]:
+            - heading "🚀 Implementation" [level=2] [ref=e473]
+            - 'heading "Step 1: Add CacheTtlMinutes to appsettings.json" [level=2] [ref=e474]':
+              - text: "Step 1: Add"
+              - code [ref=e475]: CacheTtlMinutes
+              - text: to appsettings.json
+            - paragraph [ref=e476]:
+              - text: Open
+              - code [ref=e477]: TalentManagementAPI.WebApi/appsettings.json
+              - text: and add
+              - code [ref=e478]: CacheTtlMinutes
+              - text: to the existing
+              - code [ref=e479]: Ollama
+              - text: "section:"
+            - generic [ref=e481]:
+              - text: "\"Ollama\": {"
+              - text: "\"BaseUrl\": \"http://localhost:11434\","
+              - text: "\"Model\": \"llama3.2\","
+              - text: "\"CacheTtlMinutes\": 60"
+              - text: "}"
+            - paragraph [ref=e482]: "This controls how long an AI response stays cached. 60 minutes works well for:"
+            - list [ref=e483]:
+              - listitem [ref=e484]: Dashboard insights — workforce data doesn’t change by the minute
+              - listitem [ref=e485]: HR questions — same question asked repeatedly during a session
+              - listitem [ref=e486]: NL search — common queries like “find all engineers” resolve identically every time
+            - paragraph [ref=e487]:
+              - text: Set it lower (e.g.,
+              - code [ref=e488]: "5"
+              - text: ) during development to test both HIT and MISS paths easily.
+          - separator [ref=e489]
+          - generic [ref=e495]:
+            - 'heading "Step 2: Create the Response Metadata Interface" [level=2] [ref=e496]'
+            - paragraph [ref=e497]:
+              - text: Create
+              - code [ref=e498]: TalentManagementAPI.Application/Interfaces/IAiResponseMetadata.cs
+              - text: ":"
+            - generic [ref=e500]:
+              - text: namespace TalentManagementAPI.Application.Interfaces
+              - text: "{"
+              - generic [ref=e501]: /// <summary>
+              - generic [ref=e502]: /// Scoped service that carries AI response metadata (e.g., cache hit status)
+              - generic [ref=e503]: /// from the service layer to the controller within a single request.
+              - generic [ref=e504]: /// </summary>
+              - text: public interface IAiResponseMetadata
+              - text: "{"
+              - text: "bool WasCacheHit { get; set; }"
+              - text: "}"
+              - text: "}"
+            - paragraph [ref=e505]:
+              - text: This is a
+              - strong [ref=e506]: scoped service
+              - text: — one instance per HTTP request. The caching decorator writes
+              - code [ref=e507]: WasCacheHit = true/false
+              - text: . The controller reads it and adds the
+              - code [ref=e508]: X-AI-Cache
+              - text: header. No HTTP concerns bleed into the service layer.
+          - separator [ref=e509]
+          - generic [ref=e515]:
+            - 'heading "Step 3: Create the Caching Decorator" [level=2] [ref=e516]'
+            - paragraph [ref=e517]:
+              - text: Create
+              - code [ref=e518]: TalentManagementAPI.Infrastructure.Shared/Services/CachingAiChatService.cs
+              - text: ":"
+            - generic [ref=e520]:
+              - text: "#nullable enable"
+              - text: using System.Security.Cryptography;
+              - text: using System.Text;
+              - text: using TalentManagementAPI.Application.Interfaces;
+              - text: using TalentManagementAPI.Application.Interfaces.Caching;
+              - text: namespace TalentManagementAPI.Infrastructure.Shared.Services
+              - text: "{"
+              - generic [ref=e521]: /// <summary>
+              - generic [ref=e522]: /// Decorator for IAiChatService that adds cache-aside behaviour.
+              - generic [ref=e523]: /// Checks the cache first; on a miss, delegates to the inner service and stores the result.
+              - generic [ref=e524]: /// Sets IAiResponseMetadata.WasCacheHit so controllers can emit X-AI-Cache headers.
+              - generic [ref=e525]: /// </summary>
+              - text: "public sealed class CachingAiChatService : IAiChatService"
+              - text: "{"
+              - text: private readonly IAiChatService _inner;
+              - text: private readonly ICacheProvider _cache;
+              - text: private readonly IAiResponseMetadata _metadata;
+              - text: private readonly TimeSpan _ttl;
+              - generic [ref=e526]:
+                - text: public CachingAiChatService(
+                - generic [ref=e527]:
+                  - text: IAiChatService inner,
+                  - text: ICacheProvider cache,
+                  - text: IAiResponseMetadata metadata,
+                  - text: TimeSpan ttl
+                - text: )
+              - text: "{"
+              - text: _inner = inner;
+              - text: _cache = cache;
+              - text: _metadata = metadata;
+              - text: _ttl = ttl;
+              - text: "}"
+              - generic [ref=e528]:
+                - text: public async Task<string> ChatAsync(
+                - generic [ref=e529]:
+                  - text: string message,
+                  - text: string? systemPrompt = null,
+                  - text: CancellationToken cancellationToken = default
+                - text: )
+              - text: "{"
+              - text: var cacheKey = BuildCacheKey(message, systemPrompt);
+              - text: var cached = await _cache.GetAsync<string>(cacheKey, cancellationToken).ConfigureAwait(false);
+              - text: if (cached is not null)
+              - text: "{"
+              - text: _metadata.WasCacheHit = true;
+              - text: return cached;
+              - text: "}"
+              - text: var reply = await _inner.ChatAsync(message, systemPrompt, cancellationToken).ConfigureAwait(false);
+              - text: if (!string.IsNullOrEmpty(reply))
+              - text: "{"
+              - text: await _cache.SetAsync(
+              - text: cacheKey,
+              - text: reply,
+              - text: new CacheEntryOptions(_ttl),
+              - text: cancellationToken).ConfigureAwait(false);
+              - text: "}"
+              - text: _metadata.WasCacheHit = false;
+              - text: return reply;
+              - text: "}"
+              - generic [ref=e530]: /// <summary>
+              - generic [ref=e531]: /// Builds a deterministic 64-char hex cache key from the prompt inputs.
+              - generic [ref=e532]: /// SHA256 keeps keys compact regardless of how long the system prompt is.
+              - generic [ref=e533]: /// </summary>
+              - generic [ref=e534]:
+                - text: private static string BuildCacheKey(
+                - generic [ref=e535]: string message, string? systemPrompt
+                - text: )
+              - text: "{"
+              - text: var raw =
+              - generic [ref=e536]:
+                - text: $"
+                - generic [ref=e537]: "{systemPrompt ?? string.Empty}"
+                - text: "|{message}\""
+              - text: ;
+              - text: var hash = SHA256.HashData(Encoding.UTF8.GetBytes(raw));
+              - text: return
+              - generic [ref=e538]: "$\"ai:chat:{Convert.ToHexString(hash).ToLowerInvariant()}\""
+              - text: ;
+              - text: "}"
+              - text: "}"
+              - text: "}"
+            - paragraph [ref=e539]:
+              - strong [ref=e540]: "Key design decisions:"
+            - list [ref=e541]:
+              - listitem [ref=e542]:
+                - code [ref=e543]:
+                  - strong [ref=e544]: _inner
+                - strong [ref=e545]: is
+                - code [ref=e546]:
+                  - strong [ref=e547]: IAiChatService
+                - text: — the decorator depends on the interface, not
+                - code [ref=e548]: OllamaAiService
+                - text: directly. You could stack another decorator on top (e.g., a logging decorator) without changing this class.
+              - listitem [ref=e549]:
+                - code [ref=e550]:
+                  - strong [ref=e551]: cached is not null
+                - strong [ref=e552]: check
+                - text: —
+                - code [ref=e553]: ICacheProvider.GetAsync<string>
+                - text: returns
+                - code [ref=e554]: "null"
+                - text: on a miss. An empty string
+                - code [ref=e555]: "\"\""
+                - text: would be a valid (if unusual) cached reply, so we check for null specifically.
+              - listitem [ref=e556]:
+                - strong [ref=e557]: "Guard:"
+                - code [ref=e558]:
+                  - strong [ref=e559]: "!string.IsNullOrEmpty(reply)"
+                - text: — we don't cache empty responses. If Ollama returned nothing (service glitch, model timeout), we don't want to permanently cache an empty string.
+              - listitem [ref=e560]:
+                - code [ref=e561]:
+                  - strong [ref=e562]: _ttl
+                - strong [ref=e563]: passed at construction
+                - text: — keeps this class free of
+                - code [ref=e564]: IConfiguration
+                - text: dependencies. The registration code (next step) reads the TTL from config and passes the resolved
+                - code [ref=e565]: TimeSpan
+                - text: .
+          - separator [ref=e566]
+          - generic [ref=e572]:
+            - 'heading "Step 4: Register the Decorator and Metadata Service" [level=2] [ref=e573]'
+            - paragraph [ref=e574]:
+              - text: Open
+              - code [ref=e575]: TalentManagementAPI.Infrastructure.Shared/ServiceRegistration.cs
+              - text: "and update the AI service registrations:"
+            - generic [ref=e577]:
+              - text: services.AddScoped<IAiResponseMetadata, AiResponseMetadata>();
+              - text: var ttlMinutes = config.GetValue<int>("Ollama:CacheTtlMinutes", 60);
+              - text: var ttl = TimeSpan.FromMinutes(ttlMinutes);
+              - text: services.AddTransient<OllamaAiService>();
+              - text: services.AddTransient<IAiChatService>(sp => new CachingAiChatService(
+              - text: sp.GetRequiredService<OllamaAiService>(),
+              - text: sp.GetRequiredService<ICacheProvider>(),
+              - text: sp.GetRequiredService<IAiResponseMetadata>(),
+              - text: ttl));
+            - paragraph [ref=e578]:
+              - text: Also add the concrete
+              - code [ref=e579]: AiResponseMetadata
+              - text: "implementation in the same file (or a separate small file):"
+            - generic [ref=e581]:
+              - text: "internal sealed class AiResponseMetadata : IAiResponseMetadata"
+              - text: "{"
+              - text: "public bool WasCacheHit { get; set; }"
+              - text: "}"
+            - paragraph [ref=e582]:
+              - strong [ref=e583]: Why
+              - code [ref=e584]:
+                - strong [ref=e585]: AddTransient<OllamaAiService>()
+              - strong [ref=e586]: and
+              - code [ref=e587]:
+                - strong [ref=e588]: AddTransient<IAiChatService>(...)
+              - strong [ref=e589]: "?"
+            - paragraph [ref=e590]:
+              - text: We need the DI container to resolve
+              - code [ref=e591]: OllamaAiService
+              - text: by its concrete type (not by
+              - code [ref=e592]: IAiChatService
+              - text: ) so the decorator can wrap it. Registering
+              - code [ref=e593]: OllamaAiService
+              - text: directly by its concrete type enables
+              - code [ref=e594]: sp.GetRequiredService<OllamaAiService>()
+              - text: in the factory. If we only registered it as
+              - code [ref=e595]: IAiChatService
+              - text: ","
+              - code [ref=e596]: GetRequiredService<OllamaAiService>()
+              - text: would throw.
+          - separator [ref=e597]
+          - generic [ref=e603]:
+            - 'heading "Step 5: Add X-AI-Cache Header to AiController" [level=2] [ref=e604]':
+              - text: "Step 5: Add"
+              - code [ref=e605]: X-AI-Cache
+              - text: Header to AiController
+            - paragraph [ref=e606]:
+              - text: Open
+              - code [ref=e607]: TalentManagementAPI.WebApi/Controllers/v1/AiController.cs
+              - text: and inject
+              - code [ref=e608]: IAiResponseMetadata
+              - text: ":"
+            - generic [ref=e610]:
+              - text: private readonly IAiChatService _aiChatService;
+              - text: private readonly IFeatureManagerSnapshot _featureManager;
+              - text: private readonly IAiResponseMetadata _aiMetadata;
+              - generic [ref=e611]:
+                - text: public AiController(
+                - generic [ref=e612]:
+                  - text: IAiChatService aiChatService,
+                  - text: IFeatureManagerSnapshot featureManager,
+                  - text: IAiResponseMetadata aiMetadata
+                - text: )
+              - text: "{"
+              - text: _aiChatService = aiChatService;
+              - text: _featureManager = featureManager;
+              - text: _aiMetadata = aiMetadata;
+              - text: "}"
+            - paragraph [ref=e613]: "Add a private helper to set the header after any AI endpoint call:"
+            - generic [ref=e615]:
+              - generic [ref=e616]: private void SetAiCacheHeader()
+              - text: "{"
+              - text: "Response.Headers[\"X-AI-Cache\"] = _aiMetadata.WasCacheHit ? \"HIT\" : \"MISS\";"
+              - text: "}"
+            - paragraph [ref=e617]: "Call it in each endpoint after the AI response:"
+            - generic [ref=e619]:
+              - text: "// In Chat():"
+              - text: var reply = await _aiChatService.ChatAsync(request.Message, request.SystemPrompt, cancellationToken);
+              - text: SetAiCacheHeader();
+              - text: return Ok(new AiChatResponse(reply));
+              - text: "// In HrInsight():"
+              - text: "var result = await Mediator.Send(new GetHrInsightQuery { Question = request.Question }, cancellationToken);"
+              - text: SetAiCacheHeader();
+              - text: return Ok(result);
+              - text: "// In NlEmployeeSearch():"
+              - text: "var result = await Mediator.Send(new NlSearchQuery { Query = request.Query }, cancellationToken);"
+              - text: SetAiCacheHeader();
+              - text: return result.IsSuccess
+              - text: "? Ok(result.Value)"
+              - text: ": BadRequest(new { detail = result.Errors.FirstOrDefault() });"
+          - separator [ref=e620]
+          - generic [ref=e626]:
+            - heading "💻 Try It Yourself" [level=2] [ref=e627]
+            - paragraph [ref=e628]:
+              - strong [ref=e629]: "Configure:"
+            - generic [ref=e631]:
+              - text: // appsettings.json
+              - text: "\"Ollama\": {"
+              - text: "\"BaseUrl\": \"http://localhost:11434\","
+              - text: "\"Model\": \"llama3.2\","
+              - text: "\"CacheTtlMinutes\": 5"
+              - text: "},"
+              - text: "\"FeatureManagement\": {"
+              - text: "\"AiEnabled\":"
+              - generic [ref=e632]: "true"
+              - text: ","
+              - text: "\"CacheEnabled\":"
+              - generic [ref=e633]: "true"
+              - text: "}"
+            - paragraph [ref=e634]:
+              - strong [ref=e635]: "Start the stack and verify via Swagger:"
+            - paragraph [ref=e636]:
+              - text: Navigate to
+              - code [ref=e637]: https://localhost:44378/swagger
+              - text: →
+              - code [ref=e638]: POST /api/v1/ai/chat
+              - text: .
+            - figure [ref=e639]:
+              - button "Press enter or click to view image in full size" [ref=e640]:
+                - generic [ref=e641]: Press enter or click to view image in full size
+            - generic [ref=e645]: "{ \"message\": \"What is Clean Architecture?\" }"
+            - paragraph [ref=e646]:
+              - strong [ref=e647]: "First call (MISS):"
+            - list [ref=e648]:
+              - listitem [ref=e649]: Takes 2–4 seconds
+              - listitem [ref=e650]:
+                - text: "Response header:"
+                - code [ref=e651]: "X-AI-Cache: MISS"
+            - paragraph [ref=e652]:
+              - strong [ref=e653]: "Second call (same body):"
+            - list [ref=e654]:
+              - listitem [ref=e655]: Returns in < 50ms
+              - listitem [ref=e656]:
+                - text: "Response header:"
+                - code [ref=e657]: "X-AI-Cache: HIT"
+            - paragraph [ref=e658]:
+              - strong [ref=e659]: Test with
+              - code [ref=e660]:
+                - strong [ref=e661]: "CacheEnabled: false"
+              - strong [ref=e662]: ":"
+            - generic [ref=e664]:
+              - text: "\"FeatureManagement\": {"
+              - text: "\"AiEnabled\":"
+              - generic [ref=e665]: "true"
+              - text: ","
+              - text: "\"CacheEnabled\":"
+              - generic [ref=e666]: "false"
+              - text: "}"
+            - paragraph [ref=e667]:
+              - text: All calls return
+              - code [ref=e668]: "X-AI-Cache: MISS"
+              - text: — the
+              - code [ref=e669]: EasyCachingProviderAdapter.IsCacheEnabled()
+              - text: guard returns
+              - code [ref=e670]: "false"
+              - text: ","
+              - code [ref=e671]: GetAsync
+              - text: always returns null, and the decorator always calls through to Ollama.
+            - paragraph [ref=e672]:
+              - strong [ref=e673]: "Test TTL expiry:"
+            - paragraph [ref=e674]:
+              - text: Set
+              - code [ref=e675]: "CacheTtlMinutes: 1"
+              - text: ", make a call, wait 90 seconds, call again. The second call returns"
+              - code [ref=e676]: "X-AI-Cache: MISS"
+              - text: and takes the full inference time again.
+          - separator [ref=e677]
+          - generic [ref=e683]:
+            - heading "📐 What Changed in the Architecture" [level=2] [ref=e684]
+            - generic [ref=e686]:
+              - text: Application/Interfaces/
+              - text: "└── IAiResponseMetadata.cs ← new: carries cache hit status per request"
+              - text: Infrastructure.Shared/Services/
+              - text: ├── OllamaAiService.cs ← unchanged
+              - text: "└── CachingAiChatService.cs ← new: cache-aside decorator"
+              - text: Infrastructure.Shared/
+              - text: "└── ServiceRegistration.cs ← updated: register decorator + metadata"
+              - text: WebApi/Controllers/v1/
+              - text: "└── AiController.cs ← updated: inject metadata, add X-AI-Cache header"
+              - text: WebApi/
+              - text: "└── appsettings.json ← updated: +CacheTtlMinutes"
+            - paragraph [ref=e687]:
+              - strong [ref=e688]: "No changes to:"
+            - list [ref=e689]:
+              - listitem [ref=e690]:
+                - code [ref=e691]: GetHrInsightQuery
+                - text: — still calls
+                - code [ref=e692]: IAiChatService
+                - text: unchanged
+              - listitem [ref=e693]:
+                - code [ref=e694]: NlSearchQueryHandler
+                - text: — still calls
+                - code [ref=e695]: IAiChatService
+                - text: unchanged
+              - listitem [ref=e696]:
+                - code [ref=e697]: EmployeesController
+                - text: — untouched
+              - listitem [ref=e698]: Any Domain or Infrastructure.Persistence code
+          - separator [ref=e699]
+          - generic [ref=e705]:
+            - heading "📊 Real-World Impact" [level=2] [ref=e706]
+            - paragraph [ref=e707]:
+              - strong [ref=e708]: "Before this article:"
+            - list [ref=e709]:
+              - listitem [ref=e710]: ❌ Every AI call goes to Ollama regardless of whether the same question was asked 30 seconds ago
+              - listitem [ref=e711]: ❌ Dashboard insight re-fetches on every page load (same prompt every time)
+              - listitem [ref=e712]: ❌ No visibility into which responses came from cache vs inference
+            - paragraph [ref=e713]:
+              - strong [ref=e714]: "After this article:"
+            - list [ref=e715]:
+              - listitem [ref=e716]:
+                - text: ✅ Repeated queries return instantly —
+                - code [ref=e717]: "X-AI-Cache: HIT"
+                - text: in < 50ms
+              - listitem [ref=e718]: ✅ First-call latency (MISS) is unchanged — no overhead added to the inference path
+              - listitem [ref=e719]:
+                - text: ✅
+                - code [ref=e720]: "CacheEnabled: false"
+                - text: disables caching globally without touching service code
+              - listitem [ref=e721]: ✅ TTL configurable per environment — short for dev, longer for production
+              - listitem [ref=e722]: ✅ Cache header visible in Swagger, browser DevTools, and any API monitoring tool
+          - separator [ref=e723]
+          - generic [ref=e729]:
+            - heading "🌟 Why the Decorator Pattern Scales" [level=2] [ref=e730]
+            - paragraph [ref=e731]: "The decorator approach applies to any cross-cutting concern you want to add to a service:"
+            - paragraph [ref=e732]:
+              - strong [ref=e733]: Other decorators you could stack on
+              - code [ref=e734]:
+                - strong [ref=e735]: IAiChatService
+              - strong [ref=e736]: ":"
+            - list [ref=e737]:
+              - listitem [ref=e738]:
+                - strong [ref=e739]: Logging decorator
+                - text: — log every prompt and response with timing
+              - listitem [ref=e740]:
+                - strong [ref=e741]: Rate-limiting decorator
+                - text: — reject calls above N per minute per user
+              - listitem [ref=e742]:
+                - strong [ref=e743]: Sanitization decorator
+                - text: — strip PII from prompts before sending to the LLM
+              - listitem [ref=e744]:
+                - strong [ref=e745]: Fallback decorator
+                - text: — try a backup model if the primary fails
+            - paragraph [ref=e746]:
+              - text: Each decorator wraps the previous one. The controller always calls
+              - code [ref=e747]: IAiChatService
+              - text: . Registration order controls the wrapping order. No handler, query, or controller changes — ever.
+          - separator [ref=e748]
+          - generic [ref=e754]:
+            - heading "🤝 Community & Support" [level=2] [ref=e755]
+            - paragraph [ref=e756]:
+              - strong [ref=e757]: Questions or feedback?
+              - text: "The tutorial repository welcomes:"
+            - list [ref=e758]:
+              - listitem [ref=e759]:
+                - text: ⭐
+                - strong [ref=e760]: GitHub stars
+                - text: — Help others discover it!
+              - listitem [ref=e761]:
+                - text: 🐛
+                - strong [ref=e762]: Issue reports
+                - text: — Found a bug or have a suggestion?
+              - listitem [ref=e763]:
+                - text: 💬
+                - strong [ref=e764]: Discussions
+                - text: — Ask questions, share your use cases
+              - listitem [ref=e765]:
+                - text: 🚀
+                - strong [ref=e766]: Pull requests
+                - text: — Improvements always appreciated
+          - separator [ref=e767]
+          - generic [ref=e773]:
+            - heading "📖 Series Navigation" [level=2] [ref=e774]
+            - paragraph [ref=e775]:
+              - strong [ref=e776]: "AngularNetTutorial Blog Series:"
+            - list [ref=e777]:
+              - listitem [ref=e778]:
+                - link "Building Modern Web Applications with Angular, .NET, and OAuth 2.0" [ref=e779] [cursor=pointer]:
+                  - /url: /scrum-and-coke/building-modern-web-applications-with-angular-net-and-oauth-2-0-complete-tutorial-series-7ea97ed3fc56
+                - text: — Main tutorial
+              - listitem [ref=e780]:
+                - link "Run a Local LLM in Your .NET 10 API with Ollama" [ref=e781] [cursor=pointer]:
+                  - /url: https://github.com/workcontrolgit/AngularNetTutorial/blob/master/blogs/series-6-ai-app-features/6.1-dotnet-ai-foundation.md
+                - text: — AI Foundation (Series 6.1)
+              - listitem [ref=e782]:
+                - link "Build an HR AI Assistant That Knows Your Data" [ref=e783] [cursor=pointer]:
+                  - /url: https://github.com/workcontrolgit/AngularNetTutorial/blob/master/blogs/series-6-ai-app-features/6.2-dotnet-ai-hr-assistant.md
+                - text: — HR AI Assistant (Series 6.2)
+              - listitem [ref=e784]:
+                - link "Build a Dedicated AI Section in Angular with Submenu Navigation" [ref=e785] [cursor=pointer]:
+                  - /url: https://github.com/workcontrolgit/AngularNetTutorial/blob/master/blogs/series-6-ai-app-features/6.3-angular-ai-chat-widget.md
+                - text: — AI Submenu Refactor (Series 6.3)
+              - listitem [ref=e786]:
+                - link "Natural Language Employee Search in Angular Material" [ref=e787] [cursor=pointer]:
+                  - /url: https://github.com/workcontrolgit/AngularNetTutorial/blob/master/blogs/series-6-ai-app-features/6.4-angular-ai-nl-search.md
+                - text: — NL Search Angular (Series 6.4)
+              - listitem [ref=e788]:
+                - link "Natural Language Employee Search with LLM Query Parsing" [ref=e789] [cursor=pointer]:
+                  - /url: https://github.com/workcontrolgit/AngularNetTutorial/blob/master/blogs/series-6-ai-app-features/6.5-dotnet-natural-language-search.md
+                - text: — NL Search .NET Backend (Series 6.5)
+              - listitem [ref=e790]:
+                - link "Semantic Position Search with Vector Embeddings in Angular Material" [ref=e791] [cursor=pointer]:
+                  - /url: https://github.com/workcontrolgit/AngularNetTutorial/blob/master/blogs/series-6-ai-app-features/6.6-angular-ai-vector-search.md
+                - text: — Vector Search Angular (Series 6.6)
+              - listitem [ref=e792]:
+                - link "Semantic Position Search with SQL Server Native Vector Search" [ref=e793] [cursor=pointer]:
+                  - /url: https://github.com/workcontrolgit/AngularNetTutorial/blob/master/blogs/series-6-ai-app-features/6.7-dotnet-mssql-vector-search.md
+                - text: — Vector Search .NET Backend (Series 6.7)
+              - listitem [ref=e794]:
+                - strong [ref=e795]: This Article
+                - text: — Cache Your AI Responses (Series 6.8)
+      - generic [ref=e798]:
+        - link "Dotnet" [ref=e800] [cursor=pointer]:
+          - /url: /tag/dotnet?source=post_page-----b27a7820dbc2---------------------------------------
+          - generic [ref=e801]: Dotnet
+        - link "Csharp" [ref=e803] [cursor=pointer]:
+          - /url: /tag/csharp?source=post_page-----b27a7820dbc2---------------------------------------
+          - generic [ref=e804]: Csharp
+        - link "Ollama" [ref=e806] [cursor=pointer]:
+          - /url: /tag/ollama?source=post_page-----b27a7820dbc2---------------------------------------
+          - generic [ref=e807]: Ollama
+        - link "Caching" [ref=e809] [cursor=pointer]:
+          - /url: /tag/caching?source=post_page-----b27a7820dbc2---------------------------------------
+          - generic [ref=e810]: Caching
+        - link "Software Design Patterns" [ref=e812] [cursor=pointer]:
+          - /url: /tag/software-design-patterns?source=post_page-----b27a7820dbc2---------------------------------------
+          - generic [ref=e813]: Software Design Patterns
+      - contentinfo [ref=e814]:
+        - generic [ref=e818]:
+          - generic [ref=e819]:
+            - tooltip "clap" [ref=e826]:
+              - generic [ref=e827]:
+                - img "clap"
+            - tooltip "responses" [ref=e830]:
+              - button "responses" [ref=e832] [cursor=pointer]:
+                - img [ref=e833]
+          - generic [ref=e835]:
+            - tooltip "Add to list bookmark button" [ref=e838]:
+              - button "Add to list bookmark button" [ref=e841] [cursor=pointer]:
+                - img [ref=e842]
+            - tooltip "Share Post" [ref=e847]:
+              - button "Share Post" [ref=e849] [cursor=pointer]:
+                - img [ref=e850]
+            - tooltip "More options" [ref=e856]:
+              - button "More options" [ref=e858] [cursor=pointer]:
+                - img [ref=e859]
+      - generic [ref=e863]:
+        - generic [ref=e865]:
+          - link "Scrum and Coke" [ref=e868] [cursor=pointer]:
+            - /url: https://medium.com/scrum-and-coke?source=post_page---post_publication_info--b27a7820dbc2---------------------------------------
+            - img "Scrum and Coke" [ref=e870]
+          - generic [ref=e873]:
+            - link "Published in Scrum and Coke" [ref=e874] [cursor=pointer]:
+              - /url: https://medium.com/scrum-and-coke?source=post_page---post_publication_info--b27a7820dbc2---------------------------------------
+              - heading "Published in Scrum and Coke" [level=2] [ref=e875]:
+                - generic [ref=e876]: Published in Scrum and Coke
+            - generic [ref=e877]:
+              - link "137 followers" [ref=e880] [cursor=pointer]:
+                - /url: /scrum-and-coke/followers?source=post_page---post_publication_info--b27a7820dbc2---------------------------------------
+              - generic [ref=e881]:
+                - generic [ref=e882]: ·
+                - link "Last published 1 day ago" [ref=e883] [cursor=pointer]:
+                  - /url: /scrum-and-coke/cache-your-ai-responses-save-time-and-api-costs-b27a7820dbc2?source=post_page---post_publication_info--b27a7820dbc2---------------------------------------
+            - paragraph [ref=e885]: Tools and Techniques for Agile Transformation. Promote and Highlight Outstanding Opensource Projects
+          - button "Following" [ref=e888] [cursor=pointer]:
+            - generic [ref=e891]: Following
+        - generic [ref=e892]:
+          - link "Fuji Nguyen" [ref=e895] [cursor=pointer]:
+            - /url: /@fuji-nguyen?source=post_page---post_author_info--b27a7820dbc2---------------------------------------
+            - img "Fuji Nguyen" [ref=e897]
+          - generic [ref=e900]:
+            - link "Written by Fuji Nguyen" [ref=e901] [cursor=pointer]:
+              - /url: /@fuji-nguyen?source=post_page---post_author_info--b27a7820dbc2---------------------------------------
+              - heading "Written by Fuji Nguyen" [level=2] [ref=e902]:
+                - generic [ref=e903]: Written by Fuji Nguyen
+            - generic [ref=e904]:
+              - link "1K followers" [ref=e907] [cursor=pointer]:
+                - /url: /@fuji-nguyen/followers?source=post_page---post_author_info--b27a7820dbc2---------------------------------------
+              - generic [ref=e908]:
+                - generic [ref=e909]: ·
+                - link "695 following" [ref=e910] [cursor=pointer]:
+                  - /url: /@fuji-nguyen/following?source=post_page---post_author_info--b27a7820dbc2---------------------------------------
+            - paragraph [ref=e912]: DX Advocate, Open Source Contributor improving dev experience. Pickleball enthusiast who enjoys playing and coaching, sharing skills on and off the court.
+          - link "Edit profile" [ref=e914] [cursor=pointer]:
+            - /url: /me/settings/account?source=post_page---post_author_info--b27a7820dbc2---------------------------------------#profileInformation
+            - generic [ref=e915]: Edit profile
+      - generic [ref=e920]:
+        - generic [ref=e921]:
+          - heading "No responses yet" [level=2] [ref=e922]
+          - generic [ref=e923]:
+            - tooltip "Shield with a checkmark" [ref=e925]:
+              - link "Shield with a checkmark" [ref=e927] [cursor=pointer]:
+                - /url: https://policy.medium.com/medium-rules-30e5502c4eb4?source=post_page---post_responses--b27a7820dbc2---------------------------------------
+                - img "Shield with a checkmark" [ref=e928]
+            - button [ref=e931] [cursor=pointer]:
+              - img [ref=e932]
+        - generic [ref=e938]:
+          - generic [ref=e939]:
+            - generic [ref=e940]:
+              - img "Fuji Nguyen" [ref=e942]
+              - img [ref=e944]
+            - generic [ref=e949]: Fuji Nguyen
+          - generic [ref=e951]:
+            - textbox [ref=e953]:
+              - paragraph [ref=e955]:
+                - generic:
+                  - generic:
+                    - generic: What are your thoughts?
+            - generic:
+              - generic [ref=e956]:
+                - tooltip "Bold (⌘B)" [ref=e958]:
+                  - button "Bold (⌘B)" [ref=e960]:
+                    - img [ref=e961]
+                - tooltip "Italic (⌘I)" [ref=e964]:
+                  - button "Italic (⌘I)" [ref=e966]:
+                    - img [ref=e967]
+              - generic:
+                - button "Cancel" [ref=e969]
+                - button "Respond" [disabled] [ref=e970]
+      - generic [ref=e976]:
+        - link "Help" [ref=e978] [cursor=pointer]:
+          - /url: https://help.medium.com/hc/en-us?source=post_page-----b27a7820dbc2---------------------------------------
+          - paragraph [ref=e979]: Help
+        - link "Status" [ref=e981] [cursor=pointer]:
+          - /url: https://status.medium.com/?source=post_page-----b27a7820dbc2---------------------------------------
+          - paragraph [ref=e982]: Status
+        - link "About" [ref=e984] [cursor=pointer]:
+          - /url: /about?autoplay=1&source=post_page-----b27a7820dbc2---------------------------------------
+          - paragraph [ref=e985]: About
+        - link "Careers" [ref=e987] [cursor=pointer]:
+          - /url: /jobs-at-medium/work-at-medium-959d1a85284e?source=post_page-----b27a7820dbc2---------------------------------------
+          - paragraph [ref=e988]: Careers
+        - link "Press" [ref=e990] [cursor=pointer]:
+          - /url: mailto:pressinquiries@medium.com
+          - paragraph [ref=e991]: Press
+        - link "Blog" [ref=e993] [cursor=pointer]:
+          - /url: https://blog.medium.com/?source=post_page-----b27a7820dbc2---------------------------------------
+          - paragraph [ref=e994]: Blog
+        - link "Privacy" [ref=e996] [cursor=pointer]:
+          - /url: https://policy.medium.com/medium-privacy-policy-f03bf92035c9?source=post_page-----b27a7820dbc2---------------------------------------
+          - paragraph [ref=e997]: Privacy
+        - link "Rules" [ref=e999] [cursor=pointer]:
+          - /url: https://policy.medium.com/medium-rules-30e5502c4eb4?source=post_page-----b27a7820dbc2---------------------------------------
+          - paragraph [ref=e1000]: Rules
+        - link "Terms" [ref=e1002] [cursor=pointer]:
+          - /url: https://policy.medium.com/medium-terms-of-service-9db0094a1e0f?source=post_page-----b27a7820dbc2---------------------------------------
+          - paragraph [ref=e1003]: Terms
+        - link "Text to speech" [ref=e1005] [cursor=pointer]:
+          - /url: https://speechify.com/medium?source=post_page-----b27a7820dbc2---------------------------------------
+          - paragraph [ref=e1006]: Text to speech

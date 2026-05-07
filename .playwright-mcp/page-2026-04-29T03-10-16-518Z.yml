@@ -1,0 +1,1807 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link "Homepage" [ref=e9] [cursor=pointer]:
+          - /url: https://medium.com/
+          - img [ref=e11]
+          - generic: Homepage
+        - link "Scrum and Coke" [ref=e17] [cursor=pointer]:
+          - /url: https://medium.com/scrum-and-coke?source=logo-4b79cc017e83---6c43d7988985
+          - generic [ref=e18]: Scrum and Coke
+        - generic [ref=e20]: Draft in Scrum and CokeSaved
+      - generic [ref=e21]:
+        - button "Decline" [ref=e23] [cursor=pointer]
+        - button "Publish" [ref=e25] [cursor=pointer]
+        - button [ref=e27] [cursor=pointer]:
+          - img [ref=e29]
+        - generic [ref=e32]:
+          - button "Notifications" [ref=e33] [cursor=pointer]:
+            - generic:
+              - generic: "6"
+              - generic: "New notifications: 6"
+          - button "Fuji Nguyen" [ref=e34] [cursor=pointer]:
+            - img "Fuji Nguyen" [ref=e36]
+          - button "Scrum and Coke" [ref=e37] [cursor=pointer]:
+            - img "Scrum and Coke" [ref=e39]
+    - generic [ref=e581]:
+      - generic [ref=e582]: Copy and send this link to someone and they’ll be able to read your draft before you publish (and leave private notes if they have a Medium account).
+      - textbox [active] [ref=e583]: https://medium.com/scrum-and-coke/part-1-clean-architecture-foundation-with-hr-domain-f43127400757
+  - main [ref=e41]:
+    - article [ref=e42]:
+      - textbox [ref=e43]:
+        - generic [ref=e44]:
+          - text: ...
+          - generic [ref=e46]:
+            - 'heading "Part 1: Clean Architecture Foundation with HR Domain" [level=3] [ref=e47]'
+            - paragraph [ref=e48]:
+              - strong [ref=e49]: "Series:"
+              - text: AI Agents & MCP with .NET 10 |
+              - strong [ref=e50]: Part 1 of 5
+              - strong [ref=e51]: "GitHub:"
+              - link "workcontrolgit/DotnetAiAgentMcp" [ref=e52]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fworkcontrolgit%2FDotnetAiAgentMcp
+        - generic [ref=e53]:
+          - generic:
+            - separator: ...
+          - generic [ref=e55]:
+            - heading "Introduction" [level=3] [ref=e56]
+            - paragraph [ref=e57]:
+              - text: Before we wire up AI agents and MCP servers, we need solid ground to stand on. In this first post, we build the Clean Architecture foundation — a federal HR domain modeled after
+              - link "USAJobs.gov" [ref=e58]:
+                - /url: https://medium.com/r/?url=http%3A%2F%2Fusajobs.gov%2F
+                - strong [ref=e59]: USAJobs.gov
+              - text: ", the official US federal government job board."
+            - paragraph [ref=e60]: Why USAJobs? Federal job announcements have a richer, more structured data model than commercial job boards. They require occupational series codes, GS pay grades, security clearance levels, duty locations, open/close application windows, and OPM-standard qualifications text. That richness gives our AI agent meaningful context when generating job postings in Parts 3 and 4.
+            - paragraph [ref=e61]: "By the end of this post you will have:"
+            - list [ref=e62]:
+              - listitem [ref=e63]: • A .NET 10 solution with 5 projects wired together correctly
+              - listitem [ref=e64]:
+                - text: • A domain model with entity and field names aligned to the
+                - link "USAJobs API schema" [ref=e65]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fdeveloper.usajobs.gov%2Fapi-reference%2F
+              - listitem [ref=e66]: • Application services the MCP tools will call in Part 3
+              - listitem [ref=e67]: • EF Core + SQL Server 2025 LocalDB with an initial migration
+              - listitem [ref=e68]: • 4 federal hiring organizations and 5 realistic USAJobs-format positions seeded and ready to query
+        - generic [ref=e69]:
+          - generic:
+            - separator: ...
+          - generic [ref=e71]:
+            - heading "Why Clean Architecture for AI-Enabled Apps?" [level=3] [ref=e72]
+            - paragraph [ref=e73]:
+              - text: "Traditional layered apps put the database at the bottom and business logic in the middle. When you add AI, you need to invert that thinking: the"
+              - strong [ref=e74]: domain model becomes the contract that the AI calls through
+              - text: — whether via function calling, tool use, or MCP.
+            - paragraph [ref=e75]:
+              - text: Clean Architecture enforces this by making the
+              - strong [ref=e76]: Core
+              - text: (domain + application) independent of any infrastructure, including databases
+              - emphasis [ref=e77]: and
+              - text: "AI runtimes. That separation means:"
+            - list [ref=e78]:
+              - listitem [ref=e79]: • You can swap Ollama for Claude API without touching business logic
+              - listitem [ref=e80]: • MCP tools are thin wrappers over Application services — no domain logic leaks in
+              - listitem [ref=e81]: • Unit-testing use cases requires no database, no AI runtime, no HTTP server
+            - paragraph [ref=e82]: "Here is how the layers relate in this project:"
+            - figure "Type caption for image (optional)" [ref=e83]:
+              - img [ref=e86]
+            - paragraph [ref=e87]:
+              - strong [ref=e88]: "Key rule:"
+              - text: AI infrastructure (Ollama client, MCP SDK) lives only in the outermost projects. Core and Application have zero knowledge of AI.
+        - generic [ref=e89]:
+          - generic:
+            - separator: ...
+          - generic [ref=e91]:
+            - heading "Understanding Federal Job Announcement Fields" [level=3] [ref=e92]
+            - paragraph [ref=e93]:
+              - text: Before writing code, it helps to understand what USAJobs requires. Every posting on
+              - link "usajobs.gov" [ref=e94]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fwww.usajobs.gov%2F
+              - text: contains these fields — and our domain model maps to them directly using the
+              - strong [ref=e95]: official USAJobs API field names
+              - text: from
+              - link "developer.usajobs.gov" [ref=e96]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fdeveloper.usajobs.gov%2Fapi-reference%2F
+              - text: .
+            - paragraph [ref=e97]:
+              - strong [ref=e98]: Organization
+            - list [ref=e99]:
+              - listitem [ref=e100]:
+                - text: •
+                - code [ref=e101]: OrganizationName
+                - text: →
+                - code [ref=e102]: HiringOrganization.OrganizationName
+                - text: — the hiring office, e.g. "Office of IT"
+              - listitem [ref=e103]:
+                - text: •
+                - code [ref=e104]: DepartmentName
+                - text: →
+                - code [ref=e105]: HiringOrganization.DepartmentName
+                - text: — cabinet-level parent, e.g. "Dept of Defense"
+            - paragraph [ref=e106]:
+              - strong [ref=e107]: Position Identity
+            - list [ref=e108]:
+              - listitem [ref=e109]:
+                - text: •
+                - code [ref=e110]: PositionTitle
+                - text: →
+                - code [ref=e111]: Position.Title
+                - text: — official job title
+              - listitem [ref=e112]:
+                - text: •
+                - code [ref=e113]: JobSummary
+                - text: →
+                - code [ref=e114]: Position.Description
+                - text: — shown in search results
+              - listitem [ref=e115]:
+                - text: •
+                - code [ref=e116]: MajorDuties
+                - text: →
+                - code [ref=e117]: Position.Duties
+                - text: — full duties narrative
+              - listitem [ref=e118]:
+                - text: •
+                - code [ref=e119]: Qualifications
+                - text: →
+                - code [ref=e120]: Position.Qualifications
+                - text: — OPM minimum quals text
+              - listitem [ref=e121]:
+                - text: •
+                - code [ref=e122]: JobCategories[].Code
+                - text: →
+                - code [ref=e123]: Position.OccupationalSeries
+                - text: — 4-digit code e.g. "2210"
+            - paragraph [ref=e124]:
+              - strong [ref=e125]: Pay
+            - list [ref=e126]:
+              - listitem [ref=e127]:
+                - text: •
+                - code [ref=e128]: PayPlan
+                - text: +
+                - code [ref=e129]: LowGrade
+                - text: →
+                - code [ref=e130]: Position.PayGradeMin
+                - text: — e.g. "GS-09"
+              - listitem [ref=e131]:
+                - text: •
+                - code [ref=e132]: PayPlan
+                - text: +
+                - code [ref=e133]: HighGrade
+                - text: →
+                - code [ref=e134]: Position.PayGradeMax
+                - text: — e.g. "GS-11"
+              - listitem [ref=e135]:
+                - text: •
+                - code [ref=e136]: PositionRemuneration[].MinimumRange
+                - text: →
+                - code [ref=e137]: PositionRemuneration.MinimumRange
+                - text: — dollar amount
+              - listitem [ref=e138]:
+                - text: •
+                - code [ref=e139]: PositionRemuneration[].MaximumRange
+                - text: →
+                - code [ref=e140]: PositionRemuneration.MaximumRange
+                - text: — dollar amount
+              - listitem [ref=e141]:
+                - text: •
+                - code [ref=e142]: PositionRemuneration[].RateIntervalCode
+                - text: →
+                - code [ref=e143]: PositionRemuneration.RateIntervalCode
+                - text: —
+                - code [ref=e144]: "\"PA\""
+                - text: = Per Annum
+            - paragraph [ref=e145]:
+              - strong [ref=e146]: Schedule & Appointment
+            - list [ref=e147]:
+              - listitem [ref=e148]:
+                - text: •
+                - code [ref=e149]: appointmentType
+                - text: →
+                - code [ref=e150]: Position.AppointmentType
+                - text: — Permanent / Temporary / Term
+              - listitem [ref=e151]:
+                - text: •
+                - code [ref=e152]: workSchedule
+                - text: →
+                - code [ref=e153]: Position.WorkSchedule
+                - text: — Full-time / Part-time
+              - listitem [ref=e154]:
+                - text: •
+                - code [ref=e155]: positionOpenDate
+                - text: →
+                - code [ref=e156]: Position.OpenDate
+              - listitem [ref=e157]:
+                - text: •
+                - code [ref=e158]: positionCloseDate
+                - text: →
+                - code [ref=e159]: Position.CloseDate
+                - text: — nullable
+              - listitem [ref=e160]:
+                - text: •
+                - code [ref=e161]: WhoMayApply.Name
+                - text: →
+                - code [ref=e162]: Position.WhoMayApply
+            - paragraph [ref=e163]:
+              - strong [ref=e164]: Location & Logistics
+            - list [ref=e165]:
+              - listitem [ref=e166]:
+                - text: •
+                - code [ref=e167]: PositionLocation[].CityName
+                - text: →
+                - code [ref=e168]: Position.DutyLocation
+              - listitem [ref=e169]:
+                - text: •
+                - code [ref=e170]: teleworkEligible
+                - text: →
+                - code [ref=e171]: Position.TeleworkEligible
+                - text: — bool
+              - listitem [ref=e172]:
+                - text: •
+                - code [ref=e173]: travelRequirement
+                - text: →
+                - code [ref=e174]: Position.TravelRequired
+                - text: — enum
+              - listitem [ref=e175]:
+                - text: •
+                - code [ref=e176]: securityClearance
+                - text: →
+                - code [ref=e177]: Position.SecurityClearance
+                - text: — enum
+              - listitem [ref=e178]:
+                - text: •
+                - code [ref=e179]: supervisoryStatus
+                - text: →
+                - code [ref=e180]: Position.SupervisoryStatus
+                - text: — bool
+              - listitem [ref=e181]:
+                - text: •
+                - code [ref=e182]: relocationExpensesReimbursed
+                - text: →
+                - code [ref=e183]: Position.RelocationAuthorized
+                - text: — bool
+              - listitem [ref=e184]:
+                - text: •
+                - code [ref=e185]: drugTestRequired
+                - text: →
+                - code [ref=e186]: Position.DrugTestRequired
+                - text: — bool
+        - generic [ref=e187]:
+          - generic:
+            - separator: ...
+          - generic [ref=e189]:
+            - heading "Prerequisites" [level=3] [ref=e190]
+            - list [ref=e191]:
+              - listitem [ref=e192]:
+                - text: •
+                - strong [ref=e193]: .NET SDK 10.0+
+                - text: —
+                - code [ref=e194]: dotnet --version
+              - listitem [ref=e195]:
+                - text: •
+                - strong [ref=e196]: SQL Server 2025 LocalDB
+                - text: (ships with VS 2026) —
+                - code [ref=e197]: sqllocaldb info
+              - listitem [ref=e198]:
+                - text: •
+                - strong [ref=e199]: EF Core CLI tools
+                - text: (latest) —
+                - code [ref=e200]: dotnet ef --version
+              - listitem [ref=e201]:
+                - text: •
+                - strong [ref=e202]: VS Code or Visual Studio 2026+
+              - listitem [ref=e203]:
+                - text: •
+                - strong [ref=e204]: Git
+                - text: —
+                - code [ref=e205]: git --version
+            - paragraph [ref=e206]: "Install EF Core CLI tools if missing:"
+            - generic [ref=e207]:
+              - generic [ref=e208]: dotnet tool install --global dotnet-ef
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - paragraph [ref=e209]:
+              - text: Install SQL Server 2025 LocalDB (ships with Visual Studio 2026 via the
+              - emphasis [ref=e210]: Data Storage and Processing
+              - text: "workload):"
+            - generic [ref=e211]:
+              - generic [ref=e212]:
+                - text: "# Windows only, via winget"
+                - text: winget install Microsoft.SQLServer.2025.LocalDB
+              - generic:
+                - text: Auto (Bash)
+                - generic:
+                  - img
+            - blockquote [ref=e213]:
+              - strong [ref=e214]:
+                - emphasis [ref=e215]: "Note:"
+              - emphasis [ref=e216]: Visual Studio 2026 initially installs an RC build of SQL Server 2025 LocalDB. Apply
+              - strong [ref=e217]:
+                - emphasis [ref=e218]: Cumulative Update 3 (CU3)
+              - emphasis [ref=e219]: if you need the new
+              - code [ref=e220]:
+                - emphasis [ref=e221]: REGEXP_*
+              - emphasis [ref=e222]: functions or
+              - code [ref=e223]:
+                - emphasis [ref=e224]: VECTOR
+              - emphasis [ref=e225]: data type. For this tutorial the base RC build is sufficient.
+        - generic [ref=e226]:
+          - generic:
+            - separator: ...
+          - generic [ref=e228]:
+            - heading "Step 1 — Scaffold the Solution" [level=3] [ref=e229]
+            - generic [ref=e230]:
+              - generic [ref=e231]:
+                - text: mkdir DotnetAiAgentMcp && cd DotnetAiAgentMcp
+                - text: dotnet new sln -n DotnetAiAgentMcp
+                - text: dotnet new classlib -n HrMcp.Core -o src/HrMcp.Core
+                - text: dotnet new classlib -n HrMcp.Application -o src/HrMcp.Application
+                - text: dotnet new classlib -n HrMcp.Infrastructure.Persistence -o src/HrMcp.Infrastructure.Persistence
+                - text: dotnet new webapi -n HrMcp.McpServer -o src/HrMcp.McpServer
+                - text: dotnet new console -n HrMcp.Agent -o src/HrMcp.Agent
+                - text: dotnet sln add src/HrMcp.Core
+                - text: dotnet sln add src/HrMcp.Application
+                - text: dotnet sln add src/HrMcp.Infrastructure.Persistence
+                - text: dotnet sln add src/HrMcp.McpServer
+                - text: dotnet sln add src/HrMcp.Agent
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - paragraph [ref=e232]:
+              - text: Wire project references — dependencies always flow
+              - strong [ref=e233]: inward
+              - text: "toward Core:"
+            - generic [ref=e234]:
+              - generic [ref=e235]:
+                - text: dotnet add src/HrMcp.Application reference src/HrMcp.Core
+                - text: dotnet add src/HrMcp.Infrastructure.Persistence reference src/HrMcp.Core
+                - text: dotnet add src/HrMcp.McpServer reference src/HrMcp.Application
+                - text: dotnet add src/HrMcp.McpServer reference src/HrMcp.Infrastructure.Persistence
+                - text: dotnet add src/HrMcp.Agent reference src/HrMcp.Application
+                - text: dotnet add src/HrMcp.Agent reference src/HrMcp.Infrastructure.Persistence
+                - text: rm src/HrMcp.Core/Class1.cs
+                - text: rm src/HrMcp.Application/Class1.cs
+                - text: rm src/HrMcp.Infrastructure.Persistence/Class1.cs
+                - text: "dotnet build DotnetAiAgentMcp.slnx # 0 errors"
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - blockquote [ref=e236]:
+              - strong [ref=e237]:
+                - emphasis [ref=e238]: "Note:"
+              - emphasis [ref=e239]: .NET 10’s
+              - code [ref=e240]:
+                - emphasis [ref=e241]: dotnet new sln
+              - emphasis [ref=e242]: creates the newer
+              - code [ref=e243]:
+                - emphasis [ref=e244]: .slnx
+              - emphasis [ref=e245]: format by default. All
+              - code [ref=e246]:
+                - emphasis [ref=e247]: dotnet build
+              - emphasis [ref=e248]: commands in this series use
+              - code [ref=e249]:
+                - emphasis [ref=e250]: .slnx
+              - emphasis [ref=e251]: .
+        - generic [ref=e252]:
+          - generic:
+            - separator: ...
+          - generic [ref=e254]:
+            - heading "Step 2 — Domain Models (HrMcp.Core)" [level=3] [ref=e255]:
+              - text: Step 2 — Domain Models (
+              - code [ref=e256]: HrMcp.Core
+              - text: )
+            - paragraph [ref=e257]: Zero NuGet dependencies. Entities, enums, and repository interfaces only.
+            - generic [ref=e258]:
+              - generic [ref=e259]:
+                - text: src/HrMcp.Core/
+                - text: Entities/
+                - text: HiringOrganization.cs
+                - text: Position.cs
+                - text: PositionRemuneration.cs
+                - text: Enums/
+                - text: AppointmentType.cs
+                - text: WorkSchedule.cs
+                - text: SecurityClearance.cs
+                - text: TravelRequirement.cs
+                - text: Interfaces/
+                - text: IHiringOrganizationRepository.cs
+                - text: IPositionRepository.cs
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - heading "HiringOrganization.cs" [level=3] [ref=e260]:
+              - code [ref=e261]: HiringOrganization.cs
+            - paragraph [ref=e262]:
+              - text: Maps to the USAJobs
+              - code [ref=e263]: OrganizationName
+              - text: and
+              - code [ref=e264]: DepartmentName
+              - text: "fields. USAJobs distinguishes two levels:"
+            - list [ref=e265]:
+              - listitem [ref=e266]:
+                - text: •
+                - code [ref=e267]:
+                  - strong [ref=e268]: OrganizationName
+                - text: — the actual hiring office (e.g., "Space and Naval Warfare Systems Command")
+              - listitem [ref=e269]:
+                - text: •
+                - code [ref=e270]:
+                  - strong [ref=e271]: DepartmentName
+                - text: — the cabinet-level parent agency (e.g., "Department of the Navy")
+            - generic [ref=e272]:
+              - generic [ref=e273]:
+                - text: // src/HrMcp.Core/Entities/HiringOrganization.cs
+                - text: namespace HrMcp.Core.Entities;
+                - text: public class HiringOrganization
+                - text: "{"
+                - text: "public int Id { get; set; }"
+                - text: "// USAJobs: OrganizationName — the hiring office"
+                - text: "public string OrganizationName { get; set; } = string.Empty;"
+                - text: "// USAJobs: DepartmentName — cabinet-level parent agency"
+                - text: "public string DepartmentName { get; set; } = string.Empty;"
+                - text: "public string AgencyDescription { get; set; } = string.Empty;"
+                - text: "public ICollection<Position> Positions { get; set; } = [];"
+                - text: "}"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - heading "Enums" [level=3] [ref=e274]
+            - generic [ref=e275]:
+              - generic [ref=e276]:
+                - text: // src/HrMcp.Core/Enums/AppointmentType.cs
+                - text: "// USAJobs API: appointmentType"
+                - text: namespace HrMcp.Core.Enums;
+                - text: "public enum AppointmentType { Permanent, Temporary, Term }"
+              - generic:
+                - text: Auto (C++)
+                - generic:
+                  - img
+            - generic [ref=e277]:
+              - generic [ref=e278]:
+                - text: // src/HrMcp.Core/Enums/WorkSchedule.cs
+                - text: "// USAJobs API: workSchedule"
+                - text: namespace HrMcp.Core.Enums;
+                - text: "public enum WorkSchedule { FullTime, PartTime, Intermittent, MultipleSchedules }"
+              - generic:
+                - text: Auto (C++)
+                - generic:
+                  - img
+            - generic [ref=e279]:
+              - generic [ref=e280]:
+                - text: // src/HrMcp.Core/Enums/SecurityClearance.cs
+                - text: "// USAJobs API: securityClearance"
+                - text: namespace HrMcp.Core.Enums;
+                - text: public enum SecurityClearance
+                - text: "{"
+                - text: NotRequired,
+                - text: PublicTrust,
+                - text: Confidential,
+                - text: Secret,
+                - text: TopSecret,
+                - text: TopSecretSCI // TS/SCI
+                - text: "}"
+              - generic:
+                - text: Auto (C++)
+                - generic:
+                  - img
+            - generic [ref=e281]:
+              - generic [ref=e282]:
+                - text: // src/HrMcp.Core/Enums/TravelRequirement.cs
+                - text: "// USAJobs API: travelRequirement"
+                - text: namespace HrMcp.Core.Enums;
+                - text: public enum TravelRequirement
+                - text: "{"
+                - text: NotRequired,
+                - text: Occasional, // 25% or less
+                - text: Sometimes, // up to 50%
+                - text: Frequent // 75%+
+                - text: "}"
+              - generic:
+                - text: Auto (C++)
+                - generic:
+                  - img
+            - heading "Position.cs" [level=3] [ref=e283]:
+              - code [ref=e284]: Position.cs
+            - paragraph [ref=e285]: Every property maps to a documented USAJobs API field.
+            - generic [ref=e286]:
+              - generic [ref=e287]:
+                - text: // src/HrMcp.Core/Entities/Position.cs
+                - text: using HrMcp.Core.Enums;
+                - text: namespace HrMcp.Core.Entities;
+                - text: public class Position
+                - text: "{"
+                - text: "public int Id { get; set; }"
+                - text: "// USAJobs: PositionTitle"
+                - text: "public string Title { get; set; } = string.Empty;"
+                - text: "// USAJobs: JobSummary — shown in search results"
+                - text: "public string Description { get; set; } = string.Empty;"
+                - text: "// USAJobs: MajorDuties — full narrative of what the employee does"
+                - text: "public string Duties { get; set; } = string.Empty;"
+                - text: "// USAJobs: Qualifications — OPM minimum qualifications + specialized experience"
+                - text: "public string Qualifications { get; set; } = string.Empty;"
+                - text: "public bool IsOpen { get; set; }"
+                - text: "// USAJobs: JobCategories[].Code — 4-digit OPM series e.g. \"2210\" = IT Management"
+                - text: "public string OccupationalSeries { get; set; } = string.Empty;"
+                - text: "// USAJobs: PayPlan + LowGrade / HighGrade e.g. \"GS-09\", \"GS-11\""
+                - text: "public string PayGradeMin { get; set; } = string.Empty;"
+                - text: "public string PayGradeMax { get; set; } = string.Empty;"
+                - text: "// USAJobs: appointmentType"
+                - text: "public AppointmentType AppointmentType { get; set; } = AppointmentType.Permanent;"
+                - text: "// USAJobs: workSchedule"
+                - text: "public WorkSchedule WorkSchedule { get; set; } = WorkSchedule.FullTime;"
+                - text: "// USAJobs: positionOpenDate / positionCloseDate"
+                - text: "public DateTime OpenDate { get; set; } = DateTime.UtcNow;"
+                - text: "public DateTime? CloseDate { get; set; }"
+                - text: "// USAJobs: WhoMayApply.Name"
+                - text: "public string WhoMayApply { get; set; } = \"Open to US Citizens\";"
+                - text: "// USAJobs: PositionLocation[].CityName + CountrySubDivisionCode"
+                - text: "public string DutyLocation { get; set; } = string.Empty;"
+                - text: "// USAJobs: teleworkEligible (Y/N in API)"
+                - text: "public bool TeleworkEligible { get; set; } = false;"
+                - text: "// USAJobs: travelRequirement"
+                - text: "public TravelRequirement TravelRequired { get; set; } = TravelRequirement.NotRequired;"
+                - text: "// USAJobs: securityClearance"
+                - text: "public SecurityClearance SecurityClearance { get; set; } = SecurityClearance.NotRequired;"
+                - text: "// USAJobs: supervisoryStatus (Y/N in API)"
+                - text: "public bool SupervisoryStatus { get; set; } = false;"
+                - text: "// USAJobs: relocationExpensesReimbursed (Y/N in API)"
+                - text: "public bool RelocationAuthorized { get; set; } = false;"
+                - text: "// USAJobs: drugTestRequired (Y/N in API)"
+                - text: "public bool DrugTestRequired { get; set; } = false;"
+                - text: // Navigation
+                - text: "public int HiringOrganizationId { get; set; }"
+                - text: "public HiringOrganization HiringOrganization { get; set; } = null!;"
+                - text: "public PositionRemuneration PositionRemuneration { get; set; } = null!;"
+                - text: "}"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - heading "PositionRemuneration.cs" [level=3] [ref=e288]:
+              - code [ref=e289]: PositionRemuneration.cs
+            - paragraph [ref=e290]:
+              - text: Maps directly to the
+              - code [ref=e291]: PositionRemuneration
+              - text: array object in the USAJobs API.
+              - code [ref=e292]: RateIntervalCode
+              - text: uses the API's standard codes rather than a currency symbol —
+              - code [ref=e293]: "\"PA\""
+              - text: (Per Annum) is the default for all GS positions.
+            - generic [ref=e294]:
+              - generic [ref=e295]:
+                - text: // src/HrMcp.Core/Entities/PositionRemuneration.cs
+                - text: namespace HrMcp.Core.Entities;
+                - text: public class PositionRemuneration
+                - text: "{"
+                - text: "public int Id { get; set; }"
+                - text: "// USAJobs: MinimumRange — stored as string in API e.g. \"68405\"; we use decimal for queries"
+                - text: "public decimal MinimumRange { get; set; }"
+                - text: "// USAJobs: MaximumRange"
+                - text: "public decimal MaximumRange { get; set; }"
+                - text: "// USAJobs: RateIntervalCode — \"PA\" = Per Annum, \"PH\" = Per Hour, \"PD\" = Per Day"
+                - text: "public string RateIntervalCode { get; set; } = \"PA\";"
+                - text: "// USAJobs: Description — human-readable label e.g. \"Per Year\""
+                - text: "public string Description { get; set; } = \"Per Year\";"
+                - text: "public int PositionId { get; set; }"
+                - text: "public Position Position { get; set; } = null!;"
+                - text: "}"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - heading "Repository Interfaces" [level=3] [ref=e296]
+            - generic [ref=e297]:
+              - generic [ref=e298]:
+                - text: // src/HrMcp.Core/Interfaces/IPositionRepository.cs
+                - text: using HrMcp.Core.Entities;
+                - text: namespace HrMcp.Core.Interfaces;
+                - text: public interface IPositionRepository
+                - text: "{"
+                - text: Task<IEnumerable<Position>> GetAllAsync
+                - generic [ref=e299]: (CancellationToken ct = default)
+                - text: ;
+                - text: Task<IEnumerable<Position>> GetOpenPositionsAsync
+                - generic [ref=e300]: (CancellationToken ct = default)
+                - text: ;
+                - text: Task<Position?> GetByIdAsync(int id, CancellationToken ct = default);
+                - text: Task<IEnumerable<Position>> GetByOrganizationAsync
+                - generic [ref=e301]: (int organizationId, CancellationToken ct = default)
+                - text: ;
+                - text: "}"
+              - generic:
+                - text: Auto (Java)
+                - generic:
+                  - img
+            - generic [ref=e302]:
+              - generic [ref=e303]:
+                - text: // src/HrMcp.Core/Interfaces/IHiringOrganizationRepository.cs
+                - text: using HrMcp.Core.Entities;
+                - text: namespace HrMcp.Core.Interfaces;
+                - text: public interface IHiringOrganizationRepository
+                - text: "{"
+                - text: Task<IEnumerable<HiringOrganization>> GetAllAsync(CancellationToken ct = default);
+                - text: Task<HiringOrganization?> GetByIdAsync(int id, CancellationToken ct = default);
+                - text: "}"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+        - generic [ref=e304]:
+          - generic:
+            - separator: ...
+          - generic [ref=e306]:
+            - heading "Step 3 — Application Layer (HrMcp.Application)" [level=3] [ref=e307]:
+              - text: Step 3 — Application Layer (
+              - code [ref=e308]: HrMcp.Application
+              - text: )
+            - generic [ref=e309]:
+              - generic [ref=e310]:
+                - text: src/HrMcp.Application/
+                - text: Services/
+                - text: PositionService.cs
+                - text: HiringOrganizationService.cs
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - generic [ref=e311]:
+              - generic [ref=e312]:
+                - text: // src/HrMcp.Application/Services/PositionService.cs
+                - text: using HrMcp.Core.Entities;
+                - text: using HrMcp.Core.Interfaces;
+                - text: namespace HrMcp.Application.Services;
+                - text: public class PositionService(IPositionRepository repo)
+                - text: "{"
+                - text: public Task<IEnumerable<Position>> GetAllPositionsAsync(CancellationToken ct = default)
+                - text: => repo.GetAllAsync(ct);
+                - text: public Task<IEnumerable<Position>> GetOpenPositionsAsync(CancellationToken ct = default)
+                - text: => repo.GetOpenPositionsAsync(ct);
+                - text: public Task<Position?> GetPositionByIdAsync(int id, CancellationToken ct = default)
+                - text: => repo.GetByIdAsync(id, ct);
+                - text: public Task<IEnumerable<Position>> GetPositionsByOrganizationAsync(int organizationId, CancellationToken ct = default)
+                - text: => repo.GetByOrganizationAsync(organizationId, ct);
+                - text: "}"
+              - generic:
+                - text: Auto (Swift)
+                - generic:
+                  - img
+            - generic [ref=e313]:
+              - generic [ref=e314]:
+                - text: // src/HrMcp.Application/Services/HiringOrganizationService.cs
+                - text: using HrMcp.Core.Entities;
+                - text: using HrMcp.Core.Interfaces;
+                - text: namespace HrMcp.Application.Services;
+                - generic [ref=e315]: public class HiringOrganizationService(IHiringOrganizationRepository repo)
+                - text: "{"
+                - text: public Task<IEnumerable<HiringOrganization>> GetAllOrganizationsAsync(CancellationToken ct = default)
+                - text: => repo.GetAllAsync(ct);
+                - text: public Task<HiringOrganization?> GetOrganizationByIdAsync(int id, CancellationToken ct = default)
+                - text: => repo.GetByIdAsync(id, ct);
+                - text: "}"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+        - generic [ref=e316]:
+          - generic:
+            - separator: ...
+          - generic [ref=e318]:
+            - heading "Step 4 — Infrastructure Layer (HrMcp.Infrastructure.Persistence)" [level=3] [ref=e319]:
+              - text: Step 4 — Infrastructure Layer (
+              - code [ref=e320]: HrMcp.Infrastructure.Persistence
+              - text: )
+            - heading "4.1 — Add NuGet Packages" [level=3] [ref=e321]
+            - generic [ref=e322]:
+              - generic [ref=e323]:
+                - text: dotnet add src/HrMcp.Infrastructure.Persistence package Microsoft.EntityFrameworkCore.SqlServer --version 9.*
+                - text: dotnet add src/HrMcp.Infrastructure.Persistence package Microsoft.EntityFrameworkCore.Design --version 9.*
+                - text: dotnet add src/HrMcp.McpServer package Microsoft.EntityFrameworkCore.SqlServer --version 9.*
+                - text: dotnet add src/HrMcp.McpServer package Microsoft.EntityFrameworkCore.Design --version 9.*
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - generic [ref=e324]:
+              - generic [ref=e325]:
+                - text: src/HrMcp.Infrastructure.Persistence/
+                - text: Repositories/
+                - text: HiringOrganizationRepository.cs
+                - text: PositionRepository.cs
+                - text: DependencyInjection.cs
+                - text: DbSeeder.cs
+                - text: HrDbContext.cs
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - heading "4.2 — HrDbContext.cs" [level=3] [ref=e326]:
+              - text: 4.2 —
+              - code [ref=e327]: HrDbContext.cs
+            - generic [ref=e328]:
+              - generic [ref=e329]:
+                - text: // src/HrMcp.Infrastructure.Persistence/HrDbContext.cs
+                - text: using HrMcp.Core.Entities;
+                - text: using Microsoft.EntityFrameworkCore;
+                - text: namespace HrMcp.Infrastructure.Persistence;
+                - text: "public class HrDbContext(DbContextOptions<HrDbContext> options) : DbContext(options)"
+                - text: "{"
+                - text: public DbSet<HiringOrganization>
+                - generic [ref=e330]: HiringOrganizations =>
+                - text: Set<HiringOrganization>();
+                - text: public DbSet<Position>
+                - generic [ref=e331]: Positions =>
+                - text: Set<Position>();
+                - text: public DbSet<PositionRemuneration>
+                - generic [ref=e332]: PositionRemunerations =>
+                - text: Set<PositionRemuneration>();
+                - text: protected override void OnModelCreating(ModelBuilder modelBuilder)
+                - text: "{"
+                - text: modelBuilder.Entity<PositionRemuneration>()
+                - text: .Property(
+                - generic [ref=e333]: r =>
+                - text: r.MinimumRange).HasPrecision(18, 2);
+                - text: modelBuilder.Entity<PositionRemuneration>()
+                - text: .Property(
+                - generic [ref=e334]: r =>
+                - text: r.MaximumRange).HasPrecision(18, 2);
+                - text: "// 1-to-1: Position ↔ PositionRemuneration"
+                - text: modelBuilder.Entity<PositionRemuneration>()
+                - text: .HasOne(
+                - generic [ref=e335]: r =>
+                - text: r.Position)
+                - text: .WithOne(
+                - generic [ref=e336]: p =>
+                - text: p.PositionRemuneration)
+                - text: .HasForeignKey<PositionRemuneration>(
+                - generic [ref=e337]: r =>
+                - text: r.PositionId);
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (TypeScript)
+                - generic:
+                  - img
+            - heading "4.3 — PositionRepository.cs" [level=3] [ref=e338]:
+              - text: 4.3 —
+              - code [ref=e339]: PositionRepository.cs
+            - generic [ref=e340]:
+              - generic [ref=e341]:
+                - text: // src/HrMcp.Infrastructure.Persistence/Repositories/PositionRepository.cs
+                - text: using HrMcp.Core.Entities;
+                - text: using HrMcp.Core.Interfaces;
+                - text: using Microsoft.EntityFrameworkCore;
+                - text: namespace HrMcp.Infrastructure.Persistence.Repositories;
+                - text: "public class PositionRepository(HrDbContext db) : IPositionRepository"
+                - text: "{"
+                - text: private IQueryable<Position> BaseQuery =>
+                - text: db.Positions
+                - text: .Include(p => p.HiringOrganization)
+                - text: .Include(p => p.PositionRemuneration);
+                - text: public async Task<IEnumerable<Position>> GetAllAsync(CancellationToken ct = default)
+                - text: => await BaseQuery.ToListAsync(ct);
+                - text: public async Task<IEnumerable<Position>> GetOpenPositionsAsync(CancellationToken ct = default)
+                - text: => await BaseQuery.Where(p => p.IsOpen).ToListAsync(ct);
+                - text: public Task<Position?> GetByIdAsync(int id, CancellationToken ct = default)
+                - text: => BaseQuery.FirstOrDefaultAsync(p => p.Id == id, ct);
+                - text: public async Task<IEnumerable<Position>> GetByOrganizationAsync(int organizationId, CancellationToken ct = default)
+                - text: => await BaseQuery.Where(p => p.HiringOrganizationId == organizationId).ToListAsync(ct);
+                - text: "}"
+              - generic:
+                - text: Auto (Swift)
+                - generic:
+                  - img
+            - heading "4.4 — HiringOrganizationRepository.cs" [level=3] [ref=e342]:
+              - text: 4.4 —
+              - code [ref=e343]: HiringOrganizationRepository.cs
+            - generic [ref=e344]:
+              - generic [ref=e345]:
+                - text: // src/HrMcp.Infrastructure.Persistence/Repositories/HiringOrganizationRepository.cs
+                - text: using HrMcp.Core.Entities;
+                - text: using HrMcp.Core.Interfaces;
+                - text: using Microsoft.EntityFrameworkCore;
+                - text: namespace HrMcp.Infrastructure.Persistence.Repositories;
+                - generic [ref=e346]: "public class HiringOrganizationRepository(HrDbContext db) : IHiringOrganizationRepository"
+                - text: "{"
+                - text: public async Task<IEnumerable<HiringOrganization>> GetAllAsync(CancellationToken ct = default)
+                - text: => await db.HiringOrganizations.Include(o => o.Positions).ToListAsync(ct);
+                - text: public Task<HiringOrganization?> GetByIdAsync(int id, CancellationToken ct = default)
+                - text: => db.HiringOrganizations.Include(o => o.Positions).FirstOrDefaultAsync(o => o.Id == id, ct);
+                - text: "}"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - heading "4.5 — DbSeeder.cs" [level=3] [ref=e347]:
+              - text: 4.5 —
+              - code [ref=e348]: DbSeeder.cs
+            - paragraph [ref=e349]:
+              - text: Seeds 4 federal hiring organizations — each with both
+              - code [ref=e350]: OrganizationName
+              - text: (the hiring office) and
+              - code [ref=e351]: DepartmentName
+              - text: (the cabinet-level parent) — and 5 realistic USAJobs-format positions.
+            - generic [ref=e352]:
+              - generic [ref=e353]:
+                - text: // src/HrMcp.Infrastructure.Persistence/DbSeeder.cs
+                - text: using HrMcp.Core.Entities;
+                - text: using HrMcp.Core.Enums;
+                - text: namespace HrMcp.Infrastructure.Persistence;
+                - text: public static class DbSeeder
+                - text: "{"
+                - text: public static void Seed(HrDbContext db)
+                - text: "{"
+                - text: if (db.HiringOrganizations.Any()) return;
+                - text: "var oit = new HiringOrganization {"
+                - text: OrganizationName = "Office of Information Technology",
+                - text: DepartmentName = "Department of Homeland Security",
+                - text: AgencyDescription = "IT infrastructure, cybersecurity, and enterprise systems"
+                - text: "};"
+                - text: "var ohr = new HiringOrganization {"
+                - text: OrganizationName = "Office of Human Resources",
+                - text: DepartmentName = "Department of Homeland Security",
+                - text: AgencyDescription = "Federal workforce management and talent acquisition"
+                - text: "};"
+                - text: "var opd = new HiringOrganization {"
+                - text: OrganizationName = "Office of Policy Development",
+                - text: DepartmentName = "Department of Homeland Security",
+                - text: AgencyDescription = "Federal policy analysis and regulatory affairs"
+                - text: "};"
+                - text: "var fin = new HiringOrganization {"
+                - text: OrganizationName = "Office of the Chief Financial Officer",
+                - text: DepartmentName = "Department of Homeland Security",
+                - text: AgencyDescription = "Federal financial management and budget oversight"
+                - text: "};"
+                - text: db.HiringOrganizations.AddRange(oit, ohr, opd, fin);
+                - text: db.SaveChanges();
+                - text: var today = DateTime.UtcNow;
+                - text: var positions = new List<Position>
+                - text: "{"
+                - text: new(
+                - text: ") {"
+                - text: Title = "IT Specialist (SYSADMIN)",
+                - text: Description = "Manages and maintains enterprise IT systems and infrastructure.",
+                - text: Duties = "Administers Windows and Linux servers. Manages Active Directory, DNS, and DHCP. Monitors system performance and resolves incidents. Coordinates patching and vulnerability remediation.",
+                - text: "Qualifications = \"GS-11: One year of specialized experience equivalent to GS-09 managing enterprise server environments including Active Directory and network services.\","
+                - text: IsOpen = true,
+                - text: OccupationalSeries = "2210",
+                - text: PayGradeMin = "GS-09", PayGradeMax = "GS-11",
+                - text: AppointmentType = AppointmentType.Permanent,
+                - text: WorkSchedule = WorkSchedule.FullTime,
+                - text: OpenDate = today, CloseDate = today.AddDays(14),
+                - text: WhoMayApply = "Open to US Citizens",
+                - text: DutyLocation = "Washington, DC",
+                - text: TeleworkEligible = true,
+                - text: SecurityClearance = SecurityClearance.Secret,
+                - text: TravelRequired = TravelRequirement.Occasional,
+                - text: SupervisoryStatus = false, RelocationAuthorized = false, DrugTestRequired = false,
+                - text: HiringOrganizationId = oit.Id,
+                - text: PositionRemuneration = new(
+                - text: ") { MinimumRange = 68_405, MaximumRange = 107_590 }"
+                - text: "},"
+                - text: new(
+                - text: ") {"
+                - text: Title = "Supervisory IT Specialist (INFOSEC)",
+                - text: Description = "Leads cybersecurity operations and oversees the agency information security program.",
+                - text: Duties = "Directs incident response and FISMA compliance. Manages a team of 8 IT security specialists. Briefs senior leadership on cyber risk posture.",
+                - text: "Qualifications = \"GS-14: One year of specialized experience equivalent to GS-13 leading an agency-wide information security program and supervising IT security personnel.\","
+                - text: IsOpen = false,
+                - text: OccupationalSeries = "2210",
+                - text: PayGradeMin = "GS-14", PayGradeMax = "GS-14",
+                - text: AppointmentType = AppointmentType.Permanent,
+                - text: WorkSchedule = WorkSchedule.FullTime,
+                - text: OpenDate = today.AddDays(-30), CloseDate = today.AddDays(-16),
+                - text: WhoMayApply = "Open to current federal employees only",
+                - text: DutyLocation = "Washington, DC",
+                - text: TeleworkEligible = true,
+                - text: SecurityClearance = SecurityClearance.TopSecret,
+                - text: TravelRequired = TravelRequirement.Occasional,
+                - text: SupervisoryStatus = true, RelocationAuthorized = true, DrugTestRequired = false,
+                - text: HiringOrganizationId = oit.Id,
+                - text: PositionRemuneration = new(
+                - text: ") { MinimumRange = 139_395, MaximumRange = 181_216 }"
+                - text: "},"
+                - text: new(
+                - text: ") {"
+                - text: Title = "Human Resources Specialist (Recruitment)",
+                - text: Description = "Manages full-cycle federal recruitment and staffing operations.",
+                - text: Duties = "Develops job opportunity announcements on USAJobs. Rates and ranks applicants using OPM qualification standards. Advises hiring managers on merit promotion and competitive examining procedures.",
+                - text: "Qualifications = \"GS-09: One year of specialized experience equivalent to GS-07 in federal staffing, classification, or employee relations.\","
+                - text: IsOpen = true,
+                - text: OccupationalSeries = "0201",
+                - text: PayGradeMin = "GS-07", PayGradeMax = "GS-09",
+                - text: AppointmentType = AppointmentType.Permanent,
+                - text: WorkSchedule = WorkSchedule.FullTime,
+                - text: OpenDate = today, CloseDate = today.AddDays(10),
+                - text: WhoMayApply = "Open to US Citizens",
+                - text: DutyLocation = "Arlington, VA",
+                - text: TeleworkEligible = true,
+                - text: SecurityClearance = SecurityClearance.PublicTrust,
+                - text: TravelRequired = TravelRequirement.NotRequired,
+                - text: SupervisoryStatus = false, RelocationAuthorized = false, DrugTestRequired = false,
+                - text: HiringOrganizationId = ohr.Id,
+                - text: PositionRemuneration = new(
+                - text: ") { MinimumRange = 53_105, MaximumRange = 84_441 }"
+                - text: "},"
+                - text: new(
+                - text: ") {"
+                - text: Title = "Management Analyst",
+                - text: Description = "Conducts organizational studies and evaluates federal program effectiveness.",
+                - text: Duties = "Analyzes agency workflow and recommends process improvements. Prepares management reports and briefing materials for senior leadership. Coordinates with program offices on performance measurement.",
+                - text: "Qualifications = \"GS-12: One year of specialized experience equivalent to GS-11 conducting management or program analysis in a federal agency.\","
+                - text: IsOpen = true,
+                - text: OccupationalSeries = "0343",
+                - text: PayGradeMin = "GS-11", PayGradeMax = "GS-12",
+                - text: AppointmentType = AppointmentType.Permanent,
+                - text: WorkSchedule = WorkSchedule.FullTime,
+                - text: OpenDate = today.AddDays(-3), CloseDate = today.AddDays(11),
+                - text: WhoMayApply = "Open to US Citizens",
+                - text: DutyLocation = "Remote (US)",
+                - text: TeleworkEligible = true,
+                - text: SecurityClearance = SecurityClearance.PublicTrust,
+                - text: TravelRequired = TravelRequirement.Occasional,
+                - text: SupervisoryStatus = false, RelocationAuthorized = false, DrugTestRequired = false,
+                - text: HiringOrganizationId = opd.Id,
+                - text: PositionRemuneration = new(
+                - text: ") { MinimumRange = 82_764, MaximumRange = 128_956 }"
+                - text: "},"
+                - text: new(
+                - text: ") {"
+                - text: Title = "Financial Analyst",
+                - text: Description = "Supports federal budget formulation and execution for the agency's appropriated funds.",
+                - text: Duties = "Prepares budget justifications and spending plans. Monitors obligations and expenditures against appropriations. Coordinates with OMB on passback and apportionment requests.",
+                - text: "Qualifications = \"GS-11: One year of specialized experience equivalent to GS-09 in federal budget or financial management.\","
+                - text: IsOpen = true,
+                - text: OccupationalSeries = "0501",
+                - text: PayGradeMin = "GS-09", PayGradeMax = "GS-11",
+                - text: AppointmentType = AppointmentType.Permanent,
+                - text: WorkSchedule = WorkSchedule.FullTime,
+                - text: OpenDate = today.AddDays(-1), CloseDate = today.AddDays(13),
+                - text: WhoMayApply = "Open to US Citizens",
+                - text: DutyLocation = "Washington, DC",
+                - text: TeleworkEligible = false,
+                - text: SecurityClearance = SecurityClearance.PublicTrust,
+                - text: TravelRequired = TravelRequirement.NotRequired,
+                - text: SupervisoryStatus = false, RelocationAuthorized = false, DrugTestRequired = false,
+                - text: HiringOrganizationId = fin.Id,
+                - text: PositionRemuneration = new(
+                - text: ") { MinimumRange = 68_405, MaximumRange = 107_590 }"
+                - text: "},"
+                - text: "};"
+                - text: db.Positions.AddRange(positions);
+                - text: db.SaveChanges();
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (JavaScript)
+                - generic:
+                  - img
+            - heading "4.6 — DependencyInjection.cs" [level=3] [ref=e354]:
+              - text: 4.6 —
+              - code [ref=e355]: DependencyInjection.cs
+            - generic [ref=e356]:
+              - generic [ref=e357]:
+                - text: // src/HrMcp.Infrastructure.Persistence/DependencyInjection.cs
+                - text: using HrMcp.Core.Interfaces;
+                - text: using HrMcp.Infrastructure.Persistence.Repositories;
+                - text: using Microsoft.EntityFrameworkCore;
+                - text: using Microsoft.Extensions.DependencyInjection;
+                - text: namespace HrMcp.Infrastructure.Persistence;
+                - text: public static class DependencyInjection
+                - text: "{"
+                - generic [ref=e358]:
+                  - text: public static IServiceCollection AddPersistence(
+                  - generic [ref=e359]:
+                    - text: this IServiceCollection services,
+                    - text: string connectionString
+                  - text: )
+                - text: "{"
+                - text: services.AddDbContext<HrDbContext>(options =>
+                - text: options.UseSqlServer(connectionString));
+                - text: services.AddScoped<IPositionRepository, PositionRepository>();
+                - text: services.AddScoped<IHiringOrganizationRepository, HiringOrganizationRepository>();
+                - text: return services;
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+        - generic [ref=e360]:
+          - generic:
+            - separator: ...
+          - generic [ref=e362]:
+            - heading "Step 5 — Wire Up HrMcp.McpServer" [level=3] [ref=e363]:
+              - text: Step 5 — Wire Up
+              - code [ref=e364]: HrMcp.McpServer
+            - heading "5.1 — appsettings.json" [level=3] [ref=e365]:
+              - text: 5.1 —
+              - code [ref=e366]: appsettings.json
+            - generic [ref=e367]:
+              - generic [ref=e368]:
+                - text: "{"
+                - text: "\"ConnectionStrings\": {"
+                - text: "\"DefaultConnection\":"
+                - generic [ref=e369]: "\"Server=(localdb)\\\\mssqllocaldb;Database=HrMcpDb;Trusted_Connection=True;\""
+                - text: "},"
+                - text: "\"Urls\": \"http://localhost:5100\""
+                - text: "}"
+              - generic:
+                - text: Auto (Swift)
+                - generic:
+                  - img
+            - heading "5.2 — Program.cs" [level=3] [ref=e370]:
+              - text: 5.2 —
+              - code [ref=e371]: Program.cs
+            - generic [ref=e372]:
+              - generic [ref=e373]:
+                - text: // src/HrMcp.McpServer/Program.cs
+                - text: using HrMcp.Application.Services;
+                - text: using HrMcp.Infrastructure.Persistence;
+                - text: using Microsoft.EntityFrameworkCore;
+                - text: var builder = WebApplication.CreateBuilder(args);
+                - text: builder.Services.AddPersistence(
+                - text: builder.Configuration.GetConnectionString("DefaultConnection")!);
+                - text: builder.Services.AddScoped<PositionService>();
+                - text: builder.Services.AddScoped<HiringOrganizationService>();
+                - text: var app = builder.Build();
+                - text: using (var scope = app.Services.CreateScope())
+                - text: "{"
+                - text: var db = scope.ServiceProvider.GetRequiredService<HrDbContext>();
+                - text: db.Database.Migrate();
+                - text: DbSeeder.Seed(db);
+                - text: "}"
+                - text: app.Run();
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+        - generic [ref=e374]:
+          - generic:
+            - separator: ...
+          - generic [ref=e376]:
+            - heading "Step 6 — EF Core Migration" [level=3] [ref=e377]
+            - generic [ref=e378]:
+              - generic [ref=e379]:
+                - text: dotnet ef migrations add InitialCreate \
+                - text: "--project src/HrMcp.Infrastructure.Persistence \\"
+                - text: "--startup-project src/HrMcp.McpServer \\"
+                - text: "--output-dir Migrations"
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - generic [ref=e380]:
+              - text: dotnet ef database update \
+              - text: "--project src/HrMcp.Infrastructure.Persistence \\"
+              - text: "--startup-project src/HrMcp.McpServer"
+        - generic [ref=e381]:
+          - generic:
+            - separator: ...
+          - generic [ref=e383]:
+            - heading "Step 7 — Verify" [level=3] [ref=e384]
+            - generic [ref=e385]:
+              - generic [ref=e386]:
+                - text: "dotnet build DotnetAiAgentMcp.slnx # 0 errors"
+                - text: dotnet run --project src/HrMcp.McpServer
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - paragraph [ref=e387]: "On first run the server migrates and seeds. Check the database:"
+            - list [ref=e388]:
+              - listitem [ref=e389]:
+                - text: •
+                - code [ref=e390]: HiringOrganizations
+                - text: "table: 4 rows — each with"
+                - code [ref=e391]: OrganizationName
+                - text: ","
+                - code [ref=e392]: DepartmentName
+                - text: ","
+                - code [ref=e393]: AgencyDescription
+              - listitem [ref=e394]:
+                - text: •
+                - code [ref=e395]: Positions
+                - text: "table: 5 rows — 4 open, 1 closed; all with GS grades, series codes, clearance levels"
+              - listitem [ref=e396]:
+                - text: •
+                - code [ref=e397]: PositionRemunerations
+                - text: "table: 5 rows —"
+                - code [ref=e398]: MinimumRange
+                - text: ","
+                - code [ref=e399]: MaximumRange
+                - text: ","
+                - code [ref=e400]: RateIntervalCode = "PA"
+            - paragraph [ref=e401]: "A sample record shows what a USAJobs-aligned announcement looks like in the database:"
+            - generic [ref=e402]:
+              - generic [ref=e403]:
+                - text: "Title: IT Specialist (SYSADMIN)"
+                - text: "OccupationalSeries: 2210"
+                - text: "PayGradeMin: GS-09"
+                - text: "PayGradeMax: GS-11"
+                - text: "MinimumRange: $68,405"
+                - text: "MaximumRange: $107,590"
+                - text: "RateIntervalCode: PA (Per Annum)"
+                - text: "DutyLocation: Washington, DC"
+                - text: "SecurityClearance: Secret"
+                - text: "TeleworkEligible: true"
+                - text: "WhoMayApply: Open to US Citizens"
+                - text: "OrganizationName: Office of Information Technology"
+                - text: "DepartmentName: Department of Homeland Security"
+              - generic:
+                - text: Auto (VB.NET)
+                - generic:
+                  - img
+        - generic [ref=e404]:
+          - generic:
+            - separator: ...
+          - generic [ref=e406]:
+            - 'heading "Step 8 — Optional: Seed with Real USAJobs Data" [level=3] [ref=e407]'
+            - paragraph [ref=e408]: The 5 positions above are hand-crafted to match the USAJobs schema. This step replaces them with real federal job postings pulled from the live API, then commits the result as a JSON file so readers cloning your repo don’t need an API key.
+            - heading "8.1 — Register for an API Key" [level=3] [ref=e409]
+            - list [ref=e410]:
+              - listitem [ref=e411]:
+                - text: Go to
+                - link "developer.usajobs.gov/APIRequest" [ref=e412]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fdeveloper.usajobs.gov%2FAPIRequest%2F
+                - text: and complete the short registration form
+              - listitem [ref=e413]:
+                - text: "You will receive two credentials by email: your"
+                - strong [ref=e414]: email address
+                - text: (used as
+                - code [ref=e415]: User-Agent
+                - text: ) and an
+                - strong [ref=e416]: Authorization Key
+            - paragraph [ref=e417]: "Authentication is header-only — no OAuth required:"
+            - generic [ref=e418]:
+              - generic [ref=e419]:
+                - text: "User-Agent: your-email@example.com"
+                - text: "Authorization-Key: your-key-here"
+              - generic:
+                - text: Auto (SQL)
+                - generic:
+                  - img
+            - heading "8.2 — Create the Fetch Tool" [level=3] [ref=e420]
+            - paragraph [ref=e421]:
+              - text: This is a one-off utility that lives outside the solution. Create it in a
+              - code [ref=e422]: tools/
+              - text: folder and
+              - strong [ref=e423]: do not
+              - text: add it to the
+              - code [ref=e424]: .sln
+              - text: ":"
+            - generic [ref=e425]:
+              - generic [ref=e426]:
+                - text: mkdir tools
+                - text: dotnet new console -n UsaJobsFetcher -o tools/UsaJobsFetcher
+              - generic:
+                - text: Auto (JavaScript)
+                - generic:
+                  - img
+            - paragraph [ref=e427]:
+              - code [ref=e428]:
+                - strong [ref=e429]: tools/UsaJobsFetcher/UsaJobsFetcher.csproj
+            - paragraph [ref=e430]:
+              - text: Add
+              - code [ref=e431]: UserSecretsId
+              - text: "and the configuration packages — credentials never touch the command line:"
+            - generic [ref=e432]:
+              - generic [ref=e433]:
+                - generic [ref=e434]: <Project Sdk="Microsoft.NET.Sdk">
+                - generic [ref=e435]: <PropertyGroup>
+                - generic [ref=e436]: <OutputType>
+                - text: Exe
+                - generic [ref=e437]: </OutputType>
+                - generic [ref=e438]: <TargetFramework>
+                - text: net10.0
+                - generic [ref=e439]: </TargetFramework>
+                - generic [ref=e440]: <Nullable>
+                - text: enable
+                - generic [ref=e441]: </Nullable>
+                - generic [ref=e442]: <ImplicitUsings>
+                - text: enable
+                - generic [ref=e443]: </ImplicitUsings>
+                - generic [ref=e444]: <UserSecretsId>
+                - text: usajobs-fetcher
+                - generic [ref=e445]: </UserSecretsId>
+                - generic [ref=e446]: </PropertyGroup>
+                - generic [ref=e447]: <ItemGroup>
+                - generic [ref=e448]: <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.*" />
+                - generic [ref=e449]: <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.*" />
+                - generic [ref=e450]: </ItemGroup>
+                - generic [ref=e451]: </Project>
+              - generic:
+                - text: Auto (HTML, XML)
+                - generic:
+                  - img
+            - paragraph [ref=e452]: "Store your credentials in the .NET secret store (never committed to source control):"
+            - generic [ref=e453]:
+              - generic [ref=e454]:
+                - text: dotnet user-secrets set "UsaJobs:Email" "your@email.com" --project tools/UsaJobsFetcher
+                - text: dotnet user-secrets set "UsaJobs:AuthKey" "your-key-here" --project tools/UsaJobsFetcher
+              - generic:
+                - text: Auto (SQL)
+                - generic:
+                  - img
+            - paragraph [ref=e455]:
+              - code [ref=e456]:
+                - strong [ref=e457]: tools/UsaJobsFetcher/Program.cs
+            - paragraph [ref=e458]:
+              - text: Reads credentials from user secrets, calls the Search API, maps
+              - code [ref=e459]: MatchedObjectDescriptor
+              - text: fields to the domain model schema, and writes
+              - code [ref=e460]: data/usajobs-seed.json
+              - text: "to the solution root:"
+            - generic [ref=e461]:
+              - generic [ref=e462]:
+                - text: // tools/UsaJobsFetcher/Program.cs
+                - text: "// One-time tool: fetches real federal job postings from the USAJobs API"
+                - text: // and writes data/usajobs-seed.json to the solution root.
+                - text: //
+                - text: "// Store credentials via .NET User Secrets (never commit them):"
+                - text: // dotnet user-secrets set "UsaJobs:Email" "your@email.com" --project tools/UsaJobsFetcher
+                - text: // dotnet user-secrets set "UsaJobs:AuthKey" "your-key-here" --project tools/UsaJobsFetcher
+                - text: //
+                - text: "// Then run from the solution root:"
+                - text: // dotnet run --project tools/UsaJobsFetcher
+                - text: //
+                - text: "// Output: data/usajobs-seed.json — commit this file so readers don't need an API key."
+                - text: using Microsoft.Extensions.Configuration;
+                - text: using System.Text.Json;
+                - text: using System.Text.Json.Serialization;
+                - text: var config = new ConfigurationBuilder()
+                - text: .AddUserSecrets("usajobs-fetcher")
+                - text: .Build();
+                - text: var email = config["UsaJobs:Email"] ?? throw new InvalidOperationException("UsaJobs:Email secret is not set.");
+                - text: var authKey = config["UsaJobs:AuthKey"] ?? throw new InvalidOperationException("UsaJobs:AuthKey secret is not set.");
+                - text: // ── call USAJobs Search API ───────────────────────────────────────────────────
+                - text: using var http = new HttpClient();
+                - text: http.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", email);
+                - text: http.DefaultRequestHeaders.Add("Authorization-Key", authKey);
+                - text: // Change Organization= to broaden beyond DHS (remove it entirely for all agencies)
+                - text: const string url =
+                - text: "\"https://data.usajobs.gov/api/search\" +"
+                - text: "\"?ResultsPerPage=25\" +"
+                - text: "\"&Organization=HS\"; // HS = Department of Homeland Security"
+                - text: "Console.WriteLine($\"Fetching: {url}\");"
+                - text: var responseJson = await http.GetStringAsync(url);
+                - text: // ── parse ─────────────────────────────────────────────────────────────────────
+                - text: "var parseOpts = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };"
+                - text: var root = JsonSerializer.Deserialize<SearchRoot>(responseJson, parseOpts)!;
+                - text: var items = root.SearchResult.SearchResultItems;
+                - text: "Console.WriteLine($\"Received {items.Count} positions\");"
+                - text: // ── map to seed model ─────────────────────────────────────────────────────────
+                - text: var orgs = new Dictionary<string, SeedOrg>(StringComparer.OrdinalIgnoreCase);
+                - text: var positions = new List<SeedPosition>();
+                - text: foreach (var item in items)
+                - text: "{"
+                - text: var d = item.MatchedObjectDescriptor;
+                - text: if (d is null) continue;
+                - text: var orgName = d.OrganizationName ?? "Unknown Agency";
+                - text: var deptName = d.DepartmentName ?? "Unknown Department";
+                - text: orgs.TryAdd(orgName, new SeedOrg(orgName, deptName, ""));
+                - text: var det = d.UserArea?.Details;
+                - text: var rem = d.PositionRemuneration?.FirstOrDefault();
+                - text: var plan = d.JobGrade?.FirstOrDefault()?.Code ?? "GS";
+                - text: var lo = det?.LowGrade;
+                - text: var hi = det?.HighGrade;
+                - text: var isOpen = DateTime.TryParse(d.ApplicationCloseDate, out var close)
+                - text: "&& close >= DateTime.UtcNow;"
+                - text: positions.Add(new SeedPosition(
+                - text: "Title: d.PositionTitle ?? \"\","
+                - text: "Description: det?.JobSummary ?? \"\","
+                - text: "Duties: det?.MajorDuties is { Count: > 0 }"
+                - text: "? string.Join(\" \", det.MajorDuties)"
+                - text: ": \"\","
+                - text: "Qualifications: det?.Requirements ?? \"\","
+                - text: "IsOpen: isOpen,"
+                - text: "OccupationalSeries: d.JobCategory?.FirstOrDefault()?.Code ?? \"\","
+                - text: "PayGradeMin: lo is not null ? $\"{plan}-{lo.PadLeft(2, '0')}\" : \"\","
+                - text: "PayGradeMax: hi is not null ? $\"{plan}-{hi.PadLeft(2, '0')}\" : \"\","
+                - text: "AppointmentType: MapAppointment(d.PositionAppointmentType?.FirstOrDefault()?.Name),"
+                - text: "WorkSchedule: MapSchedule(d.PositionSchedule?.FirstOrDefault()?.Name),"
+                - text: "OpenDate: d.PositionStartDate ?? DateTime.UtcNow.ToString(\"O\"),"
+                - text: "CloseDate: d.ApplicationCloseDate,"
+                - text: "WhoMayApply: det?.WhoMayApply?.Name ?? \"Open to US Citizens\","
+                - text: "DutyLocation: d.PositionLocation?.FirstOrDefault()?.CityName ?? \"\","
+                - text: "TeleworkEligible: det?.TeleworkEligible ?? false,"
+                - text: "TravelRequired: MapTravel(det?.TravelCode),"
+                - text: "SecurityClearance: MapClearance(det?.SecurityClearance),"
+                - text: "SupervisoryStatus: \"Yes\".Equals(det?.SupervisoryPosition, StringComparison.OrdinalIgnoreCase),"
+                - text: RelocationAuthorized:"Yes".Equals(det?.Relocation, StringComparison.OrdinalIgnoreCase),
+                - text: "DrugTestRequired: \"Yes\".Equals(det?.DrugTestRequired, StringComparison.OrdinalIgnoreCase),"
+                - text: "OrganizationName: orgName,"
+                - text: "MinimumRange: decimal.TryParse(rem?.MinimumRange, out var mn) ? mn : 0,"
+                - text: "MaximumRange: decimal.TryParse(rem?.MaximumRange, out var mx) ? mx : 0,"
+                - text: "RateIntervalCode: rem?.RateIntervalCode ?? \"PA\""
+                - text: ));
+                - text: "}"
+                - text: // ── write data/usajobs-seed.json ──────────────────────────────────────────────
+                - text: var outPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "usajobs-seed.json");
+                - text: Directory.CreateDirectory(Path.GetDirectoryName(outPath)!);
+                - text: var writeOpts = new JsonSerializerOptions
+                - text: "{"
+                - text: WriteIndented = true,
+                - text: PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                - text: DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                - text: "};"
+                - text: var seed = new SeedFile(orgs.Values.ToList(), positions);
+                - text: await File.WriteAllTextAsync(outPath, JsonSerializer.Serialize(seed, writeOpts));
+                - text: "Console.WriteLine($\"Wrote {positions.Count} positions from {orgs.Count} organizations\");"
+                - text: "Console.WriteLine($\"Output: {outPath}\");"
+                - text: return 0;
+                - text: // ── string → enum label helpers ───────────────────────────────────────────────
+                - text: static string MapAppointment(string? name) => name?.ToLower() switch
+                - text: "{"
+                - text: "{ } s when s.Contains(\"perm\") => \"Permanent\","
+                - text: "{ } s when s.Contains(\"term\") => \"Term\","
+                - text: _ => "Temporary"
+                - text: "};"
+                - text: static string MapSchedule(string? name) => name?.ToLower() switch
+                - text: "{"
+                - text: "{ } s when s.Contains(\"full\") => \"FullTime\","
+                - text: "{ } s when s.Contains(\"part\") => \"PartTime\","
+                - text: "{ } s when s.Contains(\"intermittent\") => \"Intermittent\","
+                - text: _ => "FullTime"
+                - text: "};"
+                - text: static string MapTravel(string? code) => code switch
+                - text: "{"
+                - text: "\"1\" => \"NotRequired\","
+                - text: "\"2\" => \"Occasional\","
+                - text: "\"3\" => \"Sometimes\","
+                - text: "\"4\" => \"Frequent\","
+                - text: _ => "NotRequired"
+                - text: "};"
+                - text: static string MapClearance(string? s) => s?.ToLower() switch
+                - text: "{"
+                - text: "{ } v when v.Contains(\"ts/sci\") || v.Contains(\"top secret/sci\") => \"TopSecretSCI\","
+                - text: "{ } v when v.Contains(\"top secret\") => \"TopSecret\","
+                - text: "{ } v when v.Contains(\"secret\") => \"Secret\","
+                - text: "{ } v when v.Contains(\"confidential\") => \"Confidential\","
+                - text: "{ } v when v.Contains(\"public trust\") => \"PublicTrust\","
+                - text: _ => "NotRequired"
+                - text: "};"
+                - text: // ── USAJobs API response types ────────────────────────────────────────────────
+                - text: record SearchRoot(SearchResult SearchResult);
+                - text: record SearchResult(int SearchResultCount, List<SearchResultItem> SearchResultItems);
+                - text: record SearchResultItem(MatchedObjectDescriptor? MatchedObjectDescriptor);
+                - text: record MatchedObjectDescriptor(
+                - text: string? PositionTitle,
+                - text: string? OrganizationName,
+                - text: string? DepartmentName,
+                - text: string? PositionStartDate,
+                - text: string? ApplicationCloseDate,
+                - text: List<PositionLocation>? PositionLocation,
+                - text: List<JobCategory>? JobCategory,
+                - text: List<JobGrade>? JobGrade,
+                - text: List<PositionSchedule>? PositionSchedule,
+                - text: List<PositionAppointmentType>? PositionAppointmentType,
+                - text: List<PositionRemuneration>? PositionRemuneration,
+                - text: UserArea? UserArea);
+                - text: record PositionLocation(string? CityName, string? CountrySubDivisionCode);
+                - text: record JobCategory(string? Name, string? Code);
+                - text: record JobGrade(string? Code);
+                - text: record PositionSchedule(string? Name, string? Code);
+                - text: record PositionAppointmentType(string? Name, string? Code);
+                - text: record PositionRemuneration(string? MinimumRange, string? MaximumRange, string? RateIntervalCode);
+                - text: record UserArea(UserAreaDetails? Details);
+                - text: record UserAreaDetails(
+                - text: string? JobSummary,
+                - text: WhoMayApply? WhoMayApply,
+                - text: string? LowGrade,
+                - text: string? HighGrade,
+                - text: string? Requirements,
+                - text: List<string>? MajorDuties,
+                - text: string? Relocation,
+                - text: string? DrugTestRequired,
+                - text: bool? TeleworkEligible,
+                - text: string? SupervisoryPosition,
+                - text: string? SecurityClearance,
+                - text: string? TravelCode);
+                - text: record WhoMayApply(string? Name, string? Code);
+                - text: // ── seed file model ───────────────────────────────────────────────────────────
+                - text: record SeedFile(List<SeedOrg> Organizations, List<SeedPosition> Positions);
+                - text: record SeedOrg(string OrganizationName, string DepartmentName, string AgencyDescription);
+                - text: record SeedPosition(
+                - text: string Title,
+                - text: string Description,
+                - text: string Duties,
+                - text: string Qualifications,
+                - text: bool IsOpen,
+                - text: string OccupationalSeries,
+                - text: string PayGradeMin,
+                - text: string PayGradeMax,
+                - text: string AppointmentType,
+                - text: string WorkSchedule,
+                - text: string OpenDate,
+                - text: string? CloseDate,
+                - text: string WhoMayApply,
+                - text: string DutyLocation,
+                - text: bool TeleworkEligible,
+                - text: string TravelRequired,
+                - text: string SecurityClearance,
+                - text: bool SupervisoryStatus,
+                - text: bool RelocationAuthorized,
+                - text: bool DrugTestRequired,
+                - text: string OrganizationName,
+                - text: decimal MinimumRange,
+                - text: decimal MaximumRange,
+                - text: string RateIntervalCode);
+              - generic:
+                - text: Auto (PHP)
+                - generic:
+                  - img
+            - heading "8.3 — Run and Commit" [level=3] [ref=e463]
+            - paragraph [ref=e464]:
+              - text: Run from the
+              - strong [ref=e465]: solution root
+              - text: —
+              - code [ref=e466]: Directory.GetCurrentDirectory()
+              - text: writes
+              - code [ref=e467]: data/usajobs-seed.json
+              - text: relative to where you invoke
+              - code [ref=e468]: dotnet run
+              - text: ":"
+            - generic [ref=e469]:
+              - generic [ref=e470]: dotnet run --project tools/UsaJobsFetcher
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - paragraph [ref=e471]: "Sample output:"
+            - generic [ref=e472]:
+              - generic [ref=e473]:
+                - text: "Fetching: https://data.usajobs.gov/api/search?ResultsPerPage=25&Organization=HS"
+                - text: Received 25 positions
+                - text: Wrote 25 positions from 8 organizations
+                - text: "Output: C:\\...\\DotnetAiAgentMcp\\data\\usajobs-seed.json"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - paragraph [ref=e474]: "Commit the seed file — anyone cloning the repo gets real data without an API key:"
+            - generic [ref=e475]:
+              - generic [ref=e476]:
+                - text: git add data/usajobs-seed.json
+                - text: "git commit -m \"seed: add real USAJobs positions from DHS\""
+              - generic:
+                - text: Auto (SQL)
+                - generic:
+                  - img
+            - heading "8.4 — Update DbSeeder.cs to Load from JSON" [level=3] [ref=e477]:
+              - text: 8.4 — Update
+              - code [ref=e478]: DbSeeder.cs
+              - text: to Load from JSON
+            - paragraph [ref=e479]:
+              - text: Extend
+              - code [ref=e480]: DbSeeder
+              - text: "to accept an optional path. When the file exists it uses it; otherwise it falls back to the hand-crafted data:"
+            - generic [ref=e481]:
+              - generic [ref=e482]:
+                - text: // src/HrMcp.Infrastructure.Persistence/DbSeeder.cs
+                - text: using System.Text.Json;
+                - text: using HrMcp.Core.Entities;
+                - text: using HrMcp.Core.Enums;
+                - text: namespace HrMcp.Infrastructure.Persistence;
+                - text: public static class DbSeeder
+                - text: "{"
+                - text: // ← added optional jsonSeedPath parameter
+                - generic [ref=e483]:
+                  - text: public static void Seed(
+                  - generic [ref=e484]: HrDbContext db, string? jsonSeedPath = null
+                  - text: )
+                - text: "{"
+                - text: if (db.HiringOrganizations.Any()) return;
+                - text: if (jsonSeedPath is not null && File.Exists(jsonSeedPath))
+                - text: "{"
+                - text: SeedFromJson(db, jsonSeedPath);
+                - text: return;
+                - text: "}"
+                - text: SeedFromCode(db);
+                - text: "}"
+                - text: // ── JSON path ─────────────────────────────────────────────────────────────
+                - generic [ref=e485]:
+                  - text: private static void SeedFromJson(
+                  - generic [ref=e486]: HrDbContext db, string path
+                  - text: )
+                - text: "{"
+                - text: "var opts = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };"
+                - text: var file = JsonSerializer.Deserialize<SeedFile>(File.ReadAllText(path), opts)!;
+                - text: var orgMap = new Dictionary<string, HiringOrganization>(StringComparer.OrdinalIgnoreCase);
+                - text: foreach (var o in file.Organizations)
+                - text: "{"
+                - text: var entity = new HiringOrganization
+                - text: "{"
+                - text: OrganizationName = o.OrganizationName,
+                - text: DepartmentName = o.DepartmentName,
+                - text: AgencyDescription = o.AgencyDescription
+                - text: "};"
+                - text: db.HiringOrganizations.Add(entity);
+                - text: orgMap[o.OrganizationName] = entity;
+                - text: "}"
+                - text: db.SaveChanges();
+                - text: foreach (var p in file.Positions)
+                - text: "{"
+                - text: if (!orgMap.TryGetValue(p.OrganizationName, out var org)) continue;
+                - text: db.Positions.Add(new Position
+                - text: "{"
+                - text: Title = p.Title,
+                - text: Description = p.Description,
+                - text: Duties = p.Duties,
+                - text: Qualifications = p.Qualifications,
+                - text: IsOpen = p.IsOpen,
+                - text: OccupationalSeries = p.OccupationalSeries,
+                - text: PayGradeMin = p.PayGradeMin,
+                - text: PayGradeMax = p.PayGradeMax,
+                - text: AppointmentType = Parse<AppointmentType>(p.AppointmentType, AppointmentType.Permanent),
+                - text: WorkSchedule = Parse<WorkSchedule>(p.WorkSchedule, WorkSchedule.FullTime),
+                - text: "OpenDate = DateTime.TryParse(p.OpenDate, out var od) ? od : DateTime.UtcNow,"
+                - text: "CloseDate = DateTime.TryParse(p.CloseDate, out var cd) ? cd : null,"
+                - text: WhoMayApply = p.WhoMayApply,
+                - text: DutyLocation = p.DutyLocation,
+                - text: TeleworkEligible = p.TeleworkEligible,
+                - text: TravelRequired = Parse<TravelRequirement>(p.TravelRequired, TravelRequirement.NotRequired),
+                - text: SecurityClearance = Parse<SecurityClearance>(p.SecurityClearance,SecurityClearance.NotRequired),
+                - text: SupervisoryStatus = p.SupervisoryStatus,
+                - text: RelocationAuthorized = p.RelocationAuthorized,
+                - text: DrugTestRequired = p.DrugTestRequired,
+                - text: HiringOrganizationId = org.Id,
+                - text: PositionRemuneration = new PositionRemuneration
+                - text: "{"
+                - text: MinimumRange = p.MinimumRange,
+                - text: MaximumRange = p.MaximumRange,
+                - text: RateIntervalCode = p.RateIntervalCode,
+                - text: Description = p.RateIntervalCode switch
+                - text: "{"
+                - text: "\"PA\" => \"Per Year\","
+                - text: "\"PH\" => \"Per Hour\","
+                - text: "\"PD\" => \"Per Day\","
+                - text: _ => p.RateIntervalCode
+                - text: "}"
+                - text: "}"
+                - text: "});"
+                - text: "}"
+                - text: db.SaveChanges();
+                - text: Console.WriteLine(
+                - generic [ref=e487]: "$\"[DbSeeder] Seeded {file.Positions.Count} positions from {path}\""
+                - text: );
+                - text: "}"
+                - generic [ref=e488]:
+                  - text: private static T Parse<T>(
+                  - generic [ref=e489]: string value, T fallback
+                  - text: ") where T : struct, Enum"
+                - text: "=> Enum.TryParse<T>(value, ignoreCase: true, out var result) ? result : fallback;"
+                - text: // ── seed file DTOs ────────────────────────────────────────────────────────
+                - generic [ref=e490]: private record SeedFile(List<SeedOrg> Organizations, List<SeedPosition> Positions)
+                - text: ;
+                - generic [ref=e491]:
+                  - text: private record SeedOrg(
+                  - generic [ref=e492]: string OrganizationName, string DepartmentName, string AgencyDescription
+                  - text: )
+                - text: ;
+                - generic [ref=e493]:
+                  - text: private record SeedPosition(
+                  - generic [ref=e494]:
+                    - text: string Title, string Description, string Duties,
+                    - text: string Qualifications, bool IsOpen, string OccupationalSeries,
+                    - text: string PayGradeMin, string PayGradeMax, string AppointmentType,
+                    - text: string WorkSchedule, string OpenDate, string? CloseDate,
+                    - text: string WhoMayApply, string DutyLocation, bool TeleworkEligible,
+                    - text: string TravelRequired, string SecurityClearance, bool SupervisoryStatus,
+                    - text: bool RelocationAuthorized, bool DrugTestRequired, string OrganizationName,
+                    - text: decimal MinimumRange, decimal MaximumRange, string RateIntervalCode
+                  - text: )
+                - text: ;
+                - text: // ── hardcoded fallback ────────────────────────────────────────────────────
+                - text: // Rename the original Seed() body to SeedFromCode() — no changes to the content.
+                - generic [ref=e495]: private static void SeedFromCode(HrDbContext db)
+                - text: "{"
+                - text: "var oit = new HiringOrganization {"
+                - text: OrganizationName = "Office of Information Technology",
+                - text: DepartmentName = "Department of Homeland Security",
+                - text: AgencyDescription = "IT infrastructure, cybersecurity, and enterprise systems"
+                - text: "};"
+                - text: "var ohr = new HiringOrganization {"
+                - text: OrganizationName = "Office of Human Resources",
+                - text: DepartmentName = "Department of Homeland Security",
+                - text: AgencyDescription = "Federal workforce management and talent acquisition"
+                - text: "};"
+                - text: "var opd = new HiringOrganization {"
+                - text: OrganizationName = "Office of Policy Development",
+                - text: DepartmentName = "Department of Homeland Security",
+                - text: AgencyDescription = "Federal policy analysis and regulatory affairs"
+                - text: "};"
+                - text: "var fin = new HiringOrganization {"
+                - text: OrganizationName = "Office of the Chief Financial Officer",
+                - text: DepartmentName = "Department of Homeland Security",
+                - text: AgencyDescription = "Federal financial management and budget oversight"
+                - text: "};"
+                - text: db.HiringOrganizations.AddRange(oit, ohr, opd, fin);
+                - text: db.SaveChanges();
+                - text: var today = DateTime.UtcNow;
+                - text: var positions = new List<Position>
+                - text: "{"
+                - text: "new() {"
+                - text: Title = "IT Specialist (SYSADMIN)",
+                - text: Description = "Manages and maintains enterprise IT systems and infrastructure.",
+                - text: Duties = "Administers Windows and Linux servers. Manages Active Directory, DNS, and DHCP. Monitors system performance and resolves incidents. Coordinates patching and vulnerability remediation.",
+                - text: "Qualifications = \"GS-11: One year of specialized experience equivalent to GS-09 managing enterprise server environments including Active Directory and network services.\","
+                - text: IsOpen = true, OccupationalSeries = "2210", PayGradeMin = "GS-09", PayGradeMax = "GS-11",
+                - text: AppointmentType = AppointmentType.Permanent, WorkSchedule = WorkSchedule.FullTime,
+                - text: OpenDate = today, CloseDate = today.AddDays(14), WhoMayApply = "Open to US Citizens",
+                - text: DutyLocation = "Washington, DC", TeleworkEligible = true,
+                - text: SecurityClearance = SecurityClearance.Secret, TravelRequired = TravelRequirement.Occasional,
+                - text: SupervisoryStatus = false, RelocationAuthorized = false, DrugTestRequired = false,
+                - text: HiringOrganizationId = oit.Id,
+                - text: "PositionRemuneration = new() { MinimumRange = 68_405, MaximumRange = 107_590 }"
+                - text: "},"
+                - text: "new() {"
+                - text: Title = "Supervisory IT Specialist (INFOSEC)",
+                - text: Description = "Leads cybersecurity operations and oversees the agency information security program.",
+                - text: Duties = "Directs incident response and FISMA compliance. Manages a team of 8 IT security specialists. Briefs senior leadership on cyber risk posture.",
+                - text: "Qualifications = \"GS-14: One year of specialized experience equivalent to GS-13 leading an agency-wide information security program and supervising IT security personnel.\","
+                - text: IsOpen = false, OccupationalSeries = "2210", PayGradeMin = "GS-14", PayGradeMax = "GS-14",
+                - text: AppointmentType = AppointmentType.Permanent, WorkSchedule = WorkSchedule.FullTime,
+                - text: OpenDate = today.AddDays(-30), CloseDate = today.AddDays(-16),
+                - text: WhoMayApply = "Open to current federal employees only",
+                - text: DutyLocation = "Washington, DC", TeleworkEligible = true,
+                - text: SecurityClearance = SecurityClearance.TopSecret, TravelRequired = TravelRequirement.Occasional,
+                - text: SupervisoryStatus = true, RelocationAuthorized = true, DrugTestRequired = false,
+                - text: HiringOrganizationId = oit.Id,
+                - text: "PositionRemuneration = new() { MinimumRange = 139_395, MaximumRange = 181_216 }"
+                - text: "},"
+                - text: "new() {"
+                - text: Title = "Human Resources Specialist (Recruitment)",
+                - text: Description = "Manages full-cycle federal recruitment and staffing operations.",
+                - text: Duties = "Develops job opportunity announcements on USAJobs. Rates and ranks applicants using OPM qualification standards. Advises hiring managers on merit promotion and competitive examining procedures.",
+                - text: "Qualifications = \"GS-09: One year of specialized experience equivalent to GS-07 in federal staffing, classification, or employee relations.\","
+                - text: IsOpen = true, OccupationalSeries = "0201", PayGradeMin = "GS-07", PayGradeMax = "GS-09",
+                - text: AppointmentType = AppointmentType.Permanent, WorkSchedule = WorkSchedule.FullTime,
+                - text: OpenDate = today, CloseDate = today.AddDays(10), WhoMayApply = "Open to US Citizens",
+                - text: DutyLocation = "Arlington, VA", TeleworkEligible = true,
+                - text: SecurityClearance = SecurityClearance.PublicTrust, TravelRequired = TravelRequirement.NotRequired,
+                - text: SupervisoryStatus = false, RelocationAuthorized = false, DrugTestRequired = false,
+                - text: HiringOrganizationId = ohr.Id,
+                - text: "PositionRemuneration = new() { MinimumRange = 53_105, MaximumRange = 84_441 }"
+                - text: "},"
+                - text: "new() {"
+                - text: Title = "Management Analyst",
+                - text: Description = "Conducts organizational studies and evaluates federal program effectiveness.",
+                - text: Duties = "Analyzes agency workflow and recommends process improvements. Prepares management reports and briefing materials for senior leadership. Coordinates with program offices on performance measurement.",
+                - text: "Qualifications = \"GS-12: One year of specialized experience equivalent to GS-11 conducting management or program analysis in a federal agency.\","
+                - text: IsOpen = true, OccupationalSeries = "0343", PayGradeMin = "GS-11", PayGradeMax = "GS-12",
+                - text: AppointmentType = AppointmentType.Permanent, WorkSchedule = WorkSchedule.FullTime,
+                - text: OpenDate = today.AddDays(-3), CloseDate = today.AddDays(11), WhoMayApply = "Open to US Citizens",
+                - text: DutyLocation = "Remote (US)", TeleworkEligible = true,
+                - text: SecurityClearance = SecurityClearance.PublicTrust, TravelRequired = TravelRequirement.Occasional,
+                - text: SupervisoryStatus = false, RelocationAuthorized = false, DrugTestRequired = false,
+                - text: HiringOrganizationId = opd.Id,
+                - text: "PositionRemuneration = new() { MinimumRange = 82_764, MaximumRange = 128_956 }"
+                - text: "},"
+                - text: "new() {"
+                - text: Title = "Financial Analyst",
+                - text: Description = "Supports federal budget formulation and execution for the agency's appropriated funds.",
+                - text: Duties = "Prepares budget justifications and spending plans. Monitors obligations and expenditures against appropriations. Coordinates with OMB on passback and apportionment requests.",
+                - text: "Qualifications = \"GS-11: One year of specialized experience equivalent to GS-09 in federal budget or financial management.\","
+                - text: IsOpen = true, OccupationalSeries = "0501", PayGradeMin = "GS-09", PayGradeMax = "GS-11",
+                - text: AppointmentType = AppointmentType.Permanent, WorkSchedule = WorkSchedule.FullTime,
+                - text: OpenDate = today.AddDays(-1), CloseDate = today.AddDays(13), WhoMayApply = "Open to US Citizens",
+                - text: DutyLocation = "Washington, DC", TeleworkEligible = false,
+                - text: SecurityClearance = SecurityClearance.PublicTrust, TravelRequired = TravelRequirement.NotRequired,
+                - text: SupervisoryStatus = false, RelocationAuthorized = false, DrugTestRequired = false,
+                - text: HiringOrganizationId = fin.Id,
+                - text: "PositionRemuneration = new() { MinimumRange = 68_405, MaximumRange = 107_590 }"
+                - text: "},"
+                - text: "};"
+                - text: db.Positions.AddRange(positions);
+                - text: db.SaveChanges();
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - paragraph [ref=e496]:
+              - text: Update the call site in
+              - code [ref=e497]: Program.cs
+              - text: — pass the seed path so
+              - code [ref=e498]: DbSeeder
+              - text: "knows where to look:"
+            - generic [ref=e499]:
+              - generic [ref=e500]:
+                - text: using (var scope = app.Services.CreateScope())
+                - text: "{"
+                - text: var db = scope.ServiceProvider.GetRequiredService<HrDbContext>();
+                - text: db.Database.Migrate();
+                - text: // Looks for data/usajobs-seed.json in the working directory (solution root when using dotnet run)
+                - text: var seedPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "usajobs-seed.json");
+                - text: DbSeeder.Seed(db, seedPath);
+                - text: "}"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - paragraph [ref=e501]:
+              - text: On the next
+              - code [ref=e502]: dotnet run
+              - text: "you will see:"
+            - generic [ref=e503]:
+              - generic [ref=e504]: "[DbSeeder] Seeded 25 positions from data/usajobs-seed.json"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - paragraph [ref=e505]: If the file is absent the server falls back to the 5 hand-crafted positions — so the app always starts cleanly regardless of whether the JSON file has been generated.
+        - generic [ref=e506]:
+          - generic:
+            - separator: ...
+          - generic [ref=e508]:
+            - heading "What We Built" [level=3] [ref=e509]
+            - list [ref=e510]:
+              - listitem [ref=e511]:
+                - text: •
+                - code [ref=e512]:
+                  - strong [ref=e513]: HrMcp.Core
+                - text: — Domain entities, enums, repository interfaces. No dependencies.
+              - listitem [ref=e514]:
+                - text: •
+                - code [ref=e515]:
+                  - strong [ref=e516]: HrMcp.Application
+                - text: "— Use cases (PositionService, HiringOrganizationService). Depends on: Core."
+              - listitem [ref=e517]:
+                - text: •
+                - code [ref=e518]:
+                  - strong [ref=e519]: HrMcp.Infrastructure.Persistence
+                - text: "— EF Core implementation. Depends on: Core, EF Core."
+              - listitem [ref=e520]:
+                - text: •
+                - code [ref=e521]:
+                  - strong [ref=e522]: HrMcp.McpServer
+                - text: "— Web host (MCP tools added in Part 3). Depends on: Application, Infrastructure."
+              - listitem [ref=e523]:
+                - text: •
+                - code [ref=e524]:
+                  - strong [ref=e525]: HrMcp.Agent
+                - text: "— Console agent (built in Part 4). Depends on: Application, Infrastructure."
+            - paragraph [ref=e526]: The AI knows nothing about this yet. In Part 3, we expose these positions as MCP tools so that Claude Desktop and any MCP-compatible client can query, filter, and generate USAJobs-format announcements from this data.
+        - generic [ref=e527]:
+          - generic:
+            - separator: ...
+          - generic [ref=e529]:
+            - heading "Next Up" [level=3] [ref=e530]
+            - paragraph [ref=e531]:
+              - 'link "Part 2: Introduction to Model Context Protocol →" [ref=e532]':
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fworkcontrolgit%2FDotnetAiAgentMcp%2Frefs%2Fheads%2Fmaster%2Fblogs%2Fseries-1-ai-agent-mcp%2Fpart-2-intro-to-mcp.md
+                - strong [ref=e533]: "Part 2: Introduction to Model Context Protocol →"
+            - paragraph [ref=e534]: "We step back from code to build the mental model for MCP: what problem it solves, how its architecture maps to familiar .NET patterns, and why it matters for .NET developers building AI-enabled applications."
+        - generic [ref=e535]:
+          - generic:
+            - separator: ...
+          - generic [ref=e537]:
+            - heading "Sources" [level=3] [ref=e538]
+            - list [ref=e539]:
+              - listitem [ref=e540]:
+                - text: •
+                - link "USAJobs.gov Developer API Reference" [ref=e541]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fdeveloper.usajobs.gov%2Fapi-reference%2F
+              - listitem [ref=e542]:
+                - text: •
+                - link "USAJobs Historical Data Fields — Abigail Haddad" [ref=e543]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fabigailhaddad.github.io%2Fusajobs_historical%2F
+              - listitem [ref=e544]:
+                - text: •
+                - link "How to understand the job announcement overview — USAJobs Help" [ref=e545]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fhelp.usajobs.gov%2Fhow-to%2Fjob-announcement%2Foverview
+              - listitem [ref=e546]:
+                - text: •
+                - link "What is a series or grade? — USAJobs Help" [ref=e547]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fhelp.usajobs.gov%2Ffaq%2Fpay%2Fseries-and-grade
+              - listitem [ref=e548]:
+                - text: •
+                - link "Fixing SQL Server 2025 LocalDB in Visual Studio 2026 — ErikEJ" [ref=e549]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Ferikej.github.io%2Fsqlserver%2Flocaldb%2F2026%2F03%2F13%2Flocaldb-sqlserver-2025.html
+      - generic [ref=e552]: Title
