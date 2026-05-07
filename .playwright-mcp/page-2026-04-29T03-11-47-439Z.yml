@@ -1,0 +1,335 @@
+- generic [ref=e4]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - link "Homepage" [ref=e9] [cursor=pointer]:
+        - /url: https://medium.com/
+        - img [ref=e11]
+        - generic: Homepage
+      - link "Scrum and Coke" [ref=e17] [cursor=pointer]:
+        - /url: https://medium.com/scrum-and-coke?source=logo-4b79cc017e83---6c43d7988985
+        - generic [ref=e18]: Scrum and Coke
+      - generic [ref=e20]: Draft in Scrum and CokeSaved
+    - generic [ref=e21]:
+      - button "Decline" [ref=e23] [cursor=pointer]
+      - button "Publish" [ref=e25] [cursor=pointer]
+      - button [ref=e27] [cursor=pointer]:
+        - img [ref=e29]
+      - generic [ref=e32]:
+        - button "Notifications" [ref=e33] [cursor=pointer]:
+          - generic:
+            - generic: "6"
+            - generic: "New notifications: 6"
+        - button "Fuji Nguyen" [ref=e34] [cursor=pointer]:
+          - img "Fuji Nguyen" [ref=e36]
+        - button "Scrum and Coke" [ref=e37] [cursor=pointer]:
+          - img "Scrum and Coke" [ref=e39]
+  - main [ref=e41]:
+    - article [ref=e42]:
+      - textbox [active] [ref=e43]:
+        - generic [ref=e44]:
+          - text: ...
+          - generic [ref=e46]:
+            - 'heading "Part 2: Introduction to Model Context Protocol" [level=3] [ref=e47]'
+            - paragraph [ref=e48]:
+              - strong [ref=e49]: "Series:"
+              - text: AI Agents & MCP with .NET 10 |
+              - strong [ref=e50]: Part 2 of 5
+              - strong [ref=e51]: "GitHub:"
+              - link "workcontrolgit/DotnetAiAgentMcp" [ref=e52]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fworkcontrolgit%2FDotnetAiAgentMcp
+        - generic [ref=e53]:
+          - generic:
+            - separator: ...
+          - generic [ref=e55]:
+            - heading "Introduction" [level=3] [ref=e56]
+            - paragraph [ref=e57]: In Part 1 we built a federal HR domain with Clean Architecture. The data is structured, the services are in place, and the application compiles cleanly. But an AI cannot reach any of it yet.
+            - paragraph [ref=e58]: "That is what Model Context Protocol (MCP) is for. Before we write a single line of MCP code in Part 3, this post builds the mental model: what problem MCP solves, how it works, and why it matters specifically for .NET developers."
+            - paragraph [ref=e59]: No code in this post. Only concepts.
+        - generic [ref=e60]:
+          - generic:
+            - separator: ...
+          - generic [ref=e62]:
+            - heading "The N×M Integration Problem" [level=3] [ref=e63]
+            - paragraph [ref=e64]: Every AI application needs to reach external data. Before MCP, that meant writing a custom integration for each combination of AI host and data source.
+            - paragraph [ref=e65]: "Imagine you have:"
+            - list [ref=e66]:
+              - listitem [ref=e67]:
+                - text: •
+                - strong [ref=e68]: N AI hosts
+                - text: — Claude Desktop, a VS Code extension, a custom chatbot, a Slack bot
+              - listitem [ref=e69]:
+                - text: •
+                - strong [ref=e70]: M data sources
+                - text: — a SQL database, a REST API, a file system, a third-party SaaS
+            - paragraph [ref=e71]:
+              - text: Without a standard protocol, you need
+              - strong [ref=e72]: N × M custom integrations
+              - text: . Four hosts × four sources =
+              - strong [ref=e73]: 16 separate integrations
+              - text: "to build, maintain, and keep synchronized as both sides evolve. Each integration speaks a different language: some REST, some SDK-specific, some bespoke. A change to one data source breaks some integrations but not others. Security policies are inconsistent. Testing coverage is incomplete."
+            - paragraph [ref=e74]:
+              - text: MCP collapses N×M down to
+              - strong [ref=e75]: N + M
+              - text: ":"
+            - list [ref=e76]:
+              - listitem [ref=e77]:
+                - text: • Each AI host implements the MCP
+                - strong [ref=e78]: client
+                - text: once
+              - listitem [ref=e79]:
+                - text: • Each data source implements the MCP
+                - strong [ref=e80]: server
+                - text: once
+              - listitem [ref=e81]: • Any client connects to any server through the shared protocol
+            - paragraph [ref=e82]:
+              - text: Four hosts + four sources =
+              - strong [ref=e83]: 8 implementations
+              - text: instead of 16. And as the ecosystem grows, you add one server — every existing host can use it immediately, without changes on either side.
+        - generic [ref=e84]:
+          - generic:
+            - separator: ...
+          - generic [ref=e86]:
+            - heading "What MCP Is" [level=3] [ref=e87]
+            - paragraph [ref=e88]:
+              - text: The
+              - link "Model Context Protocol" [ref=e89]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fmodelcontextprotocol.io%2F
+              - text: "is an open standard published by Anthropic in November 2024. It defines how AI applications connect to external data sources and tools: the message format, transport layer, capability negotiation, and session lifecycle for that connection."
+            - paragraph [ref=e90]:
+              - text: Think of it as
+              - strong [ref=e91]: HTTP for AI tool use
+              - text: — a universal contract that any host and any server can implement independently, without knowledge of each other’s internals.
+        - generic [ref=e92]:
+          - generic:
+            - separator: ...
+          - generic [ref=e94]:
+            - heading "MCP Primitives" [level=3] [ref=e95]
+            - paragraph [ref=e96]: MCP defines three building blocks that a server can expose to a client. Every capability maps to one of them.
+            - heading "Tools" [level=3] [ref=e97]
+            - paragraph [ref=e98]:
+              - text: Tools are
+              - strong [ref=e99]: functions the AI can call
+              - text: . They take structured inputs, perform an action, and return a result. The AI decides when to call a tool based on conversation context; the server executes it and returns the output.
+            - paragraph [ref=e100]:
+              - text: In our project,
+              - code [ref=e101]: GetOpenPositions
+              - text: and
+              - code [ref=e102]: WriteJobDescription
+              - text: are tools. When a user asks "what federal jobs are available?", the AI calls
+              - code [ref=e103]: GetOpenPositions
+              - text: — the server queries the database and returns the positions. The AI never touches the database directly.
+            - paragraph [ref=e104]:
+              - text: Tools are the most-used MCP primitive. They are the
+              - code [ref=e105]: .NET method
+              - text: of the MCP world.
+            - heading "Resources" [level=3] [ref=e106]
+            - paragraph [ref=e107]:
+              - text: Resources are
+              - strong [ref=e108]: data the AI can read
+              - text: ", identified by URIs. Unlike tools, resources are not invoked with arguments — they are fetched by address and return content: text, JSON, or binary."
+            - paragraph [ref=e109]: "Think of resources as files or reference material the AI needs to understand context: a README, a schema definition, a policy document. They provide information; they do not perform actions."
+            - heading "Prompts" [level=3] [ref=e110]
+            - paragraph [ref=e111]:
+              - text: Prompts are
+              - strong [ref=e112]: reusable message templates
+              - text: stored on the server. A client fetches a named prompt, fills in its parameters, and injects the result into a conversation.
+            - paragraph [ref=e113]:
+              - text: They are useful for encoding domain knowledge that should stay close to the data. For example, a
+              - code [ref=e114]: job_description_template
+              - text: prompt can carry OPM formatting rules and federal plain-language writing standards — every AI host that connects gets the same authoritative template without the host needing to know those rules itself.
+        - generic [ref=e115]:
+          - generic:
+            - separator: ...
+          - generic [ref=e117]:
+            - 'heading "Architecture: Host → Client → Server" [level=3] [ref=e118]'
+            - figure "Type caption for image (optional)" [ref=e119]:
+              - img [ref=e122]
+            - paragraph [ref=e123]: MCP defines three roles in every interaction.
+            - paragraph [ref=e124]:
+              - strong [ref=e125]: Host
+              - text: is the AI application the user interacts with — Claude Desktop, VS Code Copilot Chat, a custom .NET console agent. The host embeds one or more MCP clients and decides which tools to surface to the language model.
+            - paragraph [ref=e126]:
+              - strong [ref=e127]: Client
+              - text: is a component inside the host that manages the connection to one MCP server. It handles session lifecycle, capability negotiation, and message routing. One host can hold multiple clients — one per server it connects to.
+            - paragraph [ref=e128]:
+              - strong [ref=e129]: Server
+              - text: is the process that exposes tools, resources, and prompts. It does not know which host is calling it. It only speaks MCP.
+            - paragraph [ref=e130]: "The flow for a single tool call:"
+            - blockquote [ref=e131]:
+              - strong [ref=e132]:
+                - emphasis [ref=e133]: User
+              - emphasis [ref=e134]: sends a message →
+              - strong [ref=e135]:
+                - emphasis [ref=e136]: Host
+              - emphasis [ref=e137]: passes context to the
+              - strong [ref=e138]:
+                - emphasis [ref=e139]: LLM
+              - emphasis [ref=e140]: → LLM decides to call a tool → Host routes the call through a
+              - strong [ref=e141]:
+                - emphasis [ref=e142]: Client
+              - emphasis [ref=e143]: → Client sends a JSON-RPC request to the
+              - strong [ref=e144]:
+                - emphasis [ref=e145]: Server
+              - emphasis [ref=e146]: → Server executes the tool → Server returns the result → Client delivers it to the Host → Host feeds it to the LLM → LLM generates the final response for the
+              - strong [ref=e147]:
+                - emphasis [ref=e148]: User
+            - paragraph [ref=e149]:
+              - text: "The critical insight:"
+              - strong [ref=e150]: the LLM never calls the server directly
+              - text: . The host mediates everything. The server has no knowledge of the conversation, the model, or the user — it only receives and responds to well-formed JSON-RPC messages.
+        - generic [ref=e151]:
+          - generic:
+            - separator: ...
+          - generic [ref=e153]:
+            - heading "Transports" [level=3] [ref=e154]
+            - paragraph [ref=e155]: MCP separates the protocol (what messages mean) from the transport (how they travel). Two transports are defined in the specification.
+            - heading "stdio" [level=3] [ref=e156]
+            - paragraph [ref=e157]:
+              - text: The server runs as a child process. The host writes JSON-RPC messages to the server’s
+              - strong [ref=e158]: stdin
+              - text: and reads responses from
+              - strong [ref=e159]: stdout
+              - text: . Stderr is available for logs and diagnostics.
+            - paragraph [ref=e160]: This is the transport used by Claude Desktop, VS Code Copilot Chat, and any other desktop AI host. It is simple, secure (no network exposure), and requires no port configuration. The server binary is launched and killed by the host — it has no independent lifetime outside that relationship.
+            - paragraph [ref=e161]:
+              - text: "The critical rule for stdio:"
+              - strong [ref=e162]: stdout must contain only JSON-RPC messages
+              - text: . Any log output, startup banners, or debug text written to stdout corrupts the message stream and breaks the session. In Part 3 we handle this by detecting a
+              - code [ref=e163]: "--stdio"
+              - text: flag at startup and suppressing all logging when it is set.
+            - heading "HTTP with SSE (Server-Sent Events)" [level=3] [ref=e164]
+            - paragraph [ref=e165]: The server runs as a persistent HTTP process. The client sends requests via HTTP POST and receives streaming responses over a persistent Server-Sent Events connection.
+            - paragraph [ref=e166]:
+              - text: This transport suits remote servers, shared team servers, and multi-client scenarios. It also enables interactive testing via the MCP Inspector — you point the inspector at
+              - code [ref=e167]: http://localhost:5100/mcp
+              - text: and call tools directly without any AI host involved.
+            - paragraph [ref=e168]:
+              - text: "In this series, we support both transports from the same binary:"
+              - code [ref=e169]: dotnet run
+              - text: starts HTTP mode,
+              - code [ref=e170]: dotnet run -- --stdio
+              - text: starts stdio mode.
+        - generic [ref=e171]:
+          - generic:
+            - separator: ...
+          - generic [ref=e173]:
+            - heading "MCP vs Other Patterns" [level=3] [ref=e174]
+            - paragraph [ref=e175]: MCP is not the first attempt to give AI models access to external capabilities.
+            - paragraph [ref=e176]:
+              - strong [ref=e177]: MCP vs Function Calling (OpenAI / Anthropic)
+            - paragraph [ref=e178]: "Function calling is a model-level feature: you define functions in the API request and the model returns structured call arguments. It is tightly coupled to the API provider and the calling application. MCP is transport-level and provider-agnostic — the same MCP server works with Claude Desktop, VS Code, and any future MCP-compatible host without modification."
+            - paragraph [ref=e179]:
+              - strong [ref=e180]: MCP vs REST APIs
+            - paragraph [ref=e181]: "A REST API requires the AI to know the URL structure, authentication scheme, request format, and error handling for each service. MCP presents a uniform interface: discover tools, call tools, read resources. No per-service knowledge is required in the host."
+            - paragraph [ref=e182]:
+              - strong [ref=e183]: MCP vs LangChain / Semantic Kernel Tools
+            - paragraph [ref=e184]: Framework-specific tool definitions are coupled to the framework. A tool written for Semantic Kernel does not work in LangChain without a rewrite. An MCP server is framework-agnostic — any MCP-compatible host can call it, regardless of what AI framework it uses internally.
+            - paragraph [ref=e185]:
+              - strong [ref=e186]: MCP vs ChatGPT Plugins
+            - paragraph [ref=e187]: ChatGPT Plugins were OpenAI-specific and required a public HTTP endpoint with a registered manifest. MCP supports local stdio transport (no network exposure, no public URL), works with multiple hosts, and is a vendor-neutral open standard with a published specification.
+            - paragraph [ref=e188]:
+              - text: "The common thread:"
+              - strong [ref=e189]: MCP is a protocol, not a framework or an API
+              - text: . Like HTTP, it outlives any individual implementation.
+        - generic [ref=e190]:
+          - generic:
+            - separator: ...
+          - generic [ref=e192]:
+            - heading "The ModelContextProtocol NuGet Package" [level=3] [ref=e193]
+            - paragraph [ref=e194]: "Anthropic publishes an official .NET SDK for MCP under two packages:"
+            - list [ref=e195]:
+              - listitem [ref=e196]:
+                - text: •
+                - code [ref=e197]:
+                  - strong [ref=e198]: ModelContextProtocol
+                - text: — core protocol, types, and client/server primitives
+              - listitem [ref=e199]:
+                - text: •
+                - code [ref=e200]:
+                  - strong [ref=e201]: ModelContextProtocol.AspNetCore
+                - text: —
+                - link "ASP.NET" [ref=e202]:
+                  - /url: https://medium.com/r/?url=http%3A%2F%2Fasp.net%2F
+                - text: Core middleware and service registration for hosting MCP over HTTP/SSE
+            - paragraph [ref=e203]:
+              - text: Both are maintained at
+              - link "github.com/modelcontextprotocol/csharp-sdk" [ref=e204]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fmodelcontextprotocol%2Fcsharp-sdk
+              - text: and target .NET 8+.
+            - paragraph [ref=e205]: We use these in Part 3. The SDK handles JSON-RPC serialization, session management, capability negotiation, and transport routing — we write C# classes with attributes, and the protocol plumbing is invisible.
+        - generic [ref=e206]:
+          - generic:
+            - separator: ...
+          - generic [ref=e208]:
+            - 'heading "Preview: What We Build in Part 3" [level=3] [ref=e209]'
+            - paragraph [ref=e210]:
+              - text: Part 3 wires the official SDK into
+              - code [ref=e211]: HrMcp.McpServer
+              - text: and exposes four tools over both HTTP/SSE and stdio.
+            - list [ref=e212]:
+              - listitem [ref=e213]:
+                - text: •
+                - code [ref=e214]:
+                  - strong [ref=e215]: GetOpenPositions
+                - text: — returns all positions where
+                - code [ref=e216]: IsOpen = true
+                - text: ", including pay ranges, duty locations, and clearance requirements"
+              - listitem [ref=e217]:
+                - text: •
+                - code [ref=e218]:
+                  - strong [ref=e219]: GetHiringOrganizations
+                - text: — returns the federal hiring offices in the database with their department affiliations
+              - listitem [ref=e220]:
+                - text: •
+                - code [ref=e221]:
+                  - strong [ref=e222]: GetPositionsByOrganization
+                - text: — returns positions filtered to a specific organization ID
+              - listitem [ref=e223]:
+                - text: •
+                - code [ref=e224]:
+                  - strong [ref=e225]: WriteJobDescription
+                - text: — accepts a position ID and returns a formatted job description draft (stub in Part 3; upgraded to real LLM output in Part 4)
+            - paragraph [ref=e226]:
+              - text: After Part 3, you can open MCP Inspector, point it at
+              - code [ref=e227]: http://localhost:5100/mcp
+              - text: ", and call all four tools interactively against real DHS position data — no AI host required."
+        - generic [ref=e228]:
+          - generic:
+            - separator: ...
+          - generic [ref=e230]:
+            - heading "Next Up" [level=3] [ref=e231]
+            - paragraph [ref=e232]:
+              - 'link "Part 3: Building an MCP Server in .NET 10 →" [ref=e233]':
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fworkcontrolgit%2FDotnetAiAgentMcp%2Frefs%2Fheads%2Fmaster%2Fblogs%2Fseries-1-ai-agent-mcp%2Fpart-3-mcp-server-dotnet.md
+                - strong [ref=e234]: "Part 3: Building an MCP Server in .NET 10 →"
+            - paragraph [ref=e235]:
+              - text: We install the official
+              - code [ref=e236]: ModelContextProtocol
+              - text: SDK, implement the four tool classes, configure both transports, and verify everything end-to-end with MCP Inspector.
+        - generic [ref=e237]:
+          - generic:
+            - separator: ...
+          - generic [ref=e239]:
+            - heading "Sources" [level=3] [ref=e240]
+            - list [ref=e241]:
+              - listitem [ref=e242]:
+                - text: •
+                - link "Model Context Protocol — Official Documentation" [ref=e243]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fmodelcontextprotocol.io%2Fintroduction
+              - listitem [ref=e244]:
+                - text: •
+                - link "MCP Specification" [ref=e245]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fspec.modelcontextprotocol.io%2F
+              - listitem [ref=e246]:
+                - text: •
+                - link "ModelContextProtocol C# SDK — GitHub" [ref=e247]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fmodelcontextprotocol%2Fcsharp-sdk
+              - listitem [ref=e248]:
+                - text: •
+                - link "ModelContextProtocol NuGet Package" [ref=e249]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FModelContextProtocol
+              - listitem [ref=e250]:
+                - text: •
+                - link "Anthropic MCP Announcement — November 2024" [ref=e251]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fwww.anthropic.com%2Fnews%2Fmodel-context-protocol
+      - generic [ref=e254]: Title

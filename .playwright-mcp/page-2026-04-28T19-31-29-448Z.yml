@@ -1,0 +1,258 @@
+- generic [ref=e4]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - tooltip "Sidebar menu" [ref=e9]:
+        - button "Sidebar menu" [ref=e11] [cursor=pointer]:
+          - generic [ref=e12]: Sidebar menu
+          - img [ref=e13]
+      - link "Homepage" [ref=e15] [cursor=pointer]:
+        - /url: /?source=---top_nav_layout_nav-----------------------------------------
+        - img "Medium Logo" [ref=e16]
+      - generic [ref=e19]:
+        - listbox
+        - img [ref=e21]
+        - combobox "search" [ref=e23]
+    - link "Write" [ref=e25] [cursor=pointer]:
+      - /url: https://medium.com/new-story?source=---top_nav_layout_nav-----------------------------------------
+      - generic [ref=e26]:
+        - img [ref=e27]
+        - text: Write
+    - tooltip "Notifications" [ref=e32]:
+      - link "Notifications" [ref=e34] [cursor=pointer]:
+        - /url: /me/notifications?source=---top_nav_layout_nav-----------------------------------------
+        - generic [ref=e35]:
+          - img [ref=e36]
+          - generic [ref=e39]: Notifications
+    - tooltip "user options menu" [ref=e42]:
+      - button "user options menu" [ref=e44] [cursor=pointer]:
+        - generic [ref=e45]:
+          - img "Fuji Nguyen" [ref=e47]
+          - img [ref=e49]
+  - generic [ref=e52]:
+    - generic [ref=e56]:
+      - generic [ref=e57]:
+        - tooltip "Home" [ref=e60]:
+          - link "Home" [ref=e62] [cursor=pointer]:
+            - /url: /?source=---sidebar_menu-----------------------------------------
+            - img [ref=e63]
+            - generic [ref=e65]: Home
+        - tooltip "Library" [ref=e67]:
+          - link "Library" [ref=e69] [cursor=pointer]:
+            - /url: /me/lists?source=---sidebar_menu-----------------------------------------
+            - img [ref=e70]
+            - generic [ref=e73]: Library
+        - tooltip "Profile" [ref=e75]:
+          - link "Profile" [ref=e77] [cursor=pointer]:
+            - /url: /@fuji-nguyen?source=---sidebar_menu-----------------------------------------
+            - img [ref=e78]
+            - generic [ref=e81]: Profile
+        - tooltip "Stories" [ref=e83]:
+          - button "Stories" [ref=e85] [cursor=pointer]:
+            - img [ref=e87]
+            - generic [ref=e89]: Stories
+        - tooltip "Stats" [ref=e91]:
+          - link "Stats" [ref=e93] [cursor=pointer]:
+            - /url: /me/stats?source=---sidebar_menu-----------------------------------------
+            - img [ref=e94]
+            - generic [ref=e96]: Stats
+      - generic [ref=e98]:
+        - tooltip "Following" [ref=e100]:
+          - link "Following" [ref=e102] [cursor=pointer]:
+            - /url: /me/following-feed/writers?source=---sidebar_menu-----------------------------------------
+            - img [ref=e103]
+            - generic [ref=e105]: Following
+        - tooltip "ITNEXT ITNEXT" [ref=e107]:
+          - link "ITNEXT ITNEXT" [ref=e109] [cursor=pointer]:
+            - /url: /me/following-feed/publications/5b301f10ddcd?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "ITNEXT" [ref=e112]
+            - generic [ref=e114]: ITNEXT
+        - tooltip "Dr. Derek Austin 🥳 Dr. Derek Austin 🥳" [ref=e117]:
+          - link "Dr. Derek Austin 🥳 Dr. Derek Austin 🥳" [ref=e119] [cursor=pointer]:
+            - /url: /me/following-feed/writers/e5294c417caf?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "Dr. Derek Austin 🥳" [ref=e122]
+            - generic [ref=e124]: Dr. Derek Austin 🥳
+        - tooltip "Data Science Collective Data Science Collective" [ref=e127]:
+          - link "Data Science Collective Data Science Collective" [ref=e129] [cursor=pointer]:
+            - /url: /me/following-feed/publications/8993e01dcfd3?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "Data Science Collective" [ref=e132]
+            - generic [ref=e134]: Data Science Collective
+        - tooltip "Dev Genius Dev Genius" [ref=e137]:
+          - link "Dev Genius Dev Genius" [ref=e139] [cursor=pointer]:
+            - /url: /me/following-feed/publications/4e2c1156667e?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "Dev Genius" [ref=e142]
+            - generic [ref=e144]: Dev Genius
+        - tooltip "Neeraja Gandla Neeraja Gandla" [ref=e147]:
+          - link "Neeraja Gandla Neeraja Gandla" [ref=e149] [cursor=pointer]:
+            - /url: /me/following-feed/writers/db8656eb692f?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "Neeraja Gandla" [ref=e152]
+            - generic [ref=e154]: Neeraja Gandla
+        - tooltip "UX Collective UX Collective" [ref=e157]:
+          - link "UX Collective UX Collective" [ref=e159] [cursor=pointer]:
+            - /url: /me/following-feed/publications/138adf9c44c?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "UX Collective" [ref=e162]
+            - generic [ref=e164]: UX Collective
+        - tooltip "CodeX CodeX" [ref=e167]:
+          - link "CodeX CodeX" [ref=e169] [cursor=pointer]:
+            - /url: /me/following-feed/publications/29038077e4c6?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "CodeX" [ref=e172]
+            - generic [ref=e174]: CodeX
+        - tooltip "Sébastien Dubois Sébastien Dubois" [ref=e177]:
+          - link "Sébastien Dubois Sébastien Dubois" [ref=e179] [cursor=pointer]:
+            - /url: /me/following-feed/writers/1ea69814e3e1?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "Sébastien Dubois" [ref=e182]
+            - generic [ref=e184]: Sébastien Dubois
+        - tooltip "Abe Jaber Abe Jaber" [ref=e187]:
+          - link "Abe Jaber Abe Jaber" [ref=e189] [cursor=pointer]:
+            - /url: /me/following-feed/writers/b4529eba4bd0?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "Abe Jaber" [ref=e192]
+            - generic [ref=e194]: Abe Jaber
+        - tooltip "Jessica Stillman Jessica Stillman" [ref=e197]:
+          - link "Jessica Stillman Jessica Stillman" [ref=e199] [cursor=pointer]:
+            - /url: /me/following-feed/writers/d85f9c2d1537?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "Jessica Stillman" [ref=e202]
+            - generic [ref=e204]: Jessica Stillman
+        - tooltip "More" [ref=e207]:
+          - button "More" [ref=e209] [cursor=pointer]:
+            - img [ref=e211]
+            - generic [ref=e214]: More
+    - generic [ref=e217]:
+      - generic [ref=e218]:
+        - generic [ref=e220]:
+          - heading "Stories" [level=1] [ref=e223]
+          - link "Import a story" [ref=e225] [cursor=pointer]:
+            - /url: https://medium.com/p/import?source=your_stories_outbox--------------------------------------------
+        - generic [ref=e227]:
+          - tablist [ref=e228]:
+            - tab "Drafts 6" [ref=e231] [cursor=pointer]:
+              - generic [ref=e233]:
+                - generic [ref=e234]: Drafts
+                - generic [ref=e235]: "6"
+            - tab "Scheduled" [ref=e238] [cursor=pointer]:
+              - generic [ref=e241]: Scheduled
+            - tab "Published 308" [ref=e244] [cursor=pointer]:
+              - generic [ref=e246]:
+                - generic [ref=e247]: Published
+                - generic [ref=e248]: "308"
+            - tab "Unlisted" [ref=e251] [cursor=pointer]:
+              - generic [ref=e254]: Unlisted
+            - tab "Submissions" [ref=e258] [cursor=pointer]:
+              - generic [ref=e260]: Submissions
+          - generic:
+            - button "next sections":
+              - img
+          - generic:
+            - button "previous sections":
+              - img
+      - table [ref=e262]:
+        - rowgroup [ref=e263]:
+          - row "Latest Publication Status" [ref=e264]:
+            - columnheader "Latest" [ref=e265]
+            - columnheader "Publication" [ref=e266]
+            - columnheader "Status" [ref=e267]
+            - columnheader [ref=e268]
+        - rowgroup [ref=e269]:
+          - row "District 3 District 3 1 min read (23 words) Updated Feb 5 Toggle actions menu" [ref=e270]:
+            - cell "District 3 District 3 1 min read (23 words) Updated Feb 5" [ref=e271]:
+              - generic [ref=e275]:
+                - link "District 3" [ref=e277] [cursor=pointer]:
+                  - /url: https://medium.com/p/cdadd8dfabc5/edit?source=your_stories_outbox---writer_outbox_drafts-----------------------------------------
+                  - generic "District 3" [ref=e279]:
+                    - img "District 3" [ref=e281]
+                - generic [ref=e283]:
+                  - link "District 3" [ref=e286] [cursor=pointer]:
+                    - /url: https://medium.com/p/cdadd8dfabc5/edit?source=your_stories_outbox---writer_outbox_drafts-----------------------------------------
+                    - heading "District 3" [level=2] [ref=e288]
+                  - generic [ref=e291]:
+                    - paragraph [ref=e292]: 1 min read (23 words)
+                    - generic [ref=e294]: ·
+                    - paragraph [ref=e295]: Updated Feb 5
+            - cell [ref=e296]
+            - cell [ref=e297]
+            - cell "Toggle actions menu" [ref=e298]:
+              - button "Toggle actions menu" [ref=e302] [cursor=pointer]:
+                - generic [ref=e303]: Toggle actions menu
+                - img [ref=e304]
+          - row "Advanced drills you need Advanced drills you need 1 min read (4 words) Updated Jun 22, 2024 Toggle actions menu" [ref=e306]:
+            - cell "Advanced drills you need Advanced drills you need 1 min read (4 words) Updated Jun 22, 2024" [ref=e307]:
+              - generic [ref=e311]:
+                - link "Advanced drills you need" [ref=e313] [cursor=pointer]:
+                  - /url: https://medium.com/p/879bb9f5eb29/edit?source=your_stories_outbox---writer_outbox_drafts-----------------------------------------
+                  - generic "Advanced drills you need" [ref=e315]:
+                    - img "Advanced drills you need" [ref=e317]
+                - generic [ref=e319]:
+                  - link "Advanced drills you need" [ref=e322] [cursor=pointer]:
+                    - /url: https://medium.com/p/879bb9f5eb29/edit?source=your_stories_outbox---writer_outbox_drafts-----------------------------------------
+                    - heading "Advanced drills you need" [level=2] [ref=e324]
+                  - generic [ref=e327]:
+                    - paragraph [ref=e328]: 1 min read (4 words)
+                    - generic [ref=e330]: ·
+                    - paragraph [ref=e331]: Updated Jun 22, 2024
+            - cell [ref=e332]
+            - cell [ref=e333]
+            - cell "Toggle actions menu" [ref=e334]:
+              - button "Toggle actions menu" [ref=e338] [cursor=pointer]:
+                - generic [ref=e339]: Toggle actions menu
+                - img [ref=e340]
+          - row "See how to use your body weight to generate more power! See how to use your body weight to generate more power! 1 min read (17 words) Updated Dec 9, 2023 Toggle actions menu" [ref=e342]:
+            - cell "See how to use your body weight to generate more power! See how to use your body weight to generate more power! 1 min read (17 words) Updated Dec 9, 2023" [ref=e343]:
+              - generic [ref=e347]:
+                - link "See how to use your body weight to generate more power!" [ref=e349] [cursor=pointer]:
+                  - /url: https://medium.com/p/1c9d2b3c094a/edit?source=your_stories_outbox---writer_outbox_drafts-----------------------------------------
+                  - generic "See how to use your body weight to generate more power!" [ref=e351]:
+                    - img "See how to use your body weight to generate more power!" [ref=e353]
+                - generic [ref=e355]:
+                  - link "See how to use your body weight to generate more power!" [ref=e358] [cursor=pointer]:
+                    - /url: https://medium.com/p/1c9d2b3c094a/edit?source=your_stories_outbox---writer_outbox_drafts-----------------------------------------
+                    - heading "See how to use your body weight to generate more power!" [level=2] [ref=e360]
+                  - generic [ref=e363]:
+                    - paragraph [ref=e364]: 1 min read (17 words)
+                    - generic [ref=e366]: ·
+                    - paragraph [ref=e367]: Updated Dec 9, 2023
+            - cell [ref=e368]
+            - cell [ref=e369]
+            - cell "Toggle actions menu" [ref=e370]:
+              - button "Toggle actions menu" [ref=e374] [cursor=pointer]:
+                - generic [ref=e375]: Toggle actions menu
+                - img [ref=e376]
+          - row "Drill for 3rd shot drop Drill for 3rd shot drop 1 min read (70 words) Updated Oct 31, 2023 Toggle actions menu" [ref=e378]:
+            - cell "Drill for 3rd shot drop Drill for 3rd shot drop 1 min read (70 words) Updated Oct 31, 2023" [ref=e379]:
+              - generic [ref=e383]:
+                - link "Drill for 3rd shot drop" [ref=e385] [cursor=pointer]:
+                  - /url: https://medium.com/p/8b1c49858ce6/edit?source=your_stories_outbox---writer_outbox_drafts-----------------------------------------
+                  - generic "Drill for 3rd shot drop" [ref=e387]:
+                    - img "Drill for 3rd shot drop" [ref=e389]
+                - generic [ref=e391]:
+                  - link "Drill for 3rd shot drop" [ref=e394] [cursor=pointer]:
+                    - /url: https://medium.com/p/8b1c49858ce6/edit?source=your_stories_outbox---writer_outbox_drafts-----------------------------------------
+                    - heading "Drill for 3rd shot drop" [level=2] [ref=e396]
+                  - generic [ref=e399]:
+                    - paragraph [ref=e400]: 1 min read (70 words)
+                    - generic [ref=e402]: ·
+                    - paragraph [ref=e403]: Updated Oct 31, 2023
+            - cell [ref=e404]
+            - cell [ref=e405]
+            - cell "Toggle actions menu" [ref=e406]:
+              - button "Toggle actions menu" [ref=e410] [cursor=pointer]:
+                - generic [ref=e411]: Toggle actions menu
+                - img [ref=e412]
+          - row "Links to tools I used at work Links to tools I used at work 1 min read (13 words) Updated Mar 11, 2023 Toggle actions menu" [ref=e414]:
+            - cell "Links to tools I used at work Links to tools I used at work 1 min read (13 words) Updated Mar 11, 2023" [ref=e415]:
+              - generic [ref=e419]:
+                - link "Links to tools I used at work" [ref=e421] [cursor=pointer]:
+                  - /url: https://medium.com/p/5531cbe89714/edit?source=your_stories_outbox---writer_outbox_drafts-----------------------------------------
+                  - generic "Links to tools I used at work" [ref=e423]:
+                    - img "Links to tools I used at work" [ref=e425]
+                - generic [ref=e427]:
+                  - link "Links to tools I used at work" [ref=e430] [cursor=pointer]:
+                    - /url: https://medium.com/p/5531cbe89714/edit?source=your_stories_outbox---writer_outbox_drafts-----------------------------------------
+                    - heading "Links to tools I used at work" [level=2] [ref=e432]
+                  - generic [ref=e435]:
+                    - paragraph [ref=e436]: 1 min read (13 words)
+                    - generic [ref=e438]: ·
+                    - paragraph [ref=e439]: Updated Mar 11, 2023
+            - cell [ref=e440]
+            - cell [ref=e441]
+            - cell "Toggle actions menu" [ref=e442]:
+              - button "Toggle actions menu" [ref=e446] [cursor=pointer]:
+                - generic [ref=e447]: Toggle actions menu
+                - img [ref=e448]

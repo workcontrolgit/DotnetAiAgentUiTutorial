@@ -1,0 +1,1185 @@
+- generic [ref=e4]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - tooltip "Sidebar menu" [ref=e9]:
+        - button "Sidebar menu" [ref=e11] [cursor=pointer]:
+          - generic [ref=e12]: Sidebar menu
+          - img [ref=e13]
+      - link "Homepage" [ref=e15] [cursor=pointer]:
+        - /url: /?source=---top_nav_layout_nav-----------------------------------------
+        - img "Medium Logo" [ref=e16]
+      - generic [ref=e19]:
+        - listbox
+        - img [ref=e21]
+        - combobox "search" [ref=e23]
+    - link "Write" [ref=e25] [cursor=pointer]:
+      - /url: https://medium.com/new-story?source=---top_nav_layout_nav-----------------------------------------
+      - generic [ref=e26]:
+        - img [ref=e27]
+        - text: Write
+    - tooltip "Notifications 6" [ref=e32]:
+      - link "Notifications 6" [ref=e34] [cursor=pointer]:
+        - /url: /me/notifications?source=---top_nav_layout_nav-----------------------------------------
+        - generic [ref=e35]:
+          - img [ref=e36]
+          - generic [ref=e39]: Notifications
+          - generic [ref=e40]: "6"
+    - tooltip "user options menu" [ref=e43]:
+      - button "user options menu" [ref=e45] [cursor=pointer]:
+        - generic [ref=e46]:
+          - img "Fuji Nguyen" [ref=e48]
+          - img [ref=e50]
+  - generic [ref=e53]:
+    - generic [ref=e57]:
+      - generic [ref=e58]:
+        - tooltip "Home" [ref=e61]:
+          - link "Home" [ref=e63] [cursor=pointer]:
+            - /url: /?source=---sidebar_menu-----------------------------------------
+            - img [ref=e64]
+            - generic [ref=e66]: Home
+        - tooltip "Library" [ref=e68]:
+          - link "Library" [ref=e70] [cursor=pointer]:
+            - /url: /me/lists?source=---sidebar_menu-----------------------------------------
+            - img [ref=e71]
+            - generic [ref=e74]: Library
+        - tooltip "Profile" [ref=e76]:
+          - link "Profile" [ref=e78] [cursor=pointer]:
+            - /url: /@fuji-nguyen?source=---sidebar_menu-----------------------------------------
+            - img [ref=e79]
+            - generic [ref=e82]: Profile
+        - tooltip "Stories" [ref=e84]:
+          - button "Stories" [ref=e86] [cursor=pointer]:
+            - img [ref=e88]
+            - generic [ref=e90]: Stories
+        - tooltip "Stats" [ref=e92]:
+          - link "Stats" [ref=e94] [cursor=pointer]:
+            - /url: /me/stats?source=---sidebar_menu-----------------------------------------
+            - img [ref=e95]
+            - generic [ref=e97]: Stats
+      - generic [ref=e99]:
+        - tooltip "Following" [ref=e101]:
+          - link "Following" [ref=e103] [cursor=pointer]:
+            - /url: /me/following-feed/writers?source=---sidebar_menu-----------------------------------------
+            - img [ref=e104]
+            - generic [ref=e106]: Following
+        - tooltip "JavaScript in Plain English JavaScript in Plain English" [ref=e108]:
+          - link "JavaScript in Plain English JavaScript in Plain English" [ref=e110] [cursor=pointer]:
+            - /url: /me/following-feed/publications/4b3a1ed4f11c?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "JavaScript in Plain English" [ref=e113]
+            - generic [ref=e115]: JavaScript in Plain English
+        - tooltip "The Medium Blog The Medium Blog" [ref=e118]:
+          - link "The Medium Blog The Medium Blog" [ref=e120] [cursor=pointer]:
+            - /url: /me/following-feed/publications/15f753907972?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "The Medium Blog" [ref=e123]
+            - generic [ref=e125]: The Medium Blog
+        - tooltip "UX Collective UX Collective" [ref=e128]:
+          - link "UX Collective UX Collective" [ref=e130] [cursor=pointer]:
+            - /url: /me/following-feed/publications/138adf9c44c?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "UX Collective" [ref=e133]
+            - generic [ref=e135]: UX Collective
+        - tooltip "The Shortform The Shortform" [ref=e138]:
+          - link "The Shortform The Shortform" [ref=e140] [cursor=pointer]:
+            - /url: /me/following-feed/publications/92ac1e0f0779?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "The Shortform" [ref=e143]
+            - generic [ref=e145]: The Shortform
+        - tooltip "Dev Genius Dev Genius" [ref=e148]:
+          - link "Dev Genius Dev Genius" [ref=e150] [cursor=pointer]:
+            - /url: /me/following-feed/publications/4e2c1156667e?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "Dev Genius" [ref=e153]
+            - generic [ref=e155]: Dev Genius
+        - tooltip "ITNEXT ITNEXT" [ref=e158]:
+          - link "ITNEXT ITNEXT" [ref=e160] [cursor=pointer]:
+            - /url: /me/following-feed/publications/5b301f10ddcd?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "ITNEXT" [ref=e163]
+            - generic [ref=e165]: ITNEXT
+        - tooltip "Dr. Derek Austin 🥳 Dr. Derek Austin 🥳" [ref=e168]:
+          - link "Dr. Derek Austin 🥳 Dr. Derek Austin 🥳" [ref=e170] [cursor=pointer]:
+            - /url: /me/following-feed/writers/e5294c417caf?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "Dr. Derek Austin 🥳" [ref=e173]
+            - generic [ref=e175]: Dr. Derek Austin 🥳
+        - tooltip "Data Science Collective Data Science Collective" [ref=e178]:
+          - link "Data Science Collective Data Science Collective" [ref=e180] [cursor=pointer]:
+            - /url: /me/following-feed/publications/8993e01dcfd3?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "Data Science Collective" [ref=e183]
+            - generic [ref=e185]: Data Science Collective
+        - tooltip "Neeraja Gandla Neeraja Gandla" [ref=e188]:
+          - link "Neeraja Gandla Neeraja Gandla" [ref=e190] [cursor=pointer]:
+            - /url: /me/following-feed/writers/db8656eb692f?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "Neeraja Gandla" [ref=e193]
+            - generic [ref=e195]: Neeraja Gandla
+        - tooltip "CodeX CodeX" [ref=e198]:
+          - link "CodeX CodeX" [ref=e200] [cursor=pointer]:
+            - /url: /me/following-feed/publications/29038077e4c6?source=---sidebar_menu_following------------------------------following_badge-----------
+            - img "CodeX" [ref=e203]
+            - generic [ref=e205]: CodeX
+        - tooltip "More" [ref=e208]:
+          - button "More" [ref=e210] [cursor=pointer]:
+            - img [ref=e212]
+            - generic [ref=e215]: More
+    - generic [ref=e218]:
+      - generic [ref=e219]:
+        - generic [ref=e221]:
+          - heading "Stories" [level=1] [ref=e224]
+          - link "Import a story" [ref=e226] [cursor=pointer]:
+            - /url: https://medium.com/p/import?source=your_stories_outbox--------------------------------------------
+        - generic [ref=e228]:
+          - tablist [ref=e229]:
+            - tab "Drafts 13" [ref=e232] [cursor=pointer]:
+              - generic [ref=e234]:
+                - generic [ref=e235]: Drafts
+                - generic [ref=e236]: "13"
+            - tab "Scheduled" [ref=e239] [cursor=pointer]:
+              - generic [ref=e242]: Scheduled
+            - tab "Published 308" [ref=e245] [cursor=pointer]:
+              - generic [ref=e247]:
+                - generic [ref=e248]: Published
+                - generic [ref=e249]: "308"
+            - tab "Unlisted" [ref=e252] [cursor=pointer]:
+              - generic [ref=e255]: Unlisted
+            - tab "Submissions" [ref=e259] [cursor=pointer]:
+              - generic [ref=e261]: Submissions
+          - generic:
+            - button "next sections":
+              - img
+          - generic:
+            - button "previous sections":
+              - img
+      - table [ref=e263]:
+        - rowgroup [ref=e264]:
+          - row "Latest Publication Status" [ref=e265]:
+            - columnheader "Latest" [ref=e266]
+            - columnheader "Publication" [ref=e267]:
+              - button "Publication" [ref=e270] [cursor=pointer]:
+                - generic [ref=e272]:
+                  - paragraph [ref=e273]: Publication
+                  - img [ref=e275]
+            - columnheader "Status" [ref=e277]:
+              - button "Status" [ref=e280] [cursor=pointer]:
+                - generic [ref=e282]:
+                  - paragraph [ref=e283]: Status
+                  - img [ref=e285]
+            - columnheader [ref=e287]
+        - rowgroup [ref=e288]:
+          - 'row "Part 6: Securing the MCP Server with OIDC Part 6: Securing the MCP Server with OIDC Draft 8 min read (1932 words) Updated just now Scrum and Coke Scrum and Coke Pending review Toggle actions menu" [ref=e289]':
+            - 'cell "Part 6: Securing the MCP Server with OIDC Part 6: Securing the MCP Server with OIDC Draft 8 min read (1932 words) Updated just now" [ref=e290]':
+              - generic [ref=e294]:
+                - 'link "Part 6: Securing the MCP Server with OIDC" [ref=e296] [cursor=pointer]':
+                  - /url: https://medium.com/p/5ee56af86160/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Part 6: Securing the MCP Server with OIDC" [ref=e298]':
+                    - 'img "Part 6: Securing the MCP Server with OIDC" [ref=e300]'
+                - generic [ref=e302]:
+                  - 'link "Part 6: Securing the MCP Server with OIDC" [ref=e305] [cursor=pointer]':
+                    - /url: https://medium.com/p/5ee56af86160/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Part 6: Securing the MCP Server with OIDC" [level=2] [ref=e307]'
+                  - generic [ref=e309]:
+                    - paragraph [ref=e311]: Draft
+                    - generic [ref=e313]:
+                      - paragraph [ref=e314]: 8 min read (1932 words)
+                      - generic [ref=e316]: ·
+                      - paragraph [ref=e317]: Updated just now
+            - cell "Scrum and Coke Scrum and Coke" [ref=e318]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e322]:
+                - generic [ref=e324]:
+                  - link "Scrum and Coke" [ref=e325] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e327]
+                  - link "Scrum and Coke" [ref=e329] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e330]: Scrum and Coke
+            - cell "Pending review" [ref=e331]:
+              - button "Pending review" [ref=e334] [cursor=pointer]:
+                - generic [ref=e339]: Pending review
+            - cell "Toggle actions menu" [ref=e340]:
+              - button "Toggle actions menu" [ref=e344] [cursor=pointer]:
+                - generic [ref=e345]: Toggle actions menu
+                - img [ref=e346]
+          - 'row "Part 5: Claude Desktop Integration & End-to-End Demo Part 5: Claude Desktop Integration & End-to-End Demo Draft 6 min read (1484 words) Updated just now Scrum and Coke Scrum and Coke Pending review Toggle actions menu" [ref=e348]':
+            - 'cell "Part 5: Claude Desktop Integration & End-to-End Demo Part 5: Claude Desktop Integration & End-to-End Demo Draft 6 min read (1484 words) Updated just now" [ref=e349]':
+              - generic [ref=e353]:
+                - 'link "Part 5: Claude Desktop Integration & End-to-End Demo" [ref=e355] [cursor=pointer]':
+                  - /url: https://medium.com/p/fc985ed7cbf5/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Part 5: Claude Desktop Integration & End-to-End Demo" [ref=e357]':
+                    - 'img "Part 5: Claude Desktop Integration & End-to-End Demo" [ref=e359]'
+                - generic [ref=e361]:
+                  - 'link "Part 5: Claude Desktop Integration & End-to-End Demo" [ref=e364] [cursor=pointer]':
+                    - /url: https://medium.com/p/fc985ed7cbf5/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Part 5: Claude Desktop Integration & End-to-End Demo" [level=2] [ref=e366]'
+                  - generic [ref=e368]:
+                    - paragraph [ref=e370]: Draft
+                    - generic [ref=e372]:
+                      - paragraph [ref=e373]: 6 min read (1484 words)
+                      - generic [ref=e375]: ·
+                      - paragraph [ref=e376]: Updated just now
+            - cell "Scrum and Coke Scrum and Coke" [ref=e377]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e381]:
+                - generic [ref=e383]:
+                  - link "Scrum and Coke" [ref=e384] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e386]
+                  - link "Scrum and Coke" [ref=e388] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e389]: Scrum and Coke
+            - cell "Pending review" [ref=e390]:
+              - button "Pending review" [ref=e393] [cursor=pointer]:
+                - generic [ref=e398]: Pending review
+            - cell "Toggle actions menu" [ref=e399]:
+              - button "Toggle actions menu" [ref=e403] [cursor=pointer]:
+                - generic [ref=e404]: Toggle actions menu
+                - img [ref=e405]
+          - 'row "Part 4: AI Agent with Microsoft.Extensions.AI + Ollama Part 4: AI Agent with Microsoft.Extensions.AI + Ollama Draft 9 min read (2188 words) Updated just now Scrum and Coke Scrum and Coke Pending review Toggle actions menu" [ref=e407]':
+            - 'cell "Part 4: AI Agent with Microsoft.Extensions.AI + Ollama Part 4: AI Agent with Microsoft.Extensions.AI + Ollama Draft 9 min read (2188 words) Updated just now" [ref=e408]':
+              - generic [ref=e412]:
+                - 'link "Part 4: AI Agent with Microsoft.Extensions.AI + Ollama" [ref=e414] [cursor=pointer]':
+                  - /url: https://medium.com/p/b41d0b722b90/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Part 4: AI Agent with Microsoft.Extensions.AI + Ollama" [ref=e416]':
+                    - 'img "Part 4: AI Agent with Microsoft.Extensions.AI + Ollama" [ref=e418]'
+                - generic [ref=e420]:
+                  - 'link "Part 4: AI Agent with Microsoft.Extensions.AI + Ollama" [ref=e423] [cursor=pointer]':
+                    - /url: https://medium.com/p/b41d0b722b90/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Part 4: AI Agent with Microsoft.Extensions.AI + Ollama" [level=2] [ref=e425]'
+                  - generic [ref=e427]:
+                    - paragraph [ref=e429]: Draft
+                    - generic [ref=e431]:
+                      - paragraph [ref=e432]: 9 min read (2188 words)
+                      - generic [ref=e434]: ·
+                      - paragraph [ref=e435]: Updated just now
+            - cell "Scrum and Coke Scrum and Coke" [ref=e436]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e440]:
+                - generic [ref=e442]:
+                  - link "Scrum and Coke" [ref=e443] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e445]
+                  - link "Scrum and Coke" [ref=e447] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e448]: Scrum and Coke
+            - cell "Pending review" [ref=e449]:
+              - button "Pending review" [ref=e452] [cursor=pointer]:
+                - generic [ref=e457]: Pending review
+            - cell "Toggle actions menu" [ref=e458]:
+              - button "Toggle actions menu" [ref=e462] [cursor=pointer]:
+                - generic [ref=e463]: Toggle actions menu
+                - img [ref=e464]
+          - 'row "Part 3: Building an MCP Server in .NET 10 Part 3: Building an MCP Server in .NET 10 Draft 7 min read (1614 words) Updated just now Scrum and Coke Scrum and Coke Pending review Toggle actions menu" [ref=e466]':
+            - 'cell "Part 3: Building an MCP Server in .NET 10 Part 3: Building an MCP Server in .NET 10 Draft 7 min read (1614 words) Updated just now" [ref=e467]':
+              - generic [ref=e471]:
+                - 'link "Part 3: Building an MCP Server in .NET 10" [ref=e473] [cursor=pointer]':
+                  - /url: https://medium.com/p/81964133d3b8/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Part 3: Building an MCP Server in .NET 10" [ref=e475]':
+                    - 'img "Part 3: Building an MCP Server in .NET 10" [ref=e477]'
+                - generic [ref=e479]:
+                  - 'link "Part 3: Building an MCP Server in .NET 10" [ref=e482] [cursor=pointer]':
+                    - /url: https://medium.com/p/81964133d3b8/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Part 3: Building an MCP Server in .NET 10" [level=2] [ref=e484]'
+                  - generic [ref=e486]:
+                    - paragraph [ref=e488]: Draft
+                    - generic [ref=e490]:
+                      - paragraph [ref=e491]: 7 min read (1614 words)
+                      - generic [ref=e493]: ·
+                      - paragraph [ref=e494]: Updated just now
+            - cell "Scrum and Coke Scrum and Coke" [ref=e495]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e499]:
+                - generic [ref=e501]:
+                  - link "Scrum and Coke" [ref=e502] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e504]
+                  - link "Scrum and Coke" [ref=e506] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e507]: Scrum and Coke
+            - cell "Pending review" [ref=e508]:
+              - button "Pending review" [ref=e511] [cursor=pointer]:
+                - generic [ref=e516]: Pending review
+            - cell "Toggle actions menu" [ref=e517]:
+              - button "Toggle actions menu" [ref=e521] [cursor=pointer]:
+                - generic [ref=e522]: Toggle actions menu
+                - img [ref=e523]
+          - 'row "Part 2: Introduction to Model Context Protocol Part 2: Introduction to Model Context Protocol Draft 7 min read (1596 words) Updated just now Scrum and Coke Scrum and Coke Pending review Toggle actions menu" [ref=e525]':
+            - 'cell "Part 2: Introduction to Model Context Protocol Part 2: Introduction to Model Context Protocol Draft 7 min read (1596 words) Updated just now" [ref=e526]':
+              - generic [ref=e530]:
+                - 'link "Part 2: Introduction to Model Context Protocol" [ref=e532] [cursor=pointer]':
+                  - /url: https://medium.com/p/64e70a034ea3/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Part 2: Introduction to Model Context Protocol" [ref=e534]':
+                    - 'img "Part 2: Introduction to Model Context Protocol" [ref=e536]'
+                - generic [ref=e538]:
+                  - 'link "Part 2: Introduction to Model Context Protocol" [ref=e541] [cursor=pointer]':
+                    - /url: https://medium.com/p/64e70a034ea3/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Part 2: Introduction to Model Context Protocol" [level=2] [ref=e543]'
+                  - generic [ref=e545]:
+                    - paragraph [ref=e547]: Draft
+                    - generic [ref=e549]:
+                      - paragraph [ref=e550]: 7 min read (1596 words)
+                      - generic [ref=e552]: ·
+                      - paragraph [ref=e553]: Updated just now
+            - cell "Scrum and Coke Scrum and Coke" [ref=e554]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e558]:
+                - generic [ref=e560]:
+                  - link "Scrum and Coke" [ref=e561] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e563]
+                  - link "Scrum and Coke" [ref=e565] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e566]: Scrum and Coke
+            - cell "Pending review" [ref=e567]:
+              - button "Pending review" [ref=e570] [cursor=pointer]:
+                - generic [ref=e575]: Pending review
+            - cell "Toggle actions menu" [ref=e576]:
+              - button "Toggle actions menu" [ref=e580] [cursor=pointer]:
+                - generic [ref=e581]: Toggle actions menu
+                - img [ref=e582]
+          - 'row "Part 1: Clean Architecture Foundation with HR Domain Part 1: Clean Architecture Foundation with HR Domain Draft 22 min read (5568 words) Updated 5h ago Scrum and Coke Scrum and Coke Pending review Toggle actions menu" [ref=e584]':
+            - 'cell "Part 1: Clean Architecture Foundation with HR Domain Part 1: Clean Architecture Foundation with HR Domain Draft 22 min read (5568 words) Updated 5h ago" [ref=e585]':
+              - generic [ref=e589]:
+                - 'link "Part 1: Clean Architecture Foundation with HR Domain" [ref=e591] [cursor=pointer]':
+                  - /url: https://medium.com/p/f43127400757/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Part 1: Clean Architecture Foundation with HR Domain" [ref=e593]':
+                    - 'img "Part 1: Clean Architecture Foundation with HR Domain" [ref=e595]'
+                - generic [ref=e597]:
+                  - 'link "Part 1: Clean Architecture Foundation with HR Domain" [ref=e600] [cursor=pointer]':
+                    - /url: https://medium.com/p/f43127400757/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Part 1: Clean Architecture Foundation with HR Domain" [level=2] [ref=e602]'
+                  - generic [ref=e604]:
+                    - paragraph [ref=e606]: Draft
+                    - generic [ref=e608]:
+                      - paragraph [ref=e609]: 22 min read (5568 words)
+                      - generic [ref=e611]: ·
+                      - paragraph [ref=e612]: Updated 5h ago
+            - cell "Scrum and Coke Scrum and Coke" [ref=e613]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e617]:
+                - generic [ref=e619]:
+                  - link "Scrum and Coke" [ref=e620] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e622]
+                  - link "Scrum and Coke" [ref=e624] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e625]: Scrum and Coke
+            - cell "Pending review" [ref=e626]:
+              - button "Pending review" [ref=e629] [cursor=pointer]:
+                - generic [ref=e634]: Pending review
+            - cell "Toggle actions menu" [ref=e635]:
+              - button "Toggle actions menu" [ref=e639] [cursor=pointer]:
+                - generic [ref=e640]: Toggle actions menu
+                - img [ref=e641]
+          - 'row "Series 1: AI Agents & MCP with .NET 10 — Preface Series 1: AI Agents & MCP with .NET 10 — Preface Draft 6 min read (1388 words) Updated 5h ago Scrum and Coke Scrum and Coke Pending review Toggle actions menu" [ref=e643]':
+            - 'cell "Series 1: AI Agents & MCP with .NET 10 — Preface Series 1: AI Agents & MCP with .NET 10 — Preface Draft 6 min read (1388 words) Updated 5h ago" [ref=e644]':
+              - generic [ref=e648]:
+                - 'link "Series 1: AI Agents & MCP with .NET 10 — Preface" [ref=e650] [cursor=pointer]':
+                  - /url: https://medium.com/p/64314313e3e7/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Series 1: AI Agents & MCP with .NET 10 — Preface" [ref=e652]':
+                    - 'img "Series 1: AI Agents & MCP with .NET 10 — Preface" [ref=e654]'
+                - generic [ref=e656]:
+                  - 'link "Series 1: AI Agents & MCP with .NET 10 — Preface" [ref=e659] [cursor=pointer]':
+                    - /url: https://medium.com/p/64314313e3e7/edit?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Series 1: AI Agents & MCP with .NET 10 — Preface" [level=2] [ref=e661]'
+                  - generic [ref=e663]:
+                    - paragraph [ref=e665]: Draft
+                    - generic [ref=e667]:
+                      - paragraph [ref=e668]: 6 min read (1388 words)
+                      - generic [ref=e670]: ·
+                      - paragraph [ref=e671]: Updated 5h ago
+            - cell "Scrum and Coke Scrum and Coke" [ref=e672]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e676]:
+                - generic [ref=e678]:
+                  - link "Scrum and Coke" [ref=e679] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e681]
+                  - link "Scrum and Coke" [ref=e683] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e684]: Scrum and Coke
+            - cell "Pending review" [ref=e685]:
+              - button "Pending review" [ref=e688] [cursor=pointer]:
+                - generic [ref=e693]: Pending review
+            - cell "Toggle actions menu" [ref=e694]:
+              - button "Toggle actions menu" [ref=e698] [cursor=pointer]:
+                - generic [ref=e699]: Toggle actions menu
+                - img [ref=e700]
+          - 'row "Cache Your AI Responses: Save Time and API Costs Cache Your AI Responses: Save Time and API Costs Published 1d ago 8 min read Updated 1d ago Member-only story A clap icon 0 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e702]':
+            - 'cell "Cache Your AI Responses: Save Time and API Costs Cache Your AI Responses: Save Time and API Costs Published 1d ago 8 min read Updated 1d ago Member-only story A clap icon 0 A response icon 0" [ref=e703]':
+              - generic [ref=e707]:
+                - 'link "Cache Your AI Responses: Save Time and API Costs" [ref=e709] [cursor=pointer]':
+                  - /url: /@fuji-nguyen/cache-your-ai-responses-save-time-and-api-costs-b27a7820dbc2?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Cache Your AI Responses: Save Time and API Costs" [ref=e711]':
+                    - 'img "Cache Your AI Responses: Save Time and API Costs" [ref=e713]'
+                - generic [ref=e715]:
+                  - 'link "Cache Your AI Responses: Save Time and API Costs" [ref=e718] [cursor=pointer]':
+                    - /url: /@fuji-nguyen/cache-your-ai-responses-save-time-and-api-costs-b27a7820dbc2?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Cache Your AI Responses: Save Time and API Costs" [level=2] [ref=e720]'
+                  - generic [ref=e721]:
+                    - generic [ref=e724]:
+                      - paragraph [ref=e725]: Published 1d ago
+                      - generic [ref=e727]: ·
+                      - paragraph [ref=e728]: 8 min read
+                      - generic [ref=e730]: ·
+                      - paragraph [ref=e731]: Updated 1d ago
+                    - generic [ref=e732]:
+                      - button "Member-only story" [ref=e734] [cursor=pointer]:
+                        - tooltip [ref=e737]:
+                          - img [ref=e739]
+                      - generic [ref=e741]:
+                        - img "A clap icon" [ref=e742]
+                        - paragraph [ref=e744]: "0"
+                      - generic [ref=e745]:
+                        - img "A response icon" [ref=e746]
+                        - paragraph [ref=e748]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e749]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e753]:
+                - generic [ref=e755]:
+                  - link "Scrum and Coke" [ref=e756] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e758]
+                  - link "Scrum and Coke" [ref=e760] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e761]: Scrum and Coke
+            - cell "Approved" [ref=e762]:
+              - button "Approved" [ref=e765] [cursor=pointer]:
+                - generic [ref=e770]: Approved
+            - cell "Toggle actions menu" [ref=e771]:
+              - button "Toggle actions menu" [ref=e775] [cursor=pointer]:
+                - generic [ref=e776]: Toggle actions menu
+                - img [ref=e777]
+          - row "Semantic Position Search with SQL Server Native Vector Search Semantic Position Search with SQL Server Native Vector Search Published 1d ago 11 min read Updated 1d ago Member-only story A clap icon 0 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e779]:
+            - cell "Semantic Position Search with SQL Server Native Vector Search Semantic Position Search with SQL Server Native Vector Search Published 1d ago 11 min read Updated 1d ago Member-only story A clap icon 0 A response icon 0" [ref=e780]:
+              - generic [ref=e784]:
+                - link "Semantic Position Search with SQL Server Native Vector Search" [ref=e786] [cursor=pointer]:
+                  - /url: /@fuji-nguyen/semantic-position-search-with-sql-server-native-vector-search-3416e7091bae?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - generic "Semantic Position Search with SQL Server Native Vector Search" [ref=e788]:
+                    - img "Semantic Position Search with SQL Server Native Vector Search" [ref=e790]
+                - generic [ref=e792]:
+                  - link "Semantic Position Search with SQL Server Native Vector Search" [ref=e795] [cursor=pointer]:
+                    - /url: /@fuji-nguyen/semantic-position-search-with-sql-server-native-vector-search-3416e7091bae?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - heading "Semantic Position Search with SQL Server Native Vector Search" [level=2] [ref=e797]
+                  - generic [ref=e798]:
+                    - generic [ref=e801]:
+                      - paragraph [ref=e802]: Published 1d ago
+                      - generic [ref=e804]: ·
+                      - paragraph [ref=e805]: 11 min read
+                      - generic [ref=e807]: ·
+                      - paragraph [ref=e808]: Updated 1d ago
+                    - generic [ref=e809]:
+                      - button "Member-only story" [ref=e811] [cursor=pointer]:
+                        - tooltip [ref=e814]:
+                          - img [ref=e816]
+                      - generic [ref=e818]:
+                        - img "A clap icon" [ref=e819]
+                        - paragraph [ref=e821]: "0"
+                      - generic [ref=e822]:
+                        - img "A response icon" [ref=e823]
+                        - paragraph [ref=e825]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e826]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e830]:
+                - generic [ref=e832]:
+                  - link "Scrum and Coke" [ref=e833] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e835]
+                  - link "Scrum and Coke" [ref=e837] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e838]: Scrum and Coke
+            - cell "Approved" [ref=e839]:
+              - button "Approved" [ref=e842] [cursor=pointer]:
+                - generic [ref=e847]: Approved
+            - cell "Toggle actions menu" [ref=e848]:
+              - button "Toggle actions menu" [ref=e852] [cursor=pointer]:
+                - generic [ref=e853]: Toggle actions menu
+                - img [ref=e854]
+          - row "Semantic Position Search with Vector Embeddings in Angular Material Semantic Position Search with Vector Embeddings in Angular Material Published 3d ago 8 min read Updated 3d ago Member-only story A clap icon 31 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e856]:
+            - cell "Semantic Position Search with Vector Embeddings in Angular Material Semantic Position Search with Vector Embeddings in Angular Material Published 3d ago 8 min read Updated 3d ago Member-only story A clap icon 31 A response icon 0" [ref=e857]:
+              - generic [ref=e861]:
+                - link "Semantic Position Search with Vector Embeddings in Angular Material" [ref=e863] [cursor=pointer]:
+                  - /url: /@fuji-nguyen/semantic-position-search-with-vector-embeddings-in-angular-material-9581bf63b6f0?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - generic "Semantic Position Search with Vector Embeddings in Angular Material" [ref=e865]:
+                    - img "Semantic Position Search with Vector Embeddings in Angular Material" [ref=e867]
+                - generic [ref=e869]:
+                  - link "Semantic Position Search with Vector Embeddings in Angular Material" [ref=e872] [cursor=pointer]:
+                    - /url: /@fuji-nguyen/semantic-position-search-with-vector-embeddings-in-angular-material-9581bf63b6f0?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - heading "Semantic Position Search with Vector Embeddings in Angular Material" [level=2] [ref=e874]
+                  - generic [ref=e875]:
+                    - generic [ref=e878]:
+                      - paragraph [ref=e879]: Published 3d ago
+                      - generic [ref=e881]: ·
+                      - paragraph [ref=e882]: 8 min read
+                      - generic [ref=e884]: ·
+                      - paragraph [ref=e885]: Updated 3d ago
+                    - generic [ref=e886]:
+                      - button "Member-only story" [ref=e888] [cursor=pointer]:
+                        - tooltip [ref=e891]:
+                          - img [ref=e893]
+                      - generic [ref=e895]:
+                        - img "A clap icon" [ref=e896]
+                        - paragraph [ref=e898]: "31"
+                      - generic [ref=e899]:
+                        - img "A response icon" [ref=e900]
+                        - paragraph [ref=e902]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e903]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e907]:
+                - generic [ref=e909]:
+                  - link "Scrum and Coke" [ref=e910] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e912]
+                  - link "Scrum and Coke" [ref=e914] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e915]: Scrum and Coke
+            - cell "Approved" [ref=e916]:
+              - button "Approved" [ref=e919] [cursor=pointer]:
+                - generic [ref=e924]: Approved
+            - cell "Toggle actions menu" [ref=e925]:
+              - button "Toggle actions menu" [ref=e929] [cursor=pointer]:
+                - generic [ref=e930]: Toggle actions menu
+                - img [ref=e931]
+          - row "Natural Language Employee Search with LLM Query Parsing Natural Language Employee Search with LLM Query Parsing Published 3d ago 14 min read Updated 3d ago Member-only story A clap icon 31 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e933]:
+            - cell "Natural Language Employee Search with LLM Query Parsing Natural Language Employee Search with LLM Query Parsing Published 3d ago 14 min read Updated 3d ago Member-only story A clap icon 31 A response icon 0" [ref=e934]:
+              - generic [ref=e938]:
+                - link "Natural Language Employee Search with LLM Query Parsing" [ref=e940] [cursor=pointer]:
+                  - /url: /@fuji-nguyen/natural-language-employee-search-with-llm-query-parsing-e1e16f9a6ee0?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - generic "Natural Language Employee Search with LLM Query Parsing" [ref=e942]:
+                    - img "Natural Language Employee Search with LLM Query Parsing" [ref=e944]
+                - generic [ref=e946]:
+                  - link "Natural Language Employee Search with LLM Query Parsing" [ref=e949] [cursor=pointer]:
+                    - /url: /@fuji-nguyen/natural-language-employee-search-with-llm-query-parsing-e1e16f9a6ee0?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - heading "Natural Language Employee Search with LLM Query Parsing" [level=2] [ref=e951]
+                  - generic [ref=e952]:
+                    - generic [ref=e955]:
+                      - paragraph [ref=e956]: Published 3d ago
+                      - generic [ref=e958]: ·
+                      - paragraph [ref=e959]: 14 min read
+                      - generic [ref=e961]: ·
+                      - paragraph [ref=e962]: Updated 3d ago
+                    - generic [ref=e963]:
+                      - button "Member-only story" [ref=e965] [cursor=pointer]:
+                        - tooltip [ref=e968]:
+                          - img [ref=e970]
+                      - generic [ref=e972]:
+                        - img "A clap icon" [ref=e973]
+                        - paragraph [ref=e975]: "31"
+                      - generic [ref=e976]:
+                        - img "A response icon" [ref=e977]
+                        - paragraph [ref=e979]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e980]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e984]:
+                - generic [ref=e986]:
+                  - link "Scrum and Coke" [ref=e987] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e989]
+                  - link "Scrum and Coke" [ref=e991] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e992]: Scrum and Coke
+            - cell "Approved" [ref=e993]:
+              - button "Approved" [ref=e996] [cursor=pointer]:
+                - generic [ref=e1001]: Approved
+            - cell "Toggle actions menu" [ref=e1002]:
+              - button "Toggle actions menu" [ref=e1006] [cursor=pointer]:
+                - generic [ref=e1007]: Toggle actions menu
+                - img [ref=e1008]
+          - row "Natural Language Employee Search in Angular Material Natural Language Employee Search in Angular Material Published 4d ago 10 min read Updated 4d ago Member-only story A clap icon 0 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1010]:
+            - cell "Natural Language Employee Search in Angular Material Natural Language Employee Search in Angular Material Published 4d ago 10 min read Updated 4d ago Member-only story A clap icon 0 A response icon 0" [ref=e1011]:
+              - generic [ref=e1015]:
+                - link "Natural Language Employee Search in Angular Material" [ref=e1017] [cursor=pointer]:
+                  - /url: /@fuji-nguyen/natural-language-employee-search-in-angular-material-a275a8a8a6d6?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - generic "Natural Language Employee Search in Angular Material" [ref=e1019]:
+                    - img "Natural Language Employee Search in Angular Material" [ref=e1021]
+                - generic [ref=e1023]:
+                  - link "Natural Language Employee Search in Angular Material" [ref=e1026] [cursor=pointer]:
+                    - /url: /@fuji-nguyen/natural-language-employee-search-in-angular-material-a275a8a8a6d6?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - heading "Natural Language Employee Search in Angular Material" [level=2] [ref=e1028]
+                  - generic [ref=e1029]:
+                    - generic [ref=e1032]:
+                      - paragraph [ref=e1033]: Published 4d ago
+                      - generic [ref=e1035]: ·
+                      - paragraph [ref=e1036]: 10 min read
+                      - generic [ref=e1038]: ·
+                      - paragraph [ref=e1039]: Updated 4d ago
+                    - generic [ref=e1040]:
+                      - button "Member-only story" [ref=e1042] [cursor=pointer]:
+                        - tooltip [ref=e1045]:
+                          - img [ref=e1047]
+                      - generic [ref=e1049]:
+                        - img "A clap icon" [ref=e1050]
+                        - paragraph [ref=e1052]: "0"
+                      - generic [ref=e1053]:
+                        - img "A response icon" [ref=e1054]
+                        - paragraph [ref=e1056]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1057]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1061]:
+                - generic [ref=e1063]:
+                  - link "Scrum and Coke" [ref=e1064] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1066]
+                  - link "Scrum and Coke" [ref=e1068] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1069]: Scrum and Coke
+            - cell "Approved" [ref=e1070]:
+              - button "Approved" [ref=e1073] [cursor=pointer]:
+                - generic [ref=e1078]: Approved
+            - cell "Toggle actions menu" [ref=e1079]:
+              - button "Toggle actions menu" [ref=e1083] [cursor=pointer]:
+                - generic [ref=e1084]: Toggle actions menu
+                - img [ref=e1085]
+          - row "Build a Dedicated AI Section in Angular with Submenu Navigation Build a Dedicated AI Section in Angular with Submenu Navigation Published 4d ago 10 min read Updated 4d ago Member-only story A clap icon 0 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1087]:
+            - cell "Build a Dedicated AI Section in Angular with Submenu Navigation Build a Dedicated AI Section in Angular with Submenu Navigation Published 4d ago 10 min read Updated 4d ago Member-only story A clap icon 0 A response icon 0" [ref=e1088]:
+              - generic [ref=e1092]:
+                - link "Build a Dedicated AI Section in Angular with Submenu Navigation" [ref=e1094] [cursor=pointer]:
+                  - /url: /@fuji-nguyen/build-a-dedicated-ai-section-in-angular-with-submenu-navigation-5701b1365a57?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - generic "Build a Dedicated AI Section in Angular with Submenu Navigation" [ref=e1096]:
+                    - img "Build a Dedicated AI Section in Angular with Submenu Navigation" [ref=e1098]
+                - generic [ref=e1100]:
+                  - link "Build a Dedicated AI Section in Angular with Submenu Navigation" [ref=e1103] [cursor=pointer]:
+                    - /url: /@fuji-nguyen/build-a-dedicated-ai-section-in-angular-with-submenu-navigation-5701b1365a57?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - heading "Build a Dedicated AI Section in Angular with Submenu Navigation" [level=2] [ref=e1105]
+                  - generic [ref=e1106]:
+                    - generic [ref=e1109]:
+                      - paragraph [ref=e1110]: Published 4d ago
+                      - generic [ref=e1112]: ·
+                      - paragraph [ref=e1113]: 10 min read
+                      - generic [ref=e1115]: ·
+                      - paragraph [ref=e1116]: Updated 4d ago
+                    - generic [ref=e1117]:
+                      - button "Member-only story" [ref=e1119] [cursor=pointer]:
+                        - tooltip [ref=e1122]:
+                          - img [ref=e1124]
+                      - generic [ref=e1126]:
+                        - img "A clap icon" [ref=e1127]
+                        - paragraph [ref=e1129]: "0"
+                      - generic [ref=e1130]:
+                        - img "A response icon" [ref=e1131]
+                        - paragraph [ref=e1133]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1134]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1138]:
+                - generic [ref=e1140]:
+                  - link "Scrum and Coke" [ref=e1141] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1143]
+                  - link "Scrum and Coke" [ref=e1145] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1146]: Scrum and Coke
+            - cell "Approved" [ref=e1147]:
+              - button "Approved" [ref=e1150] [cursor=pointer]:
+                - generic [ref=e1155]: Approved
+            - cell "Toggle actions menu" [ref=e1156]:
+              - button "Toggle actions menu" [ref=e1160] [cursor=pointer]:
+                - generic [ref=e1161]: Toggle actions menu
+                - img [ref=e1162]
+          - row "Build an HR AI Assistant That Knows Your Data Build an HR AI Assistant That Knows Your Data Published 6d ago 9 min read Updated 6d ago Member-only story A clap icon 3 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1164]:
+            - cell "Build an HR AI Assistant That Knows Your Data Build an HR AI Assistant That Knows Your Data Published 6d ago 9 min read Updated 6d ago Member-only story A clap icon 3 A response icon 0" [ref=e1165]:
+              - generic [ref=e1169]:
+                - link "Build an HR AI Assistant That Knows Your Data" [ref=e1171] [cursor=pointer]:
+                  - /url: /@fuji-nguyen/build-an-hr-ai-assistant-that-knows-your-data-7608bfbbcd2a?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - generic "Build an HR AI Assistant That Knows Your Data" [ref=e1173]:
+                    - img "Build an HR AI Assistant That Knows Your Data" [ref=e1175]
+                - generic [ref=e1177]:
+                  - link "Build an HR AI Assistant That Knows Your Data" [ref=e1180] [cursor=pointer]:
+                    - /url: /@fuji-nguyen/build-an-hr-ai-assistant-that-knows-your-data-7608bfbbcd2a?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - heading "Build an HR AI Assistant That Knows Your Data" [level=2] [ref=e1182]
+                  - generic [ref=e1183]:
+                    - generic [ref=e1186]:
+                      - paragraph [ref=e1187]: Published 6d ago
+                      - generic [ref=e1189]: ·
+                      - paragraph [ref=e1190]: 9 min read
+                      - generic [ref=e1192]: ·
+                      - paragraph [ref=e1193]: Updated 6d ago
+                    - generic [ref=e1194]:
+                      - button "Member-only story" [ref=e1196] [cursor=pointer]:
+                        - tooltip [ref=e1199]:
+                          - img [ref=e1201]
+                      - generic [ref=e1203]:
+                        - img "A clap icon" [ref=e1204]
+                        - paragraph [ref=e1206]: "3"
+                      - generic [ref=e1207]:
+                        - img "A response icon" [ref=e1208]
+                        - paragraph [ref=e1210]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1211]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1215]:
+                - generic [ref=e1217]:
+                  - link "Scrum and Coke" [ref=e1218] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1220]
+                  - link "Scrum and Coke" [ref=e1222] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1223]: Scrum and Coke
+            - cell "Approved" [ref=e1224]:
+              - button "Approved" [ref=e1227] [cursor=pointer]:
+                - generic [ref=e1232]: Approved
+            - cell "Toggle actions menu" [ref=e1233]:
+              - button "Toggle actions menu" [ref=e1237] [cursor=pointer]:
+                - generic [ref=e1238]: Toggle actions menu
+                - img [ref=e1239]
+          - row "Run a Local LLM in Your .NET 10 API with Ollama Run a Local LLM in Your .NET 10 API with Ollama Published 6d ago 12 min read Updated 6d ago Member-only story A clap icon 0 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1241]:
+            - cell "Run a Local LLM in Your .NET 10 API with Ollama Run a Local LLM in Your .NET 10 API with Ollama Published 6d ago 12 min read Updated 6d ago Member-only story A clap icon 0 A response icon 0" [ref=e1242]:
+              - generic [ref=e1246]:
+                - link "Run a Local LLM in Your .NET 10 API with Ollama" [ref=e1248] [cursor=pointer]:
+                  - /url: /@fuji-nguyen/run-a-local-llm-in-your-net-10-api-with-ollama-73fab075217a?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - generic "Run a Local LLM in Your .NET 10 API with Ollama" [ref=e1250]:
+                    - img "Run a Local LLM in Your .NET 10 API with Ollama" [ref=e1252]
+                - generic [ref=e1254]:
+                  - link "Run a Local LLM in Your .NET 10 API with Ollama" [ref=e1257] [cursor=pointer]:
+                    - /url: /@fuji-nguyen/run-a-local-llm-in-your-net-10-api-with-ollama-73fab075217a?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - heading "Run a Local LLM in Your .NET 10 API with Ollama" [level=2] [ref=e1259]
+                  - generic [ref=e1260]:
+                    - generic [ref=e1263]:
+                      - paragraph [ref=e1264]: Published 6d ago
+                      - generic [ref=e1266]: ·
+                      - paragraph [ref=e1267]: 12 min read
+                      - generic [ref=e1269]: ·
+                      - paragraph [ref=e1270]: Updated 6d ago
+                    - generic [ref=e1271]:
+                      - button "Member-only story" [ref=e1273] [cursor=pointer]:
+                        - tooltip [ref=e1276]:
+                          - img [ref=e1278]
+                      - generic [ref=e1280]:
+                        - img "A clap icon" [ref=e1281]
+                        - paragraph [ref=e1283]: "0"
+                      - generic [ref=e1284]:
+                        - img "A response icon" [ref=e1285]
+                        - paragraph [ref=e1287]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1288]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1292]:
+                - generic [ref=e1294]:
+                  - link "Scrum and Coke" [ref=e1295] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1297]
+                  - link "Scrum and Coke" [ref=e1299] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1300]: Scrum and Coke
+            - cell "Approved" [ref=e1301]:
+              - button "Approved" [ref=e1304] [cursor=pointer]:
+                - generic [ref=e1309]: Approved
+            - cell "Toggle actions menu" [ref=e1310]:
+              - button "Toggle actions menu" [ref=e1314] [cursor=pointer]:
+                - generic [ref=e1315]: Toggle actions menu
+                - img [ref=e1316]
+          - 'row "Zero Secrets in Config: Azure Key Vault for App Service and .NET Code Zero Secrets in Config: Azure Key Vault for App Service and .NET Code Published Apr 11 11 min read Updated Apr 20 Member-only story A clap icon 0 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1318]':
+            - 'cell "Zero Secrets in Config: Azure Key Vault for App Service and .NET Code Zero Secrets in Config: Azure Key Vault for App Service and .NET Code Published Apr 11 11 min read Updated Apr 20 Member-only story A clap icon 0 A response icon 0" [ref=e1319]':
+              - generic [ref=e1323]:
+                - 'link "Zero Secrets in Config: Azure Key Vault for App Service and .NET Code" [ref=e1325] [cursor=pointer]':
+                  - /url: /@fuji-nguyen/zero-secrets-in-config-azure-key-vault-for-app-service-and-net-code-ca7eb4f46761?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Zero Secrets in Config: Azure Key Vault for App Service and .NET Code" [ref=e1327]':
+                    - 'img "Zero Secrets in Config: Azure Key Vault for App Service and .NET Code" [ref=e1329]'
+                - generic [ref=e1331]:
+                  - 'link "Zero Secrets in Config: Azure Key Vault for App Service and .NET Code" [ref=e1334] [cursor=pointer]':
+                    - /url: /@fuji-nguyen/zero-secrets-in-config-azure-key-vault-for-app-service-and-net-code-ca7eb4f46761?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Zero Secrets in Config: Azure Key Vault for App Service and .NET Code" [level=2] [ref=e1336]'
+                  - generic [ref=e1337]:
+                    - generic [ref=e1340]:
+                      - paragraph [ref=e1341]: Published Apr 11
+                      - generic [ref=e1343]: ·
+                      - paragraph [ref=e1344]: 11 min read
+                      - generic [ref=e1346]: ·
+                      - paragraph [ref=e1347]: Updated Apr 20
+                    - generic [ref=e1348]:
+                      - button "Member-only story" [ref=e1350] [cursor=pointer]:
+                        - tooltip [ref=e1353]:
+                          - img [ref=e1355]
+                      - generic [ref=e1357]:
+                        - img "A clap icon" [ref=e1358]
+                        - paragraph [ref=e1360]: "0"
+                      - generic [ref=e1361]:
+                        - img "A response icon" [ref=e1362]
+                        - paragraph [ref=e1364]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1365]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1369]:
+                - generic [ref=e1371]:
+                  - link "Scrum and Coke" [ref=e1372] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1374]
+                  - link "Scrum and Coke" [ref=e1376] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1377]: Scrum and Coke
+            - cell "Approved" [ref=e1378]:
+              - button "Approved" [ref=e1381] [cursor=pointer]:
+                - generic [ref=e1386]: Approved
+            - cell "Toggle actions menu" [ref=e1387]:
+              - button "Toggle actions menu" [ref=e1391] [cursor=pointer]:
+                - generic [ref=e1392]: Toggle actions menu
+                - img [ref=e1393]
+          - 'row "Connect the Stack: Post-Deployment Configuration and Validation Connect the Stack: Post-Deployment Configuration and Validation Published Apr 10 9 min read Updated Apr 10 Member-only story A clap icon 0 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1395]':
+            - 'cell "Connect the Stack: Post-Deployment Configuration and Validation Connect the Stack: Post-Deployment Configuration and Validation Published Apr 10 9 min read Updated Apr 10 Member-only story A clap icon 0 A response icon 0" [ref=e1396]':
+              - generic [ref=e1400]:
+                - 'link "Connect the Stack: Post-Deployment Configuration and Validation" [ref=e1402] [cursor=pointer]':
+                  - /url: /@fuji-nguyen/connect-the-stack-post-deployment-configuration-and-validation-05cf7c71ddb3?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Connect the Stack: Post-Deployment Configuration and Validation" [ref=e1404]':
+                    - 'img "Connect the Stack: Post-Deployment Configuration and Validation" [ref=e1406]'
+                - generic [ref=e1408]:
+                  - 'link "Connect the Stack: Post-Deployment Configuration and Validation" [ref=e1411] [cursor=pointer]':
+                    - /url: /@fuji-nguyen/connect-the-stack-post-deployment-configuration-and-validation-05cf7c71ddb3?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Connect the Stack: Post-Deployment Configuration and Validation" [level=2] [ref=e1413]'
+                  - generic [ref=e1414]:
+                    - generic [ref=e1417]:
+                      - paragraph [ref=e1418]: Published Apr 10
+                      - generic [ref=e1420]: ·
+                      - paragraph [ref=e1421]: 9 min read
+                      - generic [ref=e1423]: ·
+                      - paragraph [ref=e1424]: Updated Apr 10
+                    - generic [ref=e1425]:
+                      - button "Member-only story" [ref=e1427] [cursor=pointer]:
+                        - tooltip [ref=e1430]:
+                          - img [ref=e1432]
+                      - generic [ref=e1434]:
+                        - img "A clap icon" [ref=e1435]
+                        - paragraph [ref=e1437]: "0"
+                      - generic [ref=e1438]:
+                        - img "A response icon" [ref=e1439]
+                        - paragraph [ref=e1441]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1442]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1446]:
+                - generic [ref=e1448]:
+                  - link "Scrum and Coke" [ref=e1449] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1451]
+                  - link "Scrum and Coke" [ref=e1453] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1454]: Scrum and Coke
+            - cell "Approved" [ref=e1455]:
+              - button "Approved" [ref=e1458] [cursor=pointer]:
+                - generic [ref=e1463]: Approved
+            - cell "Toggle actions menu" [ref=e1464]:
+              - button "Toggle actions menu" [ref=e1468] [cursor=pointer]:
+                - generic [ref=e1469]: Toggle actions menu
+                - img [ref=e1470]
+          - row "Deploy Angular to Azure Static Web Apps Deploy Angular to Azure Static Web Apps Published Apr 10 9 min read Updated Apr 10 Member-only story A clap icon 0 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1472]:
+            - cell "Deploy Angular to Azure Static Web Apps Deploy Angular to Azure Static Web Apps Published Apr 10 9 min read Updated Apr 10 Member-only story A clap icon 0 A response icon 0" [ref=e1473]:
+              - generic [ref=e1477]:
+                - link "Deploy Angular to Azure Static Web Apps" [ref=e1479] [cursor=pointer]:
+                  - /url: /@fuji-nguyen/deploy-angular-to-azure-static-web-apps-52ea4f2ca110?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - generic "Deploy Angular to Azure Static Web Apps" [ref=e1481]:
+                    - img "Deploy Angular to Azure Static Web Apps" [ref=e1483]
+                - generic [ref=e1485]:
+                  - link "Deploy Angular to Azure Static Web Apps" [ref=e1488] [cursor=pointer]:
+                    - /url: /@fuji-nguyen/deploy-angular-to-azure-static-web-apps-52ea4f2ca110?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - heading "Deploy Angular to Azure Static Web Apps" [level=2] [ref=e1490]
+                  - generic [ref=e1491]:
+                    - generic [ref=e1494]:
+                      - paragraph [ref=e1495]: Published Apr 10
+                      - generic [ref=e1497]: ·
+                      - paragraph [ref=e1498]: 9 min read
+                      - generic [ref=e1500]: ·
+                      - paragraph [ref=e1501]: Updated Apr 10
+                    - generic [ref=e1502]:
+                      - button "Member-only story" [ref=e1504] [cursor=pointer]:
+                        - tooltip [ref=e1507]:
+                          - img [ref=e1509]
+                      - generic [ref=e1511]:
+                        - img "A clap icon" [ref=e1512]
+                        - paragraph [ref=e1514]: "0"
+                      - generic [ref=e1515]:
+                        - img "A response icon" [ref=e1516]
+                        - paragraph [ref=e1518]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1519]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1523]:
+                - generic [ref=e1525]:
+                  - link "Scrum and Coke" [ref=e1526] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1528]
+                  - link "Scrum and Coke" [ref=e1530] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1531]: Scrum and Coke
+            - cell "Approved" [ref=e1532]:
+              - button "Approved" [ref=e1535] [cursor=pointer]:
+                - generic [ref=e1540]: Approved
+            - cell "Toggle actions menu" [ref=e1541]:
+              - button "Toggle actions menu" [ref=e1545] [cursor=pointer]:
+                - generic [ref=e1546]: Toggle actions menu
+                - img [ref=e1547]
+          - row "Deploy .NET API and IdentityServer to Azure App Service Deploy .NET API and IdentityServer to Azure App Service Published Apr 7 12 min read Updated Apr 7 Member-only story A clap icon 1 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1549]:
+            - cell "Deploy .NET API and IdentityServer to Azure App Service Deploy .NET API and IdentityServer to Azure App Service Published Apr 7 12 min read Updated Apr 7 Member-only story A clap icon 1 A response icon 0" [ref=e1550]:
+              - generic [ref=e1554]:
+                - link "Deploy .NET API and IdentityServer to Azure App Service" [ref=e1556] [cursor=pointer]:
+                  - /url: /@fuji-nguyen/deploy-net-api-and-identityserver-to-azure-app-service-fa7e7b23250b?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - generic "Deploy .NET API and IdentityServer to Azure App Service" [ref=e1558]:
+                    - img "Deploy .NET API and IdentityServer to Azure App Service" [ref=e1560]
+                - generic [ref=e1562]:
+                  - link "Deploy .NET API and IdentityServer to Azure App Service" [ref=e1565] [cursor=pointer]:
+                    - /url: /@fuji-nguyen/deploy-net-api-and-identityserver-to-azure-app-service-fa7e7b23250b?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - heading "Deploy .NET API and IdentityServer to Azure App Service" [level=2] [ref=e1567]
+                  - generic [ref=e1568]:
+                    - generic [ref=e1571]:
+                      - paragraph [ref=e1572]: Published Apr 7
+                      - generic [ref=e1574]: ·
+                      - paragraph [ref=e1575]: 12 min read
+                      - generic [ref=e1577]: ·
+                      - paragraph [ref=e1578]: Updated Apr 7
+                    - generic [ref=e1579]:
+                      - button "Member-only story" [ref=e1581] [cursor=pointer]:
+                        - tooltip [ref=e1584]:
+                          - img [ref=e1586]
+                      - generic [ref=e1588]:
+                        - img "A clap icon" [ref=e1589]
+                        - paragraph [ref=e1591]: "1"
+                      - generic [ref=e1592]:
+                        - img "A response icon" [ref=e1593]
+                        - paragraph [ref=e1595]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1596]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1600]:
+                - generic [ref=e1602]:
+                  - link "Scrum and Coke" [ref=e1603] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1605]
+                  - link "Scrum and Coke" [ref=e1607] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1608]: Scrum and Coke
+            - cell "Approved" [ref=e1609]:
+              - button "Approved" [ref=e1612] [cursor=pointer]:
+                - generic [ref=e1617]: Approved
+            - cell "Toggle actions menu" [ref=e1618]:
+              - button "Toggle actions menu" [ref=e1622] [cursor=pointer]:
+                - generic [ref=e1623]: Toggle actions menu
+                - img [ref=e1624]
+          - 'row "Secure CI/CD: Connect GitHub Actions to Azure Without Passwords Secure CI/CD: Connect GitHub Actions to Azure Without Passwords Published Apr 7 10 min read Updated Apr 7 Member-only story A clap icon 1 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1626]':
+            - 'cell "Secure CI/CD: Connect GitHub Actions to Azure Without Passwords Secure CI/CD: Connect GitHub Actions to Azure Without Passwords Published Apr 7 10 min read Updated Apr 7 Member-only story A clap icon 1 A response icon 0" [ref=e1627]':
+              - generic [ref=e1631]:
+                - 'link "Secure CI/CD: Connect GitHub Actions to Azure Without Passwords" [ref=e1633] [cursor=pointer]':
+                  - /url: /@fuji-nguyen/secure-ci-cd-connect-github-actions-to-azure-without-passwords-45ba434bf6d3?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Secure CI/CD: Connect GitHub Actions to Azure Without Passwords" [ref=e1635]':
+                    - 'img "Secure CI/CD: Connect GitHub Actions to Azure Without Passwords" [ref=e1637]'
+                - generic [ref=e1639]:
+                  - 'link "Secure CI/CD: Connect GitHub Actions to Azure Without Passwords" [ref=e1642] [cursor=pointer]':
+                    - /url: /@fuji-nguyen/secure-ci-cd-connect-github-actions-to-azure-without-passwords-45ba434bf6d3?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Secure CI/CD: Connect GitHub Actions to Azure Without Passwords" [level=2] [ref=e1644]'
+                  - generic [ref=e1645]:
+                    - generic [ref=e1648]:
+                      - paragraph [ref=e1649]: Published Apr 7
+                      - generic [ref=e1651]: ·
+                      - paragraph [ref=e1652]: 10 min read
+                      - generic [ref=e1654]: ·
+                      - paragraph [ref=e1655]: Updated Apr 7
+                    - generic [ref=e1656]:
+                      - button "Member-only story" [ref=e1658] [cursor=pointer]:
+                        - tooltip [ref=e1661]:
+                          - img [ref=e1663]
+                      - generic [ref=e1665]:
+                        - img "A clap icon" [ref=e1666]
+                        - paragraph [ref=e1668]: "1"
+                      - generic [ref=e1669]:
+                        - img "A response icon" [ref=e1670]
+                        - paragraph [ref=e1672]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1673]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1677]:
+                - generic [ref=e1679]:
+                  - link "Scrum and Coke" [ref=e1680] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1682]
+                  - link "Scrum and Coke" [ref=e1684] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1685]: Scrum and Coke
+            - cell "Approved" [ref=e1686]:
+              - button "Approved" [ref=e1689] [cursor=pointer]:
+                - generic [ref=e1694]: Approved
+            - cell "Toggle actions menu" [ref=e1695]:
+              - button "Toggle actions menu" [ref=e1699] [cursor=pointer]:
+                - generic [ref=e1700]: Toggle actions menu
+                - img [ref=e1701]
+          - 'row "Infrastructure as Code: Provision All Azure Resources with One Bicep Command Infrastructure as Code: Provision All Azure Resources with One Bicep Command Published Apr 5 15 min read Updated Apr 7 Member-only story A clap icon 0 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1703]':
+            - 'cell "Infrastructure as Code: Provision All Azure Resources with One Bicep Command Infrastructure as Code: Provision All Azure Resources with One Bicep Command Published Apr 5 15 min read Updated Apr 7 Member-only story A clap icon 0 A response icon 0" [ref=e1704]':
+              - generic [ref=e1708]:
+                - 'link "Infrastructure as Code: Provision All Azure Resources with One Bicep Command" [ref=e1710] [cursor=pointer]':
+                  - /url: /@fuji-nguyen/infrastructure-as-code-provision-all-azure-resources-with-one-bicep-command-5526708ffff7?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Infrastructure as Code: Provision All Azure Resources with One Bicep Command" [ref=e1712]':
+                    - 'img "Infrastructure as Code: Provision All Azure Resources with One Bicep Command" [ref=e1714]'
+                - generic [ref=e1716]:
+                  - 'link "Infrastructure as Code: Provision All Azure Resources with One Bicep Command" [ref=e1719] [cursor=pointer]':
+                    - /url: /@fuji-nguyen/infrastructure-as-code-provision-all-azure-resources-with-one-bicep-command-5526708ffff7?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Infrastructure as Code: Provision All Azure Resources with One Bicep Command" [level=2] [ref=e1721]'
+                  - generic [ref=e1722]:
+                    - generic [ref=e1725]:
+                      - paragraph [ref=e1726]: Published Apr 5
+                      - generic [ref=e1728]: ·
+                      - paragraph [ref=e1729]: 15 min read
+                      - generic [ref=e1731]: ·
+                      - paragraph [ref=e1732]: Updated Apr 7
+                    - generic [ref=e1733]:
+                      - button "Member-only story" [ref=e1735] [cursor=pointer]:
+                        - tooltip [ref=e1738]:
+                          - img [ref=e1740]
+                      - generic [ref=e1742]:
+                        - img "A clap icon" [ref=e1743]
+                        - paragraph [ref=e1745]: "0"
+                      - generic [ref=e1746]:
+                        - img "A response icon" [ref=e1747]
+                        - paragraph [ref=e1749]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1750]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1754]:
+                - generic [ref=e1756]:
+                  - link "Scrum and Coke" [ref=e1757] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1759]
+                  - link "Scrum and Coke" [ref=e1761] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1762]: Scrum and Coke
+            - cell "Approved" [ref=e1763]:
+              - button "Approved" [ref=e1766] [cursor=pointer]:
+                - generic [ref=e1771]: Approved
+            - cell "Toggle actions menu" [ref=e1772]:
+              - button "Toggle actions menu" [ref=e1776] [cursor=pointer]:
+                - generic [ref=e1777]: Toggle actions menu
+                - img [ref=e1778]
+          - 'row "Your First Azure Deployment: Setting Up a Visual Studio Subscription Your First Azure Deployment: Setting Up a Visual Studio Subscription Published Apr 5 8 min read Updated Apr 5 Member-only story A clap icon 32 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1780]':
+            - 'cell "Your First Azure Deployment: Setting Up a Visual Studio Subscription Your First Azure Deployment: Setting Up a Visual Studio Subscription Published Apr 5 8 min read Updated Apr 5 Member-only story A clap icon 32 A response icon 0" [ref=e1781]':
+              - generic [ref=e1785]:
+                - 'link "Your First Azure Deployment: Setting Up a Visual Studio Subscription" [ref=e1787] [cursor=pointer]':
+                  - /url: /@fuji-nguyen/your-first-azure-deployment-setting-up-a-visual-studio-subscription-41848291f5f6?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Your First Azure Deployment: Setting Up a Visual Studio Subscription" [ref=e1789]':
+                    - 'img "Your First Azure Deployment: Setting Up a Visual Studio Subscription" [ref=e1791]'
+                - generic [ref=e1793]:
+                  - 'link "Your First Azure Deployment: Setting Up a Visual Studio Subscription" [ref=e1796] [cursor=pointer]':
+                    - /url: /@fuji-nguyen/your-first-azure-deployment-setting-up-a-visual-studio-subscription-41848291f5f6?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Your First Azure Deployment: Setting Up a Visual Studio Subscription" [level=2] [ref=e1798]'
+                  - generic [ref=e1799]:
+                    - generic [ref=e1802]:
+                      - paragraph [ref=e1803]: Published Apr 5
+                      - generic [ref=e1805]: ·
+                      - paragraph [ref=e1806]: 8 min read
+                      - generic [ref=e1808]: ·
+                      - paragraph [ref=e1809]: Updated Apr 5
+                    - generic [ref=e1810]:
+                      - button "Member-only story" [ref=e1812] [cursor=pointer]:
+                        - tooltip [ref=e1815]:
+                          - img [ref=e1817]
+                      - generic [ref=e1819]:
+                        - img "A clap icon" [ref=e1820]
+                        - paragraph [ref=e1822]: "32"
+                      - generic [ref=e1823]:
+                        - img "A response icon" [ref=e1824]
+                        - paragraph [ref=e1826]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1827]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1831]:
+                - generic [ref=e1833]:
+                  - link "Scrum and Coke" [ref=e1834] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1836]
+                  - link "Scrum and Coke" [ref=e1838] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1839]: Scrum and Coke
+            - cell "Approved" [ref=e1840]:
+              - button "Approved" [ref=e1843] [cursor=pointer]:
+                - generic [ref=e1848]: Approved
+            - cell "Toggle actions menu" [ref=e1849]:
+              - button "Toggle actions menu" [ref=e1853] [cursor=pointer]:
+                - generic [ref=e1854]: Toggle actions menu
+                - img [ref=e1855]
+          - 'row "1,000 Test Employees in 3 Seconds: Database Seeding for Development and Testing 1,000 Test Employees in 3 Seconds: Database Seeding for Development and Testing Published Mar 21 15 min read Updated Apr 5 Member-only story A clap icon 0 A response icon 0 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1857]':
+            - 'cell "1,000 Test Employees in 3 Seconds: Database Seeding for Development and Testing 1,000 Test Employees in 3 Seconds: Database Seeding for Development and Testing Published Mar 21 15 min read Updated Apr 5 Member-only story A clap icon 0 A response icon 0" [ref=e1858]':
+              - generic [ref=e1862]:
+                - 'link "1,000 Test Employees in 3 Seconds: Database Seeding for Development and Testing" [ref=e1864] [cursor=pointer]':
+                  - /url: /@fuji-nguyen/1-000-test-employees-in-3-seconds-database-seeding-for-development-and-testing-d977ba0de366?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "1,000 Test Employees in 3 Seconds: Database Seeding for Development and Testing" [ref=e1866]':
+                    - 'img "1,000 Test Employees in 3 Seconds: Database Seeding for Development and Testing" [ref=e1868]'
+                - generic [ref=e1870]:
+                  - 'link "1,000 Test Employees in 3 Seconds: Database Seeding for Development and Testing" [ref=e1873] [cursor=pointer]':
+                    - /url: /@fuji-nguyen/1-000-test-employees-in-3-seconds-database-seeding-for-development-and-testing-d977ba0de366?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "1,000 Test Employees in 3 Seconds: Database Seeding for Development and Testing" [level=2] [ref=e1875]'
+                  - generic [ref=e1876]:
+                    - generic [ref=e1879]:
+                      - paragraph [ref=e1880]: Published Mar 21
+                      - generic [ref=e1882]: ·
+                      - paragraph [ref=e1883]: 15 min read
+                      - generic [ref=e1885]: ·
+                      - paragraph [ref=e1886]: Updated Apr 5
+                    - generic [ref=e1887]:
+                      - button "Member-only story" [ref=e1889] [cursor=pointer]:
+                        - tooltip [ref=e1892]:
+                          - img [ref=e1894]
+                      - generic [ref=e1896]:
+                        - img "A clap icon" [ref=e1897]
+                        - paragraph [ref=e1899]: "0"
+                      - generic [ref=e1900]:
+                        - img "A response icon" [ref=e1901]
+                        - paragraph [ref=e1903]: "0"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1904]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1908]:
+                - generic [ref=e1910]:
+                  - link "Scrum and Coke" [ref=e1911] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1913]
+                  - link "Scrum and Coke" [ref=e1915] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1916]: Scrum and Coke
+            - cell "Approved" [ref=e1917]:
+              - button "Approved" [ref=e1920] [cursor=pointer]:
+                - generic [ref=e1925]: Approved
+            - cell "Toggle actions menu" [ref=e1926]:
+              - button "Toggle actions menu" [ref=e1930] [cursor=pointer]:
+                - generic [ref=e1931]: Toggle actions menu
+                - img [ref=e1932]
+          - 'row "Skip the UI: Test Your .NET API Directly with Playwright’s Request Fixture Skip the UI: Test Your .NET API Directly with Playwright’s Request Fixture Published Mar 20 13 min read Updated Mar 20 Member-only story A clap icon 1 A response icon 1 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e1934]':
+            - 'cell "Skip the UI: Test Your .NET API Directly with Playwright’s Request Fixture Skip the UI: Test Your .NET API Directly with Playwright’s Request Fixture Published Mar 20 13 min read Updated Mar 20 Member-only story A clap icon 1 A response icon 1" [ref=e1935]':
+              - generic [ref=e1939]:
+                - 'link "Skip the UI: Test Your .NET API Directly with Playwright’s Request Fixture" [ref=e1941] [cursor=pointer]':
+                  - /url: /@fuji-nguyen/skip-the-ui-test-your-net-api-directly-with-playwrights-request-fixture-287f7d761248?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - 'generic "Skip the UI: Test Your .NET API Directly with Playwright’s Request Fixture" [ref=e1943]':
+                    - 'img "Skip the UI: Test Your .NET API Directly with Playwright’s Request Fixture" [ref=e1945]'
+                - generic [ref=e1947]:
+                  - 'link "Skip the UI: Test Your .NET API Directly with Playwright’s Request Fixture" [ref=e1950] [cursor=pointer]':
+                    - /url: /@fuji-nguyen/skip-the-ui-test-your-net-api-directly-with-playwrights-request-fixture-287f7d761248?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - 'heading "Skip the UI: Test Your .NET API Directly with Playwright’s Request Fixture" [level=2] [ref=e1952]'
+                  - generic [ref=e1953]:
+                    - generic [ref=e1956]:
+                      - paragraph [ref=e1957]: Published Mar 20
+                      - generic [ref=e1959]: ·
+                      - paragraph [ref=e1960]: 13 min read
+                      - generic [ref=e1962]: ·
+                      - paragraph [ref=e1963]: Updated Mar 20
+                    - generic [ref=e1964]:
+                      - button "Member-only story" [ref=e1966] [cursor=pointer]:
+                        - tooltip [ref=e1969]:
+                          - img [ref=e1971]
+                      - generic [ref=e1973]:
+                        - img "A clap icon" [ref=e1974]
+                        - paragraph [ref=e1976]: "1"
+                      - generic [ref=e1977]:
+                        - img "A response icon" [ref=e1978]
+                        - paragraph [ref=e1980]: "1"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e1981]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e1985]:
+                - generic [ref=e1987]:
+                  - link "Scrum and Coke" [ref=e1988] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e1990]
+                  - link "Scrum and Coke" [ref=e1992] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e1993]: Scrum and Coke
+            - cell "Approved" [ref=e1994]:
+              - button "Approved" [ref=e1997] [cursor=pointer]:
+                - generic [ref=e2002]: Approved
+            - cell "Toggle actions menu" [ref=e2003]:
+              - button "Toggle actions menu" [ref=e2007] [cursor=pointer]:
+                - generic [ref=e2008]: Toggle actions menu
+                - img [ref=e2009]
+          - row "How to Extract and Verify JWT Tokens in Playwright Tests How to Extract and Verify JWT Tokens in Playwright Tests Published Mar 19 12 min read Updated Mar 19 Member-only story A clap icon 0 A response icon 1 Scrum and Coke Scrum and Coke Approved Toggle actions menu" [ref=e2011]:
+            - cell "How to Extract and Verify JWT Tokens in Playwright Tests How to Extract and Verify JWT Tokens in Playwright Tests Published Mar 19 12 min read Updated Mar 19 Member-only story A clap icon 0 A response icon 1" [ref=e2012]:
+              - generic [ref=e2016]:
+                - link "How to Extract and Verify JWT Tokens in Playwright Tests" [ref=e2018] [cursor=pointer]:
+                  - /url: /@fuji-nguyen/how-to-extract-and-verify-jwt-tokens-in-playwright-tests-be229c6ccee6?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                  - generic "How to Extract and Verify JWT Tokens in Playwright Tests" [ref=e2020]:
+                    - img "How to Extract and Verify JWT Tokens in Playwright Tests" [ref=e2022]
+                - generic [ref=e2024]:
+                  - link "How to Extract and Verify JWT Tokens in Playwright Tests" [ref=e2027] [cursor=pointer]:
+                    - /url: /@fuji-nguyen/how-to-extract-and-verify-jwt-tokens-in-playwright-tests-be229c6ccee6?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - heading "How to Extract and Verify JWT Tokens in Playwright Tests" [level=2] [ref=e2029]
+                  - generic [ref=e2030]:
+                    - generic [ref=e2033]:
+                      - paragraph [ref=e2034]: Published Mar 19
+                      - generic [ref=e2036]: ·
+                      - paragraph [ref=e2037]: 12 min read
+                      - generic [ref=e2039]: ·
+                      - paragraph [ref=e2040]: Updated Mar 19
+                    - generic [ref=e2041]:
+                      - button "Member-only story" [ref=e2043] [cursor=pointer]:
+                        - tooltip [ref=e2046]:
+                          - img [ref=e2048]
+                      - generic [ref=e2050]:
+                        - img "A clap icon" [ref=e2051]
+                        - paragraph [ref=e2053]: "0"
+                      - generic [ref=e2054]:
+                        - img "A response icon" [ref=e2055]
+                        - paragraph [ref=e2057]: "1"
+            - cell "Scrum and Coke Scrum and Coke" [ref=e2058]:
+              - tooltip "Scrum and Coke Scrum and Coke" [ref=e2062]:
+                - generic [ref=e2064]:
+                  - link "Scrum and Coke" [ref=e2065] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - img "Scrum and Coke" [ref=e2067]
+                  - link "Scrum and Coke" [ref=e2069] [cursor=pointer]:
+                    - /url: https://medium.com/scrum-and-coke?source=your_stories_outbox---writer_outbox_submissions-----------------------------------------
+                    - generic [ref=e2070]: Scrum and Coke
+            - cell "Approved" [ref=e2071]:
+              - button "Approved" [ref=e2074] [cursor=pointer]:
+                - generic [ref=e2079]: Approved
+            - cell "Toggle actions menu" [ref=e2080]:
+              - button "Toggle actions menu" [ref=e2084] [cursor=pointer]:
+                - generic [ref=e2085]: Toggle actions menu
+                - img [ref=e2086]

@@ -1,0 +1,927 @@
+- generic [ref=e4]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - tooltip "Sidebar menu" [ref=e9]:
+        - button "Sidebar menu" [ref=e11] [cursor=pointer]:
+          - generic [ref=e12]: Sidebar menu
+          - img [ref=e13]
+      - link "Homepage" [ref=e15] [cursor=pointer]:
+        - /url: https://medium.com/?source=post_page---top_nav_layout_nav-----------------------------------------
+        - img "Medium Logo" [ref=e16]
+      - generic [ref=e19]:
+        - listbox
+        - img [ref=e21]
+        - combobox "search" [ref=e23]
+    - link "Write" [ref=e25] [cursor=pointer]:
+      - /url: https://medium.com/new-story?source=post_page---top_nav_layout_nav-----------------------------------------
+      - generic [ref=e26]:
+        - img [ref=e27]
+        - text: Write
+    - tooltip "Notifications 6" [ref=e32]:
+      - link "Notifications 6" [ref=e34] [cursor=pointer]:
+        - /url: https://medium.com/me/notifications?source=post_page---top_nav_layout_nav-----------------------------------------
+        - generic [ref=e35]:
+          - img [ref=e36]
+          - generic [ref=e39]: Notifications
+          - generic [ref=e40]: "6"
+    - tooltip "user options menu" [ref=e43]:
+      - button "user options menu" [ref=e45] [cursor=pointer]:
+        - generic [ref=e46]:
+          - img "Fuji Nguyen" [ref=e48]
+          - img [ref=e50]
+  - generic [ref=e53]:
+    - generic [ref=e57]:
+      - generic [ref=e58]:
+        - tooltip "Home" [ref=e61]:
+          - link "Home" [ref=e63] [cursor=pointer]:
+            - /url: https://medium.com/?source=post_page---sidebar_menu-----------------------------------------
+            - img [ref=e64]
+            - generic [ref=e66]: Home
+        - tooltip "Library" [ref=e68]:
+          - link "Library" [ref=e70] [cursor=pointer]:
+            - /url: https://medium.com/me/lists?source=post_page---sidebar_menu-----------------------------------------
+            - img [ref=e71]
+            - generic [ref=e74]: Library
+        - tooltip "Profile" [ref=e76]:
+          - link "Profile" [ref=e78] [cursor=pointer]:
+            - /url: /?source=post_page---sidebar_menu-----------------------------------------
+            - img [ref=e79]
+            - generic [ref=e82]: Profile
+        - tooltip "Stories" [ref=e84]:
+          - link "Stories" [ref=e86] [cursor=pointer]:
+            - /url: https://medium.com/me/stories?source=post_page---sidebar_menu-----------------------------------------
+            - img [ref=e87]
+            - generic [ref=e90]: Stories
+        - tooltip "Stats" [ref=e92]:
+          - link "Stats" [ref=e94] [cursor=pointer]:
+            - /url: https://medium.com/me/stats?source=post_page---sidebar_menu-----------------------------------------
+            - img [ref=e95]
+            - generic [ref=e97]: Stats
+      - generic [ref=e99]:
+        - tooltip "Following" [ref=e101]:
+          - link "Following" [ref=e103] [cursor=pointer]:
+            - /url: https://medium.com/me/following-feed/writers?source=post_page---sidebar_menu-----------------------------------------
+            - img [ref=e104]
+            - generic [ref=e106]: Following
+        - tooltip "JavaScript in Plain English JavaScript in Plain English" [ref=e108]:
+          - link "JavaScript in Plain English JavaScript in Plain English" [ref=e110] [cursor=pointer]:
+            - /url: https://medium.com/me/following-feed/publications/4b3a1ed4f11c?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "JavaScript in Plain English" [ref=e113]
+            - generic [ref=e115]: JavaScript in Plain English
+        - tooltip "The Medium Blog The Medium Blog" [ref=e118]:
+          - link "The Medium Blog The Medium Blog" [ref=e120] [cursor=pointer]:
+            - /url: https://medium.com/me/following-feed/publications/15f753907972?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "The Medium Blog" [ref=e123]
+            - generic [ref=e125]: The Medium Blog
+        - tooltip "UX Collective UX Collective" [ref=e128]:
+          - link "UX Collective UX Collective" [ref=e130] [cursor=pointer]:
+            - /url: https://medium.com/me/following-feed/publications/138adf9c44c?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "UX Collective" [ref=e133]
+            - generic [ref=e135]: UX Collective
+        - tooltip "The Shortform The Shortform" [ref=e138]:
+          - link "The Shortform The Shortform" [ref=e140] [cursor=pointer]:
+            - /url: https://medium.com/me/following-feed/publications/92ac1e0f0779?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "The Shortform" [ref=e143]
+            - generic [ref=e145]: The Shortform
+        - tooltip "Dev Genius Dev Genius" [ref=e148]:
+          - link "Dev Genius Dev Genius" [ref=e150] [cursor=pointer]:
+            - /url: https://medium.com/me/following-feed/publications/4e2c1156667e?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "Dev Genius" [ref=e153]
+            - generic [ref=e155]: Dev Genius
+        - tooltip "ITNEXT ITNEXT" [ref=e158]:
+          - link "ITNEXT ITNEXT" [ref=e160] [cursor=pointer]:
+            - /url: https://medium.com/me/following-feed/publications/5b301f10ddcd?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "ITNEXT" [ref=e163]
+            - generic [ref=e165]: ITNEXT
+        - tooltip "Dr. Derek Austin 🥳 Dr. Derek Austin 🥳" [ref=e168]:
+          - link "Dr. Derek Austin 🥳 Dr. Derek Austin 🥳" [ref=e170] [cursor=pointer]:
+            - /url: https://medium.com/me/following-feed/writers/e5294c417caf?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "Dr. Derek Austin 🥳" [ref=e173]
+            - generic [ref=e175]: Dr. Derek Austin 🥳
+        - tooltip "Data Science Collective Data Science Collective" [ref=e178]:
+          - link "Data Science Collective Data Science Collective" [ref=e180] [cursor=pointer]:
+            - /url: https://medium.com/me/following-feed/publications/8993e01dcfd3?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "Data Science Collective" [ref=e183]
+            - generic [ref=e185]: Data Science Collective
+        - tooltip "Neeraja Gandla Neeraja Gandla" [ref=e188]:
+          - link "Neeraja Gandla Neeraja Gandla" [ref=e190] [cursor=pointer]:
+            - /url: https://medium.com/me/following-feed/writers/db8656eb692f?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "Neeraja Gandla" [ref=e193]
+            - generic [ref=e195]: Neeraja Gandla
+        - tooltip "CodeX CodeX" [ref=e198]:
+          - link "CodeX CodeX" [ref=e200] [cursor=pointer]:
+            - /url: https://medium.com/me/following-feed/publications/29038077e4c6?source=post_page---sidebar_menu_following------------------------------following_badge-----------
+            - img "CodeX" [ref=e203]
+            - generic [ref=e205]: CodeX
+        - tooltip "More" [ref=e208]:
+          - button "More" [ref=e210] [cursor=pointer]:
+            - img [ref=e212]
+            - generic [ref=e215]: More
+    - generic [ref=e217]:
+      - generic:
+        - dialog
+      - article [ref=e219]:
+        - generic [ref=e223]:
+          - tooltip "Member-only story" [ref=e230]:
+            - generic [ref=e232] [cursor=pointer]:
+              - img [ref=e233]
+              - paragraph [ref=e235]: Member-only story
+          - generic [ref=e238]:
+            - generic [ref=e239]:
+              - 'heading "Part 6: Securing the MCP Server with OIDC" [level=1] [ref=e240]'
+              - generic [ref=e243]:
+                - generic [ref=e244]:
+                  - generic [ref=e245]:
+                    - tooltip "Fuji Nguyen" [ref=e248]:
+                      - link "Fuji Nguyen" [ref=e250] [cursor=pointer]:
+                        - /url: /?source=post_page---byline--5ee56af86160---------------------------------------
+                        - img "Fuji Nguyen" [ref=e253]
+                    - tooltip "Fuji Nguyen" [ref=e260]:
+                      - link "Fuji Nguyen" [ref=e263] [cursor=pointer]:
+                        - /url: /?source=post_page---byline--5ee56af86160---------------------------------------
+                  - generic [ref=e266]:
+                    - generic [ref=e267]: 8 min read
+                    - generic [ref=e269]: ·
+                    - text: Draft in
+                    - strong [ref=e271]: Scrum and Coke
+                - generic [ref=e272]:
+                  - generic [ref=e274]:
+                    - tooltip "clap" [ref=e280]:
+                      - generic [ref=e281]:
+                        - img "clap"
+                    - tooltip "responses" [ref=e284]:
+                      - button "responses" [disabled] [ref=e286]:
+                        - img [ref=e287]
+                  - generic [ref=e289]:
+                    - tooltip "Add to list bookmark button" [ref=e292]:
+                      - img "Add to list bookmark button" [ref=e295]
+                    - tooltip "Listen" [ref=e302]:
+                      - tooltip "Listen" [ref=e304]:
+                        - button "Listen" [ref=e306] [cursor=pointer]:
+                          - img [ref=e307]
+                    - tooltip "Share Post" [ref=e311]:
+                      - button "Share Post" [ref=e313] [cursor=pointer]:
+                        - img [ref=e314]
+                    - tooltip "More options" [ref=e320]:
+                      - button "More options" [ref=e322] [cursor=pointer]:
+                        - img [ref=e323]
+            - paragraph [ref=e325]:
+              - strong [ref=e326]: "Series:"
+              - text: AI Agents & MCP with .NET 10 |
+              - strong [ref=e327]: Part 6 of 6
+              - strong [ref=e328]: "GitHub:"
+              - link "workcontrolgit/DotnetAiAgentMcp" [ref=e329] [cursor=pointer]:
+                - /url: https://github.com/workcontrolgit/DotnetAiAgentMcp
+          - separator [ref=e330]
+          - generic [ref=e336]:
+            - heading "Introduction" [level=2] [ref=e337]
+            - paragraph [ref=e338]:
+              - text: The MCP server we built in Parts 3–5 listens on
+              - code [ref=e339]: http://localhost:5100/mcp
+              - text: with no authentication. On a developer laptop that is fine — nothing reaches the port except local processes. But the moment you deploy the server to a shared environment, a container, or a cloud VM, any process that can reach the network can call your HR tools, read position data, and trigger AI generation at your cost.
+            - paragraph [ref=e340]:
+              - text: This part adds JWT Bearer authentication using OpenID Connect (OIDC). The pattern is standard
+              - link "ASP.NET" [ref=e341] [cursor=pointer]:
+                - /url: http://asp.net/
+              - text: "Core:"
+            - list [ref=e342]:
+              - listitem [ref=e343]:
+                - text: The MCP server becomes a
+                - strong [ref=e344]: resource server
+                - text: — it validates JWT tokens on every request.
+              - listitem [ref=e345]:
+                - text: The agent (or any client) becomes an
+                - strong [ref=e346]: OAuth2 client
+                - text: — it acquires a token via the client credentials flow before connecting.
+              - listitem [ref=e347]:
+                - text: An external
+                - strong [ref=e348]: OIDC provider
+                - text: issues and validates tokens.
+            - paragraph [ref=e349]:
+              - text: The working example uses
+              - strong [ref=e350]: Duende IdentityServer
+              - text: running in Docker — a self-hosted .NET identity server you control completely. Because the code speaks standard OIDC, swapping to a cloud provider (Okta, Azure Entra ID, Google) requires only two config values. That swap is covered at the end of this part.
+            - paragraph [ref=e351]:
+              - text: "The surface area of change is small: four lines in"
+              - code [ref=e352]: Program.cs
+              - text: ", two values in"
+              - code [ref=e353]: appsettings.Development.json
+              - text: ", and token acquisition in the agent."
+          - separator [ref=e354]
+          - generic [ref=e360]:
+            - heading "Architecture" [level=2] [ref=e361]
+            - figure [ref=e362]:
+              - button "Press enter or click to view image in full size" [ref=e363]:
+                - generic [ref=e364]: Press enter or click to view image in full size
+            - paragraph [ref=e367]: The OIDC provider is the only component that changes between deployments. The server and agent code are provider-agnostic — they speak standard JWT Bearer and OAuth2 client credentials.
+          - separator [ref=e368]
+          - generic [ref=e374]:
+            - heading "Provider Options" [level=2] [ref=e375]
+            - paragraph [ref=e376]: Any standards-compliant OIDC provider works. This part uses Duende IdentityServer because it runs locally in Docker with no external accounts or network dependencies.
+            - list [ref=e377]:
+              - listitem [ref=e378]:
+                - strong [ref=e379]: Duende IdentityServer
+                - text: — open-source .NET identity server; runs in Docker; full control over clients, scopes, and users; free community license for development; production license required for revenue-generating use. This is the provider used in this walkthrough.
+              - listitem [ref=e380]:
+                - strong [ref=e381]: Okta
+                - text: — free developer account supports up to 1,000 monthly active users; well-documented client credentials setup; hosted, no infrastructure required.
+              - listitem [ref=e382]:
+                - strong [ref=e383]: Azure Entra ID (formerly Azure AD)
+                - text: — use App Registrations with a client secret; integrates with MSAL and Azure RBAC; free tier available in Azure portal.
+              - listitem [ref=e384]:
+                - strong [ref=e385]: Google Cloud Identity Platform
+                - text: — OAuth2 service accounts support client credentials; configure via Google Cloud Console.
+          - separator [ref=e386]
+          - generic [ref=e392]:
+            - heading "Step 1 — Add JWT Bearer to HrMcp.McpServer" [level=2] [ref=e393]:
+              - text: Step 1 — Add JWT Bearer to
+              - code [ref=e394]: HrMcp.McpServer
+            - generic [ref=e396]: dotnet add src/HrMcp.McpServer package Microsoft.AspNetCore.Authentication.JwtBearer --version 9.*
+            - blockquote [ref=e397]:
+              - paragraph [ref=e398]:
+                - strong [ref=e399]:
+                  - emphasis [ref=e400]: "Note:"
+                - emphasis [ref=e401]
+                - code [ref=e402]:
+                  - emphasis [ref=e403]: Microsoft.AspNetCore.Authentication.JwtBearer
+                - emphasis [ref=e404]: ships as a standalone NuGet package. For .NET 10 projects targeting
+                - link "ASP.NET" [ref=e405] [cursor=pointer]:
+                  - /url: http://asp.net/
+                  - emphasis [ref=e406]: ASP.NET
+                - emphasis [ref=e407]: Core, version
+                - code [ref=e408]:
+                  - emphasis [ref=e409]: 9.*
+                - emphasis [ref=e410]: is the current stable release that works on net10.0.
+          - separator [ref=e411]
+          - generic [ref=e417]:
+            - heading "Step 2 — Update appsettings.json" [level=2] [ref=e418]:
+              - text: Step 2 — Update
+              - code [ref=e419]: appsettings.json
+            - paragraph [ref=e420]:
+              - text: Add the
+              - code [ref=e421]: Oidc
+              - text: section with placeholder values. Real values go in
+              - code [ref=e422]: appsettings.Development.json
+              - text: "(gitignored) or environment variables — never committed:"
+            - generic [ref=e424]:
+              - text: "{"
+              - text: "\"ConnectionStrings\": {"
+              - text: "\"DefaultConnection\":"
+              - generic [ref=e425]: "\"Server=(localdb)\\\\mssqllocaldb;Database=HrMcpDb;Trusted_Connection=True;\""
+              - text: "},"
+              - text: "\"Urls\": \"http://localhost:5100\","
+              - text: "\"Oidc\": {"
+              - text: "\"Authority\": \"https://YOUR-OIDC-PROVIDER\","
+              - text: "\"Audience\": \"hr-mcp\""
+              - text: "},"
+              - text: "\"Logging\": {"
+              - text: "\"LogLevel\": {"
+              - text: "\"Default\": \"Information\","
+              - text: "\"Microsoft.AspNetCore\": \"Warning\""
+              - text: "}"
+              - text: "},"
+              - text: "\"AllowedHosts\": \"*\""
+              - text: "}"
+            - paragraph [ref=e426]:
+              - text: For local development with the Duende Docker container, override in
+              - code [ref=e427]: appsettings.Development.json
+              - text: "(gitignored):"
+            - generic [ref=e429]:
+              - text: "{"
+              - text: "\"Oidc\": {"
+              - text: "\"Authority\": \"https://localhost:44310\","
+              - text: "\"Audience\": \"hr-mcp\""
+              - text: "}"
+              - text: "}"
+            - paragraph [ref=e430]:
+              - text: The
+              - code [ref=e431]: Authority
+              - text: is the base URL of the IdentityServer — the JWT Bearer middleware fetches the JWKS automatically from
+              - code [ref=e432]: "{Authority}/.well-known/openid-configuration"
+              - text: . The
+              - code [ref=e433]: Audience
+              - text: must match the API Resource name registered in the identity server.
+          - separator [ref=e434]
+          - generic [ref=e440]:
+            - heading "Step 3 — Add Authentication Middleware to Program.cs" [level=2] [ref=e441]:
+              - text: Step 3 — Add Authentication Middleware to
+              - code [ref=e442]: Program.cs
+            - paragraph [ref=e443]:
+              - text: The full updated
+              - code [ref=e444]: Program.cs
+              - text: . The four new lines are marked
+              - code [ref=e445]: // NEW
+              - text: and one line is marked
+              - code [ref=e446]: // CHANGED
+              - text: ":"
+            - generic [ref=e448]:
+              - text: // src/HrMcp.McpServer/Program.cs
+              - text: using HrMcp.Application.Services;
+              - text: using HrMcp.Infrastructure.Persistence;
+              - text: using HrMcp.McpServer.Tools;
+              - text: using Microsoft.AspNetCore.Authentication.JwtBearer; // NEW
+              - text: using Microsoft.EntityFrameworkCore;
+              - text: using Microsoft.Extensions.AI;
+              - text: using OllamaSharp;
+              - text: var isStdio = args.Contains("--stdio");
+              - text: var builder = WebApplication.CreateBuilder(args);
+              - text: if (isStdio)
+              - text: "{"
+              - text: builder.Logging.ClearProviders();
+              - text: builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = Microsoft.Extensions.Logging.LogLevel.Trace);
+              - text: builder.WebHost.UseUrls();
+              - text: "}"
+              - text: builder.Services.AddPersistence(
+              - text: builder.Configuration.GetConnectionString("DefaultConnection")!);
+              - text: builder.Services.AddScoped<PositionService>();
+              - text: builder.Services.AddScoped<HiringOrganizationService>();
+              - text: builder.Services.AddSingleton<IChatClient>(
+              - text: new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.2"));
+              - text: // NEW — JWT Bearer authentication
+              - text: builder.Services
+              - text: .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+              - text: .AddJwtBearer(options =>
+              - text: "{"
+              - text: options.Authority = builder.Configuration["Oidc:Authority"];
+              - text: options.Audience = builder.Configuration["Oidc:Audience"];
+              - text: // Trust self-signed certificates when running against a local
+              - text: // Duende IdentityServer Docker container in Development.
+              - text: // Remove this block when pointing at a cloud provider or a
+              - text: // production server with a trusted certificate.
+              - text: if (builder.Environment.IsDevelopment())
+              - text: options.BackchannelHttpHandler = new HttpClientHandler
+              - text: "{"
+              - text: ServerCertificateCustomValidationCallback =
+              - text: HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+              - text: "};"
+              - text: "});"
+              - text: builder.Services.AddAuthorization(); // NEW
+              - text: var mcp = builder.Services
+              - text: .AddMcpServer()
+              - text: .WithTools<PositionTools>()
+              - text: .WithTools<HiringOrganizationTools>()
+              - text: .WithTools<JobDescriptionTools>();
+              - text: if (isStdio)
+              - text: mcp.WithStdioServerTransport();
+              - text: else
+              - text: mcp.WithHttpTransport();
+              - text: var app = builder.Build();
+              - text: using (var scope = app.Services.CreateScope())
+              - text: "{"
+              - text: var db = scope.ServiceProvider.GetRequiredService<HrDbContext>();
+              - text: db.Database.Migrate();
+              - text: var seedPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "usajobs-seed.json");
+              - text: DbSeeder.Seed(db, seedPath);
+              - text: "}"
+              - text: app.UseAuthentication(); // NEW
+              - text: app.UseAuthorization(); // NEW
+              - text: if (!isStdio)
+              - text: app.MapMcp("/mcp").RequireAuthorization(); // CHANGED
+              - text: await app.RunAsync();
+            - paragraph [ref=e449]:
+              - text: With this in place, any HTTP request to
+              - code [ref=e450]: /mcp
+              - text: without a valid JWT returns
+              - code [ref=e451]: 401 Unauthorized
+              - text: . Stdio transport is unaffected —
+              - code [ref=e452]: MapMcp
+              - text: is not called in stdio mode.
+            - paragraph [ref=e453]:
+              - text: The
+              - code [ref=e454]: BackchannelHttpHandler
+              - text: block handles the self-signed certificate that Duende's Docker compose setup uses for the nginx reverse proxy. When you switch to a cloud provider with a trusted certificate, delete that block.
+          - separator [ref=e455]
+          - generic [ref=e461]:
+            - heading "Step 4 — Agent Token Acquisition" [level=2] [ref=e462]
+            - paragraph [ref=e463]:
+              - text: The agent acquires a token via the OAuth2 client credentials flow and passes it as a bearer header using
+              - code [ref=e464]: HttpClientTransportOptions.AdditionalHeaders
+              - text: .
+            - blockquote [ref=e465]:
+              - paragraph [ref=e466]:
+                - strong [ref=e467]:
+                  - emphasis [ref=e468]: "Package version note:"
+                - emphasis [ref=e469]: If you are using OllamaSharp 5.4 or later, set
+                - code [ref=e470]:
+                  - emphasis [ref=e471]: Microsoft.Extensions.AI
+                - emphasis [ref=e472]: to version
+                - code [ref=e473]:
+                  - emphasis [ref=e474]: 10.*
+                - emphasis [ref=e475]: in
+                - code [ref=e476]:
+                  - emphasis [ref=e477]: HrMcp.Agent.csproj
+                - emphasis [ref=e478]: . OllamaSharp 5.4+ pulls
+                - code [ref=e479]:
+                  - emphasis [ref=e480]: Microsoft.Extensions.AI.Abstractions 10.4.x
+                - emphasis [ref=e481]: transitively, which causes a
+                - code [ref=e482]:
+                  - emphasis [ref=e483]: TypeLoadException
+                - emphasis [ref=e484]: at runtime when the direct package is pinned at
+                - code [ref=e485]:
+                  - emphasis [ref=e486]: 9.*
+                - emphasis [ref=e487]: .
+            - generic [ref=e489]:
+              - text: // src/HrMcp.Agent/Program.cs
+              - text: using Microsoft.Extensions.AI;
+              - text: using ModelContextProtocol.Client;
+              - text: using OllamaSharp;
+              - text: using HrMcp.Agent;
+              - text: using System.Net.Http.Json;
+              - text: using System.Text.Json;
+              - text: // --- Token acquisition (client credentials flow) ---
+              - text: // The HttpClientHandler below trusts the self-signed certificate used by the
+              - text: // local Duende IdentityServer Docker container. Remove it when using a cloud
+              - text: // provider or a server with a trusted certificate.
+              - text: using var tokenHandler = new HttpClientHandler
+              - text: "{"
+              - text: ServerCertificateCustomValidationCallback =
+              - text: HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+              - text: "};"
+              - text: using var tokenClient = new HttpClient(tokenHandler);
+              - text: var tokenResponse = await tokenClient.PostAsync(
+              - text: "\"https://localhost:44310/connect/token\","
+              - text: new FormUrlEncodedContent(new Dictionary<string, string>
+              - text: "{"
+              - text: "[\"grant_type\"] = \"client_credentials\","
+              - text: "[\"client_id\"] = \"hr-mcp-agent\","
+              - text: "[\"client_secret\"] = \"hr-mcp-agent-secret\","
+              - text: "[\"scope\"] = \"hr-mcp-api\","
+              - text: "}));"
+              - text: tokenResponse.EnsureSuccessStatusCode();
+              - text: var tokenDoc = await tokenResponse.Content.ReadFromJsonAsync<JsonElement>();
+              - text: var accessToken = tokenDoc.GetProperty("access_token").GetString()!;
+              - text: Console.WriteLine("Token acquired.\n");
+              - text: // --- Connect to MCP server with bearer token ---
+              - text: await using var mcpClient = await McpClient.CreateAsync(
+              - text: new HttpClientTransport(new HttpClientTransportOptions
+              - text: "{"
+              - text: Endpoint = new Uri("http://localhost:5100/mcp"),
+              - text: AdditionalHeaders = new Dictionary<string, string>
+              - text: "{"
+              - text: "[\"Authorization\"] ="
+              - generic [ref=e490]: "$\"Bearer {accessToken}\""
+              - text: "}"
+              - text: "}));"
+              - text: var mcpTools = await mcpClient.ListToolsAsync();
+              - text: Console.WriteLine(
+              - generic [ref=e491]:
+                - text: "$\"Connected. Tools:"
+                - generic [ref=e492]: "{string.Join(\", \", mcpTools.Select(t => t.Name))}"
+                - text: \n"
+              - text: );
+              - text: IChatClient chatClient = ((IChatClient)new OllamaApiClient(
+              - text: new Uri("http://localhost:11434"), "llama3.2"))
+              - text: .AsBuilder()
+              - text: .UseFunctionInvocation()
+              - text: .Build();
+              - text: var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList());
+              - text: await agent.RunAsync();
+            - paragraph [ref=e493]: "Key points:"
+            - list [ref=e494]:
+              - listitem [ref=e495]:
+                - code [ref=e496]:
+                  - strong [ref=e497]: AdditionalHeaders
+                - text: "on"
+                - code [ref=e498]: HttpClientTransportOptions
+                - text: — sends the
+                - code [ref=e499]: Authorization
+                - text: header with every request to the MCP server.
+              - listitem [ref=e500]:
+                - code [ref=e501]:
+                  - strong [ref=e502]: tokenHandler
+                - strong [ref=e503]: with cert bypass
+                - text: — required when the IdentityServer container uses a self-signed certificate. Remove for cloud providers.
+              - listitem [ref=e504]:
+                - strong [ref=e505]: Client credentials
+                - text: — for production, move
+                - code [ref=e506]: client_id
+                - text: and
+                - code [ref=e507]: client_secret
+                - text: to environment variables or a secrets manager. Never commit credentials to source control.
+              - listitem [ref=e508]:
+                - code [ref=e509]:
+                  - strong [ref=e510]: scope
+                - text: — the scope name must match what is registered in the identity server. Omit if your provider does not require scope for client credentials.
+          - separator [ref=e511]
+          - generic [ref=e517]:
+            - heading "Duende IdentityServer Docker Setup" [level=2] [ref=e518]
+            - paragraph [ref=e519]:
+              - text: This walkthrough uses the
+              - link "Skoruba Duende IdentityServer Admin UI" [ref=e520] [cursor=pointer]:
+                - /url: https://github.com/skoruba/Duende.IdentityServer.Admin
+              - text: Docker compose project — a production-ready identity server with a web admin panel, all running locally in Docker.
+            - paragraph [ref=e521]:
+              - strong [ref=e522]: 1. Clone and start the containers
+            - generic [ref=e524]:
+              - text: git clone https://github.com/skoruba/Duende.IdentityServer.Admin
+              - text: cd Duende.IdentityServer.Admin
+              - text: docker-compose up -d
+            - paragraph [ref=e525]:
+              - text: The nginx reverse proxy exposes the STS at
+              - code [ref=e526]: https://localhost:44310
+              - text: . The admin UI is at
+              - code [ref=e527]: https://localhost:44303
+              - text: .
+            - paragraph [ref=e528]:
+              - strong [ref=e529]: 2. Add the HR MCP API scope, resource, and client
+            - paragraph [ref=e530]:
+              - text: The container seeds its database from
+              - code [ref=e531]: shared/identityserverdata.json
+              - text: on first start. Add the following entries, then restart with
+              - code [ref=e532]: docker-compose up -d --force-recreate
+              - text: "to re-seed:"
+            - paragraph [ref=e533]:
+              - text: In the
+              - code [ref=e534]: ApiScopes
+              - text: "array:"
+            - generic [ref=e536]:
+              - text: "{"
+              - text: "\"Name\": \"hr-mcp-api\","
+              - text: "\"DisplayName\": \"HR MCP API\","
+              - text: "\"Required\":"
+              - generic [ref=e537]: "true"
+              - text: "}"
+            - paragraph [ref=e538]:
+              - text: In the
+              - code [ref=e539]: ApiResources
+              - text: "array:"
+            - generic [ref=e541]:
+              - text: "{"
+              - text: "\"Name\": \"hr-mcp\","
+              - text: "\"Scopes\": [ \"hr-mcp-api\" ]"
+              - text: "}"
+            - paragraph [ref=e542]:
+              - text: In the
+              - code [ref=e543]: Clients
+              - text: "array:"
+            - generic [ref=e545]:
+              - text: "{"
+              - text: "\"ClientId\": \"hr-mcp-agent\","
+              - text: "\"ClientName\": \"HR MCP Agent\","
+              - text: "\"AllowedGrantTypes\": [ \"client_credentials\" ],"
+              - text: "\"RequireClientSecret\":"
+              - generic [ref=e546]: "true"
+              - text: ","
+              - text: "\"ClientSecrets\": ["
+              - text: "{ \"Value\": \"hr-mcp-agent-secret\" }"
+              - text: "],"
+              - text: "\"RequirePkce\":"
+              - generic [ref=e547]: "false"
+              - text: ","
+              - text: "\"AllowedScopes\": [ \"hr-mcp-api\" ]"
+              - text: "}"
+            - paragraph [ref=e548]:
+              - strong [ref=e549]: 3. Configure the MCP server
+            - paragraph [ref=e550]:
+              - code [ref=e551]: appsettings.Development.json
+              - text: "(gitignored):"
+            - generic [ref=e553]:
+              - text: "{"
+              - text: "\"Oidc\": {"
+              - text: "\"Authority\": \"https://localhost:44310\","
+              - text: "\"Audience\": \"hr-mcp\""
+              - text: "}"
+              - text: "}"
+            - paragraph [ref=e554]:
+              - text: The
+              - code [ref=e555]: Audience
+              - text: value must match the
+              - code [ref=e556]: ApiResource
+              - text: name —
+              - code [ref=e557]: hr-mcp
+              - text: — not the scope name.
+            - paragraph [ref=e558]:
+              - strong [ref=e559]: 4. Verify the token endpoint
+            - generic [ref=e561]:
+              - text: curl -sk -X POST https://localhost:44310/connect/token \
+              - text: "-d \"grant_type=client_credentials&client_id=hr-mcp-agent&client_secret=hr-mcp-agent-secret&scope=hr-mcp-api\""
+            - paragraph [ref=e562]:
+              - text: A successful response returns an
+              - code [ref=e563]: access_token
+              - text: JWT. Decode it at
+              - link "jwt.io" [ref=e564] [cursor=pointer]:
+                - /url: https://jwt.io/
+              - text: and confirm
+              - code [ref=e565]: "aud: hr-mcp"
+              - text: and
+              - code [ref=e566]: "scope: hr-mcp-api"
+              - text: .
+            - paragraph [ref=e567]:
+              - strong [ref=e568]: 5. Verify 401 protection
+            - generic [ref=e570]:
+              - text: curl -i http://localhost:5100/mcp
+              - text: "# HTTP/1.1 401 Unauthorized"
+            - paragraph [ref=e571]:
+              - strong [ref=e572]: 6. Run the agent end-to-end
+            - generic [ref=e574]:
+              - text: dotnet run --project src/HrMcp.Agent
+              - text: "# Token acquired."
+              - text: "# Connected. Tools: GetOpenPositions, WriteJobDescription, ..."
+          - separator [ref=e575]
+          - generic [ref=e581]:
+            - heading "Swapping to a Cloud Provider" [level=2] [ref=e582]
+            - paragraph [ref=e583]:
+              - text: Because the server and agent speak standard OIDC and OAuth2, switching providers requires changing only the
+              - code [ref=e584]: Authority
+              - text: ","
+              - code [ref=e585]: Audience
+              - text: ", and token endpoint. Remove the"
+              - code [ref=e586]: DangerousAcceptAnyServerCertificateValidator
+              - text: block — cloud providers have trusted certificates.
+            - paragraph [ref=e587]:
+              - strong [ref=e588]: Okta
+            - paragraph [ref=e589]:
+              - code [ref=e590]: appsettings.Development.json
+              - text: ":"
+            - generic [ref=e592]:
+              - text: "{"
+              - text: "\"Oidc\": {"
+              - text: "\"Authority\": \"https://dev-abc123.okta.com/oauth2/default\","
+              - text: "\"Audience\": \"api://default\""
+              - text: "}"
+              - text: "}"
+            - paragraph [ref=e593]:
+              - text: "Agent token endpoint:"
+              - code [ref=e594]:
+                - link "https://dev-abc123.okta.com/oauth2/default/v1/token" [ref=e595] [cursor=pointer]:
+                  - /url: https://dev-abc123.okta.com/oauth2/default/v1/token
+            - paragraph [ref=e596]:
+              - text: "Setup: Okta admin console → Applications → Create App Integration → API Services. Create a custom scope"
+              - code [ref=e597]: hr-mcp-api
+              - text: under Security → API → Authorization Servers → default → Scopes.
+            - paragraph [ref=e598]:
+              - strong [ref=e599]: Azure Entra ID
+            - paragraph [ref=e600]:
+              - code [ref=e601]: appsettings.Development.json
+              - text: ":"
+            - generic [ref=e603]:
+              - text: "{"
+              - text: "\"Oidc\": {"
+              - text: "\"Authority\": \"https://login.microsoftonline.com/{tenant-id}/v2.0\","
+              - text: "\"Audience\": \"api://{client-id}\""
+              - text: "}"
+              - text: "}"
+            - paragraph [ref=e604]:
+              - text: "Agent token endpoint:"
+              - code [ref=e605]:
+                - 'link "https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token" [ref=e606] [cursor=pointer]':
+                  - /url: "https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token"
+            - paragraph [ref=e607]:
+              - text: "Agent scope:"
+              - code [ref=e608]: "{client-id}/.default"
+            - paragraph [ref=e609]: "Setup: Azure portal → App Registrations → New registration → Certificates & secrets → Client secrets. Expose an API and add a scope."
+            - paragraph [ref=e610]:
+              - strong [ref=e611]: Google Cloud
+            - paragraph [ref=e612]:
+              - text: Google uses service accounts rather than client credentials for machine-to-machine. The OIDC discovery endpoint is
+              - code [ref=e613]: https://accounts.google.com
+              - text: . Use a service account key to exchange for a token via the Google OAuth2 token endpoint.
+          - separator [ref=e614]
+          - generic [ref=e620]:
+            - heading "Optional — Tool-Level Role Check" [level=2] [ref=e621]
+            - paragraph [ref=e622]:
+              - text: JWT Bearer middleware secures the entire
+              - code [ref=e623]: /mcp
+              - text: endpoint. If you need finer control — for example, only users with an
+              - code [ref=e624]: hr-admin
+              - text: role can call
+              - code [ref=e625]: WriteJobDescription
+              - text: — inject
+              - code [ref=e626]: IHttpContextAccessor
+              - text: "into the tool:"
+            - generic [ref=e628]:
+              - text: // src/HrMcp.McpServer/Tools/JobDescriptionTools.cs
+              - text: using Microsoft.AspNetCore.Http;
+            - generic [ref=e629]:
+              - generic [ref=e630]:
+                - text: "[McpServerToolType]"
+                - text: public sealed class JobDescriptionTools(
+                - text: PositionService positions,
+                - text: IChatClient chatClient,
+                - text: IHttpContextAccessor httpContextAccessor)
+                - text: "{"
+                - text: "[McpServerTool(Name = \"WriteJobDescription\"),"
+                - text: Description("Generates a USAJobs-style job announcement using AI.")]
+                - text: public async Task<string> WriteJobDescription(int positionId, CancellationToken ct = default)
+                - text: "{"
+                - text: var user = httpContextAccessor.HttpContext?.User;
+                - text: if (user?.IsInRole("hr-admin") != true)
+                - text: "return \"Unauthorized: WriteJobDescription requires the hr-admin role.\";"
+              - generic [ref=e631]:
+                - text: // ... rest of implementation
+                - text: "}"
+                - text: "}"
+            - paragraph [ref=e632]:
+              - text: Register
+              - code [ref=e633]: IHttpContextAccessor
+              - text: in
+              - code [ref=e634]: Program.cs
+              - text: ":"
+            - generic [ref=e636]: builder.Services.AddHttpContextAccessor();
+            - paragraph [ref=e637]:
+              - text: For Duende IdentityServer, add a
+              - code [ref=e638]: role
+              - text: claim to the client token by including
+              - code [ref=e639]: "UserClaims: [ \"role\" ]"
+              - text: on the API scope and setting the
+              - code [ref=e640]: role
+              - text: property on the client. Cloud providers handle role claims differently — Okta uses
+              - code [ref=e641]: groups
+              - text: ", Entra uses app roles defined in the manifest."
+          - separator [ref=e642]
+          - generic [ref=e648]:
+            - heading "Step 5 — Build" [level=2] [ref=e649]
+            - generic [ref=e651]: "dotnet build DotnetAiAgentMcp.slnx # 0 errors, 0 warnings"
+            - paragraph [ref=e652]:
+              - text: The JWT Bearer middleware compiles without a live provider — the
+              - code [ref=e653]: Authority
+              - text: and
+              - code [ref=e654]: Audience
+              - text: values are read at runtime. A missing or incorrect
+              - code [ref=e655]: Authority
+              - text: produces a runtime warning on first request, not a build error.
+          - separator [ref=e656]
+          - generic [ref=e662]:
+            - heading "What We Built" [level=2] [ref=e663]
+            - paragraph [ref=e664]: "Across the six parts of this series you have built a complete, production-shaped AI agent stack:"
+            - paragraph [ref=e665]:
+              - strong [ref=e666]: Infrastructure
+            - list [ref=e667]:
+              - listitem [ref=e668]: "Clean Architecture .NET 10 solution: Core, Application, Infrastructure.Persistence, McpServer, Agent"
+              - listitem [ref=e669]:
+                - text: EF Core migrations, SQL Server,
+                - code [ref=e670]: DbSeeder
+                - text: with USAJobs data
+              - listitem [ref=e671]:
+                - text: Self-contained
+                - code [ref=e672]: HrMcp.McpServer.exe
+                - text: for desktop and server deployment
+            - paragraph [ref=e673]:
+              - strong [ref=e674]: MCP Server (
+              - code [ref=e675]:
+                - strong [ref=e676]: HrMcp.McpServer
+              - strong [ref=e677]: )
+            - list [ref=e678]:
+              - listitem [ref=e679]:
+                - text: "Five typed tools:"
+                - code [ref=e680]: GetOpenPositions
+                - text: ","
+                - code [ref=e681]: GetPositionById
+                - text: ","
+                - code [ref=e682]: GetPositionsByOrganization
+                - text: ","
+                - code [ref=e683]: GetHiringOrganizations
+                - text: ","
+                - code [ref=e684]: WriteJobDescription
+              - listitem [ref=e685]: "Dual transport: stdio for Claude Desktop, HTTP/SSE for programmatic clients"
+              - listitem [ref=e686]:
+                - text: JWT Bearer authentication — any OIDC provider, configured via
+                - code [ref=e687]: appsettings.json
+            - paragraph [ref=e688]:
+              - strong [ref=e689]: AI Agent (
+              - code [ref=e690]:
+                - strong [ref=e691]: HrMcp.Agent
+              - strong [ref=e692]: )
+            - list [ref=e693]:
+              - listitem [ref=e694]:
+                - code [ref=e695]: IChatClient
+                - text: abstraction (
+                - link "Microsoft.Extensions.AI" [ref=e696] [cursor=pointer]:
+                  - /url: http://microsoft.extensions.ai/
+                - text: ) with
+                - code [ref=e697]: OllamaApiClient
+                - text: (OllamaSharp)
+              - listitem [ref=e698]:
+                - code [ref=e699]: UseFunctionInvocation
+                - text: middleware — automatic tool dispatch, no manual routing
+              - listitem [ref=e700]: System prompt with HR-domain guidelines
+              - listitem [ref=e701]: Full conversation history across turns
+            - paragraph [ref=e702]:
+              - strong [ref=e703]: Integration
+            - list [ref=e704]:
+              - listitem [ref=e705]:
+                - text: Claude Desktop — stdio transport,
+                - code [ref=e706]: claude_desktop_config.json
+                - text: ", hammer icon"
+              - listitem [ref=e707]:
+                - text: VS Code Copilot Chat —
+                - code [ref=e708]: .vscode/mcp.json
+                - text: ", HTTP transport,"
+                - code [ref=e709]: "@hr-mcp"
+              - listitem [ref=e710]: MCP Inspector — HTTP mode testing and debugging
+          - separator [ref=e711]
+          - generic [ref=e717]:
+            - heading "Sources" [level=2] [ref=e718]
+            - list [ref=e719]:
+              - listitem [ref=e720]:
+                - link "OpenID Connect — Introduction" [ref=e721] [cursor=pointer]:
+                  - /url: https://openid.net/developers/how-connect-works/
+              - listitem [ref=e722]:
+                - link "JWT Bearer — Microsoft Docs" [ref=e723] [cursor=pointer]:
+                  - /url: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/jwt-authn
+              - listitem [ref=e724]:
+                - link "OAuth2 Client Credentials Flow — RFC 6749" [ref=e725] [cursor=pointer]:
+                  - /url: https://datatracker.ietf.org/doc/html/rfc6749#section-4.4
+              - listitem [ref=e726]:
+                - link "Duende IdentityServer — Overview" [ref=e727] [cursor=pointer]:
+                  - /url: https://duendesoftware.com/products/identityserver
+              - listitem [ref=e728]:
+                - link "Skoruba Duende IdentityServer Admin UI — GitHub" [ref=e729] [cursor=pointer]:
+                  - /url: https://github.com/skoruba/Duende.IdentityServer.Admin
+              - listitem [ref=e730]:
+                - link "ModelContextProtocol C# SDK — GitHub" [ref=e731] [cursor=pointer]:
+                  - /url: https://github.com/modelcontextprotocol/csharp-sdk
+              - listitem [ref=e732]:
+                - link "Okta Developer — Client Credentials" [ref=e733] [cursor=pointer]:
+                  - /url: https://developer.okta.com/docs/guides/implement-grant-type/clientcreds/main/
+              - listitem [ref=e734]:
+                - link "Azure Entra ID — App Registrations" [ref=e735] [cursor=pointer]:
+                  - /url: https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app
+              - listitem [ref=e736]:
+                - link "Microsoft.AspNetCore.Authentication.JwtBearer — NuGet" [ref=e737] [cursor=pointer]:
+                  - /url: https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer
+      - generic [ref=e740]:
+        - link "Dotnet" [ref=e742] [cursor=pointer]:
+          - /url: https://medium.com/tag/dotnet?source=post_page-----5ee56af86160---------------------------------------
+          - generic [ref=e743]: Dotnet
+        - link "Mcp Server" [ref=e745] [cursor=pointer]:
+          - /url: https://medium.com/tag/mcp-server?source=post_page-----5ee56af86160---------------------------------------
+          - generic [ref=e746]: Mcp Server
+        - link "Duende Identity Server" [ref=e748] [cursor=pointer]:
+          - /url: https://medium.com/tag/duende-identity-server?source=post_page-----5ee56af86160---------------------------------------
+          - generic [ref=e749]: Duende Identity Server
+        - link "Oidc" [ref=e751] [cursor=pointer]:
+          - /url: https://medium.com/tag/oidc?source=post_page-----5ee56af86160---------------------------------------
+          - generic [ref=e752]: Oidc
+        - link "AI Agent" [ref=e754] [cursor=pointer]:
+          - /url: https://medium.com/tag/ai-agent?source=post_page-----5ee56af86160---------------------------------------
+          - generic [ref=e755]: AI Agent
+      - contentinfo [ref=e756]:
+        - generic [ref=e760]:
+          - generic [ref=e761]:
+            - tooltip "clap" [ref=e768]:
+              - generic [ref=e769]:
+                - img "clap"
+            - tooltip "responses" [ref=e772]:
+              - button "responses" [disabled] [ref=e774]:
+                - img [ref=e775]
+          - generic [ref=e777]:
+            - tooltip "Add to list bookmark button" [ref=e780]:
+              - img "Add to list bookmark button" [ref=e783]
+            - tooltip "Share Post" [ref=e788]:
+              - button "Share Post" [ref=e790] [cursor=pointer]:
+                - img [ref=e791]
+            - tooltip "More options" [ref=e797]:
+              - button "More options" [ref=e799] [cursor=pointer]:
+                - img [ref=e800]
+      - generic [ref=e805]:
+        - link "Fuji Nguyen" [ref=e808] [cursor=pointer]:
+          - /url: /?source=post_page---post_author_info--5ee56af86160---------------------------------------
+          - img "Fuji Nguyen" [ref=e810]
+        - generic [ref=e813]:
+          - link "Written by Fuji Nguyen" [ref=e814] [cursor=pointer]:
+            - /url: /?source=post_page---post_author_info--5ee56af86160---------------------------------------
+            - heading "Written by Fuji Nguyen" [level=2] [ref=e815]:
+              - generic [ref=e816]: Written by Fuji Nguyen
+          - generic [ref=e817]:
+            - link "1K followers" [ref=e820] [cursor=pointer]:
+              - /url: /followers?source=post_page---post_author_info--5ee56af86160---------------------------------------
+            - generic [ref=e821]:
+              - generic [ref=e822]: ·
+              - link "695 following" [ref=e823] [cursor=pointer]:
+                - /url: /following?source=post_page---post_author_info--5ee56af86160---------------------------------------
+          - paragraph [ref=e825]: DX Advocate, Open Source Contributor improving dev experience. Pickleball enthusiast who enjoys playing and coaching, sharing skills on and off the court.
+        - link "Edit profile" [ref=e827] [cursor=pointer]:
+          - /url: https://medium.com/me/settings/account?source=post_page---post_author_info--5ee56af86160---------------------------------------#profileInformation
+          - generic [ref=e828]: Edit profile
+      - generic [ref=e834]:
+        - link "Help" [ref=e836] [cursor=pointer]:
+          - /url: https://help.medium.com/hc/en-us?source=post_page-----5ee56af86160---------------------------------------
+          - paragraph [ref=e837]: Help
+        - link "Status" [ref=e839] [cursor=pointer]:
+          - /url: https://status.medium.com/?source=post_page-----5ee56af86160---------------------------------------
+          - paragraph [ref=e840]: Status
+        - link "About" [ref=e842] [cursor=pointer]:
+          - /url: https://medium.com/about?autoplay=1&source=post_page-----5ee56af86160---------------------------------------
+          - paragraph [ref=e843]: About
+        - link "Careers" [ref=e845] [cursor=pointer]:
+          - /url: https://medium.com/jobs-at-medium/work-at-medium-959d1a85284e?source=post_page-----5ee56af86160---------------------------------------
+          - paragraph [ref=e846]: Careers
+        - link "Press" [ref=e848] [cursor=pointer]:
+          - /url: mailto:pressinquiries@medium.com
+          - paragraph [ref=e849]: Press
+        - link "Blog" [ref=e851] [cursor=pointer]:
+          - /url: https://blog.medium.com/?source=post_page-----5ee56af86160---------------------------------------
+          - paragraph [ref=e852]: Blog
+        - link "Privacy" [ref=e854] [cursor=pointer]:
+          - /url: https://policy.medium.com/medium-privacy-policy-f03bf92035c9?source=post_page-----5ee56af86160---------------------------------------
+          - paragraph [ref=e855]: Privacy
+        - link "Rules" [ref=e857] [cursor=pointer]:
+          - /url: https://policy.medium.com/medium-rules-30e5502c4eb4?source=post_page-----5ee56af86160---------------------------------------
+          - paragraph [ref=e858]: Rules
+        - link "Terms" [ref=e860] [cursor=pointer]:
+          - /url: https://policy.medium.com/medium-terms-of-service-9db0094a1e0f?source=post_page-----5ee56af86160---------------------------------------
+          - paragraph [ref=e861]: Terms
+        - link "Text to speech" [ref=e863] [cursor=pointer]:
+          - /url: https://speechify.com/medium?source=post_page-----5ee56af86160---------------------------------------
+          - paragraph [ref=e864]: Text to speech

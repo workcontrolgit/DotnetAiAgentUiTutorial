@@ -1,0 +1,721 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link "Homepage" [ref=e9] [cursor=pointer]:
+          - /url: https://medium.com/
+          - img [ref=e11]
+          - generic: Homepage
+        - link "Scrum and Coke" [ref=e17] [cursor=pointer]:
+          - /url: https://medium.com/scrum-and-coke?source=logo-4b79cc017e83---6c43d7988985
+          - generic [ref=e18]: Scrum and Coke
+        - generic [ref=e20]: Draft in Scrum and CokeSaved
+      - generic [ref=e21]:
+        - button "Decline" [ref=e23] [cursor=pointer]
+        - button "Publish" [ref=e25] [cursor=pointer]
+        - button [ref=e27] [cursor=pointer]:
+          - img [ref=e29]
+        - generic [ref=e32]:
+          - button "Notifications" [ref=e33] [cursor=pointer]:
+            - generic:
+              - generic: "6"
+              - generic: "New notifications: 6"
+          - button "Fuji Nguyen" [ref=e34] [cursor=pointer]:
+            - img "Fuji Nguyen" [ref=e36]
+          - button "Scrum and Coke" [ref=e37] [cursor=pointer]:
+            - img "Scrum and Coke" [ref=e39]
+    - list [ref=e317]:
+      - listitem [ref=e318] [cursor=pointer]:
+        - button "Share draft link" [ref=e319]
+      - listitem [ref=e320] [cursor=pointer]:
+        - button "Share to X" [ref=e321]
+      - listitem [ref=e322] [cursor=pointer]:
+        - button "Manage unlisted setting" [ref=e323]
+      - listitem [ref=e324] [cursor=pointer]:
+        - button "Change featured image" [ref=e325]
+      - listitem [ref=e326] [cursor=pointer]:
+        - button "Change display title / subtitle" [ref=e327]
+      - listitem [ref=e328] [cursor=pointer]:
+        - button "Change topics" [ref=e329]
+      - listitem [ref=e330] [cursor=pointer]:
+        - button "See revision history" [ref=e331]
+      - listitem [ref=e332] [cursor=pointer]:
+        - link "More settings" [ref=e333]:
+          - /url: https://medium.com/p/81964133d3b8/settings
+      - listitem [ref=e334]
+      - listitem [ref=e335] [cursor=pointer]:
+        - button "Hints and keyboard shortcuts" [ref=e336]
+      - listitem [ref=e337] [cursor=pointer]:
+        - link "More help" [ref=e338]:
+          - /url: https://medium.zendesk.com/hc/en-us/categories/200058025-Writing
+  - main [ref=e41]:
+    - article [ref=e42]:
+      - textbox [active] [ref=e43]:
+        - generic [ref=e44]:
+          - text: ...
+          - generic [ref=e46]:
+            - 'heading "Part 3: Building an MCP Server in .NET 10" [level=3] [ref=e47]'
+            - paragraph [ref=e48]:
+              - strong [ref=e49]: "Series:"
+              - text: AI Agents & MCP with .NET 10 |
+              - strong [ref=e50]: Part 3 of 5
+              - strong [ref=e51]: "GitHub:"
+              - link "workcontrolgit/DotnetAiAgentMcp" [ref=e52]:
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fworkcontrolgit%2FDotnetAiAgentMcp
+        - generic [ref=e53]:
+          - generic:
+            - separator: ...
+          - generic [ref=e55]:
+            - heading "Introduction" [level=3] [ref=e56]
+            - paragraph [ref=e57]: In Part 2 we built the mental model for MCP. In this part we make it real.
+            - paragraph [ref=e58]: By the end of this post you will have a running MCP server that exposes four tools over HTTP/SSE, supports stdio transport for Claude Desktop, and can be tested interactively with MCP Inspector — without any AI host involved.
+            - paragraph [ref=e59]:
+              - text: The server lives in
+              - code [ref=e60]: HrMcp.McpServer
+              - text: ", the project we scaffolded in Part 1. All we are adding is the MCP SDK and three tool classes."
+            - figure "Type caption for image (optional)" [ref=e61]:
+              - img [ref=e64]
+        - generic [ref=e65]:
+          - generic:
+            - separator: ...
+          - generic [ref=e67]:
+            - heading "Step 1 — Install the SDK" [level=3] [ref=e68]
+            - paragraph [ref=e69]:
+              - text: Add the official
+              - link "ASP.NET" [ref=e70]:
+                - /url: https://medium.com/r/?url=http%3A%2F%2Fasp.net%2F
+              - text: Core MCP package to
+              - code [ref=e71]: HrMcp.McpServer
+              - text: ":"
+            - generic [ref=e72]:
+              - generic [ref=e73]: dotnet add src/HrMcp.McpServer package ModelContextProtocol.AspNetCore --version 1.*
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - paragraph [ref=e74]: "This pulls in two transitive packages automatically:"
+            - list [ref=e75]:
+              - listitem [ref=e76]:
+                - text: •
+                - code [ref=e77]:
+                  - strong [ref=e78]: ModelContextProtocol
+                - text: — core protocol, types, attributes
+              - listitem [ref=e79]:
+                - text: •
+                - code [ref=e80]:
+                  - strong [ref=e81]: ModelContextProtocol.Core
+                - text: — low-level JSON-RPC primitives
+            - paragraph [ref=e82]:
+              - text: You only need to reference
+              - code [ref=e83]: ModelContextProtocol.AspNetCore
+              - text: directly. The rest comes along for free.
+        - generic [ref=e84]:
+          - generic:
+            - separator: ...
+          - generic [ref=e86]:
+            - heading "Step 2 — Tool Classes (HrMcp.McpServer/Tools/)" [level=3] [ref=e87]:
+              - text: Step 2 — Tool Classes (
+              - code [ref=e88]: HrMcp.McpServer/Tools/
+              - text: )
+            - paragraph [ref=e89]:
+              - text: Create the
+              - code [ref=e90]: Tools/
+              - text: folder inside
+              - code [ref=e91]: HrMcp.McpServer
+              - text: . Each class carries a
+              - code [ref=e92]: "[McpServerToolType]"
+              - text: attribute; each method that becomes an MCP tool carries
+              - code [ref=e93]: "[McpServerTool]"
+              - text: . The
+              - code [ref=e94]: "[Description]"
+              - text: attributes are what the AI reads to understand when and how to call each tool — write them as if you are explaining the tool to a developer who has never seen your schema.
+            - generic [ref=e95]:
+              - generic [ref=e96]:
+                - text: src/HrMcp.McpServer/
+                - text: Tools/
+                - text: PositionTools.cs
+                - text: HiringOrganizationTools.cs
+                - text: JobDescriptionTools.cs
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - heading "PositionTools.cs" [level=3] [ref=e97]:
+              - code [ref=e98]: PositionTools.cs
+            - paragraph [ref=e99]: "Three tools: list open positions, get a single position by ID, and filter by organization."
+            - generic [ref=e100]:
+              - generic [ref=e101]:
+                - text: // src/HrMcp.McpServer/Tools/PositionTools.cs
+                - text: using System.ComponentModel;
+                - text: using HrMcp.Application.Services;
+                - text: using ModelContextProtocol.Server;
+                - text: namespace HrMcp.McpServer.Tools;
+                - text: "[McpServerToolType]"
+                - generic [ref=e102]: public sealed class PositionTools(PositionService positions)
+                - text: "{"
+                - text: "["
+                - generic [ref=e103]:
+                  - text: McpServerTool(Name = "GetOpenPositions"),
+                  - text: Description("Returns all currently open federal job positions including title, pay grade, duty location, and security clearance requirements.")
+                - text: "]"
+                - text: public async Task<IEnumerable<object>> GetOpenPositions(CancellationToken ct = default)
+                - text: "{"
+                - text: var list = await positions.GetOpenPositionsAsync(ct);
+                - text: return list.Select(p => (object)new
+                - text: "{"
+                - text: p.Id,
+                - text: p.Title,
+                - text: p.Description,
+                - text: p.OccupationalSeries,
+                - text: p.PayGradeMin,
+                - text: p.PayGradeMax,
+                - text: MinimumRange = p.PositionRemuneration?.MinimumRange,
+                - text: MaximumRange = p.PositionRemuneration?.MaximumRange,
+                - text: RateIntervalCode = p.PositionRemuneration?.RateIntervalCode,
+                - text: p.DutyLocation,
+                - text: p.TeleworkEligible,
+                - text: SecurityClearance = p.SecurityClearance.ToString(),
+                - text: p.WhoMayApply,
+                - text: OrganizationName = p.HiringOrganization?.OrganizationName,
+                - text: DepartmentName = p.HiringOrganization?.DepartmentName
+                - text: "});"
+                - text: "}"
+                - text: "["
+                - generic [ref=e104]:
+                  - text: McpServerTool(Name = "GetPositionById"),
+                  - text: Description("Returns full details for a specific position by its ID, including duties, qualifications, and pay information.")
+                - text: "]"
+                - text: public async Task<object?> GetPositionById(
+                - text: "["
+                - generic [ref=e105]: Description("The numeric ID of the position to retrieve")
+                - text: "] int positionId,"
+                - text: CancellationToken ct = default)
+                - text: "{"
+                - text: var p = await positions.GetPositionByIdAsync(positionId, ct);
+                - text: if (p is null) return null;
+                - text: return new
+                - text: "{"
+                - text: p.Id,
+                - text: p.Title,
+                - text: p.Description,
+                - text: p.Duties,
+                - text: p.Qualifications,
+                - text: p.OccupationalSeries,
+                - text: p.PayGradeMin,
+                - text: p.PayGradeMax,
+                - text: MinimumRange = p.PositionRemuneration?.MinimumRange,
+                - text: MaximumRange = p.PositionRemuneration?.MaximumRange,
+                - text: RateIntervalCode = p.PositionRemuneration?.RateIntervalCode,
+                - text: p.IsOpen,
+                - text: p.DutyLocation,
+                - text: p.TeleworkEligible,
+                - text: SecurityClearance = p.SecurityClearance.ToString(),
+                - text: TravelRequired = p.TravelRequired.ToString(),
+                - text: AppointmentType = p.AppointmentType.ToString(),
+                - text: WorkSchedule = p.WorkSchedule.ToString(),
+                - text: p.WhoMayApply,
+                - text: p.SupervisoryStatus,
+                - text: p.RelocationAuthorized,
+                - text: p.DrugTestRequired,
+                - text: OpenDate = p.OpenDate.ToString("yyyy-MM-dd"),
+                - text: CloseDate = p.CloseDate?.ToString("yyyy-MM-dd"),
+                - text: OrganizationName = p.HiringOrganization?.OrganizationName,
+                - text: DepartmentName = p.HiringOrganization?.DepartmentName
+                - text: "};"
+                - text: "}"
+                - text: "["
+                - generic [ref=e106]:
+                  - text: McpServerTool(Name = "GetPositionsByOrganization"),
+                  - text: Description("Returns all positions for a specific federal hiring organization. Use GetHiringOrganizations first to get valid organization IDs.")
+                - text: "]"
+                - text: public async Task<IEnumerable<object>> GetPositionsByOrganization(
+                - text: "["
+                - generic [ref=e107]: Description("The numeric ID of the hiring organization")
+                - text: "] int organizationId,"
+                - text: CancellationToken ct = default)
+                - text: "{"
+                - text: var list = await positions.GetPositionsByOrganizationAsync(organizationId, ct);
+                - text: return list.Select(p => (object)new
+                - text: "{"
+                - text: p.Id,
+                - text: p.Title,
+                - text: p.Description,
+                - text: p.OccupationalSeries,
+                - text: p.PayGradeMin,
+                - text: p.PayGradeMax,
+                - text: p.IsOpen,
+                - text: p.DutyLocation,
+                - text: p.TeleworkEligible,
+                - text: SecurityClearance = p.SecurityClearance.ToString(),
+                - text: p.WhoMayApply
+                - text: "});"
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - paragraph [ref=e108]: "A few design notes:"
+            - list [ref=e109]:
+              - listitem [ref=e110]:
+                - text: •
+                - strong [ref=e111]: Return anonymous projections, not entities.
+                - text: Domain entities have navigation properties that create circular references and bloat JSON. Project only the fields the AI needs.
+              - listitem [ref=e112]:
+                - text: •
+                - strong [ref=e113]: Enums as strings.
+                - code [ref=e114]: p.SecurityClearance.ToString()
+                - text: gives the AI
+                - code [ref=e115]: "\"Secret\""
+                - text: instead of
+                - code [ref=e116]: "3"
+                - text: . Self-explanatory values require no schema lookup.
+              - listitem [ref=e117]:
+                - text: •
+                - code [ref=e118]:
+                  - strong [ref=e119]: CancellationToken
+                - strong [ref=e120]: as the last parameter.
+                - text: The SDK passes the request cancellation token automatically when a method accepts it. Always include it for async tools.
+            - heading "HiringOrganizationTools.cs" [level=3] [ref=e121]:
+              - code [ref=e122]: HiringOrganizationTools.cs
+            - paragraph [ref=e123]: "One tool: list all hiring organizations with open position counts."
+            - generic [ref=e124]:
+              - generic [ref=e125]:
+                - text: // src/HrMcp.McpServer/Tools/HiringOrganizationTools.cs
+                - text: using System.ComponentModel;
+                - text: using HrMcp.Application.Services;
+                - text: using ModelContextProtocol.Server;
+                - text: namespace HrMcp.McpServer.Tools;
+                - text: "[McpServerToolType]"
+                - generic [ref=e126]: public sealed class HiringOrganizationTools(HiringOrganizationService organizations)
+                - text: "{"
+                - text: "["
+                - generic [ref=e127]:
+                  - text: McpServerTool(Name = "GetHiringOrganizations"),
+                  - text: Description("Returns all federal hiring organizations in the database with their department affiliations, IDs, and open position count.")
+                - text: "]"
+                - text: public async Task<IEnumerable<object>> GetHiringOrganizations(CancellationToken ct = default)
+                - text: "{"
+                - text: var list = await organizations.GetAllOrganizationsAsync(ct);
+                - text: return list.Select(o => (object)new
+                - text: "{"
+                - text: o.Id,
+                - text: o.OrganizationName,
+                - text: o.DepartmentName,
+                - text: o.AgencyDescription,
+                - text: OpenPositionCount = o.Positions.Count(p => p.IsOpen)
+                - text: "});"
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+            - heading "JobDescriptionTools.cs" [level=3] [ref=e128]:
+              - code [ref=e129]: JobDescriptionTools.cs
+            - paragraph [ref=e130]: "One tool: generate a USAJobs-format job description. In this part it returns a structured template. In Part 4 we replace the template with real LLM output."
+            - generic [ref=e131]:
+              - generic [ref=e132]:
+                - text: // src/HrMcp.McpServer/Tools/JobDescriptionTools.cs
+                - text: using System.ComponentModel;
+                - text: using HrMcp.Application.Services;
+                - text: using ModelContextProtocol.Server;
+                - text: namespace HrMcp.McpServer.Tools;
+                - text: "[McpServerToolType]"
+                - text: public sealed class JobDescriptionTools(PositionService positions)
+                - text: "{"
+                - text: "[McpServerTool(Name = \"WriteJobDescription\"),"
+                - text: Description("Generates a formatted USAJobs-style job description for the specified position. Returns a structured template in Part 3; upgraded to LLM-generated narrative in Part 4.")]
+                - text: public async Task<string> WriteJobDescription(
+                - text: "[Description(\"The numeric ID of the position to write a description for\")] int positionId,"
+                - text: CancellationToken ct = default)
+                - text: "{"
+                - text: var p = await positions.GetPositionByIdAsync(positionId, ct);
+                - text: "if (p is null) return $\"Position {positionId} not found.\";"
+                - text: return $
+                - generic [ref=e133]:
+                  - text: "\"\"\""
+                  - text: "## {p.Title}"
+                  - text: "**Department:** {p.HiringOrganization?.DepartmentName}"
+                  - text: "**Organization:** {p.HiringOrganization?.OrganizationName}"
+                  - text: "**Series & Grade:** {p.OccupationalSeries} | {p.PayGradeMin}–{p.PayGradeMax}"
+                  - text: "**Salary:** ${p.PositionRemuneration?.MinimumRange:N0} – ${p.PositionRemuneration?.MaximumRange:N0} per year"
+                  - text: "**Location:** {p.DutyLocation}"
+                  - text: "**Telework:** {(p.TeleworkEligible ? \"Eligible\" : \"Not eligible\")}"
+                  - text: "**Security Clearance:** {p.SecurityClearance}"
+                  - text: "**Who May Apply:** {p.WhoMayApply}"
+                  - text: "### Summary"
+                  - text: "{p.Description}"
+                  - text: "### Duties"
+                  - text: "{p.Duties}"
+                  - text: "### Qualifications"
+                  - text: "{p.Qualifications}"
+                  - text: "---"
+                  - text: "*[Stub — LLM-generated narrative added in Part 4]*"
+                  - text: "\"\"\""
+                - text: ;
+                - text: "}"
+                - text: "}"
+              - generic:
+                - text: Auto (Python)
+                - generic:
+                  - img
+        - generic [ref=e134]:
+          - generic:
+            - separator: ...
+          - generic [ref=e136]:
+            - heading "Step 3 — Update Program.cs" [level=3] [ref=e137]:
+              - text: Step 3 — Update
+              - code [ref=e138]: Program.cs
+            - paragraph [ref=e139]:
+              - text: The updated
+              - code [ref=e140]: Program.cs
+              - text: handles both transports from a single binary. The
+              - code [ref=e141]: "--stdio"
+              - text: flag switches the server into stdio mode, which is required by Claude Desktop and VS Code Copilot Chat.
+            - generic [ref=e142]:
+              - generic [ref=e143]:
+                - text: // src/HrMcp.McpServer/Program.cs
+                - text: using HrMcp.Application.Services;
+                - text: using HrMcp.Infrastructure.Persistence;
+                - text: using HrMcp.McpServer.Tools;
+                - text: using Microsoft.EntityFrameworkCore;
+                - text: var isStdio = args.Contains("--stdio");
+                - text: var builder = WebApplication.CreateBuilder(args);
+                - text: // Stdout must contain only JSON-RPC when running as a stdio server.
+                - text: // Clear all log providers so nothing leaks into stdout.
+                - text: if (isStdio)
+                - text: "{"
+                - text: builder.Logging.ClearProviders();
+                - text: builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = Microsoft.Extensions.Logging.LogLevel.Trace);
+                - text: builder.WebHost.UseUrls(); // no HTTP listener in stdio mode
+                - text: "}"
+                - text: builder.Services.AddPersistence(
+                - text: builder.Configuration.GetConnectionString("DefaultConnection")!);
+                - text: builder.Services.AddScoped<PositionService>();
+                - text: builder.Services.AddScoped<HiringOrganizationService>();
+                - text: var mcp = builder.Services
+                - text: .AddMcpServer()
+                - text: .WithTools<PositionTools>()
+                - text: .WithTools<HiringOrganizationTools>()
+                - text: .WithTools<JobDescriptionTools>();
+                - text: if (isStdio)
+                - text: mcp.WithStdioServerTransport();
+                - text: else
+                - text: mcp.WithHttpTransport();
+                - text: var app = builder.Build();
+                - text: using (var scope = app.Services.CreateScope())
+                - text: "{"
+                - text: var db = scope.ServiceProvider.GetRequiredService<HrDbContext>();
+                - text: db.Database.Migrate();
+                - text: // Looks for data/usajobs-seed.json in the working directory (solution root when using dotnet run)
+                - text: var seedPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "usajobs-seed.json");
+                - text: DbSeeder.Seed(db, seedPath);
+                - text: "}"
+                - text: if (!isStdio)
+                - text: app.MapMcp("/mcp");
+                - text: await app.RunAsync();
+              - generic:
+                - text: Auto (Swift)
+                - generic:
+                  - img
+            - paragraph [ref=e144]:
+              - strong [ref=e145]: "What changed from Part 1:"
+            - list [ref=e146]:
+              - listitem [ref=e147]:
+                - text: •
+                - code [ref=e148]: "--stdio"
+                - text: flag detection at startup
+              - listitem [ref=e149]:
+                - text: • Logging cleared and redirected to stderr in stdio mode (
+                - code [ref=e150]: UseUrls()
+                - text: prevents Kestrel binding)
+              - listitem [ref=e151]:
+                - text: •
+                - code [ref=e152]: AddMcpServer()
+                - text: with tool registrations
+              - listitem [ref=e153]:
+                - text: •
+                - code [ref=e154]: WithStdioServerTransport()
+                - text: or
+                - code [ref=e155]: WithHttpTransport()
+                - text: depending on the flag
+              - listitem [ref=e156]:
+                - text: •
+                - code [ref=e157]: app.MapMcp("/mcp")
+                - text: wires the HTTP/SSE endpoint when running in HTTP mode
+        - generic [ref=e158]:
+          - generic:
+            - separator: ...
+          - generic [ref=e160]:
+            - heading "Step 4 — Build" [level=3] [ref=e161]
+            - generic [ref=e162]:
+              - generic [ref=e163]: "dotnet build DotnetAiAgentMcp.slnx # 0 errors, 0 warnings"
+              - generic:
+                - text: Auto (Bash)
+                - generic:
+                  - img
+        - generic [ref=e164]:
+          - generic:
+            - separator: ...
+          - generic [ref=e166]:
+            - heading "Step 5 — Run in HTTP Mode" [level=3] [ref=e167]
+            - generic [ref=e168]:
+              - generic [ref=e169]: dotnet run --project src/HrMcp.McpServer
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - paragraph [ref=e170]:
+              - text: The server starts on
+              - code [ref=e171]: http://localhost:5100
+              - text: . You will see the usual
+              - link "ASP.NET" [ref=e172]:
+                - /url: https://medium.com/r/?url=http%3A%2F%2Fasp.net%2F
+              - text: "Core startup output, ending with:"
+            - generic [ref=e173]:
+              - generic [ref=e174]:
+                - text: "info: Microsoft.Hosting.Lifetime[14]"
+                - text: "Now listening on: http://localhost:5100"
+              - generic:
+                - text: Auto (C#)
+                - generic:
+                  - img
+        - generic [ref=e175]:
+          - generic:
+            - separator: ...
+          - generic [ref=e177]:
+            - heading "Step 6 — Testing with MCP Inspector — Your MCP Postman + Swagger" [level=3] [ref=e178]
+            - paragraph [ref=e179]: "If you have built REST APIs with .NET, you know this workflow:"
+            - list [ref=e180]:
+              - listitem [ref=e181]:
+                - text: •
+                - strong [ref=e182]: Swagger UI
+                - text: — start the server, open the browser, see all endpoints auto-discovered, click to call one
+              - listitem [ref=e183]:
+                - text: •
+                - strong [ref=e184]: Postman
+                - text: — send a request with custom inputs, inspect the raw JSON response
+            - paragraph [ref=e185]: MCP Inspector does both in one UI for MCP servers. It connects to your running server, discovers all tools, and lets you call them with custom arguments and inspect the raw JSON-RPC exchange.
+            - blockquote [ref=e186]:
+              - strong [ref=e187]:
+                - emphasis [ref=e188]: "Prerequisite:"
+              - emphasis [ref=e189]: Node.js 22.7.5 or later. Check with
+              - code [ref=e190]:
+                - emphasis [ref=e191]: node --version
+              - emphasis [ref=e192]: .
+            - paragraph [ref=e193]: "With the server running in HTTP mode, open a second terminal and run:"
+            - generic [ref=e194]:
+              - generic [ref=e195]: npx @modelcontextprotocol/inspector http://localhost:5100/mcp
+              - generic:
+                - text: Auto (Bash)
+                - generic:
+                  - img
+            - paragraph [ref=e196]:
+              - text: The inspector starts on
+              - code [ref=e197]: http://localhost:6274
+              - text: . Open it in a browser.
+            - heading "What you will see" [level=3] [ref=e198]
+            - paragraph [ref=e199]:
+              - text: The
+              - strong [ref=e200]: Tools
+              - text: tab lists all five tools auto-discovered from the server. Click any tool to see its description and a
+              - strong [ref=e201]: Run Tool
+              - text: button. The right panel shows the live JSON-RPC response.
+            - figure "Type caption for image (optional)" [ref=e202]:
+              - img [ref=e205]
+            - heading "Calling GetHiringOrganizations" [level=3] [ref=e206]:
+              - text: Calling
+              - code [ref=e207]: GetHiringOrganizations
+            - paragraph [ref=e208]:
+              - text: Click
+              - code [ref=e209]: GetHiringOrganizations
+              - text: →
+              - strong [ref=e210]: Run Tool
+              - text: ". Expected response:"
+            - generic [ref=e211]:
+              - generic [ref=e212]:
+                - text: "["
+                - text: "{"
+                - text: "\"id\": 1,"
+                - text: "\"organizationName\": \"U.S. Citizenship and Immigration Services\","
+                - text: "\"departmentName\": \"Department of Homeland Security\","
+                - text: "\"agencyDescription\": \"\","
+                - text: "\"openPositionCount\": 4"
+                - text: "},"
+                - text: ...
+                - text: "]"
+              - generic:
+                - text: Auto (Bash)
+                - generic:
+                  - img
+            - paragraph [ref=e213]: 6 organizations returned (from the real DHS seed data).
+            - heading "Calling GetOpenPositions" [level=3] [ref=e214]:
+              - text: Calling
+              - code [ref=e215]: GetOpenPositions
+            - paragraph [ref=e216]:
+              - text: Click
+              - code [ref=e217]: GetOpenPositions
+              - text: →
+              - strong [ref=e218]: Run Tool
+              - text: . Returns all positions where
+              - code [ref=e219]: IsOpen = true
+              - text: with pay ranges and clearance levels.
+            - heading "Calling GetPositionsByOrganization" [level=3] [ref=e220]:
+              - text: Calling
+              - code [ref=e221]: GetPositionsByOrganization
+            - paragraph [ref=e222]:
+              - text: Click
+              - code [ref=e223]: GetPositionsByOrganization
+              - text: ", enter"
+              - code [ref=e224]: "organizationId: 1"
+              - text: →
+              - strong [ref=e225]: Run Tool
+              - text: . Returns only positions belonging to organization 1.
+            - heading "Calling GetPositionById" [level=3] [ref=e226]:
+              - text: Calling
+              - code [ref=e227]: GetPositionById
+            - paragraph [ref=e228]:
+              - text: Click
+              - code [ref=e229]: GetPositionById
+              - text: ", enter"
+              - code [ref=e230]: "positionId: 1"
+              - text: →
+              - strong [ref=e231]: Run Tool
+              - text: . Returns full position detail including duties and qualifications.
+            - heading "Calling WriteJobDescription" [level=3] [ref=e232]:
+              - text: Calling
+              - code [ref=e233]: WriteJobDescription
+            - paragraph [ref=e234]:
+              - text: Click
+              - code [ref=e235]: WriteJobDescription
+              - text: ", enter"
+              - code [ref=e236]: "positionId: 1"
+              - text: →
+              - strong [ref=e237]: Run Tool
+              - text: ". Returns the structured Markdown template:"
+            - generic [ref=e238]:
+              - generic [ref=e239]:
+                - text: "## IT Specialist (SYSADMIN)"
+                - text: "**Department:** Department of Homeland Security"
+                - text: "**Organization:** U.S. Citizenship and Immigration Services"
+                - text: ...
+                - text: "*[Stub — LLM-generated narrative added in Part 4]*"
+              - generic:
+                - text: Auto (Markdown)
+                - generic:
+                  - img
+            - paragraph [ref=e240]: All four tools respond correctly. The server is working.
+            - blockquote [ref=e241]:
+              - strong [ref=e242]:
+                - emphasis [ref=e243]: "Tip:"
+              - emphasis [ref=e244]: If tools are not appearing or calls are failing, check the inspector first before touching the stdio transport. Inspector runs in HTTP mode — if it works here, the server is correct and any Claude Desktop issues are stdio-specific.
+        - generic [ref=e245]:
+          - generic:
+            - separator: ...
+          - generic [ref=e247]:
+            - heading "Step 7 — Verify stdio Mode" [level=3] [ref=e248]
+            - paragraph [ref=e249]: "Stop the server. Run in stdio mode:"
+            - generic [ref=e250]:
+              - generic [ref=e251]: dotnet run --project src/HrMcp.McpServer -- --stdio
+              - generic:
+                - text: Auto (CSS)
+                - generic:
+                  - img
+            - paragraph [ref=e252]:
+              - text: "No"
+              - link "ASP.NET" [ref=e253]:
+                - /url: https://medium.com/r/?url=http%3A%2F%2Fasp.net%2F
+              - text: Core startup output appears on stdout. The process blocks waiting for JSON-RPC input on stdin — which is exactly the behaviour Claude Desktop expects. Press
+              - code [ref=e254]: Ctrl+C
+              - text: to exit.
+        - generic [ref=e255]:
+          - generic:
+            - separator: ...
+          - generic [ref=e257]:
+            - heading "What We Built" [level=3] [ref=e258]
+            - list [ref=e259]:
+              - listitem [ref=e260]:
+                - text: •
+                - code [ref=e261]:
+                  - strong [ref=e262]: ModelContextProtocol.AspNetCore
+                - strong [ref=e263]: 1.2.0
+                - text: installed in
+                - code [ref=e264]: HrMcp.McpServer
+              - listitem [ref=e265]:
+                - text: •
+                - strong [ref=e266]: 3 tool classes
+                - text: —
+                - code [ref=e267]: PositionTools
+                - text: (3 tools),
+                - code [ref=e268]: HiringOrganizationTools
+                - text: (1 tool),
+                - code [ref=e269]: JobDescriptionTools
+                - text: (1 tool)
+              - listitem [ref=e270]:
+                - text: •
+                - code [ref=e271]:
+                  - strong [ref=e272]: "--stdio"
+                - strong [ref=e273]: flag
+                - text: — single binary, two transports, no code duplication
+              - listitem [ref=e274]:
+                - text: •
+                - strong [ref=e275]: Verified with MCP Inspector
+                - text: — all 4 tools discovered and callable against real DHS data
+              - listitem [ref=e276]:
+                - text: •
+                - code [ref=e277]:
+                  - strong [ref=e278]: WriteJobDescription
+                - text: returns a structured stub, ready for LLM upgrade in Part 4
+            - paragraph [ref=e279]:
+              - text: The AI still knows nothing about any of this. In Part 4, we wire in an LLM via
+              - code [ref=e280]: Microsoft.Extensions.AI
+              - text: and Ollama, let it call these tools, and replace the
+              - code [ref=e281]: WriteJobDescription
+              - text: stub with a real generated narrative.
+        - generic [ref=e282]:
+          - generic:
+            - separator: ...
+          - generic [ref=e284]:
+            - heading "Next Up" [level=3] [ref=e285]
+            - paragraph [ref=e286]:
+              - 'link "Part 4: AI Agent with Microsoft.Extensions.AI + Ollama →" [ref=e287]':
+                - /url: https://medium.com/r/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fworkcontrolgit%2FDotnetAiAgentMcp%2Frefs%2Fheads%2Fmaster%2Fblogs%2Fseries-1-ai-agent-mcp%2Fpart-4-ai-agent-extensions-ai.md
+                - strong [ref=e288]: "Part 4: AI Agent with Microsoft.Extensions.AI + Ollama →"
+            - paragraph [ref=e289]:
+              - text: We build the
+              - code [ref=e290]: HrMcp.Agent
+              - text: "console app: connect it to the MCP server, register Ollama as the chat client, and let the AI call"
+              - code [ref=e291]: GetOpenPositions
+              - text: ","
+              - code [ref=e292]: GetHiringOrganizations
+              - text: ", and"
+              - code [ref=e293]: WriteJobDescription
+              - text: in a live conversation.
+        - generic [ref=e294]:
+          - generic:
+            - separator: ...
+          - generic [ref=e296]:
+            - heading "Sources" [level=3] [ref=e297]
+            - list [ref=e298]:
+              - listitem [ref=e299]:
+                - text: •
+                - link "ModelContextProtocol C# SDK — GitHub" [ref=e300]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fmodelcontextprotocol%2Fcsharp-sdk
+              - listitem [ref=e301]:
+                - text: •
+                - link "ModelContextProtocol NuGet Package" [ref=e302]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FModelContextProtocol
+              - listitem [ref=e303]:
+                - text: •
+                - link "ModelContextProtocol.AspNetCore NuGet Package" [ref=e304]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FModelContextProtocol.AspNetCore
+              - listitem [ref=e305]:
+                - text: •
+                - link "MCP Inspector — GitHub" [ref=e306]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2Fmodelcontextprotocol%2Finspector
+              - listitem [ref=e307]:
+                - text: •
+                - link "MCP Specification — Transports" [ref=e308]:
+                  - /url: https://medium.com/r/?url=https%3A%2F%2Fspec.modelcontextprotocol.io%2Fspecification%2Fbasic%2Ftransports%2F
+      - generic [ref=e311]: Title

@@ -154,6 +154,198 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-04-26T22:44:00Z"
+    },
+    {
+      "id": "bug-010",
+      "timestamp": "2026-04-27T11:33:13.498Z",
+      "error_message": "Incorrect value in code",
+      "file": "Playwright/specs/cnn-top-menu.spec.ts",
+      "root_cause": "Had 'https://www.cnn.com/sports'",
+      "fix": "Changed to 'https://www.cnn.com/sport'",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "ts"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-04-27T11:33:50.512Z"
+    },
+    {
+      "id": "bug-011",
+      "timestamp": "2026-04-29T12:10:40.054Z",
+      "error_message": "Null/undefined access in ",
+      "file": "../../Users/Fuji Nguyen/.claude/plans/moonlit-singing-newell.md",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-29T12:10:40.054Z"
+    },
+    {
+      "id": "bug-012",
+      "timestamp": "2026-04-30T03:26:57.771Z",
+      "error_message": "Incorrect value in code",
+      "file": "docs/superpowers/specs/2026-04-29-5-mcp-tools-dotnet-design.md",
+      "root_cause": "Had 't a comprehensive list. It'",
+      "fix": "Changed to \"I run everything locally against Ollama during de",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T03:26:57.771Z"
+    },
+    {
+      "id": "bug-013",
+      "timestamp": "2026-04-30T03:34:39.446Z",
+      "error_message": "Incorrect value in code",
+      "file": "blogs/standalone/5-mcp-tools-dotnet.md",
+      "root_cause": "Had 're not already using it, stop here and set it up ",
+      "fix": "Changed to 't set that up yet, it'",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T03:34:39.446Z"
+    },
+    {
+      "id": "bug-014",
+      "timestamp": "2026-04-30T03:44:26.280Z",
+      "error_message": "Incorrect value in code",
+      "file": "docs/superpowers/specs/2026-04-29-5-mcp-tools-dotnet-design.md",
+      "root_cause": "Had \"5 MCP Tools Every .NET Developer Should Know (Fro",
+      "fix": "Changed to \"6 MCP Tools Every .NET Developer Should Know (Fro",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T03:44:26.280Z"
+    },
+    {
+      "id": "bug-015",
+      "timestamp": "2026-04-30T03:59:30.839Z",
+      "error_message": "Missing await",
+      "file": "../../Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+      "root_cause": "Async call without await — returned Promise instead of value",
+      "fix": "Added await to async call",
+      "tags": [
+        "auto-detected",
+        "async-fix",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T03:59:30.839Z"
+    },
+    {
+      "id": "bug-016",
+      "timestamp": "2026-04-30T04:13:32.846Z",
+      "error_message": "Null/undefined access in ",
+      "file": "../../Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T04:13:32.846Z"
+    },
+    {
+      "id": "bug-017",
+      "timestamp": "2026-04-30T11:36:55.827Z",
+      "error_message": "Significant refactor of ",
+      "file": "../../Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+      "root_cause": "18 lines replaced/restructured",
+      "fix": "Rewrote 73→127 lines (18 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T11:36:55.827Z"
+    },
+    {
+      "id": "bug-018",
+      "timestamp": "2026-05-01T03:36:07.312Z",
+      "error_message": "Wrong reference: Superpower should be Superpowers",
+      "file": "blogs/standalone/7-mcp-tools-dotnet.md",
+      "root_cause": "Used \"Superpower\" instead of \"Superpowers\"",
+      "fix": "Changed Superpower → Superpowers",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-01T03:36:07.312Z"
+    },
+    {
+      "id": "bug-019",
+      "timestamp": "2026-05-01T03:56:49.545Z",
+      "error_message": "Incorrect value in code",
+      "file": "medium/medium-public-url.json",
+      "root_cause": "Had \"Magnificent 7 MCP Tools\"",
+      "fix": "Changed to \"Magnificent 7 MCP Tools Every .NET Developer Shou",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "json"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-01T03:56:49.546Z"
+    },
+    {
+      "id": "bug-020",
+      "timestamp": "2026-05-02T19:44:19.284Z",
+      "error_message": "Missing await",
+      "file": "../../Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+      "root_cause": "Async call without await — returned Promise instead of value",
+      "fix": "Added await to async call",
+      "tags": [
+        "auto-detected",
+        "async-fix",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T19:44:19.284Z"
+    },
+    {
+      "id": "bug-021",
+      "timestamp": "2026-05-02T19:54:16.976Z",
+      "error_message": "Missing await",
+      "file": "../../Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+      "root_cause": "Async call without await — returned Promise instead of value",
+      "fix": "Added await to async call",
+      "tags": [
+        "auto-detected",
+        "async-fix",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T19:54:16.976Z"
     }
   ]
 }
