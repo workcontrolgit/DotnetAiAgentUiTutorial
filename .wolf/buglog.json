@@ -346,6 +346,38 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-02T19:54:16.976Z"
+    },
+    {
+      "id": "bug-022",
+      "timestamp": "2026-05-07T02:16:35.786Z",
+      "error_message": "Significant refactor of ",
+      "file": "docs/meetings/2026-05-06-mcp-jd-drafting-architect-review.md",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 5→5 lines (3 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-07T02:16:35.786Z"
+    },
+    {
+      "id": "bug-023",
+      "timestamp": "2026-05-07T12:36:41.936Z",
+      "error_message": "Wrong reference: with should be or",
+      "file": ".superpowers/brainstorm/1985-1778156775/content/diagram-mockup.html",
+      "root_cause": "Used \"with\" instead of \"or\"",
+      "fix": "Changed with → or",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "html"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-07T12:36:41.936Z"
     }
   ]
 }

@@ -1,23 +1,24 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-04T13:17:25.711Z
-> Files: 26 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-08T03:35:57.089Z
+> Files: 7 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
 
-- `moonlit-singing-newell.md` — Plan: Medium Article Automation with Claude Skill + Scripts (~1450 tok)
+
+## ../../Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/
+
+- `feedback_git_commits.md` (~110 tok)
+- `MEMORY.md` — Memory Index (~115 tok)
 
 ## ../../Users/Fuji Nguyen/.claude/skills/
 
-- `medium-editor.md` — medium-editor (~5428 tok)
-- `screenshot-desktop-window.md` — Screenshot Desktop Window (~805 tok)
 
 ## ../AngularNetTutotial/TokenService/Duende-IdentityServer/shared/
 
 
 ## ./
 
-- `.gitignore` — Git ignore rules (~154 tok)
 
 ## .claude/
 
@@ -27,16 +28,14 @@
 
 ## .playwright-mcp/
 
-- `batch-results-1.json` (~2318 tok)
-- `batch-results-2.json` (~2161 tok)
-- `batch-results-3.json` (~2340 tok)
-- `batch-results-4.json` (~2270 tok)
-- `batch-results-5.json` (~1049 tok)
-- `extract-details.js` — Declares fs (~697 tok)
+
+## .superpowers/brainstorm/1985-1778156775/content/
+
+- `diagram-approach.html` (~499 tok)
+- `diagram-mockup.html` — Diagram Mockup (~2107 tok)
 
 ## .vscode/
 
-- `settings.json` (~30 tok)
 
 ## DotnetAiAgentMcp/
 
@@ -151,45 +150,36 @@
 
 ## Playwright/
 
-- `package.json` — Node.js package manifest (~316 tok)
-- `playwright.config.ts` (~129 tok)
 
 ## Playwright/specs/
 
-- `cnn-top-menu.spec.ts` — Navigate to CNN and dismiss any consent/overlay dialogs (~1440 tok)
-- `extract-story-details.js` — Extract per-story details (subtitle, tags, responseCount, author) for all 308 stories. (~1008 tok)
-- `fetch-story-details.mjs` — Fetches per-story details using Medium session cookies. (~1060 tok)
 
 ## blogs/series-1-ai-agent-mcp/
 
-- `part-2-intro-to-mcp.md` — Part 2: Introduction to Model Context Protocol (~2862 tok)
-- `part-3-mcp-server-dotnet.md` — Part 3: Building an MCP Server in .NET 10 (~4326 tok)
 
 ## blogs/series-1-ai-agent-mcp/diagrams/
 
 
 ## blogs/standalone/
 
-- `5-mcp-tools-dotnet.md` — 6 MCP Tools Every .NET Developer Should Know (From Someone Who's Actually Used Them) (~1303 tok)
-- `7-mcp-tools-dotnet.md` — Magnificent 7 Tools Every .NET MCP Developer Should Know (~1720 tok)
 
 ## docs/
 
 
+## docs/meetings/
+
+- `2026-05-06-mcp-jd-drafting-architect-review.md` — Meeting Prep: MCP Server for Job Description Drafting (~3168 tok)
+
 ## docs/superpowers/plans/
 
-- `2026-04-29-5-mcp-tools-dotnet.md` — 5 MCP Tools Every .NET Developer Should Know — Implementation Plan (~2272 tok)
+- `2026-05-08-multi-agent-opm-compliance.md` — Multi-Agent OPM Compliance Pipeline Implementation Plan (~8317 tok)
 
 ## docs/superpowers/specs/
 
-- `2026-04-29-5-mcp-tools-dotnet-design.md` — Spec: "5 MCP Tools Every .NET Developer Should Know" (~1519 tok)
+- `2026-05-08-multi-agent-opm-compliance-design.md` — Design: Multi-Agent OPM Compliance Pipeline (~1689 tok)
 
 ## medium/
 
-- `medium-public-url.json` (~955 tok)
 
 ## medium/scripts/
 
-- `get-draft-urls.mjs` — get-draft-urls.mjs (~828 tok)
-- `list-drafts.mjs` — list-drafts.mjs (~486 tok)
-- `update-series-links.mjs` — update-series-links.mjs (~1397 tok)
