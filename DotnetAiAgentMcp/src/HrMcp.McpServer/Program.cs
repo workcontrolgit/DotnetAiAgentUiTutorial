@@ -2,6 +2,8 @@
 using HrMcp.Application.Services;
 using HrMcp.Infrastructure.Persistence;
 using HrMcp.McpServer.Tools;
+using Azure.AI.OpenAI;
+using Azure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.AI;
@@ -155,9 +157,8 @@ static void ConfigureCommonServices(IServiceCollection services, IConfiguration 
     services.AddScoped<PositionService>();
     services.AddScoped<HiringOrganizationService>();
 
-    // IChatClient used by WriteJobDescription tool to generate LLM narratives
-    services.AddSingleton<IChatClient>(
-        new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.2"));
+    // IChatClient used by WriteJobDescription tool to generate LLM narratives.
+    services.AddSingleton<IChatClient>(_ => CreateChatClient(configuration));
 }
 
 static async Task InitializeDatabaseAsync(IServiceProvider services, bool forceReseed = false)
@@ -214,4 +215,29 @@ static bool TryDescribePortConflict(IOException ex, out string message)
     message =
         $"Port {defaultPort} is already in use on a loopback interface. Stop the running server or change the configured URL before starting another instance.";
     return true;
+}
+
+static IChatClient CreateChatClient(IConfiguration configuration)
+{
+    var provider = configuration["AI:Provider"] ?? "Ollama";
+
+    if (string.Equals(provider, "Ollama", StringComparison.OrdinalIgnoreCase))
+    {
+        var endpoint = configuration["AI:Ollama:Endpoint"] ?? "http://localhost:11434";
+        var model = configuration["AI:Ollama:Model"] ?? "llama3.2";
+
+        return (IChatClient)new OllamaApiClient(new Uri(endpoint), model);
+    }
+
+    var azureEndpoint = configuration["AI:AzureOpenAI:Endpoint"]
+        ?? throw new InvalidOperationException("Missing configuration: AI:AzureOpenAI:Endpoint");
+    var azureDeployment = configuration["AI:AzureOpenAI:Deployment"]
+        ?? throw new InvalidOperationException("Missing configuration: AI:AzureOpenAI:Deployment");
+    var apiKey = configuration["AI:AzureOpenAI:ApiKey"];
+
+    var client = string.IsNullOrWhiteSpace(apiKey)
+        ? new AzureOpenAIClient(new Uri(azureEndpoint), new DefaultAzureCredential())
+        : new AzureOpenAIClient(new Uri(azureEndpoint), new System.ClientModel.ApiKeyCredential(apiKey));
+
+    return client.GetChatClient(azureDeployment).AsIChatClient();
 }

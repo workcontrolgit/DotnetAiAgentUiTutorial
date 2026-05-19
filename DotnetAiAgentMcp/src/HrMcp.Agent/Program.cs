@@ -1,6 +1,9 @@
 // src/HrMcp.Agent/Program.cs
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Configuration;
 using ModelContextProtocol.Client;
+using Azure.AI.OpenAI;
+using Azure.Identity;
 using OllamaSharp;
 using HrMcp.Agent;
 using System.Net.Http.Json;
@@ -9,6 +12,16 @@ using System.Text.Json;
 var mcpServerUrl =
     Environment.GetEnvironmentVariable("HR_MCP_SERVER_URL") ??
     "http://localhost:5100/mcp";
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(AppContext.BaseDirectory)
+    .AddJsonFile("appsettings.json", optional: false)
+    .AddJsonFile(
+        $"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production"}.json",
+        optional: true)
+    .AddUserSecrets<Program>(optional: true)
+    .AddEnvironmentVariables()
+    .Build();
 
 // --- Token acquisition (client credentials flow) ---
 // Trust self-signed cert used by the local Duende IdentityServer container
@@ -48,13 +61,35 @@ await using var mcpClient = await McpClient.CreateAsync(
 var mcpTools = await mcpClient.ListToolsAsync();
 Console.WriteLine($"Connected. Tools: {string.Join(", ", mcpTools.Select(t => t.Name))}\n");
 
-// OllamaApiClient implements IChatClient (Microsoft.Extensions.AI) natively.
-// Cast to IChatClient explicitly to resolve AsBuilder() overload ambiguity.
-IChatClient chatClient = ((IChatClient)new OllamaApiClient(
-        new Uri("http://localhost:11434"), "llama3.2"))
+IChatClient chatClient = CreateChatClient(configuration)
     .AsBuilder()
     .UseFunctionInvocation()
     .Build();
 
 var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList());
 await agent.RunAsync();
+
+static IChatClient CreateChatClient(IConfiguration configuration)
+{
+    var provider = configuration["AI:Provider"] ?? "Ollama";
+
+    if (string.Equals(provider, "Ollama", StringComparison.OrdinalIgnoreCase))
+    {
+        var endpoint = configuration["AI:Ollama:Endpoint"] ?? "http://localhost:11434";
+        var model = configuration["AI:Ollama:Model"] ?? "llama3.2";
+
+        return (IChatClient)new OllamaApiClient(new Uri(endpoint), model);
+    }
+
+    var azureEndpoint = configuration["AI:AzureOpenAI:Endpoint"]
+        ?? throw new InvalidOperationException("Missing configuration: AI:AzureOpenAI:Endpoint");
+    var azureDeployment = configuration["AI:AzureOpenAI:Deployment"]
+        ?? throw new InvalidOperationException("Missing configuration: AI:AzureOpenAI:Deployment");
+    var apiKey = configuration["AI:AzureOpenAI:ApiKey"];
+
+    var client = string.IsNullOrWhiteSpace(apiKey)
+        ? new AzureOpenAIClient(new Uri(azureEndpoint), new DefaultAzureCredential())
+        : new AzureOpenAIClient(new Uri(azureEndpoint), new System.ClientModel.ApiKeyCredential(apiKey));
+
+    return client.GetChatClient(azureDeployment).AsIChatClient();
+}
