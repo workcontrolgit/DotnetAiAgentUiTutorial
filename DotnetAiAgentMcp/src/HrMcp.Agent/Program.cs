@@ -24,48 +24,58 @@ var mcpServerUrl =
     Environment.GetEnvironmentVariable("HR_MCP_SERVER_URL") ??
     "http://localhost:5100/mcp";
 
-var authority = configuration["Oidc:Authority"]
-    ?? throw new InvalidOperationException("Missing configuration: Oidc:Authority");
-var clientId = configuration["Oidc:ClientId"]
-    ?? throw new InvalidOperationException("Missing configuration: Oidc:ClientId");
-var clientSecret = configuration["Oidc:ClientSecret"]
-    ?? throw new InvalidOperationException("Missing configuration: Oidc:ClientSecret");
-var scope = configuration["Oidc:Scope"]
-    ?? throw new InvalidOperationException("Missing configuration: Oidc:Scope");
+// ── OIDC feature flag ────────────────────────────────────────────────────────
+// Set Features:EnableOidc = false in appsettings.json (or appsettings.Development.json)
+// to connect without authentication — useful when running against MCP Inspector
+// or a server instance started without OIDC enforcement.
+// Set to true to enable the client-credentials token flow.
+var enableOidc = bool.TryParse(configuration["Features:EnableOidc"], out var oidcFlag) && oidcFlag;
 
-// --- Token acquisition (client credentials flow) ---
-// Trust self-signed cert used by the local Duende IdentityServer container
-using var tokenHandler = new HttpClientHandler
+Dictionary<string, string> additionalHeaders = [];
+
+if (enableOidc)
 {
-    ServerCertificateCustomValidationCallback =
-        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-};
-using var tokenClient = new HttpClient(tokenHandler);
+    var authority = configuration["Oidc:Authority"]
+        ?? throw new InvalidOperationException("Missing configuration: Oidc:Authority");
+    var clientId = configuration["Oidc:ClientId"]
+        ?? throw new InvalidOperationException("Missing configuration: Oidc:ClientId");
+    var clientSecret = configuration["Oidc:ClientSecret"]
+        ?? throw new InvalidOperationException("Missing configuration: Oidc:ClientSecret");
+    var scope = configuration["Oidc:Scope"]
+        ?? throw new InvalidOperationException("Missing configuration: Oidc:Scope");
 
-var tokenResponse = await tokenClient.PostAsync(
-    $"{authority.TrimEnd('/')}/connect/token",
-    new FormUrlEncodedContent(new Dictionary<string, string>
+    // Trust self-signed cert used by the local Duende IdentityServer container
+    using var tokenHandler = new HttpClientHandler
     {
-        ["grant_type"]    = "client_credentials",
-        ["client_id"]     = clientId,
-        ["client_secret"] = clientSecret,
-        ["scope"]         = scope,
-    }));
-tokenResponse.EnsureSuccessStatusCode();
+        ServerCertificateCustomValidationCallback =
+            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+    };
+    using var tokenClient = new HttpClient(tokenHandler);
 
-var tokenDoc    = await tokenResponse.Content.ReadFromJsonAsync<JsonElement>();
-var accessToken = tokenDoc.GetProperty("access_token").GetString()!;
-Console.WriteLine("Token acquired.\n");
+    var tokenResponse = await tokenClient.PostAsync(
+        $"{authority.TrimEnd('/')}/connect/token",
+        new FormUrlEncodedContent(new Dictionary<string, string>
+        {
+            ["grant_type"]    = "client_credentials",
+            ["client_id"]     = clientId,
+            ["client_secret"] = clientSecret,
+            ["scope"]         = scope,
+        }));
+    tokenResponse.EnsureSuccessStatusCode();
 
-// --- Connect to MCP server with bearer token ---
+    var tokenDoc    = await tokenResponse.Content.ReadFromJsonAsync<JsonElement>();
+    var accessToken = tokenDoc.GetProperty("access_token").GetString()!;
+    Console.WriteLine("Token acquired.\n");
+
+    additionalHeaders["Authorization"] = $"Bearer {accessToken}";
+}
+
+// --- Connect to MCP server ---
 await using var mcpClient = await McpClient.CreateAsync(
     new HttpClientTransport(new HttpClientTransportOptions
     {
-        Endpoint = new Uri(mcpServerUrl),
-        AdditionalHeaders = new Dictionary<string, string>
-        {
-            ["Authorization"] = $"Bearer {accessToken}"
-        }
+        Endpoint          = new Uri(mcpServerUrl),
+        AdditionalHeaders = additionalHeaders
     }));
 
 var mcpTools = await mcpClient.ListToolsAsync();

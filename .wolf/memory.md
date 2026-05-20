@@ -494,3 +494,21 @@
 
 | Time | Action | File(s) | Outcome | ~Tokens |
 |------|--------|---------|---------|--------|
+
+## Session: 2026-05-20 14:40
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+
+## Session: 2026-05-20 14:40
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 14:42 | Edited DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json | 10→13 lines | ~77 |
+| 14:42 | Edited DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs | acquisition() → json() | ~668 |
+| 14:42 | Added Features:EnableOidc flag to HrMcp.Agent (mirrors McpServer pattern) | src/HrMcp.Agent/Program.cs, appsettings.json | complete | ~300 |
+| 14:42 | Session end: 2 writes across 2 files (appsettings.json, Program.cs) | 9 reads | ~3324 tok |
+| 14:43 | Session end: 2 writes across 2 files (appsettings.json, Program.cs) | 9 reads | ~3324 tok |
+| 14:45 | Session end: 2 writes across 2 files (appsettings.json, Program.cs) | 9 reads | ~3324 tok |
+| 14:46 | Edited DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs | inline fix | ~27 |
+| 14:46 | Session end: 3 writes across 2 files (appsettings.json, Program.cs) | 9 reads | ~3353 tok |

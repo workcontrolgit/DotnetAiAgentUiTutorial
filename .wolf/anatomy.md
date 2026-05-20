@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-16T15:36:01.488Z
-> Files: 16 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-20T18:46:34.686Z
+> Files: 18 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
 
@@ -59,6 +59,8 @@
 
 ## DotnetAiAgentMcp/src/HrMcp.Agent/
 
+- `appsettings.json` (~166 tok)
+- `Program.cs` — src/HrMcp.Agent/Program.cs (~1285 tok)
 
 ## DotnetAiAgentMcp/src/HrMcp.Agent/bin/Debug/net10.0/
 
