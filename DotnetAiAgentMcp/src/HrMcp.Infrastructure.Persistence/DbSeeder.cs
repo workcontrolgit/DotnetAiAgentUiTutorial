@@ -7,10 +7,17 @@ namespace HrMcp.Infrastructure.Persistence;
 
 public static class DbSeeder
 {
-    // ← added optional jsonSeedPath parameter
-    public static void Seed(HrDbContext db, string? jsonSeedPath = null)
+    public static void Seed(HrDbContext db, string? jsonSeedPath = null, bool force = false)
     {
-        if (db.HiringOrganizations.Any()) return;
+        if (db.HiringOrganizations.Any())
+        {
+            if (!force) return;
+
+            // Clear existing data (cascade removes positions + remunerations via FK)
+            db.HiringOrganizations.RemoveRange(db.HiringOrganizations);
+            db.SaveChanges();
+            Console.WriteLine("[DbSeeder] Cleared existing data for re-seed.");
+        }
 
         if (jsonSeedPath is not null && File.Exists(jsonSeedPath))
         {
@@ -49,27 +56,55 @@ public static class DbSeeder
 
             db.Positions.Add(new Position
             {
-                Title                = p.Title,
-                Description          = p.Description,
-                Duties               = p.Duties,
-                Qualifications       = p.Qualifications,
-                IsOpen               = p.IsOpen,
-                OccupationalSeries   = p.OccupationalSeries,
-                PayGradeMin          = p.PayGradeMin,
-                PayGradeMax          = p.PayGradeMax,
-                AppointmentType      = Parse<AppointmentType>(p.AppointmentType,    AppointmentType.Permanent),
-                WorkSchedule         = Parse<WorkSchedule>(p.WorkSchedule,          WorkSchedule.FullTime),
-                OpenDate             = DateTime.TryParse(p.OpenDate,  out var od) ? od : DateTime.UtcNow,
-                CloseDate            = DateTime.TryParse(p.CloseDate, out var cd) ? cd : null,
-                WhoMayApply          = p.WhoMayApply,
-                DutyLocation         = p.DutyLocation,
-                TeleworkEligible     = p.TeleworkEligible,
-                TravelRequired       = Parse<TravelRequirement>(p.TravelRequired,   TravelRequirement.NotRequired),
-                SecurityClearance    = Parse<SecurityClearance>(p.SecurityClearance,SecurityClearance.NotRequired),
-                SupervisoryStatus    = p.SupervisoryStatus,
-                RelocationAuthorized = p.RelocationAuthorized,
-                DrugTestRequired     = p.DrugTestRequired,
-                HiringOrganizationId = org.Id,
+                AnnouncementNumber      = p.AnnouncementNumber,
+                UsaJobsId               = p.UsaJobsId,
+                PositionUri             = p.PositionUri,
+                ApplyUri                = p.ApplyUri,
+                Title                   = p.Title,
+                Description             = p.Description,
+                Duties                  = p.Duties,
+                Qualifications          = p.Qualifications,
+                Education               = p.Education,
+                Evaluations             = p.Evaluations,
+                KeyRequirements         = p.KeyRequirements,
+                PromotionPotential      = p.PromotionPotential,
+                IsOpen                  = p.IsOpen,
+                OccupationalSeries      = p.OccupationalSeries,
+                OccupationalSeriesTitle = p.OccupationalSeriesTitle,
+                PayGradeMin             = p.PayGradeMin,
+                PayGradeMax             = p.PayGradeMax,
+                AppointmentType         = Parse<AppointmentType>(p.AppointmentType,    AppointmentType.Permanent),
+                PositionOfferingType    = p.PositionOfferingType,
+                WorkSchedule            = Parse<WorkSchedule>(p.WorkSchedule,          WorkSchedule.FullTime),
+                OpenDate                = DateTime.TryParse(p.OpenDate,  out var od) ? od : DateTime.UtcNow,
+                CloseDate               = DateTime.TryParse(p.CloseDate, out var cd) ? cd : null,
+                WhoMayApply             = p.WhoMayApply,
+                HiringPath              = p.HiringPath,
+                DutyLocation            = p.DutyLocation,
+                DutyLocationState       = p.DutyLocationState,
+                TeleworkEligible        = p.TeleworkEligible,
+                TravelRequired          = Parse<TravelRequirement>(p.TravelRequired,   TravelRequirement.NotRequired),
+                SecurityClearance       = Parse<SecurityClearance>(p.SecurityClearance,SecurityClearance.NotRequired),
+                ServiceType             = p.ServiceType,
+                SubAgencyName           = p.SubAgencyName,
+                TotalOpenings           = p.TotalOpenings,
+                AdjudicationType        = p.AdjudicationType,
+                RemoteEligible          = p.RemoteEligible,
+                FinancialDisclosure     = p.FinancialDisclosure,
+                SupervisoryStatus       = p.SupervisoryStatus,
+                RelocationAuthorized    = p.RelocationAuthorized,
+                DrugTestRequired            = p.DrugTestRequired,
+                PositionSensitivityAndRisk  = p.PositionSensitivityAndRisk  ?? string.Empty,
+                ContactName                 = p.ContactName                 ?? string.Empty,
+                ContactPhone                = p.ContactPhone                ?? string.Empty,
+                ContactEmail                = p.ContactEmail                ?? string.Empty,
+                ContactAddress              = p.ContactAddress              ?? string.Empty,
+                ConditionsOfEmployment      = p.ConditionsOfEmployment      ?? string.Empty,
+                RequiredDocuments           = p.RequiredDocuments           ?? string.Empty,
+                HowToApply                  = p.HowToApply                  ?? string.Empty,
+                NextSteps                   = p.NextSteps                   ?? string.Empty,
+                AdditionalInformation       = p.AdditionalInformation       ?? string.Empty,
+                HiringOrganizationId    = org.Id,
                 PositionRemuneration = new PositionRemuneration
                 {
                     MinimumRange     = p.MinimumRange,
@@ -97,14 +132,30 @@ public static class DbSeeder
     private record SeedFile(List<SeedOrg> Organizations, List<SeedPosition> Positions);
     private record SeedOrg(string OrganizationName, string DepartmentName, string AgencyDescription);
     private record SeedPosition(
-        string   Title,        string   Description,   string   Duties,
-        string   Qualifications, bool   IsOpen,        string   OccupationalSeries,
-        string   PayGradeMin,  string   PayGradeMax,   string   AppointmentType,
-        string   WorkSchedule, string   OpenDate,      string?  CloseDate,
-        string   WhoMayApply,  string   DutyLocation,  bool     TeleworkEligible,
-        string   TravelRequired, string SecurityClearance, bool SupervisoryStatus,
-        bool     RelocationAuthorized, bool DrugTestRequired, string OrganizationName,
-        decimal  MinimumRange, decimal  MaximumRange,  string   RateIntervalCode);
+        string   AnnouncementNumber,   string   UsaJobsId,              string   PositionUri,            string   ApplyUri,
+        string   Title,                string   Description,            string   Duties,
+        string   Qualifications,       string   Education,              string   Evaluations,
+        string   KeyRequirements,      string   PromotionPotential,     bool     IsOpen,
+        string   OccupationalSeries,   string   OccupationalSeriesTitle,
+        string   PayGradeMin,          string   PayGradeMax,            string   AppointmentType,
+        string   PositionOfferingType, string   WorkSchedule,           string   OpenDate,
+        string?  CloseDate,            string   WhoMayApply,            string   HiringPath,
+        string   DutyLocation,         string   DutyLocationState,      bool     TeleworkEligible,
+        string   TravelRequired,       string   SecurityClearance,      string   ServiceType,
+        string   SubAgencyName,        string   TotalOpenings,          string   AdjudicationType,
+        bool     RemoteEligible,       bool     FinancialDisclosure,    bool     SupervisoryStatus,
+        bool     RelocationAuthorized, bool     DrugTestRequired,       string   OrganizationName,
+        decimal  MinimumRange,         decimal  MaximumRange,           string   RateIntervalCode,
+        string?  PositionSensitivityAndRisk = null,
+        string?  ContactName               = null,
+        string?  ContactPhone              = null,
+        string?  ContactEmail              = null,
+        string?  ContactAddress            = null,
+        string?  ConditionsOfEmployment    = null,
+        string?  RequiredDocuments         = null,
+        string?  HowToApply               = null,
+        string?  NextSteps                 = null,
+        string?  AdditionalInformation     = null);
 
     // ── hardcoded fallback ────────────────────────────────────────────────────
     private static void SeedFromCode(HrDbContext db)

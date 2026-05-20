@@ -15,6 +15,10 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools)
           GetPositionById for full detail on a specific role.
         - When asked to write or generate a job description, call WriteJobDescription with the
           position ID — do not write one yourself.
+        - When asked to display, show, render, or draft a position "in USAJobs format", "as a
+          USAJobs page", or "like USAJobs", call RenderPositionAsUsaJobsHtml with the position ID.
+          The tool saves the file and returns its path — tell the user the file path and that they
+          can open it in a browser to see the USAJobs-style layout.
         - Present pay ranges in a readable format (e.g., "$85,000 – $110,000 per year").
         - Keep answers concise; offer to go deeper when the user wants more detail.
         """;

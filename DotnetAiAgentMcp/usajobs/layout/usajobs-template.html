@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{TITLE}} – USAJOBS</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Source Sans Pro, Arial, sans-serif; font-size: 15px; color: #1b1b1b; background: #f0f0f0; }
+    a { color: #005ea2; text-decoration: underline; }
+
+    .topbar { background: #162e51; padding: 10px 24px; display: flex; align-items: center; gap: 24px; }
+    .topbar .logo { color: #fff; font-size: 22px; font-weight: 900; letter-spacing: -1px; }
+    .topbar .logo span { color: #e31c3d; }
+    .topbar nav { margin-left: auto; display: flex; gap: 20px; }
+    .topbar nav a { color: #a9aeb1; font-size: 13px; text-decoration: none; }
+
+    .job-header { background: #162e51; padding: 20px 24px 0; }
+    .job-header-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; }
+    .job-header h1 { color: #fff; font-size: 26px; font-weight: 700; }
+    .job-header .agency { color: #a9aeb1; font-size: 11px; text-transform: uppercase; margin-top: 4px; letter-spacing: .5px; }
+    .job-header .org { color: #dfe1e2; font-size: 13px; margin-top: 2px; }
+    .job-header-actions { display: flex; gap: 12px; margin-top: 4px; }
+    .job-header-actions button { background: none; border: none; color: #a9aeb1; font-size: 13px; cursor: pointer; }
+
+    .tabs-container { background: #fff; }
+    .tabs { max-width: 1100px; margin: 0 auto; }
+    .tabs ul { display: flex; list-style: none; padding: 0; overflow-x: auto; }
+    .tabs ul li a { display: block; padding: 12px 18px; font-size: 13px; color: #005ea2; text-decoration: none; white-space: nowrap; border-bottom: 3px solid transparent; }
+    .tabs ul li a:hover { border-bottom-color: #162e51; color: #162e51; font-weight: 600; }
+
+    .content-wrap { max-width: 1100px; margin: 24px auto; display: flex; gap: 24px; padding: 0 12px; }
+    .main { flex: 1 1 0; min-width: 0; }
+    .sidebar { width: 260px; flex-shrink: 0; }
+
+    .card { background: #fff; border: 1px solid #dfe1e2; border-radius: 4px; padding: 24px; margin-bottom: 20px; }
+    .card h2 { font-size: 20px; font-weight: 700; color: #1b1b1b; margin-bottom: 14px; }
+    .card h3 { font-size: 16px; font-weight: 700; margin: 16px 0 8px; }
+    .card p { margin-bottom: 10px; line-height: 1.6; }
+    .card ul, .card ol { padding-left: 20px; margin-bottom: 10px; }
+    .card ul li, .card ol li { margin-bottom: 6px; line-height: 1.6; }
+    .card strong { font-weight: 700; }
+    .formatted-text p { margin-bottom: 10px; line-height: 1.6; }
+    .formatted-text ul { padding-left: 20px; margin-bottom: 12px; }
+    .formatted-text ul li { margin-bottom: 6px; line-height: 1.6; }
+
+    .hiring-paths { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+    .hiring-path { display: flex; align-items: flex-start; gap: 10px; background: #f0f0f0; border-radius: 4px; padding: 12px 14px; width: calc(50% - 6px); }
+    .hiring-path h3 { font-size: 14px; margin: 0 0 2px; color: #005ea2; }
+    .hiring-path p { font-size: 12px; margin: 0; color: #565c65; }
+
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .section-header h2 { margin-bottom: 0; }
+    .help-link { font-size: 12px; color: #005ea2; }
+
+    .overview-card { background: #fff; border: 1px solid #dfe1e2; border-radius: 4px; padding: 20px; }
+    .overview-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+    .status-badge { display: inline-block; color: #fff; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 3px; margin-bottom: 14px; }
+    .status-badge.open { background: #00a91c; }
+    .status-badge.closed { background: #b50909; }
+    .overview-row { margin-bottom: 12px; }
+    .overview-row .label { font-size: 12px; font-weight: 700; color: #1b1b1b; margin-bottom: 2px; }
+    .overview-row .value { font-size: 14px; color: #1b1b1b; }
+    .overview-divider { border: none; border-top: 1px solid #dfe1e2; margin: 12px 0; }
+    .dates-warning { color: #b50909; font-size: 12px; }
+
+    .contact-box { background: #f0f0f0; border-radius: 4px; padding: 16px; margin-top: 12px; }
+    .contact-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; }
+    .contact-label { font-weight: 700; margin-bottom: 2px; font-size: 12px; }
+
+    .fair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .fair-grid a { font-size: 13px; }
+
+    .expand-btn { border: 1px solid #005ea2; color: #005ea2; background: #fff; font-size: 13px; padding: 6px 14px; border-radius: 3px; cursor: pointer; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="logo"><span>USA</span>JOBS</div>
+    <nav>
+      <a href="#">Sign in</a>
+      <a href="#">Events</a>
+      <a href="#">Help Center</a>
+      <a href="#">Search</a>
+    </nav>
+  </div>
+
+  <div class="job-header">
+    <div class="job-header-inner">
+      <div>
+        <h1>{{TITLE}}</h1>
+        <div class="agency">{{DEPARTMENT_NAME}}</div>
+        <div class="org">{{ORGANIZATION_NAME}}</div>
+      </div>
+      <div class="job-header-actions">
+        <button>🖨 Print</button>
+        <button>↗ Share</button>
+        <button>☆ Save</button>
+      </div>
+    </div>
+    <div class="tabs-container">
+      <div class="tabs">
+        <ul>
+          <li><a href="#summary">Summary</a></li>
+          <li><a href="#open-to">This job is open to</a></li>
+          <li><a href="#duties">Duties</a></li>
+          <li><a href="#requirements">Requirements</a></li>
+          <li><a href="#evaluation">How you will be evaluated</a></li>
+          <li><a href="#documents">Required documents</a></li>
+          <li><a href="#how-to-apply">How to apply</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrap">
+    <div class="main">
+
+      <div class="card" id="summary">
+        <h2>Summary</h2>
+        <div class="formatted-text">{{DESCRIPTION_HTML}}</div>
+        <br/>
+        <button class="expand-btn">Learn more about this agency</button>
+      </div>
+
+      <div class="card" id="open-to">
+        <div class="section-header">
+          <h2>This job is open to</h2>
+          <a href="#" class="help-link">ⓘ Help</a>
+        </div>
+        <div class="hiring-paths">{{HIRING_PATHS_HTML}}</div>
+      </div>
+
+      <div class="card" id="duties">
+        <div class="section-header">
+          <h2>Duties</h2>
+          <a href="#" class="help-link">ⓘ Help</a>
+        </div>
+        <div class="formatted-text">{{DUTIES_HTML}}</div>
+      </div>
+
+      <div class="card" id="requirements">
+        <div class="section-header">
+          <h2>Requirements</h2>
+          <a href="#" class="help-link">ⓘ Help</a>
+        </div>
+        <h3>Conditions of Employment</h3>
+        <div class="formatted-text">{{CONDITIONS_HTML}}</div>
+        <h3>Qualifications</h3>
+        <div class="formatted-text">{{QUALIFICATIONS_HTML}}</div>
+        <h3>Education</h3>
+        <div class="formatted-text">{{EDUCATION_HTML}}</div>
+        <h3>Additional Information</h3>
+        <div class="formatted-text">{{ADDITIONAL_INFO_HTML}}</div>
+      </div>
+
+      <div class="card" id="evaluation">
+        <h2>How you will be evaluated</h2>
+        <div class="formatted-text">{{EVALUATIONS_HTML}}</div>
+      </div>
+
+      <div class="card" id="documents">
+        <div class="section-header">
+          <h2>Required Documents</h2>
+          <a href="#" class="help-link">ⓘ Help</a>
+        </div>
+        <div class="formatted-text">{{REQUIRED_DOCUMENTS_HTML}}</div>
+      </div>
+
+      <div class="card" id="how-to-apply">
+        <div class="section-header">
+          <h2>How to Apply</h2>
+          <a href="#" class="help-link">ⓘ Help</a>
+        </div>
+        <div class="formatted-text">{{HOW_TO_APPLY_HTML}}</div>
+
+        <div class="contact-box">
+          <h3>Agency contact information</h3>
+          <div class="contact-name" style="margin-top:10px">👤 {{CONTACT_NAME}}</div>
+          <div class="contact-grid">
+            <div>
+              <div class="contact-label">Phone</div>
+              <a href="tel:{{CONTACT_PHONE}}">{{CONTACT_PHONE}}</a>
+            </div>
+            <div>
+              <div class="contact-label">Email</div>
+              <a href="mailto:{{CONTACT_EMAIL}}">{{CONTACT_EMAIL}}</a>
+            </div>
+            <div style="grid-column:1/-1">
+              <div class="contact-label">Address</div>
+              {{CONTACT_ADDRESS}}
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:20px">Next steps</h3>
+        <div class="formatted-text">{{NEXT_STEPS_HTML}}</div>
+      </div>
+
+      <div class="card">
+        <h2>Fair and transparent</h2>
+        <p style="margin-bottom:14px">The Federal hiring process is set up to be fair and transparent. Please read the following guidance.</p>
+        <div class="fair-grid">
+          <a href="#">Criminal history inquiries</a>
+          <a href="#">Equal Employment Opportunity (EEO) Policy</a>
+          <a href="#">Financial suitability</a>
+          <a href="#">New employee probationary period</a>
+          <a href="#">Privacy Act</a>
+          <a href="#">Reasonable accommodation policy</a>
+          <a href="#">Selective Service</a>
+          <a href="#">Signature and false statements</a>
+          <a href="#">Social security number request</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sidebar">
+      <div class="overview-card">
+        <h2>Overview</h2>
+        <div class="status-badge {{STATUS_CLASS}}">{{STATUS_TEXT}}</div>
+
+        <div class="overview-row">
+          <div class="label">Open &amp; closing dates</div>
+          <div class="value"><span class="dates-warning">⚠</span> {{OPEN_DATE}} to {{CLOSE_DATE}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Salary</div>
+          <div class="value">{{SALARY_MIN}} – {{SALARY_MAX}} per year</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Pay scale &amp; grade</div>
+          <div class="value">{{PAY_GRADE}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Location</div>
+          <div class="value">📍 {{DUTY_LOCATION}}<br/><small style="color:#565c65">{{TOTAL_OPENINGS}}</small></div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Remote job</div>
+          <div class="value">{{REMOTE_ELIGIBLE}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Telework eligible</div>
+          <div class="value">{{TELEWORK_ELIGIBLE}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Travel required</div>
+          <div class="value">{{TRAVEL_REQUIRED}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Relocation expenses reimbursed</div>
+          <div class="value">{{RELOCATION_AUTHORIZED}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Appointment type</div>
+          <div class="value">{{APPOINTMENT_TYPE}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Work schedule</div>
+          <div class="value">{{WORK_SCHEDULE}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Service</div>
+          <div class="value">{{SERVICE_TYPE}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Promotion potential</div>
+          <div class="value">{{PROMOTION_POTENTIAL}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Job family (Series)</div>
+          <div class="value">{{OCCUPATIONAL_SERIES}} {{OCCUPATIONAL_SERIES_TITLE}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Supervisory status</div>
+          <div class="value">{{SUPERVISORY_STATUS}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Security clearance</div>
+          <div class="value">{{SECURITY_CLEARANCE}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Drug test</div>
+          <div class="value">{{DRUG_TEST_REQUIRED}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Trust determination process</div>
+          <div class="value">{{ADJUDICATION_TYPE}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Announcement number</div>
+          <div class="value">{{ANNOUNCEMENT_NUMBER}}</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Control number</div>
+          <div class="value">{{USAJOBS_ID}}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "usajobs-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "-e",
+        "const http=require('http'),fs=require('fs'),path=require('path');http.createServer((req,res)=>{const f=path.join('C:/apps/DotnetMcpTutorial/publish/McpServer/usajobs/output',req.url==='/'?'position-397.html':req.url);fs.readFile(f,(e,d)=>{if(e){res.writeHead(404);res.end('Not found');return;}res.writeHead(200,{'Content-Type':'text/html'});res.end(d);});}).listen(8765,()=>console.log('ready'));"
+      ],
+      "port": 8765
+    }
+  ]
+}

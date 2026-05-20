@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Diagram Mockup</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; padding: 24px; margin: 0; }
+  h2 { text-align: center; color: #1a1a2e; margin-bottom: 4px; font-size: 1.2rem; }
+  .subtitle { text-align: center; color: #666; margin-bottom: 24px; font-size: 0.85rem; }
+
+  .side-by-side {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    max-width: 860px;
+    margin: 0 auto;
+    align-items: stretch;
+  }
+
+  .column {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  .col-title {
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  .rest-title { background: #e8f4fd; color: #1565c0; }
+  .mcp-title  { background: #fef3e2; color: #e65100; }
+
+  .layer {
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .layer-name { font-weight: 600; font-size: 0.82rem; margin: 0 0 2px 0; }
+  .layer-sub  { font-size: 0.72rem; color: #666; margin: 0; }
+
+  /* REST colors */
+  .rest-client   { background: #e3f2fd; border-left: 4px solid #1976d2; }
+  .rest-auth     { background: #fce4ec; border-left: 4px solid #c62828; }
+  .rest-api      { background: #e8f5e9; border-left: 4px solid #2e7d32; }
+  .rest-service  { background: #fff3e0; border-left: 4px solid #e65100; }
+  .rest-efcore   { background: #ede7f6; border-left: 4px solid #6a1b9a; }
+  .rest-db       { background: #f3e5f5; border-left: 4px solid #7b1fa2; }
+
+  /* MCP colors */
+  .mcp-client    { background: #e3f2fd; border-left: 4px solid #1976d2; }
+  .mcp-llm       { background: #fff8e1; border-left: 4px solid #f9a825; }
+  .mcp-auth      { background: #fce4ec; border-left: 4px solid #c62828; }
+  .mcp-server    { background: #e8f5e9; border-left: 4px solid #2e7d32; }
+  .mcp-service   { background: #fff3e0; border-left: 4px solid #e65100; }
+  .mcp-efcore    { background: #ede7f6; border-left: 4px solid #6a1b9a; }
+  .mcp-db        { background: #f3e5f5; border-left: 4px solid #7b1fa2; }
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    color: #90a4ae;
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  .arrow-down { text-align: center; color: #b0bec5; font-size: 1.1rem; margin: 2px 0; }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+  }
+  .divider-line { width: 2px; background: #dde3ea; flex: 1; }
+  .divider-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #90a4ae;
+    text-transform: uppercase;
+    padding: 8px 0;
+    white-space: nowrap;
+  }
+
+  /* Equivalence badges */
+  .equiv {
+    display: inline-block;
+    font-size: 0.6rem;
+    background: #eceff1;
+    color: #546e7a;
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  .note {
+    max-width: 860px;
+    margin: 16px auto 0;
+    background: #e8f4fd;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.75rem;
+    color: #1565c0;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h2>Traditional REST API vs MCP Architecture</h2>
+<p class="subtitle">Each layer maps directly — your existing .NET skills transfer</p>
+
+<div class="side-by-side">
+
+  <!-- REST column -->
+  <div class="column">
+    <div class="col-title rest-title">Traditional REST API</div>
+
+    <div class="layer rest-client">
+      <p class="layer-name">HTTP Client</p>
+      <p class="layer-sub">Browser, mobile app, or API consumer</p>
+    </div>
+    <div class="arrow-down">↓ HTTP Request + Bearer Token</div>
+
+    <div class="layer rest-auth">
+      <p class="layer-name">IdentityServer (OIDC)</p>
+      <p class="layer-sub">Issues JWT access tokens (client credentials / PKCE)</p>
+    </div>
+    <div class="arrow-down">↓ JWT validated by middleware</div>
+
+    <div class="layer rest-api">
+      <p class="layer-name">ASP.NET Core REST API</p>
+      <p class="layer-sub">Controllers, routes, [Authorize] attribute</p>
+    </div>
+    <div class="arrow-down">↓ calls</div>
+
+    <div class="layer rest-service">
+      <p class="layer-name">Application Services</p>
+      <p class="layer-sub">Business logic, validation, orchestration</p>
+    </div>
+    <div class="arrow-down">↓ via interfaces</div>
+
+    <div class="layer rest-efcore">
+      <p class="layer-name">EF Core</p>
+      <p class="layer-sub">DbContext, repositories, LINQ queries</p>
+    </div>
+    <div class="arrow-down">↓ SQL queries</div>
+
+    <div class="layer rest-db">
+      <p class="layer-name">Database</p>
+      <p class="layer-sub">Positions, HiringOrgs, Remuneration tables<br><em>e.g. MS SQL Server, Oracle</em></p>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-label">equivalent</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- MCP column -->
+  <div class="column">
+    <div class="col-title mcp-title">MCP Architecture (.NET 10)</div>
+
+    <div class="layer mcp-client">
+      <p class="layer-name">MCP Client</p>
+      <p class="layer-sub">Claude Desktop · VS Code Copilot · Console App · SPA · Server-side Web<br><em>SPA: Angular, Blazor WASM &nbsp;|&nbsp; Server-side: Razor Pages, Blazor Server</em></p>
+      <span class="equiv">≈ HTTP Client</span>
+    </div>
+    <div class="arrow-down">↓ natural language prompt</div>
+
+    <div class="layer mcp-llm">
+      <p class="layer-name">LLM (Ollama / Claude API)</p>
+      <p class="layer-sub">Decides which MCP tools to call and with what arguments<br><em>IChatClient abstraction — swap models without changing code</em></p>
+      <span class="equiv">≈ routing / controller selection logic</span>
+    </div>
+    <div class="arrow-down">↓ JSON-RPC 2.0 tool call (MCP)</div>
+
+    <div class="layer mcp-auth">
+      <p class="layer-name">IdentityServer (OIDC)</p>
+      <p class="layer-sub">Agent acquires token via client credentials flow or PKCE</p>
+      <span class="equiv">≈ same IdentityServer</span>
+    </div>
+    <div class="arrow-down">↓ Bearer token attached to MCP request</div>
+
+    <div class="layer mcp-server">
+      <p class="layer-name">HrMcp.McpServer (ASP.NET Core)</p>
+      <p class="layer-sub">[McpServerTool] methods · JWT middleware · HTTP/SSE or stdio<br><em>Microsoft.Extensions.AI + MCP SDK — both GA</em></p>
+      <span class="equiv">≈ REST Controller + [Authorize]</span>
+    </div>
+    <div class="arrow-down">↓ calls</div>
+
+    <div class="layer mcp-service">
+      <p class="layer-name">Application Services</p>
+      <p class="layer-sub">PositionService, HiringOrgService — unchanged from REST</p>
+      <span class="equiv">≈ same Application Services</span>
+    </div>
+    <div class="arrow-down">↓ via interfaces</div>
+
+    <div class="layer mcp-efcore">
+      <p class="layer-name">EF Core</p>
+      <p class="layer-sub">Same DbContext and repositories — zero changes</p>
+      <span class="equiv">≈ same EF Core</span>
+    </div>
+    <div class="arrow-down">↓ SQL queries</div>
+
+    <div class="layer mcp-db">
+      <p class="layer-name">Database</p>
+      <p class="layer-sub">Same database — AI never touches it directly<br><em>e.g. MS SQL Server, Oracle</em></p>
+      <span class="equiv">≈ same Database</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="note">
+  <strong>Key insight:</strong> Everything below the server layer — Application Services, EF Core, and your database (MS SQL, Oracle, etc.) — is identical in both architectures. You are adding an MCP surface on top of existing .NET patterns, not replacing them.
+</div>
+
+</body>
+</html>

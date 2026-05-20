@@ -37,6 +37,9 @@
 
 ## Decision Log
 
+- **[2026-05-08] Multi-agent tutorial repo:** When implementing the multi-agent pipeline (HrDraftAgent + OpmComplianceAgent + JobDescriptionOrchestrator), fork `DotnetAiAgentMcp` into a new repo named `DotnetMultiAgentsTutorial`. Write a new blog series titled "Multi-Agent Systems in .NET" (or similar) — separate from Series 1. New series covers Microsoft Agent Framework, ChatClientAgent, orchestrator pattern, two-stage compliance checking.
+- **[2026-05-08] Diagram: REST vs MCP side-by-side** saved to `blogs/series-1-ai-agent-mcp/diagrams/rest-vs-mcp-architecture.png` and embedded in `docs/meetings/2026-05-06-mcp-jd-drafting-architect-review.md`.
+
 - **[2026-04-26] Part 5 before Part 6 (Claude Desktop before OIDC security):** Keep Claude Desktop as Part 5 because it's the payoff demo. Security (OIDC) added in Part 6 on top of a working system. stdio transport is local-only so no network exposure risk in the demo.
 - **[2026-04-26] OllamaSharp version constraint `5.*`:** Matches version `5.3.4` used in reference project. Stable GA release.
 - **[2026-04-26] Duende IdentityServer container setup (local dev):** STS at `https://localhost:44310` (nginx proxy, self-signed cert). Authority = `https://localhost:44310`, Audience = API resource name (e.g., `hr-mcp`). JWT Bearer backchannel needs `DangerousAcceptAnyServerCertificateValidator` in Development. Client credentials grant: client ID `hr-mcp-agent`, secret `hr-mcp-agent-secret`, scope `hr-mcp-api`. Token endpoint: `https://localhost:44310/connect/token`. Agent HTTP client also needs cert bypass for the token request.

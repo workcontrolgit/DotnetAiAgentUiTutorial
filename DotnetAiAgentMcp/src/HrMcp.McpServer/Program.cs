@@ -2,6 +2,8 @@
 using HrMcp.Application.Services;
 using HrMcp.Infrastructure.Persistence;
 using HrMcp.McpServer.Tools;
+using Azure.AI.OpenAI;
+using Azure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.AI;
@@ -19,6 +21,7 @@ var isStdio = args.Contains("--stdio");
 // Console sink is added conditionally: suppressed in stdio mode so stdout
 // carries only JSON-RPC messages.
 var tempConfig = new ConfigurationBuilder()
+    .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false)
     .AddJsonFile(
         $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
@@ -55,7 +58,11 @@ try
 {
     if (isStdio)
     {
-        var hostBuilder = Host.CreateApplicationBuilder(args);
+        var hostBuilder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings
+        {
+            Args = args,
+            ContentRootPath = AppContext.BaseDirectory
+        });
         hostBuilder.Services.AddSerilog();
 
         ConfigureCommonServices(hostBuilder.Services, hostBuilder.Configuration);
@@ -68,12 +75,16 @@ try
             .WithStdioServerTransport();
 
         using var host = hostBuilder.Build();
-        await InitializeDatabaseAsync(host.Services);
+        await InitializeDatabaseAsync(host.Services, args.Contains("--reseed"));
         await host.RunAsync();
         return;
     }
 
-    var builder = WebApplication.CreateBuilder(args);
+    var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+    {
+        Args = args,
+        ContentRootPath = AppContext.BaseDirectory
+    });
     builder.Host.UseSerilog();
 
     ConfigureCommonServices(builder.Services, builder.Configuration);
@@ -111,7 +122,7 @@ try
         .WithHttpTransport();
 
     var app = builder.Build();
-    await InitializeDatabaseAsync(app.Services);
+    await InitializeDatabaseAsync(app.Services, args.Contains("--reseed"));
 
     if (enableOidc)
     {
@@ -146,21 +157,34 @@ static void ConfigureCommonServices(IServiceCollection services, IConfiguration 
     services.AddScoped<PositionService>();
     services.AddScoped<HiringOrganizationService>();
 
-    // IChatClient used by WriteJobDescription tool to generate LLM narratives
-    services.AddSingleton<IChatClient>(
-        new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.2"));
+    // IChatClient used by WriteJobDescription tool to generate LLM narratives.
+    services.AddSingleton<IChatClient>(_ => CreateChatClient(configuration));
 }
 
-static async Task InitializeDatabaseAsync(IServiceProvider services)
+static async Task InitializeDatabaseAsync(IServiceProvider services, bool forceReseed = false)
 {
     using var scope = services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<HrDbContext>();
 
     await db.Database.MigrateAsync();
 
-    // Looks for data/usajobs-seed.json in the working directory (solution root when using dotnet run)
-    var seedPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "usajobs-seed.json");
-    DbSeeder.Seed(db, seedPath);
+    // Walk up from the binary directory to find data/usajobs-seed.json
+    // (works whether invoked via dotnet run, published exe, or Claude Desktop stdio)
+    var seedPath = FindSeedFile("data/usajobs-seed.json");
+    DbSeeder.Seed(db, seedPath, force: forceReseed);
+}
+
+// Searches from AppContext.BaseDirectory upward for a relative path (e.g. "data/usajobs-seed.json").
+// Returns the full path when found, or null if not found within 8 levels.
+static string? FindSeedFile(string relativePath)
+{
+    var dir = new DirectoryInfo(AppContext.BaseDirectory);
+    for (var i = 0; i < 8 && dir is not null; i++, dir = dir.Parent)
+    {
+        var candidate = Path.Combine(dir.FullName, relativePath);
+        if (File.Exists(candidate)) return candidate;
+    }
+    return null;
 }
 
 static bool TryDescribePortConflict(IOException ex, out string message)
@@ -191,4 +215,29 @@ static bool TryDescribePortConflict(IOException ex, out string message)
     message =
         $"Port {defaultPort} is already in use on a loopback interface. Stop the running server or change the configured URL before starting another instance.";
     return true;
+}
+
+static IChatClient CreateChatClient(IConfiguration configuration)
+{
+    var provider = configuration["AI:Provider"] ?? "Ollama";
+
+    if (string.Equals(provider, "Ollama", StringComparison.OrdinalIgnoreCase))
+    {
+        var endpoint = configuration["AI:Ollama:Endpoint"] ?? "http://localhost:11434";
+        var model = configuration["AI:Ollama:Model"] ?? "llama3.2";
+
+        return (IChatClient)new OllamaApiClient(new Uri(endpoint), model);
+    }
+
+    var azureEndpoint = configuration["AI:AzureOpenAI:Endpoint"]
+        ?? throw new InvalidOperationException("Missing configuration: AI:AzureOpenAI:Endpoint");
+    var azureDeployment = configuration["AI:AzureOpenAI:Deployment"]
+        ?? throw new InvalidOperationException("Missing configuration: AI:AzureOpenAI:Deployment");
+    var apiKey = configuration["AI:AzureOpenAI:ApiKey"];
+
+    var client = string.IsNullOrWhiteSpace(apiKey)
+        ? new AzureOpenAIClient(new Uri(azureEndpoint), new DefaultAzureCredential())
+        : new AzureOpenAIClient(new Uri(azureEndpoint), new System.ClientModel.ApiKeyCredential(apiKey));
+
+    return client.GetChatClient(azureDeployment).AsIChatClient();
 }

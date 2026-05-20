@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "accountName": {
+      "value": "replace-with-foundry-openai-name"
+    },
+    "deploymentName": {
+      "value": "gpt-4.1-mini"
+    },
+    "modelName": {
+      "value": "gpt-4.1-mini"
+    },
+    "modelVersion": {
+      "value": "2025-04-14"
+    },
+    "deploymentSkuName": {
+      "value": "GlobalStandard"
+    },
+    "deploymentCapacity": {
+      "value": 1
+    }
+  }
+}

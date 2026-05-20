@@ -1,0 +1,31 @@
+<h2>How should the architecture diagram be structured?</h2>
+<p class="subtitle">All approaches show: MCP Client → LLM → MCP Server → IdentityServer, EF Core, MSSQL</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Side-by-side: REST vs MCP</h3>
+      <p>Two columns — left shows a familiar REST API call stack, right shows the equivalent MCP call stack. Each layer is labeled so readers can map their existing knowledge directly onto the new concepts.</p>
+      <p><strong>Best for:</strong> readers new to MCP who understand REST. The analogy is the main message.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Single unified flow diagram</h3>
+      <p>One top-to-bottom flow showing all components together: MCP Client → LLM ↔ MCP Server → (IdentityServer validates token) → Application Services → EF Core → MSSQL. REST API equivalents are shown as inline callout labels on each component.</p>
+      <p><strong>Best for:</strong> readers who want the full picture at once. Cleaner as a single blog image.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Three-zone layered diagram</h3>
+      <p>Three horizontal zones: <em>Client Zone</em> (MCP Client + LLM), <em>Server Zone</em> (MCP Server + IdentityServer), <em>Data Zone</em> (EF Core + MSSQL). Each zone has a REST API parallel label ("like a browser calling an API", "like a Controller + JWT middleware", "like a Repository + Database").</p>
+      <p><strong>Best for:</strong> showing security boundaries clearly alongside the REST analogy.</p>
+    </div>
+  </div>
+</div>
