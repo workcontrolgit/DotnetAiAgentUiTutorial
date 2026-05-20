@@ -2,14 +2,14 @@
   "version": 1,
   "created_at": "2026-04-26T17:37:09.902Z",
   "lifetime": {
-    "total_tokens_estimated": 1044995,
-    "total_reads": 1350,
-    "total_writes": 1373,
+    "total_tokens_estimated": 1051701,
+    "total_reads": 1368,
+    "total_writes": 1379,
     "total_sessions": 59,
-    "anatomy_hits": 252,
-    "anatomy_misses": 1082,
+    "anatomy_hits": 256,
+    "anatomy_misses": 1096,
     "repeated_reads_blocked": 507,
-    "estimated_savings_vs_bare_cli": 571999
+    "estimated_savings_vs_bare_cli": 572799
   },
   "sessions": [
     {
@@ -18651,6 +18651,178 @@
       "id": "session-2026-05-20-1440",
       "started": "2026-05-20T18:40:54.845Z",
       "ended": "2026-05-20T18:46:40.587Z",
+      "reads": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/.wolf/anatomy.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/.wolf/cerebrum.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.McpServer/Program.cs",
+          "tokens_estimated": 2172,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.Development.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.McpServer/appsettings.json",
+          "tokens_estimated": 359,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/.wolf/memory.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json",
+          "tokens_estimated": 77,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
+          "tokens_estimated": 716,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
+          "tokens_estimated": 29,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 2531,
+        "output_tokens_estimated": 822,
+        "reads_count": 9,
+        "writes_count": 3,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 2
+      }
+    },
+    {
+      "id": "session-2026-05-20-1440",
+      "started": "2026-05-20T18:40:54.845Z",
+      "ended": "2026-05-20T20:17:21.873Z",
+      "reads": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/.wolf/anatomy.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/.wolf/cerebrum.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.McpServer/Program.cs",
+          "tokens_estimated": 2172,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.Development.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.McpServer/appsettings.json",
+          "tokens_estimated": 359,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/.wolf/memory.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json",
+          "tokens_estimated": 77,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
+          "tokens_estimated": 716,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
+          "tokens_estimated": 29,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 2531,
+        "output_tokens_estimated": 822,
+        "reads_count": 9,
+        "writes_count": 3,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 2
+      }
+    },
+    {
+      "id": "session-2026-05-20-1440",
+      "started": "2026-05-20T18:40:54.845Z",
+      "ended": "2026-05-20T20:17:59.649Z",
       "reads": [
         {
           "file": "c:/apps/DotnetMcpTutorial/.wolf/anatomy.md",
