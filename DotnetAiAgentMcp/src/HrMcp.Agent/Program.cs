@@ -9,10 +9,6 @@ using HrMcp.Agent;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-var mcpServerUrl =
-    Environment.GetEnvironmentVariable("HR_MCP_SERVER_URL") ??
-    "http://localhost:5100/mcp";
-
 var configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false)
@@ -22,6 +18,20 @@ var configuration = new ConfigurationBuilder()
     .AddUserSecrets<Program>(optional: true)
     .AddEnvironmentVariables()
     .Build();
+
+var mcpServerUrl =
+    configuration["McpServer:Url"] ??
+    Environment.GetEnvironmentVariable("HR_MCP_SERVER_URL") ??
+    "http://localhost:5100/mcp";
+
+var authority = configuration["Oidc:Authority"]
+    ?? throw new InvalidOperationException("Missing configuration: Oidc:Authority");
+var clientId = configuration["Oidc:ClientId"]
+    ?? throw new InvalidOperationException("Missing configuration: Oidc:ClientId");
+var clientSecret = configuration["Oidc:ClientSecret"]
+    ?? throw new InvalidOperationException("Missing configuration: Oidc:ClientSecret");
+var scope = configuration["Oidc:Scope"]
+    ?? throw new InvalidOperationException("Missing configuration: Oidc:Scope");
 
 // --- Token acquisition (client credentials flow) ---
 // Trust self-signed cert used by the local Duende IdentityServer container
@@ -33,13 +43,13 @@ using var tokenHandler = new HttpClientHandler
 using var tokenClient = new HttpClient(tokenHandler);
 
 var tokenResponse = await tokenClient.PostAsync(
-    "https://localhost:44310/connect/token",
+    $"{authority.TrimEnd('/')}/connect/token",
     new FormUrlEncodedContent(new Dictionary<string, string>
     {
         ["grant_type"]    = "client_credentials",
-        ["client_id"]     = "hr-mcp-agent",
-        ["client_secret"] = "hr-mcp-agent-secret",
-        ["scope"]         = "hr-mcp-api",
+        ["client_id"]     = clientId,
+        ["client_secret"] = clientSecret,
+        ["scope"]         = scope,
     }));
 tokenResponse.EnsureSuccessStatusCode();
 
