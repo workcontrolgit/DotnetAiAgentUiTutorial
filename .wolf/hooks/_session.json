@@ -51,6 +51,11 @@
       "count": 1,
       "tokens": 3331,
       "first_read": "2026-05-21T11:17:36.267Z"
+    },
+    "c:/apps/DotnetMcpTutorial/.gitignore": {
+      "count": 1,
+      "tokens": 0,
+      "first_read": "2026-05-21T11:21:15.630Z"
     }
   },
   "files_written": [
@@ -101,16 +106,23 @@
       "action": "edit",
       "tokens": 36,
       "at": "2026-05-21T11:17:40.572Z"
+    },
+    {
+      "file": "c:/apps/DotnetMcpTutorial/.gitignore",
+      "action": "edit",
+      "tokens": 5,
+      "at": "2026-05-21T11:21:19.072Z"
     }
   ],
   "edit_counts": {
     "blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md": 6,
     "../../Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md": 1,
-    "medium/medium-public-url.json": 1
+    "medium/medium-public-url.json": 1,
+    ".gitignore": 1
   },
   "anatomy_hits": 1,
-  "anatomy_misses": 9,
+  "anatomy_misses": 10,
   "repeated_reads_warned": 1,
   "cerebrum_warnings": 0,
-  "stop_count": 13
+  "stop_count": 16
 }

@@ -543,3 +543,7 @@
 | 07:17 | Edited blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md | 3→5 lines | ~33 |
 | 07:17 | Session end: 8 writes across 3 files (from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md, feedback_medium_blog_format.md, medium-public-url.json) | 10 reads | ~4388 tok |
 | 07:19 | Session end: 8 writes across 3 files (from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md, feedback_medium_blog_format.md, medium-public-url.json) | 10 reads | ~4388 tok |
+| 07:20 | Session end: 8 writes across 3 files (from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md, feedback_medium_blog_format.md, medium-public-url.json) | 10 reads | ~4388 tok |
+| 07:20 | Session end: 8 writes across 3 files (from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md, feedback_medium_blog_format.md, medium-public-url.json) | 10 reads | ~4388 tok |
+| 07:21 | Edited .gitignore | 1→3 lines | ~4 |
+| 07:21 | Session end: 9 writes across 4 files (from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md, feedback_medium_blog_format.md, medium-public-url.json, .gitignore) | 11 reads | ~4393 tok |
