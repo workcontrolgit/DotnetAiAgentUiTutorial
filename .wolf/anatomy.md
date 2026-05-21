@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-21T11:21:19.064Z
-> Files: 22 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-21T14:52:27.952Z
+> Files: 33 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
 
@@ -36,6 +36,15 @@
 ## .playwright-mcp/
 
 
+## .superpowers/brainstorm/1727-1779372713/content/
+
+- `design-architecture.html` (~866 tok)
+- `design-chat-loop.html` (~1186 tok)
+- `design-startup.html` — Declares value (~496 tok)
+- `ui-layout.html` (~1610 tok)
+- `waiting-1.html` (~39 tok)
+- `waiting-2.html` (~38 tok)
+
 ## .superpowers/brainstorm/1985-1778156775/content/
 
 - `diagram-approach.html` (~499 tok)
@@ -62,7 +71,8 @@
 ## DotnetAiAgentMcp/src/HrMcp.Agent/
 
 - `appsettings.json` (~166 tok)
-- `Program.cs` — src/HrMcp.Agent/Program.cs (~1285 tok)
+- `HrAgent.cs` — src/HrMcp.Agent/HrAgent.cs (~1710 tok)
+- `Program.cs` — src/HrMcp.Agent/Program.cs (~1603 tok)
 
 ## DotnetAiAgentMcp/src/HrMcp.Agent/bin/Debug/net10.0/
 
@@ -189,10 +199,14 @@
 ## docs/superpowers/plans/
 
 - `2026-05-08-multi-agent-opm-compliance.md` — Multi-Agent OPM Compliance Pipeline Implementation Plan (~8317 tok)
+- `2026-05-21-agent-serilog.md` — Add Serilog to HrMcp.Agent Implementation Plan (~1915 tok)
+- `2026-05-21-agent-spectre-console.md` — Add Spectre.Console to HrMcp.Agent Implementation Plan (~3123 tok)
 
 ## docs/superpowers/specs/
 
 - `2026-05-08-multi-agent-opm-compliance-design.md` — Design: Multi-Agent OPM Compliance Pipeline (~1689 tok)
+- `2026-05-21-agent-serilog-design.md` — Design: Add Serilog to HrMcp.Agent (~938 tok)
+- `2026-05-21-agent-spectre-console-design.md` — Design: Add Spectre.Console to HrMcp.Agent (~1414 tok)
 
 ## medium/
 

@@ -1,0 +1,31 @@
+<h2>Design — Section 1: Startup Style Picker</h2>
+<p class="subtitle">What the user sees when the agent starts, before entering the chat loop</p>
+
+<div class="mockup">
+  <div class="mockup-header">Program.cs — startup sequence</div>
+  <div class="mockup-body">
+    <div style="background:#1a1a2e;padding:20px;font-family:monospace;font-size:12px;color:#e0e0e0;border-radius:6px;line-height:1.9">
+      <div style="color:#81c784">✔ Connected to MCP server · 4 tools available</div>
+      <div style="margin-top:12px;color:#fff;font-weight:bold">Select UI style:</div>
+      <div style="color:#e0e0e0;margin-left:12px">
+        <span style="color:#4fc3f7">[1]</span> Structured — tables, panels, spinners <span style="color:#aaa">(default)</span><br>
+        <span style="color:#4fc3f7">[2]</span> Minimal — rule-separated turns, clean text<br>
+        <span style="color:#4fc3f7">[3]</span> Panels — bordered panel per message<br>
+      </div>
+      <div style="margin-top:8px;color:#aaa">Choice [1]: <span style="color:#4fc3f7;animation:blink 1s step-end infinite">█</span></div>
+      <div style="margin-top:6px;color:#555;font-size:11px">Auto-selecting 1 in 2s…</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>How it works</h3>
+  <ul>
+    <li>After connecting to MCP, <strong>Program.cs</strong> shows the style picker using <code>AnsiConsole.Prompt</code></li>
+    <li>A <strong>2-second countdown</strong> using <code>AnsiConsole.Status</code> auto-selects <strong>Style 1 (Structured)</strong> if no key is pressed</li>
+    <li>The chosen <code>UiStyle</code> enum value is passed into <code>new HrAgent(chatClient, mcpTools, style)</code></li>
+    <li>The enum lives in <code>HrAgent.cs</code>: <code>public enum UiStyle { Structured, Minimal, Panels }</code></li>
+  </ul>
+</div>
+
+<p class="subtitle">Does this startup flow look right?</p>

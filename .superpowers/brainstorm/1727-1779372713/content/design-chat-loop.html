@@ -1,0 +1,71 @@
+<h2>Design — Section 2: Chat Loop Rendering</h2>
+<p class="subtitle">What each UI style produces inside HrAgent.RunAsync for each conversation turn</p>
+
+<div class="split">
+
+  <div class="mockup">
+    <div class="mockup-header">Style A — Structured</div>
+    <div class="mockup-body">
+      <div style="background:#1a1a2e;padding:14px;font-family:monospace;font-size:11px;color:#e0e0e0;border-radius:6px;line-height:1.8">
+        <div style="color:#ffb74d;font-weight:bold">You › </div>
+        <div style="margin-left:6px;color:#e0e0e0">What positions are open?</div>
+        <div style="margin-top:8px;color:#64b5f6">⠿ Calling MCP tool: GetOpenPositions…</div>
+        <div style="margin-top:8px;color:#a5d6a7;font-weight:bold">Assistant › </div>
+        <div style="margin-left:6px;color:#e0e0e0">Here are the open positions:</div>
+        <div style="margin-top:6px;border:1px solid #444;padding:6px;border-radius:4px">
+          <div style="color:#90caf9">┌──────────────────┬──────┬──────────────┐</div>
+          <div style="color:#90caf9">│ Title            │ GS   │ Salary       │</div>
+          <div style="color:#90caf9">├──────────────────┼──────┼──────────────┤</div>
+          <div style="color:#e0e0e0">│ IT Specialist    │ GS-12│ $85k–$110k   │</div>
+          <div style="color:#e0e0e0">│ HR Analyst       │ GS-11│ $72k–$94k    │</div>
+          <div style="color:#90caf9">└──────────────────┴──────┴──────────────┘</div>
+        </div>
+        <div style="margin-top:10px;color:#555">────────────────────────────────────────</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">Style B — Minimal &nbsp;|&nbsp; Style C — Panels</div>
+    <div class="mockup-body">
+      <div style="background:#1a1a2e;padding:14px;font-family:monospace;font-size:11px;color:#e0e0e0;border-radius:6px;line-height:1.8;margin-bottom:10px">
+        <div style="color:#555">── B: Minimal ──────────────────────────</div>
+        <div style="margin-top:6px"><span style="color:#ffb74d">You</span><span style="color:#555"> ─────────────────────────────────</span></div>
+        <div style="padding:4px 0 4px 12px">What positions are open?</div>
+        <div style="color:#64b5f6">⠿ GetOpenPositions…</div>
+        <div style="margin-top:4px"><span style="color:#a5d6a7">Assistant</span><span style="color:#555"> ──────────────────────────</span></div>
+        <div style="border-left:3px solid #4db6ac;padding:4px 0 4px 10px">
+          2 open positions:<br>• IT Specialist (GS-12)<br>• HR Analyst (GS-11)
+        </div>
+      </div>
+      <div style="background:#1a1a2e;padding:14px;font-family:monospace;font-size:11px;color:#e0e0e0;border-radius:6px;line-height:1.8">
+        <div style="color:#555">── C: Panels ───────────────────────────</div>
+        <div style="margin-top:6px;border:1px solid #ffb74d;padding:6px;border-radius:4px">
+          <div style="color:#ffb74d;font-size:10px">YOU</div>
+          <div>What positions are open?</div>
+        </div>
+        <div style="margin:4px 0;color:#64b5f6;padding-left:4px">⠿ GetOpenPositions…</div>
+        <div style="border:1px solid #4db6ac;padding:6px;border-radius:4px">
+          <div style="color:#a5d6a7;font-size:10px">ASSISTANT</div>
+          <div>2 open positions:<br>• IT Specialist (GS-12)<br>• HR Analyst (GS-11)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" style="margin-top:20px">
+  <h3>HrAgent.cs changes</h3>
+  <ul>
+    <li>Constructor gains a <code>UiStyle style = UiStyle.Structured</code> parameter</li>
+    <li><code>RunAsync</code> calls private helpers: <code>RenderUserPrompt()</code>, <code>RenderToolCall(name)</code>, <code>RenderResponse(text)</code></li>
+    <li>Each helper switches on <code>_style</code> — one <code>switch</code> expression per helper (~10 lines each)</li>
+    <li>Tool call spinner uses <code>AnsiConsole.Status().Start()</code> wrapping <code>chatClient.GetResponseAsync</code></li>
+    <li>Style A response: <code>AnsiConsole.Write(new Table(...))</code> if response contains structured position data; falls back to plain markup otherwise</li>
+    <li>Style B response: <code>AnsiConsole.Write(new Panel(text).BorderColor(Color.Teal))</code></li>
+    <li>Style C response: <code>AnsiConsole.Write(new Panel(text).Header("ASSISTANT").BorderColor(Color.MediumAquamarine))</code></li>
+  </ul>
+</div>
+
+<p class="subtitle">Does this chat loop design look right?</p>

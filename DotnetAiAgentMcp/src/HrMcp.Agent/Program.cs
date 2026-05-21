@@ -8,6 +8,7 @@ using OllamaSharp;
 using HrMcp.Agent;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Spectre.Console;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -79,14 +80,45 @@ await using var mcpClient = await McpClient.CreateAsync(
     }));
 
 var mcpTools = await mcpClient.ListToolsAsync();
-Console.WriteLine($"Connected. Tools: {string.Join(", ", mcpTools.Select(t => t.Name))}\n");
+AnsiConsole.MarkupLine($"[green]✔[/] Connected · Tools: [grey]{string.Join(", ", mcpTools.Select(t => t.Name))}[/]\n");
+
+// ── Style picker ─────────────────────────────────────────────────────────────
+var style = UiStyle.Structured; // default
+
+AnsiConsole.MarkupLine("[bold]Select UI style:[/]");
+AnsiConsole.MarkupLine("  [cyan][[1]][/] Structured — tables, panels, spinners [grey](default)[/]");
+AnsiConsole.MarkupLine("  [cyan][[2]][/] Minimal    — rule-separated turns");
+AnsiConsole.MarkupLine("  [cyan][[3]][/] Panels     — bordered panel per message");
+AnsiConsole.Markup("[grey]Choice [[1]]:[/] ");
+
+try
+{
+    var deadline = DateTime.UtcNow.AddSeconds(2);
+    while (DateTime.UtcNow < deadline && !Console.KeyAvailable)
+        await Task.Delay(100);
+
+    if (Console.KeyAvailable)
+    {
+        var key = Console.ReadKey(intercept: true);
+        style = key.KeyChar switch
+        {
+            '2' => UiStyle.Minimal,
+            '3' => UiStyle.Panels,
+            _   => UiStyle.Structured
+        };
+    }
+}
+catch (OperationCanceledException) { /* timeout — keep default */ }
+
+AnsiConsole.MarkupLine($"[green]{style}[/]\n");
+// ─────────────────────────────────────────────────────────────────────────────
 
 IChatClient chatClient = CreateChatClient(configuration)
     .AsBuilder()
     .UseFunctionInvocation()
     .Build();
 
-var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList());
+var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList(), style);
 await agent.RunAsync();
 
 static IChatClient CreateChatClient(IConfiguration configuration)

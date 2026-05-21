@@ -1,0 +1,54 @@
+<h2>Design — Section 3: Files &amp; Architecture</h2>
+<p class="subtitle">Complete picture of what changes and what stays the same</p>
+
+<div class="section">
+  <h3>Files changed</h3>
+  <ul>
+    <li><strong>HrMcp.Agent.csproj</strong> — add <code>Spectre.Console 0.49.*</code></li>
+    <li><strong>HrAgent.cs</strong> — add <code>UiStyle</code> enum, style constructor param, 3 private render helpers, tool call spinner, switch on style in RunAsync</li>
+    <li><strong>Program.cs</strong> — add startup style picker (prompt + 2s auto-select countdown) before constructing HrAgent</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h3>HrAgent.cs structure</h3>
+  <div style="background:#1a1a2e;padding:14px;font-family:monospace;font-size:11px;color:#e0e0e0;border-radius:6px;line-height:1.8">
+    <div style="color:#aaa">// new enum (top of file)</div>
+    <div><span style="color:#4fc3f7">public enum</span> <span style="color:#ffb74d">UiStyle</span> { Structured, Minimal, Panels }</div>
+    <br>
+    <div style="color:#aaa">// constructor gains style param</div>
+    <div><span style="color:#4fc3f7">public sealed class</span> HrAgent(IChatClient chatClient, IList&lt;AITool&gt; tools,</div>
+    <div style="padding-left:20px"><span style="color:#ffb74d">UiStyle</span> style = UiStyle.Structured)</div>
+    <br>
+    <div style="color:#aaa">// RunAsync — spinner wraps GetResponseAsync</div>
+    <div><span style="color:#a5d6a7">AnsiConsole.Status().Start</span>(<span style="color:#ce9178">"Calling tool…"</span>, ctx =&gt; ...)</div>
+    <br>
+    <div style="color:#aaa">// 3 private helpers</div>
+    <div><span style="color:#4fc3f7">private void</span> <span style="color:#dcdcaa">RenderUserPrompt</span>()</div>
+    <div><span style="color:#4fc3f7">private void</span> <span style="color:#dcdcaa">RenderToolCall</span>(<span style="color:#4fc3f7">string</span> name)</div>
+    <div><span style="color:#4fc3f7">private void</span> <span style="color:#dcdcaa">RenderResponse</span>(<span style="color:#4fc3f7">string</span> text)</div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Program.cs style picker</h3>
+  <div style="background:#1a1a2e;padding:14px;font-family:monospace;font-size:11px;color:#e0e0e0;border-radius:6px;line-height:1.8">
+    <div style="color:#aaa">// after MCP connect, before new HrAgent()</div>
+    <div><span style="color:#4fc3f7">var</span> style = UiStyle.Structured; <span style="color:#aaa">// default</span></div>
+    <div><span style="color:#a5d6a7">AnsiConsole.Status</span>().Start(<span style="color:#ce9178">"Auto-selecting style 1 in 2s…"</span>, ctx => {</div>
+    <div style="padding-left:20px"><span style="color:#aaa">// 2s countdown — if Console.KeyAvailable, prompt user</span></div>
+    <div>});</div>
+    <div><span style="color:#4fc3f7">var</span> agent = <span style="color:#4fc3f7">new</span> HrAgent(chatClient, mcpTools, style);</div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Out of scope</h3>
+  <ul>
+    <li>Serilog integration (separate plan already written)</li>
+    <li>Streaming LLM responses (Spectre Live display) — future enhancement</li>
+    <li>ConsoleRenderer abstraction — YAGNI, add later if needed</li>
+  </ul>
+</div>
+
+<p class="subtitle">Does this architecture look right?</p>

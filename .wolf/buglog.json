@@ -603,6 +603,54 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-21T11:21:19.074Z"
+    },
+    {
+      "id": "bug-038",
+      "timestamp": "2026-05-21T14:46:36.993Z",
+      "error_message": "Wrong reference: MediumAquamarine3 should be MediumAquamarine",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Used \"MediumAquamarine3\" instead of \"MediumAquamarine\"",
+      "fix": "Changed MediumAquamarine3 → MediumAquamarine",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-21T14:47:34.752Z"
+    },
+    {
+      "id": "bug-039",
+      "timestamp": "2026-05-21T14:50:26.575Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-21T14:50:26.575Z"
+    },
+    {
+      "id": "bug-040",
+      "timestamp": "2026-05-21T14:52:27.962Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-21T14:52:27.962Z"
     }
   ]
 }
