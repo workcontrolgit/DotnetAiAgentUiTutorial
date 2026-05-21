@@ -72,13 +72,21 @@ The server needs `OllamaApiClient` to power the `WriteJobDescription` tool upgra
 
 Create `src/HrMcp.Agent/HrAgent.cs`. This class owns the conversation loop and keeps message history. It takes `IChatClient` and the list of MCP tools as constructor parameters — both are wired in `Program.cs`.
 
+> **Package dependency:** Add `Spectre.Console 0.49.*` to `HrMcp.Agent.csproj`:
+> ```xml
+> <PackageReference Include="Spectre.Console" Version="0.49.*" />
+> ```
+
 ```csharp
 // src/HrMcp.Agent/HrAgent.cs
 using Microsoft.Extensions.AI;
+using Spectre.Console;
 
 namespace HrMcp.Agent;
 
-public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools)
+public enum UiStyle { Structured, Minimal, Panels }
+
+public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle style = UiStyle.Structured)
 {
     private const string SystemPrompt = """
         You are an HR assistant for a U.S. federal agency. You help users explore open job
@@ -90,6 +98,10 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools)
           GetPositionById for full detail on a specific role.
         - When asked to write or generate a job description, call WriteJobDescription with the
           position ID — do not write one yourself.
+        - When asked to display, show, render, or draft a position "in USAJobs format", "as a
+          USAJobs page", or "like USAJobs", call RenderPositionAsUsaJobsHtml with the position ID.
+          The tool saves the file and returns its path — tell the user the file path and that they
+          can open it in a browser to see the USAJobs-style layout.
         - Present pay ranges in a readable format (e.g., "$85,000 – $110,000 per year").
         - Keep answers concise; offer to go deeper when the user wants more detail.
         """;
@@ -101,27 +113,109 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools)
 
     public async Task RunAsync(CancellationToken ct = default)
     {
-        Console.WriteLine("HR Assistant ready. Ask about open positions, organizations, or job descriptions.");
-        Console.WriteLine("Type 'exit' to quit.\n");
+        RenderWelcome();
 
         while (!ct.IsCancellationRequested)
         {
-            Console.Write("You: ");
-            var input = Console.ReadLine();
+            var input = RenderUserPrompt();
 
             if (string.IsNullOrWhiteSpace(input)) continue;
             if (input.Equals("exit", StringComparison.OrdinalIgnoreCase)) break;
 
             _history.Add(new ChatMessage(ChatRole.User, input));
 
-            var response = await chatClient.GetResponseAsync(
-                _history,
-                new ChatOptions { Tools = tools },
-                ct);
+            ChatResponse response = default!;
+            Exception? spinnerException = null;
+            AnsiConsole.Status()
+                .Spinner(Spinner.Known.Dots)
+                .SpinnerStyle(Style.Parse("blue"))
+                .Start("[blue]Thinking…[/]", _ =>
+                {
+                    try
+                    {
+                        response = chatClient.GetResponseAsync(
+                            _history,
+                            new ChatOptions { Tools = tools },
+                            ct).GetAwaiter().GetResult();
+                    }
+                    catch (Exception ex) { spinnerException = ex; }
+                });
+            if (spinnerException is not null)
+                System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(spinnerException).Throw();
 
             _history.AddMessages(response);
+            RenderResponse(response.Text ?? string.Empty);
+        }
+    }
 
-            Console.WriteLine($"\nAssistant: {response.Text}\n");
+    private void RenderWelcome()
+    {
+        switch (style)
+        {
+            case UiStyle.Structured:
+            default:
+                AnsiConsole.Write(new Rule("[bold cyan]HR Assistant[/]").RuleStyle("cyan").LeftJustified());
+                AnsiConsole.MarkupLine("[grey]Ask about open positions, organizations, or job descriptions. Type [bold]exit[/] to quit.[/]\n");
+                break;
+            case UiStyle.Minimal:
+                AnsiConsole.MarkupLine("[teal]HR Assistant ready.[/] Ask about open positions, organizations, or job descriptions.");
+                AnsiConsole.MarkupLine("[grey]Type [bold]exit[/] to quit.[/]\n");
+                break;
+            case UiStyle.Panels:
+                AnsiConsole.Write(
+                    new Panel("[bold]HR Assistant[/]\n[grey]Ask about open positions, organizations, or job descriptions.[/]")
+                        .Header("[cyan]🤖 Ready[/]")
+                        .BorderColor(Color.Cyan1)
+                        .Padding(1, 0));
+                AnsiConsole.MarkupLine("[grey]Type [bold]exit[/] to quit.[/]\n");
+                break;
+        }
+    }
+
+    private string RenderUserPrompt()
+    {
+        switch (style)
+        {
+            case UiStyle.Structured:
+            default:
+                AnsiConsole.Markup("[bold yellow]You ›[/] ");
+                return Console.ReadLine() ?? string.Empty;
+            case UiStyle.Minimal:
+                AnsiConsole.Write(new Rule("[bold yellow]You[/]").RuleStyle("grey").LeftJustified());
+                return Console.ReadLine() ?? string.Empty;
+            case UiStyle.Panels:
+                return AnsiConsole.Ask<string>("[bold yellow]You[/]");
+        }
+    }
+
+    private void RenderResponse(string text)
+    {
+        switch (style)
+        {
+            case UiStyle.Structured:
+            default:
+                AnsiConsole.MarkupLine("\n[bold green]Assistant ›[/]");
+                AnsiConsole.Write(new Markup(Markup.Escape(text)));
+                AnsiConsole.WriteLine();
+                AnsiConsole.Write(new Rule().RuleStyle("grey"));
+                AnsiConsole.WriteLine();
+                break;
+            case UiStyle.Minimal:
+                AnsiConsole.Write(new Rule("[bold green]Assistant[/]").RuleStyle("grey").LeftJustified());
+                AnsiConsole.Write(
+                    new Panel(new Markup(Markup.Escape(text)))
+                        .BorderColor(Color.Teal)
+                        .Padding(1, 0));
+                AnsiConsole.WriteLine();
+                break;
+            case UiStyle.Panels:
+                AnsiConsole.Write(
+                    new Panel(new Markup(Markup.Escape(text)))
+                        .Header("[bold green]ASSISTANT[/]")
+                        .BorderColor(Color.Aquamarine3)
+                        .Padding(1, 0));
+                AnsiConsole.WriteLine();
+                break;
         }
     }
 }
@@ -141,9 +235,17 @@ Design notes:
 ```csharp
 // src/HrMcp.Agent/Program.cs
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Configuration;
 using ModelContextProtocol.Client;
 using OllamaSharp;
 using HrMcp.Agent;
+using Spectre.Console;
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(AppContext.BaseDirectory)
+    .AddJsonFile("appsettings.json", optional: false)
+    .AddEnvironmentVariables()
+    .Build();
 
 // Connect to the MCP server (must be running on http://localhost:5100)
 await using var mcpClient = await McpClient.CreateAsync(
@@ -153,18 +255,38 @@ await using var mcpClient = await McpClient.CreateAsync(
     }));
 
 var mcpTools = await mcpClient.ListToolsAsync();
-Console.WriteLine($"Connected. Tools: {string.Join(", ", mcpTools.Select(t => t.Name))}\n");
+AnsiConsole.MarkupLine($"[green]✔[/] Connected · Tools: [grey]{string.Join(", ", mcpTools.Select(t => t.Name))}[/]\n");
 
-// OllamaApiClient implements IChatClient natively.
-// Cast to IChatClient explicitly — OllamaApiClient also implements IEmbeddingGenerator,
-// so the cast resolves the AsBuilder() overload ambiguity.
+// ── Style picker (2-second auto-select, defaults to Structured) ───────────────
+var style = UiStyle.Structured;
+AnsiConsole.MarkupLine("[bold]Select UI style:[/]");
+AnsiConsole.MarkupLine("  [cyan][[1]][/] Structured — tables, panels, spinners [grey](default)[/]");
+AnsiConsole.MarkupLine("  [cyan][[2]][/] Minimal    — rule-separated turns");
+AnsiConsole.MarkupLine("  [cyan][[3]][/] Panels     — bordered panel per message");
+AnsiConsole.Markup("[grey]Choice [[1]]:[/] ");
+
+try
+{
+    var deadline = DateTime.UtcNow.AddSeconds(2);
+    while (DateTime.UtcNow < deadline && !Console.KeyAvailable)
+        await Task.Delay(100);
+    if (Console.KeyAvailable)
+    {
+        var key = Console.ReadKey(intercept: true);
+        style = key.KeyChar switch { '2' => UiStyle.Minimal, '3' => UiStyle.Panels, _ => UiStyle.Structured };
+    }
+}
+catch (OperationCanceledException) { }
+AnsiConsole.MarkupLine($"[green]{style}[/]\n");
+// ─────────────────────────────────────────────────────────────────────────────
+
 IChatClient chatClient = ((IChatClient)new OllamaApiClient(
         new Uri("http://localhost:11434"), "llama3.2"))
     .AsBuilder()
     .UseFunctionInvocation()
     .Build();
 
-var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList());
+var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList(), style);
 await agent.RunAsync();
 ```
 
@@ -339,67 +461,19 @@ In a second terminal, start the agent:
 dotnet run --project src/HrMcp.Agent
 ```
 
-You should see:
+You should see the MCP server log in the first terminal:
 
-```text
-Connected. Tools: GetOpenPositions, GetPositionById, GetPositionsByOrganization, GetHiringOrganizations, WriteJobDescription
+![MCP server listening on http://localhost:5100](screenshots/part-4-screenshot-1-mcp-server.png)
 
-HR Assistant ready. Ask about open positions, organizations, or job descriptions.
-Type 'exit' to quit.
+And in the agent terminal — a style picker with a 2-second auto-select defaulting to **Structured**:
 
-You: 
-```
+![Agent startup showing style picker](screenshots/part-4-screenshot-2-agent-startup.png)
 
 ### Sample conversation
 
-```text
-You: What organizations are hiring right now?
-Assistant: Here are the federal hiring organizations currently in the database:
+The agent uses colored labels, a spinner while calling MCP tools, and a horizontal rule after each response:
 
-- **U.S. Citizenship and Immigration Services** (Dept. of Homeland Security) — 4 open positions
-- **Transportation Security Administration** (Dept. of Homeland Security) — 3 open positions
-- **U.S. Coast Guard** (Dept. of Homeland Security) — 2 open positions
-- **Federal Emergency Management Agency** (Dept. of Homeland Security) — 1 open position
-
-Would you like to see specific positions for any of these organizations?
-
-You: Show me the IT positions at USCIS
-
-Assistant: I found 2 IT positions at USCIS:
-
-1. **IT Specialist (SYSADMIN)** — GS-2210-11/12, $73,000–$110,000/yr, Washington DC, Telework eligible
-2. **IT Specialist (NETWORK)** — GS-2210-09/11, $60,000–$85,000/yr, National Capital Region, Telework not eligible
-
-Both require a Secret security clearance. Would you like full details on either, or shall I write a job announcement for one of them?
-
-You: Write a job description for the SYSADMIN role, position ID 1
-
-Assistant: [Calls WriteJobDescription(positionId: 1) — Ollama generates narrative]
-
-## IT Specialist (SYSADMIN)
-
-### Summary
-U.S. Citizenship and Immigration Services (USCIS), within the Department of Homeland Security,
-is seeking a highly skilled IT Specialist (Systems Administration) to join our technology team.
-In this role, you will be responsible for maintaining the integrity and availability of critical
-government systems that support the nationapos;s immigration processing mission...
-
-### Duties
-- Administer and maintain Windows Server environments supporting mission-critical applications
-- Monitor system performance, implement patches, and coordinate planned maintenance windows
-- Collaborate with security teams to ensure systems meet NIST 800-53 control requirements
-- Document configurations, change procedures, and incident responses per agency standards
-...
-
-### Qualifications Required
-Applicants must have one year of specialized experience equivalent to at least the GS-10 level...
-
-### How to Apply
-Apply through USAJOBS at www.usajobs.gov. Submit your resume, transcripts, and SF-50 if applicable.
-```
-
-The narrative is generated by llama3.2 running locally through Ollama. Each run will produce
-slightly different output — that is the nature of a language model.
+![Sample conversation in Structured style](screenshots/part-4-screenshot-3-conversation.png)
 
 ---
 
