@@ -193,6 +193,7 @@ using OllamaSharp;
 using HrMcp.Agent;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Spectre.Console;
 
 // --- Token acquisition (client credentials flow) ---
 // The HttpClientHandler below trusts the self-signed certificate used by the
@@ -218,7 +219,7 @@ tokenResponse.EnsureSuccessStatusCode();
 
 var tokenDoc    = await tokenResponse.Content.ReadFromJsonAsync<JsonElement>();
 var accessToken = tokenDoc.GetProperty("access_token").GetString()!;
-Console.WriteLine("Token acquired.\n");
+AnsiConsole.MarkupLine("[green]✔[/] Token acquired.\n");
 
 // --- Connect to MCP server with bearer token ---
 await using var mcpClient = await McpClient.CreateAsync(
@@ -232,7 +233,7 @@ await using var mcpClient = await McpClient.CreateAsync(
     }));
 
 var mcpTools = await mcpClient.ListToolsAsync();
-Console.WriteLine($"Connected. Tools: {string.Join(", ", mcpTools.Select(t => t.Name))}\n");
+AnsiConsole.MarkupLine($"[green]✔[/] Connected · Tools: [grey]{string.Join(", ", mcpTools.Select(t => t.Name))}[/]\n");
 
 IChatClient chatClient = ((IChatClient)new OllamaApiClient(
         new Uri("http://localhost:11434"), "llama3.2"))
@@ -240,7 +241,8 @@ IChatClient chatClient = ((IChatClient)new OllamaApiClient(
     .UseFunctionInvocation()
     .Build();
 
-var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList());
+// style is set by the startup picker in Program.cs (see Part 4 for full Program.cs)
+var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList(), UiStyle.Structured);
 await agent.RunAsync();
 ```
 
@@ -341,8 +343,14 @@ curl -i http://localhost:5100/mcp
 
 ```bash
 dotnet run --project src/HrMcp.Agent
-# Token acquired.
-# Connected. Tools: GetOpenPositions, WriteJobDescription, ...
+# ✔ Token acquired.
+# ✔ Connected · Tools: GetOpenPositions, WriteJobDescription, ...
+#
+# Select UI style:
+#   [1] Structured — tables, panels, spinners (default)
+#   [2] Minimal    — rule-separated turns
+#   [3] Panels     — bordered panel per message
+# Choice [1]: Structured
 ```
 
 ---

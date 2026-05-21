@@ -4,7 +4,7 @@
 
 ## About This Article
 
-This is a companion guide to the blog series **[Series 1: AI Agents & MCP with .NET 10](https://medium.com/scrum-and-coke/ai-agents-mcp-with-net-10-preface-64314313e3e7)**.
+This is a companion guide to the blog series **[AI Agents & MCP with .NET 10](https://medium.com/scrum-and-coke/ai-agents-mcp-with-net-10-preface-64314313e3e7)**.
 
 The series walks through building a production-ready AI-enabled backend using .NET 10 and Clean Architecture — from a federal HR domain data model through a Model Context Protocol (MCP) server, an AI agent using `Microsoft.Extensions.AI`, Claude Desktop integration, and OIDC security. All code is in the [workcontrolgit/DotnetAiAgentMcp](https://github.com/workcontrolgit/DotnetAiAgentMcp) GitHub repo.
 
