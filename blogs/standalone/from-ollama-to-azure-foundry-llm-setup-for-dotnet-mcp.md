@@ -1,5 +1,19 @@
 # From Ollama to Azure Foundry: LLM Setup for .NET MCP
 
+![Cover](screenshots/olamatoazure-cover.png)
+
+## About This Article
+
+This is a companion guide to the blog series **[Series 1: AI Agents & MCP with .NET 10](https://medium.com/scrum-and-coke/ai-agents-mcp-with-net-10-preface-64314313e3e7)**.
+
+The series walks through building a production-ready AI-enabled backend using .NET 10 and Clean Architecture — from a federal HR domain data model through a Model Context Protocol (MCP) server, an AI agent using `Microsoft.Extensions.AI`, Claude Desktop integration, and OIDC security. All code is in the [workcontrolgit/DotnetAiAgentMcp](https://github.com/workcontrolgit/DotnetAiAgentMcp) GitHub repo.
+
+**The series uses Ollama with llama3.2 as the default LLM** — a local, zero-cost setup that works without any cloud account. This article is for readers who have followed the series (or cloned the repo) and want to swap from local Ollama to Azure Foundry backed Azure OpenAI for cloud-hosted inference.
+
+You do not need to have read the full series. If you have the repo cloned and running locally, this guide is self-contained.
+
+---
+
 This project already supports two LLM providers:
 
 - `Ollama` for local development
@@ -15,13 +29,13 @@ This post shows how to move the project from local Ollama to Azure Foundry backe
 
 The Azure path is already wired into both runtime entry points:
 
-- [DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs](/C:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs)
-- [DotnetAiAgentMcp/src/HrMcp.McpServer/Program.cs](/C:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.McpServer/Program.cs)
+- [DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/src/HrMcp.Agent/Program.cs)
+- [DotnetAiAgentMcp/src/HrMcp.McpServer/Program.cs](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/src/HrMcp.McpServer/Program.cs)
 
 The Bicep files for provisioning the Azure OpenAI resource and model deployment are here:
 
-- [DotnetAiAgentMcp/infra/azure/main.bicep](/C:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/infra/azure/main.bicep)
-- [DotnetAiAgentMcp/infra/azure/main.parameters.json](/C:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/infra/azure/main.parameters.json)
+- [DotnetAiAgentMcp/infra/azure/main.bicep](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/infra/azure/main.bicep)
+- [DotnetAiAgentMcp/infra/azure/main.parameters.json](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/infra/azure/main.parameters.json)
 
 The current Bicep defaults in this repo are:
 
@@ -360,7 +374,7 @@ Before a team rollout, verify the actual current rate in the Azure pricing page 
 
 For this codebase, the cleanest setup path is:
 
-1. Use [DotnetAiAgentMcp/infra/azure/main.bicep](/C:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/infra/azure/main.bicep) to keep infrastructure repeatable.
+1. Use [DotnetAiAgentMcp/infra/azure/main.bicep](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/infra/azure/main.bicep) to keep infrastructure repeatable.
 2. Keep `deploymentName` aligned with the application setting `AI:AzureOpenAI:Deployment`.
 3. Store endpoint and key in `.NET user-secrets`, not in committed `appsettings.json`.
 4. Leave the Ollama section in place so local fallback remains easy.
@@ -371,8 +385,8 @@ That gives you a repeatable Azure Foundry setup without losing the local develop
 
 ## References
 
-- Repo Bicep: [DotnetAiAgentMcp/infra/azure/main.bicep](/C:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/infra/azure/main.bicep)
-- Repo parameters: [DotnetAiAgentMcp/infra/azure/main.parameters.json](/C:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/infra/azure/main.parameters.json)
+- Repo Bicep: [DotnetAiAgentMcp/infra/azure/main.bicep](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/infra/azure/main.bicep)
+- Repo parameters: [DotnetAiAgentMcp/infra/azure/main.parameters.json](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/infra/azure/main.parameters.json)
 - Azure OpenAI resource creation in Azure AI Foundry Models: https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/create-resource?tabs=portal
 - Azure CLI `az cognitiveservices account deployment`: https://learn.microsoft.com/en-us/cli/azure/cognitiveservices/account/deployment?view=azure-cli-latest
 - Azure OpenAI cost management guidance: https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/manage-costs
