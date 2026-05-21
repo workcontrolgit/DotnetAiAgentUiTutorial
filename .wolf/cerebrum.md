@@ -29,6 +29,8 @@
 
 ## Do-Not-Repeat
 
+- **[2026-05-21]** Spectre.Console 0.49.1 does NOT have `Color.MediumAquamarine3` or `Color.MediumAquamarine`. Use `Color.Aquamarine3` instead (closest match). Available aqua-family colors: `Aqua`, `Aquamarine3`, `Aquamarine1`, `Aquamarine1_1`, `MediumTurquoise`, `Teal`.
+
 - **[2026-04-26]** Do NOT use `Microsoft.Extensions.AI.Ollama` (`OllamaChatClient`). It is deprecated in GA. Use `OllamaSharp` (`OllamaApiClient`) instead.
 - **[2026-04-26]** Do NOT call `.AsBuilder()` directly on `new OllamaApiClient(...)` — ambiguous overload. Always cast: `((IChatClient)new OllamaApiClient(...)).AsBuilder()`.
 - **[2026-04-26]** Do NOT use `McpClientFactory` or `SseClientTransport` — removed in `ModelContextProtocol` 1.x. Use `McpClient.CreateAsync(new HttpClientTransport(...))`.

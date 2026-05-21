@@ -1,0 +1,327 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ATTORNEY-ADVISOR (GENERAL) – USAJOBS</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Source Sans Pro, Arial, sans-serif; font-size: 15px; color: #1b1b1b; background: #f0f0f0; }
+    a { color: #005ea2; text-decoration: underline; }
+
+    .topbar { background: #162e51; padding: 10px 24px; display: flex; align-items: center; gap: 24px; }
+    .topbar .logo { color: #fff; font-size: 22px; font-weight: 900; letter-spacing: -1px; }
+    .topbar .logo span { color: #e31c3d; }
+    .topbar nav { margin-left: auto; display: flex; gap: 20px; }
+    .topbar nav a { color: #a9aeb1; font-size: 13px; text-decoration: none; }
+
+    .job-header { background: #162e51; padding: 20px 24px 0; }
+    .job-header-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; }
+    .job-header h1 { color: #fff; font-size: 26px; font-weight: 700; }
+    .job-header .agency { color: #a9aeb1; font-size: 11px; text-transform: uppercase; margin-top: 4px; letter-spacing: .5px; }
+    .job-header .org { color: #dfe1e2; font-size: 13px; margin-top: 2px; }
+    .job-header-actions { display: flex; gap: 12px; margin-top: 4px; }
+    .job-header-actions button { background: none; border: none; color: #a9aeb1; font-size: 13px; cursor: pointer; }
+
+    .tabs-container { background: #fff; }
+    .tabs { max-width: 1100px; margin: 0 auto; }
+    .tabs ul { display: flex; list-style: none; padding: 0; overflow-x: auto; }
+    .tabs ul li a { display: block; padding: 12px 18px; font-size: 13px; color: #005ea2; text-decoration: none; white-space: nowrap; border-bottom: 3px solid transparent; }
+    .tabs ul li a:hover { border-bottom-color: #162e51; color: #162e51; font-weight: 600; }
+
+    .content-wrap { max-width: 1100px; margin: 24px auto; display: flex; gap: 24px; padding: 0 12px; }
+    .main { flex: 1 1 0; min-width: 0; }
+    .sidebar { width: 260px; flex-shrink: 0; }
+
+    .card { background: #fff; border: 1px solid #dfe1e2; border-radius: 4px; padding: 24px; margin-bottom: 20px; }
+    .card h2 { font-size: 20px; font-weight: 700; color: #1b1b1b; margin-bottom: 14px; }
+    .card h3 { font-size: 16px; font-weight: 700; margin: 16px 0 8px; }
+    .card p { margin-bottom: 10px; line-height: 1.6; }
+    .card ul, .card ol { padding-left: 20px; margin-bottom: 10px; }
+    .card ul li, .card ol li { margin-bottom: 6px; line-height: 1.6; }
+    .card strong { font-weight: 700; }
+    .formatted-text p { margin-bottom: 10px; line-height: 1.6; }
+    .formatted-text ul { padding-left: 20px; margin-bottom: 12px; }
+    .formatted-text ul li { margin-bottom: 6px; line-height: 1.6; }
+
+    .hiring-paths { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+    .hiring-path { display: flex; align-items: flex-start; gap: 10px; background: #f0f0f0; border-radius: 4px; padding: 12px 14px; width: calc(50% - 6px); }
+    .hiring-path h3 { font-size: 14px; margin: 0 0 2px; color: #005ea2; }
+    .hiring-path p { font-size: 12px; margin: 0; color: #565c65; }
+
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .section-header h2 { margin-bottom: 0; }
+    .help-link { font-size: 12px; color: #005ea2; }
+
+    .overview-card { background: #fff; border: 1px solid #dfe1e2; border-radius: 4px; padding: 20px; }
+    .overview-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+    .status-badge { display: inline-block; color: #fff; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 3px; margin-bottom: 14px; }
+    .status-badge.open { background: #00a91c; }
+    .status-badge.closed { background: #b50909; }
+    .overview-row { margin-bottom: 12px; }
+    .overview-row .label { font-size: 12px; font-weight: 700; color: #1b1b1b; margin-bottom: 2px; }
+    .overview-row .value { font-size: 14px; color: #1b1b1b; }
+    .overview-divider { border: none; border-top: 1px solid #dfe1e2; margin: 12px 0; }
+    .dates-warning { color: #b50909; font-size: 12px; }
+
+    .contact-box { background: #f0f0f0; border-radius: 4px; padding: 16px; margin-top: 12px; }
+    .contact-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; }
+    .contact-label { font-weight: 700; margin-bottom: 2px; font-size: 12px; }
+
+    .fair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .fair-grid a { font-size: 13px; }
+
+    .expand-btn { border: 1px solid #005ea2; color: #005ea2; background: #fff; font-size: 13px; padding: 6px 14px; border-radius: 3px; cursor: pointer; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="logo"><span>USA</span>JOBS</div>
+    <nav>
+      <a href="#">Sign in</a>
+      <a href="#">Events</a>
+      <a href="#">Help Center</a>
+      <a href="#">Search</a>
+    </nav>
+  </div>
+
+  <div class="job-header">
+    <div class="job-header-inner">
+      <div>
+        <h1>ATTORNEY-ADVISOR (GENERAL)</h1>
+        <div class="agency">Department of State</div>
+        <div class="org">Department of State - Agency Wide</div>
+      </div>
+      <div class="job-header-actions">
+        <button>🖨 Print</button>
+        <button>↗ Share</button>
+        <button>☆ Save</button>
+      </div>
+    </div>
+    <div class="tabs-container">
+      <div class="tabs">
+        <ul>
+          <li><a href="#summary">Summary</a></li>
+          <li><a href="#open-to">This job is open to</a></li>
+          <li><a href="#duties">Duties</a></li>
+          <li><a href="#requirements">Requirements</a></li>
+          <li><a href="#evaluation">How you will be evaluated</a></li>
+          <li><a href="#documents">Required documents</a></li>
+          <li><a href="#how-to-apply">How to apply</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrap">
+    <div class="main">
+
+      <div class="card" id="summary">
+        <h2>Summary</h2>
+        <div class="formatted-text"><ul><li>This position is in the Office of General Counsel (OGC).</li><li>The OGC provides legal advice to the Inspector General, senior staff, and others in OIG on the full range of activities within OIG, including inspections, investigations and audits.</li><li>OGC is responsible for managing OIG&#39;s Freedom of Information Act (FOIA) and Privacy Act programs.</li><li>The Counsel to the Inspector General reports to the Inspector General and is independent from the State Department&#39;s Legal Adviser and USAGM&#39;s General Counsel.</li></ul></div>
+        <br/>
+        <button class="expand-btn">Learn more about this agency</button>
+      </div>
+
+      <div class="card" id="open-to">
+        <div class="section-header">
+          <h2>This job is open to</h2>
+          <a href="#" class="help-link">ⓘ Help</a>
+        </div>
+        <div class="hiring-paths"><div class="hiring-path">
+  <div style="font-size:22px">🌐</div>
+  <div><h3>The public</h3><p>U.S. Citizens, Nationals or those who owe allegiance to the U.S.</p></div>
+</div></div>
+      </div>
+
+      <div class="card" id="duties">
+        <div class="section-header">
+          <h2>Duties</h2>
+          <a href="#" class="help-link">ⓘ Help</a>
+        </div>
+        <div class="formatted-text"><ul><li>This position serves as an Attorney-Advisor (General) and provides analysis, research, and guidance to ensure that the OIG has considered the legislative and regulatory requirements and implications applicable to the various activities.</li><li>The duties of the Attorney Advisor GS-0905-15: Handles all aspects of personnel and employment law matters.</li><li>Analyzes and provides cogent and concise verbal and written legal counsel, advice, recommendations, and reviews on a variety of issues of law relevant to (1) general Office of Inspector General operations (e.g., HR, IT, Procurement, Appropriations, Ethics, Financial Disclosure, and other areas) and (2) to particular Office of Inspector General work products such as reports of audits, investigations, inspections, special projects and evaluations.</li><li>Reviews Office of Inspector General audit, evaluation, investigation, inspection and other review reports for legal sufficiency, which includes ensuring that any sensitive information is properly marked and withheld in accordance with the law.</li><li>Handles litigation; drafts and reviews agreements, subpoenas; provides legal support to criminal and civil investigations, and conducts ethics, independence, and financial disclosure reviews.</li><li>Advises on, reviews, and responds to Freedom of Information Act (FOIA) and Privacy Act requests, appeals, and litigation.</li></ul></div>
+      </div>
+
+      <div class="card" id="requirements">
+        <div class="section-header">
+          <h2>Requirements</h2>
+          <a href="#" class="help-link">ⓘ Help</a>
+        </div>
+        <h3>Conditions of Employment</h3>
+        <div class="formatted-text"><p>N/A</p></div>
+        <h3>Qualifications</h3>
+        <div class="formatted-text"><p>A LL.B or J.D. is a requirement for this position. If you do not submit sufficient academic documentation necessary to demonstrate that you meet the eligibility and minimum qualification requirements described in this announcement, your application will be deemed incomplete, and you will be ineligible for further consideration for this vacancy. Education must be accredited by an accrediting institution recognized by the U.S. Department of Education in order for it to be credited towards qualifications; applicant&#39;s resumes and supporting documentation should only reflect education received from schools accredited by such institutions. Applicants can verify accreditation at the following Website: https://ope.ed.gov/dapip/#/home. Education completed in foreign colleges or universities may be used to meet the education requirements if you can show that the foreign education is comparable to that received in an accredited educational institution in the United States. It is your responsibility to provide such evidence when applying. For a list of accredited organizations recognized as specializing in interpretation of foreign education credentials, visit: NACES - National Association of Credential Evaluation Services.</p><p>This job is being filled under a Schedule A hiring authority 5 C.F.R. &#167; 213.3102 and is excepted from the competitive civil service. You will be evaluated and deemed either eligible or ineligible based on the relevance and quality of your experience and education, bar membership, and desired qualifications described above. These positions are not covered by the usual civil service hiring procedures. There is no numerical rating system through which to apply veterans&#39; preference. All eligible applicants will be further evaluated by subject-matter experts. Your resume will be referred to the selecting official if you have submitted a complete application package to include resume, bar membership details, and any applicable transcripts. This does not mean you are considered qualified for the position. A qualification analysis will be conducted to ensure the selectee meets all requirements, including education and minimum qualifications listed on the vacancy announcement. A complete application package is required to be considered qualified and eligible for selection. Please review the &quot;Requirements&quot; section of the vacancy announcement to understand the list of required documents for a complete application package. Additional information including a writing sample may be requested later in the recruitment process.</p></div>
+        <h3>Education</h3>
+        <div class="formatted-text"><ul><li>A LL.B or J.D.</li><li>is a requirement for this position.</li><li>If you do not submit sufficient academic documentation necessary to demonstrate that you meet the eligibility and minimum qualification requirements described in this announcement, your application will be deemed incomplete, and you will be ineligible for further consideration for this vacancy.</li><li>Education must be accredited by an accrediting institution recognized by the U.S.</li><li>Department of Education in order for it to be credited towards qualifications; applicant&#39;s resumes and supporting documentation should only reflect education received from schools accredited by such institutions.</li><li>Applicants can verify accreditation at the following Website: https://ope.ed.gov/dapip/#/home.</li><li>Education completed in foreign colleges or universities may be used to meet the education requirements if you can show that the foreign education is comparable to that received in an accredited educational institution in the United States.</li><li>It is your responsibility to provide such evidence when applying.</li><li>For a list of accredited organizations recognized as specializing in interpretation of foreign education credentials, visit: NACES - National Association of Credential Evaluation Services.</li></ul></div>
+        <h3>Additional Information</h3>
+        <div class="formatted-text"><ul><li>This position is in the Excepted Service and does not confer competitive status.</li><li>Acceptance of an excepted service appointment from applicants in the competitive service will require a written statement of understanding when voluntarily leaving the competitive service.</li><li>Merit promotion procedures do not apply.</li></ul></div>
+      </div>
+
+      <div class="card" id="evaluation">
+        <h2>How you will be evaluated</h2>
+        <div class="formatted-text"><ul><li>This job is being filled under a Schedule A hiring authority 5 C.F.R.</li><li>&#167; 213.3102 and is excepted from the competitive civil service.</li><li>You will be evaluated and deemed either eligible or ineligible based on the relevance and quality of your experience and education, bar membership, and desired qualifications described above.</li><li>These positions are not covered by the usual civil service hiring procedures.</li><li>There is no numerical rating system through which to apply veterans&#39; preference.</li><li>All eligible applicants will be further evaluated by subject-matter experts.</li><li>Your resume will be referred to the selecting official if you have submitted a complete application package to include resume, bar membership details, and any applicable transcripts.</li><li>This does not mean you are considered qualified for the position.</li><li>A qualification analysis will be conducted to ensure the selectee meets all requirements, including education and minimum qualifications listed on the vacancy announcement.</li><li>A complete application package is required to be considered qualified and eligible for selection.</li><li>Please review the &quot;Requirements&quot; section of the vacancy announcement to understand the list of required documents for a complete application package.</li><li>Additional information including a writing sample may be requested later in the recruitment process.</li></ul></div>
+      </div>
+
+      <div class="card" id="documents">
+        <div class="section-header">
+          <h2>Required Documents</h2>
+          <a href="#" class="help-link">ⓘ Help</a>
+        </div>
+        <div class="formatted-text"><p>All required documents listed below, that are applicable to you, must be submitted by 11:59 Eastern Time (ET) on the closing date 05/26/2026of this announcement.</p><h3>Note</h3><ul><li>This announcement may be extended at any time without notice and does not indicate/imply a determination on applications has been made.</li><li>Resume - All applicants are required to submit a resume limited to two (2) pages showing all relevant experience.</li><li>Your resume must address your technical qualifications for the position, and it may not exceed two (2) pages.</li><li>Your 2-page (or less) resume must be in PDF format, with no smaller than a 1&quot; margin and no smaller than a 10-point font.</li><li>If you submit a resume that exceeds the two-page limit and/or does not meet the margin or font limitations stated herein, you will immediately be deemed ineligible for this position and will receive no further consideration.</li><li>Transcripts - you must submit a copy of your college and law transcript(s) from an accredited college and law school with your application.</li><li>If selected, an official/sealed college/law transcript(s) will be required to verify education prior to employment.</li><li>Proof of bar membership - you must submit proof of bar membership from any state or territory of the United States, the District of Columbia, or the Commonwealth of Puerto Rico with your application.</li><li>Current Federal employees - Most recent SF-50 &quot;Notification of Personnel Action&quot; showing you are/were in the competitive service and the highest grade held.</li><li>It is recommended you provide a SF-50 within the last 52 weeks before the closing date of this JOA for current federal employees.</li><li>Veterans&#39; Preference Documentation, if applicable.</li><li>Veterans&#39; preference does not apply to this vacancy or as an Attorney Appointment within the Excepted Service.</li><li>While there is no formal rating system for applying veterans&#39; preference to attorney appointments in the excepted service, the Department of State considers veterans&#39; preference eligibility a positive factor in the hiring process.</li><li>If claiming veteran&#39;s preference, you must indicate the type of veteran&#39;s preference you are claiming on your resume.</li><li>Any supporting documentation received from veterans will be retained to document veteran&#39;s status if selected.</li><li>To claim 5-point preference, submit a copy of your DD-214 Certificate of Release or Discharge from Active Duty.</li><li>To claim 10-point preference, submit all required documentation outlined on the SF-15 (Application for 10-Point Veteran Preference) to support your claim (e.g., DD-214, official statement from the Department of Veterans Affairs, etc.).</li><li>If we cannot verify your 10-point preference claim, your application will be reviewed for 5-point preference.</li><li>To claim 10-point derived preference (i.e., spouses, widows, widowers or mothers of veterans), submit a completed SF-15 and all required documentation listed on the SF-15 to support your claim.</li><li>To claim 0-point Sole Survivorship preference, submit a copy of your DD-214 or another form of official documentation showing that your discharge or release from active duty occurred on or after August 29, 2008 and was based on a sole survivorship discharge.</li><li>For all preference claims: DD-214 Member 4 copies are preferred and must show the dates of service, type of discharge, and any qualifying service campaign medals.</li><li>If you are currently on active duty and applying based on eligibility under the Veterans Opportunity to Work (VOW) Act, you must provide a certification on letterhead from your military branch which contains your military service dates, expected date of discharge or release, and the character of service to show that your military service was performed under honorable conditions.</li><li>The expected date of discharge or release must be no later than 120 days after the certification is submitted for consideration for this vacancy announcement.</li><li>For more veterans&#39; preference information, visit the USAJOBS Help Center.</li></ul></div>
+      </div>
+
+      <div class="card" id="how-to-apply">
+        <div class="section-header">
+          <h2>How to Apply</h2>
+          <a href="#" class="help-link">ⓘ Help</a>
+        </div>
+        <div class="formatted-text"><ul><li>USA Jobs offers a Help Page with information to assist you USA Jobs Help Center with a variety of topics.</li><li>Prepare your application in USAJOBS To start your application, click Apply and we&#39;ll walk you through the process to attach a resume and any required documents.</li><li>During the application process you can review, edit, delete, and update your information.</li><li>We&#39;ll automatically save your progress as you go, so you won&#39;t lose any changes.</li><li>You have until 11:59 p.m.</li><li>Eastern Time (ET) on the closing date 05/26/2026 of this announcement to complete the application process.</li><li>STEP 1: Select the &quot;Apply&quot; button and follow the instructions to register or sign into USAJOBS.</li><li>STEP 2: Submit your resume.</li><li>Please see the Required Documents section for specific information that should be outlined in your resume.</li><li>STEP 3: Complete the online assessment questionnaire.</li><li>STEP 4: Submit all required documentation applicable to you, as listed in the Required Documents section.</li><li>To preview the application questionnaire, click the following link https://apply.usastaffing.gov/ViewQuestionnaire/12948301.</li></ul></div>
+
+        <div class="contact-box">
+          <h3>Agency contact information</h3>
+          <div class="contact-name" style="margin-top:10px">👤 </div>
+          <div class="contact-grid">
+            <div>
+              <div class="contact-label">Phone</div>
+              <a href="tel:"></a>
+            </div>
+            <div>
+              <div class="contact-label">Email</div>
+              <a href="mailto:OIGHiring@stateoig.gov">OIGHiring@stateoig.gov</a>
+            </div>
+            <div style="grid-column:1/-1">
+              <div class="contact-label">Address</div>
+              
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:20px">Next steps</h3>
+        <div class="formatted-text"><ul><li>For the selected candidates who receive a tentative job offer, we will conduct a suitability review and/or security background investigation that generally takes an average of at least two to six months.</li><li>If further evaluation or interviews are required, you will be contacted.</li></ul></div>
+      </div>
+
+      <div class="card">
+        <h2>Fair and transparent</h2>
+        <p style="margin-bottom:14px">The Federal hiring process is set up to be fair and transparent. Please read the following guidance.</p>
+        <div class="fair-grid">
+          <a href="#">Criminal history inquiries</a>
+          <a href="#">Equal Employment Opportunity (EEO) Policy</a>
+          <a href="#">Financial suitability</a>
+          <a href="#">New employee probationary period</a>
+          <a href="#">Privacy Act</a>
+          <a href="#">Reasonable accommodation policy</a>
+          <a href="#">Selective Service</a>
+          <a href="#">Signature and false statements</a>
+          <a href="#">Social security number request</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sidebar">
+      <div class="overview-card">
+        <h2>Overview</h2>
+        <div class="status-badge open">Accepting applications</div>
+
+        <div class="overview-row">
+          <div class="label">Open &amp; closing dates</div>
+          <div class="value"><span class="dates-warning">⚠</span> 05/13/2026 to 05/26/2026</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Salary</div>
+          <div class="value">$169,279 – $197,200 per year</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Pay scale &amp; grade</div>
+          <div class="value">GS-15</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Location</div>
+          <div class="value">📍 Washington, District of Columbia<br/><small style="color:#565c65">1 vacancies</small></div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Remote job</div>
+          <div class="value">No</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Telework eligible</div>
+          <div class="value">Yes — Per Agency Policy</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Travel required</div>
+          <div class="value">NotRequired</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Relocation expenses reimbursed</div>
+          <div class="value">No</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Appointment type</div>
+          <div class="value">Temporary</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Work schedule</div>
+          <div class="value">FullTime</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Service</div>
+          <div class="value">Excepted</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Promotion potential</div>
+          <div class="value">15</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Job family (Series)</div>
+          <div class="value">0905 Attorney</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Supervisory status</div>
+          <div class="value">No</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Security clearance</div>
+          <div class="value">TopSecret</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Drug test</div>
+          <div class="value">No</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Trust determination process</div>
+          <div class="value">Credentialing<br/>Suitability/Fitness<br/>National security</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Announcement number</div>
+          <div class="value">DOS/OIG-26-12948301-DE</div>
+        </div>
+        <hr class="overview-divider"/>
+        <div class="overview-row">
+          <div class="label">Control number</div>
+          <div class="value">868968200</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

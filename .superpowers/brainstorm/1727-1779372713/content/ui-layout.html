@@ -1,0 +1,100 @@
+<h2>How should the HR Agent look?</h2>
+<p class="subtitle">Three approaches to using Spectre.Console in HrMcp.Agent. Each changes how the chat loop, tool calls, and responses are presented.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#1a1a2e;padding:16px;font-family:monospace;font-size:12px;color:#e0e0e0;border-radius:6px;line-height:1.7">
+        <div style="color:#4fc3f7;margin-bottom:8px">╔══════════════════════════════════╗</div>
+        <div style="color:#4fc3f7">║  🤖  HR Assistant  ·  MCP Ready  ║</div>
+        <div style="color:#4fc3f7;margin-bottom:12px">╚══════════════════════════════════╝</div>
+        <div style="color:#81c784">✔ Connected · Tools: GetOpenPositions, GetHiringOrgs...</div>
+        <div style="margin-top:12px;color:#ffb74d">You › </div>
+        <div style="color:#e0e0e0;margin-left:6px">What positions are open?</div>
+        <div style="margin-top:8px;color:#64b5f6">⠿ Calling MCP tool: GetOpenPositions...</div>
+        <div style="margin-top:8px;color:#a5d6a7">Assistant › </div>
+        <div style="color:#e0e0e0;margin-left:6px">Here are the open positions:</div>
+        <div style="margin-top:8px;border:1px solid #444;padding:6px;border-radius:4px">
+          <div style="color:#90caf9">┌─────────────────┬──────┬───────────────┐</div>
+          <div style="color:#90caf9">│ Title           │ GS   │ Salary        │</div>
+          <div style="color:#90caf9">├─────────────────┼──────┼───────────────┤</div>
+          <div style="color:#e0e0e0">│ IT Specialist   │ GS-12│ $85k – $110k  │</div>
+          <div style="color:#e0e0e0">│ HR Analyst      │ GS-11│ $72k – $94k   │</div>
+          <div style="color:#90caf9">└─────────────────┴──────┴───────────────┘</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Structured Chat + Tables</h3>
+      <p>Startup panel, spinner while MCP tools run, Spectre tables for position results, color-coded roles (You/Assistant). Highest visual impact. Best for demo and blog screenshots.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul><li>Visually impressive</li><li>Tables great for position data</li><li>Clear tool call status</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>More code changes</li><li>Table format depends on response shape</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#1a1a2e;padding:16px;font-family:monospace;font-size:12px;color:#e0e0e0;border-radius:6px;line-height:1.7">
+        <div style="color:#80cbc4;margin-bottom:8px">HR Assistant ready. Ask about open positions.</div>
+        <div style="color:#aaa;margin-bottom:8px">Type 'exit' to quit.</div>
+        <div style="margin-top:8px">
+          <span style="color:#ffb74d;font-weight:bold">You</span>
+          <span style="color:#555"> ────────────────────────────────</span>
+        </div>
+        <div style="color:#e0e0e0;padding:6px 0 6px 12px">What positions are open?</div>
+        <div style="color:#64b5f6;margin:6px 0">⠿ Calling GetOpenPositions…</div>
+        <div style="margin-top:4px">
+          <span style="color:#a5d6a7;font-weight:bold">Assistant</span>
+          <span style="color:#555"> ───────────────────────────</span>
+        </div>
+        <div style="border-left:3px solid #4db6ac;padding:6px 0 6px 10px;color:#e0e0e0;margin-top:4px">
+          There are 2 open positions:<br>
+          • IT Specialist (GS-12, $85k–$110k)<br>
+          • HR Analyst (GS-11, $72k–$94k)
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Rule-Separated Panels</h3>
+      <p>Horizontal rules between turns, colored speaker labels, spinner for tool calls, response text in a left-bordered panel. Clean and readable without heavy chrome.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul><li>Clean, minimal</li><li>Easy to implement</li><li>Scales well to long responses</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Less visual impact</li><li>No structured tables</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#1a1a2e;padding:16px;font-family:monospace;font-size:12px;color:#e0e0e0;border-radius:6px;line-height:1.7">
+        <div style="border:1px solid #4fc3f7;padding:8px;border-radius:4px;margin-bottom:10px">
+          <div style="color:#4fc3f7;font-weight:bold">🤖 HR Assistant</div>
+          <div style="color:#aaa;font-size:11px">Connected · 4 tools available</div>
+        </div>
+        <div style="border:1px solid #555;padding:8px;border-radius:4px;margin-bottom:6px">
+          <div style="color:#ffb74d;font-size:11px">YOU</div>
+          <div style="color:#e0e0e0">What positions are open?</div>
+        </div>
+        <div style="color:#64b5f6;margin:4px 0 4px 4px">⠿ GetOpenPositions</div>
+        <div style="border:1px solid #4db6ac;padding:8px;border-radius:4px">
+          <div style="color:#a5d6a7;font-size:11px">ASSISTANT</div>
+          <div style="color:#e0e0e0">There are 2 open positions:</div>
+          <div style="color:#e0e0e0">• IT Specialist (GS-12)</div>
+          <div style="color:#e0e0e0">• HR Analyst (GS-11)</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Full Panel Borders</h3>
+      <p>Each message (user and assistant) wrapped in a Spectre Panel with a colored border and role label. Chat-app style. Startup in a header panel. Tool calls shown inline.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul><li>Chat-app feel</li><li>Clear visual separation per turn</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Verbose for long sessions</li><li>More rendering overhead</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+</div>
