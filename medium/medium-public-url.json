@@ -68,6 +68,17 @@
   },
   {
     "series": "Standalone",
+    "part": "standalone-3",
+    "title": "From Ollama to Azure Foundry: LLM Setup for .NET MCP",
+    "editId": "6e7a2e06f64f",
+    "editUrl": "https://medium.com/p/6e7a2e06f64f/edit",
+    "draftUrl": "",
+    "status": "pending-review",
+    "publication": "Scrum and Coke",
+    "topics": ["Artificial Intelligence", "Dotnet", "Azure", "Programming", "Software Engineering"]
+  },
+  {
+    "series": "Standalone",
     "part": "standalone-2",
     "title": "Magnificent 7 MCP Tools Every .NET Developer Should Know (From Someone Who's Actually Used Them)",
     "editId": "316c7075971e",

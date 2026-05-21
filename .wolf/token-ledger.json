@@ -2,14 +2,14 @@
   "version": 1,
   "created_at": "2026-04-26T17:37:09.902Z",
   "lifetime": {
-    "total_tokens_estimated": 1051701,
-    "total_reads": 1368,
-    "total_writes": 1379,
-    "total_sessions": 59,
-    "anatomy_hits": 256,
-    "anatomy_misses": 1096,
-    "repeated_reads_blocked": 507,
-    "estimated_savings_vs_bare_cli": 572799
+    "total_tokens_estimated": 1080851,
+    "total_reads": 1485,
+    "total_writes": 1468,
+    "total_sessions": 61,
+    "anatomy_hits": 261,
+    "anatomy_misses": 1208,
+    "repeated_reads_blocked": 513,
+    "estimated_savings_vs_bare_cli": 573799
   },
   "sessions": [
     {
@@ -18903,6 +18903,1423 @@
         "writes_count": 3,
         "repeated_reads_blocked": 0,
         "anatomy_lookups": 2
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T10:46:00.118Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [],
+      "totals": {
+        "input_tokens_estimated": 0,
+        "output_tokens_estimated": 0,
+        "reads_count": 2,
+        "writes_count": 0,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 0
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T10:47:00.583Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [],
+      "totals": {
+        "input_tokens_estimated": 0,
+        "output_tokens_estimated": 0,
+        "reads_count": 2,
+        "writes_count": 0,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 0
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T10:48:01.735Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 0,
+        "output_tokens_estimated": 322,
+        "reads_count": 2,
+        "writes_count": 3,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 0
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T10:49:57.750Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 0,
+        "output_tokens_estimated": 640,
+        "reads_count": 4,
+        "writes_count": 4,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 0
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T10:51:07.986Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 197,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 0,
+        "output_tokens_estimated": 837,
+        "reads_count": 6,
+        "writes_count": 5,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 0
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T10:51:54.764Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-published-stories.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 197,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 0,
+        "output_tokens_estimated": 837,
+        "reads_count": 7,
+        "writes_count": 5,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 0
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T10:52:36.425Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-published-stories.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 197,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 50,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 0,
+        "output_tokens_estimated": 887,
+        "reads_count": 8,
+        "writes_count": 6,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 0
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T10:55:00.072Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-published-stories.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 197,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 50,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 0,
+        "output_tokens_estimated": 887,
+        "reads_count": 8,
+        "writes_count": 6,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 0
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T11:02:04.901Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-published-stories.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 197,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 50,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 0,
+        "output_tokens_estimated": 887,
+        "reads_count": 9,
+        "writes_count": 6,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 0
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T11:12:15.838Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-published-stories.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 197,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 50,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 0,
+        "output_tokens_estimated": 887,
+        "reads_count": 9,
+        "writes_count": 6,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 0
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T11:13:12.579Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-published-stories.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 0,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 197,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 50,
+          "action": "edit"
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 134,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 0,
+        "output_tokens_estimated": 1021,
+        "reads_count": 9,
+        "writes_count": 7,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 0
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T11:17:43.482Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-published-stories.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 0,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 3331,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 197,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 50,
+          "action": "edit"
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 134,
+          "action": "edit"
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 36,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 3331,
+        "output_tokens_estimated": 1057,
+        "reads_count": 10,
+        "writes_count": 8,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 1
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T11:19:09.921Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-published-stories.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 0,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 3331,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 197,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 50,
+          "action": "edit"
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 134,
+          "action": "edit"
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 36,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 3331,
+        "output_tokens_estimated": 1057,
+        "reads_count": 10,
+        "writes_count": 8,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 1
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T11:20:10.551Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-published-stories.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 0,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 3331,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 197,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 50,
+          "action": "edit"
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 134,
+          "action": "edit"
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 36,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 3331,
+        "output_tokens_estimated": 1057,
+        "reads_count": 10,
+        "writes_count": 8,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 1
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T11:20:40.885Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-published-stories.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 0,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 3331,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 197,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 50,
+          "action": "edit"
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 134,
+          "action": "edit"
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 36,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 3331,
+        "output_tokens_estimated": 1057,
+        "reads_count": 10,
+        "writes_count": 8,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 1
+      }
+    },
+    {
+      "id": "session-2026-05-21-0642",
+      "started": "2026-05-21T10:42:26.451Z",
+      "ended": "2026-05-21T11:21:22.892Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_blog_series.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/CHECKLIST.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-published-stories.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 0,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 3331,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/.gitignore",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 186,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 88,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 318,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/feedback_medium_blog_format.md",
+          "tokens_estimated": 197,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 50,
+          "action": "edit"
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/medium/medium-public-url.json",
+          "tokens_estimated": 134,
+          "action": "edit"
+        },
+        {
+          "file": "C:/apps/DotnetMcpTutorial/blogs/standalone/from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md",
+          "tokens_estimated": 36,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/DotnetMcpTutorial/.gitignore",
+          "tokens_estimated": 5,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 3331,
+        "output_tokens_estimated": 1062,
+        "reads_count": 11,
+        "writes_count": 9,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 1
       }
     }
   ],

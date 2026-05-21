@@ -587,6 +587,22 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-16T14:12:55.663Z"
+    },
+    {
+      "id": "bug-037",
+      "timestamp": "2026-05-21T11:21:19.074Z",
+      "error_message": "Wrong reference: NET should be wolf",
+      "file": ".gitignore",
+      "root_cause": "Used \"NET\" instead of \"wolf\"",
+      "fix": "Changed NET → wolf",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "unknown"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-21T11:21:19.074Z"
     }
   ]
 }

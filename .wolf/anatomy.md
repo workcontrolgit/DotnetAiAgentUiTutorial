@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-20T18:46:34.686Z
-> Files: 18 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-21T11:21:19.064Z
+> Files: 22 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
 
@@ -9,6 +9,7 @@
 ## ../../Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/
 
 - `feedback_git_commits.md` (~110 tok)
+- `feedback_medium_blog_format.md` — Cross-linking Blog Posts (~456 tok)
 - `MEMORY.md` — Memory Index (~115 tok)
 
 ## ../../Users/Fuji Nguyen/.claude/skills/
@@ -23,6 +24,7 @@
 
 ## ./
 
+- `.gitignore` — Git ignore rules (~157 tok)
 - `README.md` — Project documentation (~1052 tok)
 
 ## .claude/
@@ -175,6 +177,7 @@
 
 ## blogs/standalone/
 
+- `from-ollama-to-azure-foundry-llm-setup-for-dotnet-mcp.md` — From Ollama to Azure Foundry: LLM Setup for .NET MCP (~3343 tok)
 
 ## docs/
 
@@ -193,6 +196,7 @@
 
 ## medium/
 
+- `medium-public-url.json` (~1098 tok)
 
 ## medium/scripts/
 
