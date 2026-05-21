@@ -45,16 +45,23 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
             _history.Add(new ChatMessage(ChatRole.User, input));
 
             ChatResponse response = default!;
+            Exception? spinnerException = null;
             AnsiConsole.Status()
                 .Spinner(Spinner.Known.Dots)
                 .SpinnerStyle(Style.Parse("blue"))
                 .Start("[blue]Thinking…[/]", _ =>
                 {
-                    response = chatClient.GetResponseAsync(
-                        _history,
-                        new ChatOptions { Tools = tools },
-                        ct).GetAwaiter().GetResult();
+                    try
+                    {
+                        response = chatClient.GetResponseAsync(
+                            _history,
+                            new ChatOptions { Tools = tools },
+                            ct).GetAwaiter().GetResult();
+                    }
+                    catch (Exception ex) { spinnerException = ex; }
                 });
+            if (spinnerException is not null)
+                System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(spinnerException).Throw();
 
             _history.AddMessages(response);
             RenderResponse(response.Text ?? string.Empty);
@@ -81,6 +88,10 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
                         .Padding(1, 0));
                 AnsiConsole.MarkupLine("[grey]Type [bold]exit[/] to quit.[/]\n");
                 break;
+            default:
+                AnsiConsole.Write(new Rule("[bold cyan]HR Assistant[/]").RuleStyle("cyan").LeftJustified());
+                AnsiConsole.MarkupLine("[grey]Ask about open positions, organizations, or job descriptions. Type [bold]exit[/] to quit.[/]\n");
+                break;
         }
     }
 
@@ -93,7 +104,6 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
                 return Console.ReadLine() ?? string.Empty;
             case UiStyle.Minimal:
                 AnsiConsole.Write(new Rule("[bold yellow]You[/]").RuleStyle("grey").LeftJustified());
-                AnsiConsole.Markup(" ");
                 return Console.ReadLine() ?? string.Empty;
             case UiStyle.Panels:
             default:
@@ -117,7 +127,6 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
                 AnsiConsole.Write(
                     new Panel(new Markup(Markup.Escape(text)))
                         .BorderColor(Color.Teal)
-                        .NoBorder()
                         .Padding(1, 0));
                 AnsiConsole.WriteLine();
                 break;
@@ -127,6 +136,13 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
                         .Header("[bold green]ASSISTANT[/]")
                         .BorderColor(Color.Aquamarine3)
                         .Padding(1, 0));
+                AnsiConsole.WriteLine();
+                break;
+            default:
+                AnsiConsole.MarkupLine("\n[bold green]Assistant ›[/]");
+                AnsiConsole.Write(new Markup(Markup.Escape(text)));
+                AnsiConsole.WriteLine();
+                AnsiConsole.Write(new Rule().RuleStyle("grey"));
                 AnsiConsole.WriteLine();
                 break;
         }
