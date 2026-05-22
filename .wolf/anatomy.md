@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-21T14:52:27.952Z
-> Files: 33 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-21T19:55:50.844Z
+> Files: 45 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
 
@@ -49,6 +49,12 @@
 
 - `diagram-approach.html` (~499 tok)
 - `diagram-mockup.html` — Diagram Mockup (~2107 tok)
+
+## .superpowers/brainstorm/2292-1779376913/content/
+
+- `blog-screenshot-plan.html` (~1226 tok)
+- `full-design.html` (~1484 tok)
+- `screenshot-approach.html` (~938 tok)
 
 ## .vscode/
 
@@ -181,6 +187,8 @@
 
 ## blogs/series-1-ai-agent-mcp/
 
+- `part-4-ai-agent-extensions-ai.md` — Part 4: AI Agent with Microsoft.Extensions.AI + Ollama (~6456 tok)
+- `part-6-mcp-security-oidc.md` — Part 6: Securing the MCP Server with OIDC (~4726 tok)
 
 ## blogs/series-1-ai-agent-mcp/diagrams/
 
@@ -201,12 +209,16 @@
 - `2026-05-08-multi-agent-opm-compliance.md` — Multi-Agent OPM Compliance Pipeline Implementation Plan (~8317 tok)
 - `2026-05-21-agent-serilog.md` — Add Serilog to HrMcp.Agent Implementation Plan (~1915 tok)
 - `2026-05-21-agent-spectre-console.md` — Add Spectre.Console to HrMcp.Agent Implementation Plan (~3123 tok)
+- `2026-05-21-blog-update-spectre-console-screenshots.md` — Blog Update: Spectre.Console + Terminal Screenshots Implementation Plan (~5314 tok)
+- `2026-05-21-medium-sync-spectre-console.md` — Medium Sync: Spectre.Console Updates Implementation Plan (~5487 tok)
 
 ## docs/superpowers/specs/
 
 - `2026-05-08-multi-agent-opm-compliance-design.md` — Design: Multi-Agent OPM Compliance Pipeline (~1689 tok)
 - `2026-05-21-agent-serilog-design.md` — Design: Add Serilog to HrMcp.Agent (~938 tok)
 - `2026-05-21-agent-spectre-console-design.md` — Design: Add Spectre.Console to HrMcp.Agent (~1414 tok)
+- `2026-05-21-blog-update-spectre-console-screenshots-design.md` — Design: Update Blog Posts for Spectre.Console + Terminal Screenshots (~1121 tok)
+- `2026-05-21-medium-sync-spectre-console-design.md` — Design: Sync Medium Articles with Spectre.Console Updates (~1404 tok)
 
 ## medium/
 
@@ -218,3 +230,9 @@
 ## publish/McpServer/
 
 - `appsettings.json` (~359 tok)
+
+## scripts/blog-screenshots/
+
+- `agent-startup.html` (~297 tok)
+- `conversation.html` (~524 tok)
+- `server-startup.html` (~258 tok)

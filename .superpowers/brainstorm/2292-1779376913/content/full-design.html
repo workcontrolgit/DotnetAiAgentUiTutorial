@@ -1,0 +1,86 @@
+<h2>Full Design — Blog Update with Terminal Screenshots</h2>
+<p class="subtitle">3 screenshots · 2 blog posts · automated capture pipeline</p>
+
+<div class="section">
+  <h3>Section 1: Screenshot Capture Pipeline</h3>
+  <div style="background:#1a1a2e;padding:14px;border-radius:6px;font-size:11px;color:#e0e0e0;line-height:1.9">
+    <div><span style="color:#4fc3f7">Step 1</span> — Start <code>HrMcp.McpServer</code> via Bash in background · wait for "Now listening on http://localhost:5100"</div>
+    <div><span style="color:#4fc3f7">Step 2</span> — Use Playwright MCP to open a <span style="color:#ffb74d">xterm.js</span> HTML page that renders ANSI output in the browser</div>
+    <div><span style="color:#4fc3f7">Step 3</span> — Start <code>HrMcp.Agent</code> · pipe output to the xterm.js page via a local WebSocket bridge</div>
+    <div><span style="color:#4fc3f7">Step 4</span> — At each capture point, call <code>browser_take_screenshot</code> → save to <code>blogs/series-1-ai-agent-mcp/screenshots/</code></div>
+    <div style="margin-top:8px;color:#aaa">Each screenshot is a 900×500px dark-terminal PNG — matches Windows Terminal dark theme.</div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Section 2: 3 Screenshots</h3>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+
+    <div style="background:#1a1a2e;border:1px solid #4fc3f7;border-radius:6px;padding:10px">
+      <div style="color:#4fc3f7;font-size:10px;font-weight:bold;margin-bottom:6px">SCREENSHOT 1<br>MCP Server startup</div>
+      <div style="font-family:monospace;font-size:9px;color:#e0e0e0;line-height:1.8;background:#0d1117;padding:8px;border-radius:4px">
+        <span style="color:#a5d6a7">info:</span> Microsoft.Hosting...<br>
+        <span style="color:#a5d6a7">info:</span> Now listening on<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://localhost:5100<br>
+        <span style="color:#a5d6a7">info:</span> Application started.
+      </div>
+      <div style="color:#aaa;font-size:9px;margin-top:6px">Filename: part-4-screenshot-1-mcp-server.png</div>
+    </div>
+
+    <div style="background:#1a1a2e;border:1px solid #ffb74d;border-radius:6px;padding:10px">
+      <div style="color:#ffb74d;font-size:10px;font-weight:bold;margin-bottom:6px">SCREENSHOT 2<br>Agent startup</div>
+      <div style="font-family:monospace;font-size:9px;color:#e0e0e0;line-height:1.8;background:#0d1117;padding:8px;border-radius:4px">
+        <span style="color:#a5d6a7">✔</span> Connected · Tools: ...<br><br>
+        <span style="color:#e0e0e0;font-weight:bold">Select UI style:</span><br>
+        &nbsp;<span style="color:#4fc3f7">[1]</span> Structured <span style="color:#666">(default)</span><br>
+        &nbsp;<span style="color:#4fc3f7">[2]</span> Minimal<br>
+        &nbsp;<span style="color:#4fc3f7">[3]</span> Panels<br>
+        <span style="color:#666">Choice [1]:</span>
+      </div>
+      <div style="color:#aaa;font-size:9px;margin-top:6px">Filename: part-4-screenshot-2-agent-startup.png</div>
+    </div>
+
+    <div style="background:#1a1a2e;border:1px solid #a5d6a7;border-radius:6px;padding:10px">
+      <div style="color:#a5d6a7;font-size:10px;font-weight:bold;margin-bottom:6px">SCREENSHOT 3<br>Conversation</div>
+      <div style="font-family:monospace;font-size:9px;color:#e0e0e0;line-height:1.8;background:#0d1117;padding:8px;border-radius:4px">
+        <span style="color:#4fc3f7">── HR Assistant ───</span><br>
+        <span style="color:#ffb74d;font-weight:bold">You ›</span> What orgs are hiring?<br>
+        <span style="color:#4fc3f7">⠿ Thinking…</span><br>
+        <span style="color:#a5d6a7;font-weight:bold">Assistant ›</span><br>
+        Here are the federal...<br>
+        <span style="color:#666">──────────────────</span>
+      </div>
+      <div style="color:#aaa;font-size:9px;margin-top:6px">Filename: part-4-screenshot-3-conversation.png</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section">
+  <h3>Section 3: Blog File Changes</h3>
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="background:#1a1a2e;padding:10px 14px;border-radius:4px;border-left:3px solid #4fc3f7">
+      <div style="color:#4fc3f7;font-size:11px;font-weight:bold">part-4-ai-agent-extensions-ai.md</div>
+      <ul style="color:#e0e0e0;font-size:11px;margin:6px 0 0 16px;line-height:1.8">
+        <li>Replace <code>HrAgent.cs</code> code listing → Spectre.Console version (UiStyle enum, spinner, 3 helpers)</li>
+        <li>Replace <code>Program.cs</code> agent listing → AnsiConsole version</li>
+        <li>Add csproj note: <code>Spectre.Console 0.49.*</code></li>
+        <li>Replace "You should see:" text block → embed Screenshot 1 + Screenshot 2</li>
+        <li>Replace plain-text sample conversation → embed Screenshot 3</li>
+      </ul>
+    </div>
+    <div style="background:#1a1a2e;padding:10px 14px;border-radius:4px;border-left:3px solid #ce93d8">
+      <div style="color:#ce93d8;font-size:11px;font-weight:bold">part-6-mcp-security-oidc.md</div>
+      <ul style="color:#e0e0e0;font-size:11px;margin:6px 0 0 16px;line-height:1.8">
+        <li>Update <code>Console.WriteLine("Token acquired.")</code> → note: styled with AnsiConsole (no screenshot)</li>
+        <li>Update <code>Console.WriteLine($"Connected...")</code> → <code>AnsiConsole.MarkupLine</code></li>
+        <li>Update sample run block to mention style picker appears after token line</li>
+        <li>Update <code>new HrAgent(...)</code> call → add <code>style</code> param</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle">Does this design look right?</p>

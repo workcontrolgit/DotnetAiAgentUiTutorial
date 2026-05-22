@@ -1,116 +1,12 @@
 {
-  "session_id": "session-2026-05-21-1029",
-  "started": "2026-05-21T14:29:56.218Z",
-  "files_read": {
-    "C:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrMcp.Agent.csproj": {
-      "count": 2,
-      "tokens": 0,
-      "first_read": "2026-05-21T14:30:29.417Z"
-    },
-    "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrMcp.Agent.csproj": {
-      "count": 2,
-      "tokens": 0,
-      "first_read": "2026-05-21T14:30:56.128Z"
-    },
-    "c:/apps/DotnetMcpTutorial/.wolf/anatomy.md": {
-      "count": 6,
-      "tokens": 0,
-      "first_read": "2026-05-21T14:46:01.143Z"
-    },
-    "c:/apps/DotnetMcpTutorial/.wolf/cerebrum.md": {
-      "count": 2,
-      "tokens": 0,
-      "first_read": "2026-05-21T14:46:01.369Z"
-    },
-    "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs": {
-      "count": 5,
-      "tokens": 1710,
-      "first_read": "2026-05-21T14:46:07.090Z"
-    },
-    "c:/apps/DotnetMcpTutorial/.wolf/memory.md": {
-      "count": 2,
-      "tokens": 0,
-      "first_read": "2026-05-21T14:47:48.128Z"
-    },
-    "C:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs": {
-      "count": 2,
-      "tokens": 1710,
-      "first_read": "2026-05-21T14:49:13.367Z"
-    },
-    "C:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs": {
-      "count": 2,
-      "tokens": 1603,
-      "first_read": "2026-05-21T14:49:16.939Z"
-    },
-    "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs": {
-      "count": 2,
-      "tokens": 1603,
-      "first_read": "2026-05-21T14:52:03.559Z"
-    }
-  },
-  "files_written": [
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
-      "action": "create",
-      "tokens": 1576,
-      "at": "2026-05-21T14:46:27.448Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
-      "action": "edit",
-      "tokens": 18,
-      "at": "2026-05-21T14:46:36.992Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
-      "action": "edit",
-      "tokens": 16,
-      "at": "2026-05-21T14:47:34.748Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
-      "action": "edit",
-      "tokens": 235,
-      "at": "2026-05-21T14:50:26.573Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
-      "action": "edit",
-      "tokens": 216,
-      "at": "2026-05-21T14:50:32.911Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
-      "action": "edit",
-      "tokens": 56,
-      "at": "2026-05-21T14:50:37.625Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
-      "action": "edit",
-      "tokens": 312,
-      "at": "2026-05-21T14:50:47.267Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
-      "action": "edit",
-      "tokens": 85,
-      "at": "2026-05-21T14:52:13.320Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
-      "action": "edit",
-      "tokens": 426,
-      "at": "2026-05-21T14:52:27.960Z"
-    }
-  ],
-  "edit_counts": {
-    "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs": 7,
-    "DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs": 2
-  },
-  "anatomy_hits": 3,
-  "anatomy_misses": 6,
-  "repeated_reads_warned": 16,
+  "session_id": "session-2026-05-22-2258",
+  "started": "2026-05-22T02:58:44.392Z",
+  "files_read": {},
+  "files_written": [],
+  "edit_counts": {},
+  "anatomy_hits": 0,
+  "anatomy_misses": 0,
+  "repeated_reads_warned": 0,
   "cerebrum_warnings": 0,
   "stop_count": 1
 }
