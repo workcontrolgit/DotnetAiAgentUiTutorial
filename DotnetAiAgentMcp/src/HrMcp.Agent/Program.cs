@@ -71,6 +71,37 @@ if (enableOidc)
     additionalHeaders["Authorization"] = $"Bearer {accessToken}";
 }
 
+// --- Wait for MCP server to be available ---
+{
+    // Probe the base URL — any HTTP response (even 404) means the server is up.
+    // We don't require a /health endpoint on the server.
+    var baseUrl = mcpServerUrl.Replace("/mcp", "").TrimEnd('/') + "/";
+    using var probe = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
+    const int maxAttempts = 30;
+    var attempt = 0;
+    while (true)
+    {
+        attempt++;
+        try
+        {
+            var resp = await probe.GetAsync(baseUrl);
+            // Any HTTP response (including 404/405) means the server is listening
+            AnsiConsole.MarkupLine($"[green]✔ MCP server is available (HTTP {(int)resp.StatusCode}).[/]\n");
+            break;
+        }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
+        {
+            // Server not yet reachable
+        }
+
+        if (attempt >= maxAttempts)
+            throw new TimeoutException($"MCP server at {mcpServerUrl} did not become available after {maxAttempts} attempts.");
+
+        AnsiConsole.MarkupLine($"[yellow]⏳ Waiting for MCP server… (attempt {attempt}/{maxAttempts})[/]");
+        await Task.Delay(2000);
+    }
+}
+
 // --- Connect to MCP server ---
 await using var mcpClient = await McpClient.CreateAsync(
     new HttpClientTransport(new HttpClientTransportOptions

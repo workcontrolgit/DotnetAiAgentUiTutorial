@@ -26,6 +26,7 @@
 - **M.E.AI 9.x renames:** `CompleteAsync` → `GetResponseAsync`, `ChatCompletion` → `ChatResponse`, use `.Text` for assistant text, `_history.AddMessages(response)` instead of `_history.Add(response.Message)`.
 - **stdio transport rule:** stdout must be pure JSON-RPC when `--stdio` flag is set. Clear all log providers and redirect to stderr. `builder.WebHost.UseUrls()` with no args prevents HTTP listener.
 - **`.vscode/mcp.json` gitignore:** `.vscode/` is gitignored. Use `.vscode/*` + `!.vscode/mcp.json` negation to track only the shared MCP config.
+- **Run commands from repo root:** this workspace contains a nested solution folder. From repository root, use `dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer` and `dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent` (not `src/...`).
 
 ## Do-Not-Repeat
 

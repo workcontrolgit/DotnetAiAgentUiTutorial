@@ -89,7 +89,7 @@
 ## ./
 
 - `.gitignore` — Git ignore rules (~157 tok)
-- `README.md` — Project documentation (~1052 tok)
+- `README.md` — Project documentation (~1080 tok)
 
 ## .claude/
 
