@@ -1,14 +1,14 @@
 // src/HrMcp.Agent/Program.cs
+using Azure.AI.OpenAI;
+using Azure.Identity;
+using HrMcp.Agent;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using ModelContextProtocol.Client;
-using Azure.AI.OpenAI;
-using Azure.Identity;
 using OllamaSharp;
-using HrMcp.Agent;
+using Spectre.Console;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Spectre.Console;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -20,15 +20,11 @@ var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-var mcpServerUrl =
-    configuration["McpServer:Url"] ??
-    Environment.GetEnvironmentVariable("HR_MCP_SERVER_URL") ??
-    "http://localhost:5100/mcp";
+var transportType = configuration["McpServer:Transport:Type"] ?? "stdio";
 
-// ── OIDC feature flag ────────────────────────────────────────────────────────
+// OIDC feature flag
 // Set Features:EnableOidc = false in appsettings.json (or appsettings.Development.json)
-// to connect without authentication — useful when running against MCP Inspector
-// or a server instance started without OIDC enforcement.
+// to connect without authentication.
 // Set to true to enable the client-credentials token flow.
 var enableOidc = bool.TryParse(configuration["Features:EnableOidc"], out var oidcFlag) && oidcFlag;
 
@@ -45,7 +41,6 @@ if (enableOidc)
     var scope = configuration["Oidc:Scope"]
         ?? throw new InvalidOperationException("Missing configuration: Oidc:Scope");
 
-    // Trust self-signed cert used by the local Duende IdentityServer container
     using var tokenHandler = new HttpClientHandler
     {
         ServerCertificateCustomValidationCallback =
@@ -57,92 +52,59 @@ if (enableOidc)
         $"{authority.TrimEnd('/')}/connect/token",
         new FormUrlEncodedContent(new Dictionary<string, string>
         {
-            ["grant_type"]    = "client_credentials",
-            ["client_id"]     = clientId,
+            ["grant_type"] = "client_credentials",
+            ["client_id"] = clientId,
             ["client_secret"] = clientSecret,
-            ["scope"]         = scope,
+            ["scope"] = scope,
         }));
     tokenResponse.EnsureSuccessStatusCode();
 
-    var tokenDoc    = await tokenResponse.Content.ReadFromJsonAsync<JsonElement>();
+    var tokenDoc = await tokenResponse.Content.ReadFromJsonAsync<JsonElement>();
     var accessToken = tokenDoc.GetProperty("access_token").GetString()!;
     Console.WriteLine("Token acquired.\n");
 
     additionalHeaders["Authorization"] = $"Bearer {accessToken}";
 }
 
-// --- Wait for MCP server to be available ---
-{
-    // Probe the base URL — any HTTP response (even 404) means the server is up.
-    // We don't require a /health endpoint on the server.
-    var baseUrl = mcpServerUrl.Replace("/mcp", "").TrimEnd('/') + "/";
-    using var probe = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
-    const int maxAttempts = 30;
-    var attempt = 0;
-    while (true)
-    {
-        attempt++;
-        try
-        {
-            var resp = await probe.GetAsync(baseUrl);
-            // Any HTTP response (including 404/405) means the server is listening
-            AnsiConsole.MarkupLine($"[green]✔ MCP server is available (HTTP {(int)resp.StatusCode}).[/]\n");
-            break;
-        }
-        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
-        {
-            // Server not yet reachable
-        }
-
-        if (attempt >= maxAttempts)
-            throw new TimeoutException($"MCP server at {mcpServerUrl} did not become available after {maxAttempts} attempts.");
-
-        AnsiConsole.MarkupLine($"[yellow]⏳ Waiting for MCP server… (attempt {attempt}/{maxAttempts})[/]");
-        await Task.Delay(2000);
-    }
-}
-
-// --- Connect to MCP server ---
-await using var mcpClient = await McpClient.CreateAsync(
-    new HttpClientTransport(new HttpClientTransportOptions
-    {
-        Endpoint          = new Uri(mcpServerUrl),
-        AdditionalHeaders = additionalHeaders
-    }));
+var clientTransport = await CreateClientTransportAsync(configuration, transportType, additionalHeaders);
+await using var mcpClient = await McpClient.CreateAsync(clientTransport);
 
 var mcpTools = await mcpClient.ListToolsAsync();
-AnsiConsole.MarkupLine($"[green]✔[/] Connected · Tools: [grey]{string.Join(", ", mcpTools.Select(t => t.Name))}[/]\n");
+AnsiConsole.MarkupLine($"[green]OK[/] Connected. Tools: [grey]{string.Join(", ", mcpTools.Select(t => t.Name))}[/]\n");
 
-// ── Style picker ─────────────────────────────────────────────────────────────
-var style = UiStyle.Structured; // default
+var style = UiStyle.Structured;
 
 AnsiConsole.MarkupLine("[bold]Select UI style:[/]");
-AnsiConsole.MarkupLine("  [cyan][[1]][/] Structured — tables, panels, spinners [grey](default)[/]");
-AnsiConsole.MarkupLine("  [cyan][[2]][/] Minimal    — rule-separated turns");
-AnsiConsole.MarkupLine("  [cyan][[3]][/] Panels     — bordered panel per message");
+AnsiConsole.MarkupLine("  [cyan][[1]][/] Structured - tables, panels, spinners [grey](default)[/]");
+AnsiConsole.MarkupLine("  [cyan][[2]][/] Minimal    - rule-separated turns");
+AnsiConsole.MarkupLine("  [cyan][[3]][/] Panels     - bordered panel per message");
 AnsiConsole.Markup("[grey]Choice [[1]]:[/] ");
 
 try
 {
-    var deadline = DateTime.UtcNow.AddSeconds(2);
-    while (DateTime.UtcNow < deadline && !Console.KeyAvailable)
-        await Task.Delay(100);
-
-    if (Console.KeyAvailable)
+    if (!Console.IsInputRedirected)
     {
-        var key = Console.ReadKey(intercept: true);
-        style = key.KeyChar switch
+        var deadline = DateTime.UtcNow.AddSeconds(2);
+        while (DateTime.UtcNow < deadline && !Console.KeyAvailable)
+            await Task.Delay(100);
+
+        if (Console.KeyAvailable)
         {
-            '2' => UiStyle.Minimal,
-            '3' => UiStyle.Panels,
-            _   => UiStyle.Structured
-        };
+            var key = Console.ReadKey(intercept: true);
+            style = key.KeyChar switch
+            {
+                '2' => UiStyle.Minimal,
+                '3' => UiStyle.Panels,
+                _ => UiStyle.Structured
+            };
+        }
     }
 }
-catch (OperationCanceledException) { /* timeout — keep default */ }
+catch (OperationCanceledException)
+{
+}
 
 AnsiConsole.MarkupLine($"[green]{style}[/]\n");
-// ─────────────────────────────────────────────────────────────────────────────
 
 IChatClient chatClient = CreateChatClient(configuration)
     .AsBuilder()
@@ -151,6 +113,117 @@ IChatClient chatClient = CreateChatClient(configuration)
 
 var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList(), style);
 await agent.RunAsync();
+
+static async Task<IClientTransport> CreateClientTransportAsync(
+    IConfiguration configuration,
+    string transportType,
+    Dictionary<string, string> additionalHeaders)
+{
+    if (string.Equals(transportType, "stdio", StringComparison.OrdinalIgnoreCase))
+    {
+        var command = configuration["McpServer:Transport:Stdio:Command"] ?? "dotnet";
+        var workingDirectory = configuration["McpServer:Transport:Stdio:WorkingDirectory"];
+        if (string.IsNullOrWhiteSpace(workingDirectory))
+            workingDirectory = FindWorkspaceRoot();
+        var arguments = GetStdioArguments(configuration, workingDirectory);
+
+        AnsiConsole.MarkupLine($"[green]OK[/] MCP transport: [grey]stdio[/]");
+
+        return new StdioClientTransport(new StdioClientTransportOptions
+        {
+            Command = command,
+            Arguments = arguments,
+            WorkingDirectory = workingDirectory,
+            Name = "hr-mcp-stdio"
+        });
+    }
+
+    var mcpServerUrl =
+        configuration["McpServer:Transport:StreamHttp:Url"] ??
+        configuration["McpServer:Url"] ??
+        Environment.GetEnvironmentVariable("HR_MCP_SERVER_URL") ??
+        "http://localhost:5100/mcp";
+
+    await WaitForHttpServerAsync(mcpServerUrl);
+    AnsiConsole.MarkupLine($"[green]OK[/] MCP transport: [grey]streamHttp[/]");
+
+    return new HttpClientTransport(new HttpClientTransportOptions
+    {
+        Endpoint = new Uri(mcpServerUrl),
+        AdditionalHeaders = additionalHeaders,
+        TransportMode = HttpTransportMode.StreamableHttp,
+        Name = "hr-mcp-stream-http"
+    });
+}
+
+static async Task WaitForHttpServerAsync(string mcpServerUrl)
+{
+    var baseUrl = mcpServerUrl.Replace("/mcp", "").TrimEnd('/') + "/";
+    using var probe = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
+    const int maxAttempts = 30;
+
+    for (var attempt = 1; attempt <= maxAttempts; attempt++)
+    {
+        try
+        {
+            var resp = await probe.GetAsync(baseUrl);
+            AnsiConsole.MarkupLine($"[green]OK[/] MCP server is available (HTTP {(int)resp.StatusCode}).\n");
+            return;
+        }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
+        {
+        }
+
+        if (attempt == maxAttempts)
+            break;
+
+        AnsiConsole.MarkupLine($"[yellow]Waiting for MCP server... (attempt {attempt}/{maxAttempts})[/]");
+        await Task.Delay(2000);
+    }
+
+    throw new TimeoutException($"MCP server at {mcpServerUrl} did not become available after {maxAttempts} attempts.");
+}
+
+static IList<string> GetStdioArguments(IConfiguration configuration, string workingDirectory)
+{
+    var configuredArgs = configuration
+        .GetSection("McpServer:Transport:Stdio:Arguments")
+        .GetChildren()
+        .Select(section => section.Value)
+        .Where(value => !string.IsNullOrWhiteSpace(value))
+        .Cast<string>()
+        .ToList();
+
+    if (configuredArgs.Count > 0)
+        return configuredArgs;
+
+    var projectPath = configuration["McpServer:Transport:Stdio:ProjectPath"];
+    if (string.IsNullOrWhiteSpace(projectPath))
+    {
+        projectPath = Path.Combine(workingDirectory, "DotnetAiAgentMcp", "src", "HrMcp.McpServer", "HrMcp.McpServer.csproj");
+    }
+
+    return new List<string>
+    {
+        "run",
+        "--project",
+        projectPath,
+        "--",
+        "--stdio"
+    };
+}
+
+static string FindWorkspaceRoot()
+{
+    var dir = new DirectoryInfo(AppContext.BaseDirectory);
+    for (var i = 0; i < 8 && dir is not null; i++, dir = dir.Parent)
+    {
+        if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentMcp")))
+            return dir.FullName;
+    }
+
+    return AppContext.BaseDirectory;
+}
 
 static IChatClient CreateChatClient(IConfiguration configuration)
 {

@@ -1,9 +1,9 @@
 // src/HrMcp.McpServer/Program.cs
+using Azure.AI.OpenAI;
+using Azure.Identity;
 using HrMcp.Application.Services;
 using HrMcp.Infrastructure.Persistence;
 using HrMcp.McpServer.Tools;
-using Azure.AI.OpenAI;
-using Azure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.AI;
@@ -15,11 +15,9 @@ using Serilog;
 using System.Net;
 using System.Net.NetworkInformation;
 
-var isStdio = args.Contains("--stdio");
+var explicitStdio = args.Contains("--stdio");
+var explicitStreamHttp = args.Contains("--stream-http");
 
-// Bootstrap Serilog from appsettings (file sinks).
-// Console sink is added conditionally: suppressed in stdio mode so stdout
-// carries only JSON-RPC messages.
 var tempConfig = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false)
@@ -29,17 +27,15 @@ var tempConfig = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-// Resolve log path relative to the app binary so it is consistent
-// regardless of which directory dotnet run is invoked from.
-// Anchor log paths to the app binary directory so location is consistent
-// regardless of which directory dotnet run is invoked from.
-//   logs/info/info-YYYYMMDD.log  — Information and above
-//   logs/error/error-YYYYMMDD.log — Error and Fatal only
+var configuredTransport = tempConfig["McpServer:Transport:Type"] ?? "stdio";
+var useStdio = explicitStdio || (!explicitStreamHttp &&
+    string.Equals(configuredTransport, "stdio", StringComparison.OrdinalIgnoreCase));
+
 var logBase = Path.Combine(AppContext.BaseDirectory, "logs");
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(tempConfig)
-    .WriteTo.Conditional(_ => !isStdio, wt => wt.Console())
+    .WriteTo.Conditional(_ => !useStdio, wt => wt.Console())
     .WriteTo.File(
         Path.Combine(logBase, "info", "info-.log"),
         rollingInterval: RollingInterval.Day,
@@ -56,7 +52,7 @@ Log.Logger = new LoggerConfiguration()
 
 try
 {
-    if (isStdio)
+    if (useStdio)
     {
         var hostBuilder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings
         {
@@ -89,10 +85,6 @@ try
 
     ConfigureCommonServices(builder.Services, builder.Configuration);
 
-    // ── OIDC feature flag ────────────────────────────────────────────────────
-    // Set Features:EnableOidc = false in appsettings.Development.json to run
-    // without an identity provider (e.g. when testing with MCP Inspector).
-    // Set to true in production to enforce JWT Bearer authentication.
     var enableOidc = builder.Configuration.GetValue<bool>("Features:EnableOidc");
 
     if (enableOidc)
@@ -102,8 +94,7 @@ try
             .AddJwtBearer(options =>
             {
                 options.Authority = builder.Configuration["Oidc:Authority"];
-                options.Audience  = builder.Configuration["Oidc:Audience"];
-                // Trust self-signed certs when running against a local dev IdentityServer container
+                options.Audience = builder.Configuration["Oidc:Audience"];
                 if (builder.Environment.IsDevelopment())
                     options.BackchannelHttpHandler = new HttpClientHandler
                     {
@@ -119,7 +110,10 @@ try
         .WithTools<PositionTools>()
         .WithTools<HiringOrganizationTools>()
         .WithTools<JobDescriptionTools>()
-        .WithHttpTransport();
+        .WithHttpTransport(options =>
+        {
+            options.EnableLegacySse = false;
+        });
 
     var app = builder.Build();
     await InitializeDatabaseAsync(app.Services, args.Contains("--reseed"));
@@ -130,16 +124,14 @@ try
         app.UseAuthorization();
     }
 
-    if (!isStdio)
-    {
-        var route = app.MapMcp("/mcp");
-        if (enableOidc)
-            route.RequireAuthorization();
-    }
+    var mcpPath = builder.Configuration["McpServer:Transport:StreamHttp:Path"] ?? "/mcp";
+    var route = app.MapMcp(mcpPath);
+    if (enableOidc)
+        route.RequireAuthorization();
 
     await app.RunAsync();
 }
-catch (IOException ex) when (!isStdio && TryDescribePortConflict(ex, out var conflictMessage))
+catch (IOException ex) when (!useStdio && TryDescribePortConflict(ex, tempConfig, out var conflictMessage))
 {
     Log.Fatal(ex, "{ConflictMessage}", conflictMessage);
     Console.Error.WriteLine(conflictMessage);
@@ -156,8 +148,6 @@ static void ConfigureCommonServices(IServiceCollection services, IConfiguration 
         configuration.GetConnectionString("DefaultConnection")!);
     services.AddScoped<PositionService>();
     services.AddScoped<HiringOrganizationService>();
-
-    // IChatClient used by WriteJobDescription tool to generate LLM narratives.
     services.AddSingleton<IChatClient>(_ => CreateChatClient(configuration));
 }
 
@@ -168,31 +158,37 @@ static async Task InitializeDatabaseAsync(IServiceProvider services, bool forceR
 
     await db.Database.MigrateAsync();
 
-    // Walk up from the binary directory to find data/usajobs-seed.json
-    // (works whether invoked via dotnet run, published exe, or Claude Desktop stdio)
     var seedPath = FindSeedFile("data/usajobs-seed.json");
     DbSeeder.Seed(db, seedPath, force: forceReseed);
 }
 
-// Searches from AppContext.BaseDirectory upward for a relative path (e.g. "data/usajobs-seed.json").
-// Returns the full path when found, or null if not found within 8 levels.
 static string? FindSeedFile(string relativePath)
 {
     var dir = new DirectoryInfo(AppContext.BaseDirectory);
     for (var i = 0; i < 8 && dir is not null; i++, dir = dir.Parent)
     {
         var candidate = Path.Combine(dir.FullName, relativePath);
-        if (File.Exists(candidate)) return candidate;
+        if (File.Exists(candidate))
+            return candidate;
     }
+
     return null;
 }
 
-static bool TryDescribePortConflict(IOException ex, out string message)
+static bool TryDescribePortConflict(IOException ex, IConfiguration configuration, out string message)
 {
-    const int defaultPort = 5100;
-    const string defaultUrl = "http://127.0.0.1:5100";
+    var mcpUrl =
+        configuration["McpServer:Transport:StreamHttp:Url"] ??
+        configuration["Urls"] ??
+        "http://localhost:5100";
 
-    if (!ex.Message.Contains(defaultUrl, StringComparison.OrdinalIgnoreCase) &&
+    if (!Uri.TryCreate(mcpUrl.Split(';', StringSplitOptions.RemoveEmptyEntries)[0], UriKind.Absolute, out var uri))
+    {
+        message = "The MCP stream HTTP URL is invalid. Check McpServer:Transport:StreamHttp:Url or Urls.";
+        return true;
+    }
+
+    if (!ex.Message.Contains(uri.ToString(), StringComparison.OrdinalIgnoreCase) &&
         !ex.Message.Contains("address already in use", StringComparison.OrdinalIgnoreCase))
     {
         message = string.Empty;
@@ -202,18 +198,18 @@ static bool TryDescribePortConflict(IOException ex, out string message)
     var conflict = IPGlobalProperties.GetIPGlobalProperties()
         .GetActiveTcpListeners()
         .FirstOrDefault(endpoint =>
-            endpoint.Port == defaultPort &&
-            IPAddress.IsLoopback(endpoint.Address));
+            endpoint.Port == uri.Port &&
+            (IPAddress.IsLoopback(endpoint.Address) || endpoint.Address.Equals(IPAddress.Any) || endpoint.Address.Equals(IPAddress.IPv6Any)));
 
     if (conflict is null)
     {
         message =
-            $"Port {defaultPort} is already in use. Stop the existing listener or change the configured MCP server URL.";
+            $"Port {uri.Port} is already in use. Stop the existing listener or change the configured MCP server URL.";
         return true;
     }
 
     message =
-        $"Port {defaultPort} is already in use on a loopback interface. Stop the running server or change the configured URL before starting another instance.";
+        $"Port {uri.Port} is already in use. Stop the running server or change the configured URL before starting another instance.";
     return true;
 }
 

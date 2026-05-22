@@ -18,7 +18,7 @@ The solution follows Clean Architecture with five projects:
 | **HrMcp.Application** | Application services. Depends only on Core. |
 | **HrMcp.Infrastructure.Persistence** | EF Core + SQL Server. Implements Core interfaces. |
 | **HrMcp.McpServer** | ASP.NET Core MCP server. Exposes tools to AI clients. |
-| **HrMcp.Agent** | Console AI agent. Connects to the MCP server via Ollama + llama3.2. |
+| **HrMcp.Agent** | Console AI agent. Connects to the MCP server over configurable `stdio` or stream HTTP transport. |
 
 **Why MCP?** Traditional AI integration requires a custom connector for every AI tool × every data source (N×M). MCP replaces that with a shared protocol — N+M integrations instead.
 
@@ -50,19 +50,21 @@ dotnet ef database update \
   --project DotnetAiAgentMcp/src/HrMcp.Infrastructure.Persistence \
   --startup-project DotnetAiAgentMcp/src/HrMcp.McpServer
 
-# Start the MCP server (HTTP/SSE on port 5100)
-dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer
-
-# Optional: start MCP server in stdio mode (for MCP desktop clients)
+# Start the MCP server with the default transport (stdio)
 dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stdio
+
+# Or start the MCP server with stream HTTP on port 5100
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stream-http
 ```
 
 ### Run the AI Agent
 
 ```bash
-# In a second terminal — connects to the MCP server via HTTP
+# In a second terminal — defaults to stdio and launches the server process
 dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent
 ```
+
+Configure `McpServer:Transport:Type` as `stdio` or `streamHttp` in the agent and server `appsettings.json`. The default is `stdio`.
 
 The agent connects to the MCP server, discovers the available tools, and answers HR questions in natural language using Ollama locally.
 
