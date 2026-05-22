@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-21T19:55:50.844Z
-> Files: 45 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-22T05:35:35.393Z
+> Files: 75 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
 
@@ -10,7 +10,8 @@
 
 - `feedback_git_commits.md` (~110 tok)
 - `feedback_medium_blog_format.md` — Cross-linking Blog Posts (~456 tok)
-- `MEMORY.md` — Memory Index (~115 tok)
+- `MEMORY.md` — Memory Index (~161 tok)
+- `project_ai_workflow_tutorial.md` — Locked-In Decisions (~685 tok)
 
 ## ../../Users/Fuji Nguyen/.claude/skills/
 
@@ -21,6 +22,69 @@
 
 ## ../AngularNetTutotial/TokenService/Duende-IdentityServer/shared/
 
+- `identitydata.json` (~629 tok)
+- `identityserverdata.json` (~2133 tok)
+
+## ../DotnetAiWorkflowTutorial/.wolf/
+
+- `memory.md` — Session: 2026-04-30 00:08 (~13540 tok)
+
+## ../DotnetAiWorkflowTutorial/HrAiWorkflow/
+
+- `HrAiWorkflow.slnx` (~168 tok)
+
+## ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Agents/
+
+- `HrAiWorkflow.Agents.csproj` (~88 tok)
+
+## ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Agents/Agents/
+
+- `HrDraftAgent.cs` — Class: HrDraftAgent (~26 tok)
+
+## ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Application/
+
+- `HrAiWorkflow.Application.csproj` (~89 tok)
+
+## ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Core/Entities/
+
+- `ApprovalRecord.cs` — Class: ApprovalRecord (~126 tok)
+- `ChatMessage.cs` — Class: ChatMessage (~106 tok)
+- `ChatSession.cs` — Class: ChatSession (~98 tok)
+- `DraftIteration.cs` — Class: DraftIteration (~162 tok)
+- `JobDescriptionDraft.cs` — Class: JobDescriptionDraft (~225 tok)
+- `Position.cs` — src/HrAiWorkflow.Core/Entities/Position.cs (~1658 tok)
+
+## ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Core/Enums/
+
+- `ApprovalAction.cs` — Class: ApprovalAction (~26 tok)
+- `DraftStatus.cs` — Class: DraftStatus (~35 tok)
+- `RejectionRouting.cs` — Class: RejectionRouting (~28 tok)
+
+## ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Infrastructure/
+
+- `HrAiWorkflow.Infrastructure.csproj` (~194 tok)
+- `HrDbContext.cs` — src/HrAiWorkflow.Infrastructure/HrDbContext.cs (~407 tok)
+
+## ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.McpServer/
+
+- `appsettings.json` (~460 tok)
+- `HrAiWorkflow.McpServer.csproj` (~420 tok)
+
+## ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Web/
+
+- `appsettings.json` (~88 tok)
+- `HrAiWorkflow.Web.csproj` (~139 tok)
+- `Program.cs` — Class: Program (~82 tok)
+
+## ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Web/Components/
+
+- `_Imports.razor` (~34 tok)
+- `App.razor` (~81 tok)
+- `Routes.razor` (~39 tok)
+
+## ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Web/Components/Pages/
+
+- `Home.razor` (~18 tok)
 
 ## ./
 
@@ -211,6 +275,7 @@
 - `2026-05-21-agent-spectre-console.md` — Add Spectre.Console to HrMcp.Agent Implementation Plan (~3123 tok)
 - `2026-05-21-blog-update-spectre-console-screenshots.md` — Blog Update: Spectre.Console + Terminal Screenshots Implementation Plan (~5314 tok)
 - `2026-05-21-medium-sync-spectre-console.md` — Medium Sync: Spectre.Console Updates Implementation Plan (~5487 tok)
+- `2026-05-22-dotnet-ai-workflow-tutorial.md` — DotnetAiWorkflowTutorial — Implementation Plan (~3053 tok)
 
 ## docs/superpowers/specs/
 
@@ -219,6 +284,7 @@
 - `2026-05-21-agent-spectre-console-design.md` — Design: Add Spectre.Console to HrMcp.Agent (~1414 tok)
 - `2026-05-21-blog-update-spectre-console-screenshots-design.md` — Design: Update Blog Posts for Spectre.Console + Terminal Screenshots (~1121 tok)
 - `2026-05-21-medium-sync-spectre-console-design.md` — Design: Sync Medium Articles with Spectre.Console Updates (~1404 tok)
+- `2026-05-22-dotnet-ai-workflow-tutorial-design.md` — Design: DotnetAiWorkflowTutorial — Full-Stack AI Workflow App (~2707 tok)
 
 ## medium/
 

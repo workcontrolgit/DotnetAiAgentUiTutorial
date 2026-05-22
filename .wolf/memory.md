@@ -644,3 +644,60 @@
 
 | Time | Action | File(s) | Outcome | ~Tokens |
 |------|--------|---------|---------|--------|
+
+## Session: 2026-05-22 23:52
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 00:27 | Created docs/superpowers/specs/2026-05-22-dotnet-ai-workflow-tutorial-design.md | — | ~2887 |
+| 00:28 | Created docs/superpowers/plans/2026-05-22-dotnet-ai-workflow-tutorial.md | — | ~3256 |
+| 00:30 | Created ../../Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/project_ai_workflow_tutorial.md | — | ~730 |
+| 00:30 | Edited ../../Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/MEMORY.md | 1→2 lines | ~77 |
+| 00:30 | Session end: 4 writes across 4 files (2026-05-22-dotnet-ai-workflow-tutorial-design.md, 2026-05-22-dotnet-ai-workflow-tutorial.md, project_ai_workflow_tutorial.md, MEMORY.md) | 3 reads | ~7446 tok |
+| 00:39 | Session end: 4 writes across 4 files (2026-05-22-dotnet-ai-workflow-tutorial-design.md, 2026-05-22-dotnet-ai-workflow-tutorial.md, project_ai_workflow_tutorial.md, MEMORY.md) | 3 reads | ~7446 tok |
+| 01:17 | Edited ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Application/HrAiWorkflow.Application.csproj | "..\HrMcp.Core\HrMcp.Core." → "..\HrAiWorkflow.Core\HrAi" | ~22 |
+| 01:18 | Edited ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Infrastructure/HrAiWorkflow.Infrastructure.csproj | "..\HrMcp.Core\HrMcp.Core." → "..\HrAiWorkflow.Applicati" | ~26 |
+| 01:19 | Edited ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.McpServer/HrAiWorkflow.McpServer.csproj | 2→2 lines | ~52 |
+| 01:20 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/HrAiWorkflow.slnx | — | ~168 |
+| 01:21 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Agents/HrAiWorkflow.Agents.csproj | — | ~88 |
+| 01:21 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Agents/Agents/HrDraftAgent.cs | — | ~26 |
+| 01:23 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Web/HrAiWorkflow.Web.csproj | — | ~139 |
+| 01:23 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Web/Program.cs | — | ~82 |
+| 01:23 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Web/Components/App.razor | — | ~81 |
+| 01:23 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Web/Components/Routes.razor | — | ~39 |
+| 01:23 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Web/Components/Pages/Home.razor | — | ~18 |
+| 01:23 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Web/Components/_Imports.razor | — | ~34 |
+| 01:24 | Edited ../DotnetAiWorkflowTutorial/.wolf/memory.md | 1→2 lines | ~74 |
+| 01:25 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Core/Enums/DraftStatus.cs | — | ~35 |
+| 01:25 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Core/Enums/RejectionRouting.cs | — | ~28 |
+| 01:25 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Core/Enums/ApprovalAction.cs | — | ~26 |
+| 01:26 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Core/Entities/JobDescriptionDraft.cs | — | ~225 |
+| 01:26 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Core/Entities/DraftIteration.cs | — | ~162 |
+| 01:26 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Core/Entities/ApprovalRecord.cs | — | ~126 |
+| 01:26 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Core/Entities/ChatSession.cs | — | ~98 |
+| 01:26 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Core/Entities/ChatMessage.cs | — | ~106 |
+| 01:26 | Edited ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Core/Entities/Position.cs | 5→8 lines | ~95 |
+| 01:26 | Edited ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Infrastructure/HrDbContext.cs | modified HrDbContext() | ~210 |
+| 01:26 | Edited ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Infrastructure/HrAiWorkflow.Infrastructure.csproj | 5→5 lines | ~91 |
+| 01:27 | Edited ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.McpServer/appsettings.json | 3→3 lines | ~47 |
+| 01:27 | Created ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Web/appsettings.json | — | ~88 |
+| 01:28 | Edited ../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.McpServer/HrAiWorkflow.McpServer.csproj | 5→5 lines | ~91 |
+| 01:34 | Edited ../AngularNetTutotial/TokenService/Duende-IdentityServer/shared/identitydata.json | expanded (+6 lines) | ~45 |
+| 01:35 | Edited ../AngularNetTutotial/TokenService/Duende-IdentityServer/shared/identitydata.json | expanded (+36 lines) | ~278 |
+| 01:35 | Edited ../AngularNetTutotial/TokenService/Duende-IdentityServer/shared/identityserverdata.json | expanded (+9 lines) | ~89 |
+| 01:35 | Edited ../AngularNetTutotial/TokenService/Duende-IdentityServer/shared/identityserverdata.json | expanded (+6 lines) | ~61 |
+| 01:35 | Edited ../AngularNetTutotial/TokenService/Duende-IdentityServer/shared/identityserverdata.json | expanded (+34 lines) | ~290 |
+| 01:36 | Session end: 36 writes across 30 files (2026-05-22-dotnet-ai-workflow-tutorial-design.md, 2026-05-22-dotnet-ai-workflow-tutorial.md, project_ai_workflow_tutorial.md, MEMORY.md, HrAiWorkflow.Application.csproj) | 16 reads | ~10638 tok |
+| 01:36 | Session end: 36 writes across 30 files (2026-05-22-dotnet-ai-workflow-tutorial-design.md, 2026-05-22-dotnet-ai-workflow-tutorial.md, project_ai_workflow_tutorial.md, MEMORY.md, HrAiWorkflow.Application.csproj) | 16 reads | ~10638 tok |
+| 01:38 | Session end: 36 writes across 30 files (2026-05-22-dotnet-ai-workflow-tutorial-design.md, 2026-05-22-dotnet-ai-workflow-tutorial.md, project_ai_workflow_tutorial.md, MEMORY.md, HrAiWorkflow.Application.csproj) | 16 reads | ~10638 tok |
+| 01:38 | Session end: 36 writes across 30 files (2026-05-22-dotnet-ai-workflow-tutorial-design.md, 2026-05-22-dotnet-ai-workflow-tutorial.md, project_ai_workflow_tutorial.md, MEMORY.md, HrAiWorkflow.Application.csproj) | 16 reads | ~10638 tok |
+
+## Session: 2026-05-22 14:40
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+
+## Session: 2026-05-22 14:40
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
