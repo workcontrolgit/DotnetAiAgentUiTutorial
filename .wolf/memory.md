@@ -106,6 +106,8 @@
 | 23:54 | Session end: 1 writes across 1 files (medium-public-url.json) | 4 reads | ~2573 tok |
 | 23:56 | Edited medium/medium-public-url.json | inline fix | ~31 |
 | 23:56 | Session end: 2 writes across 1 files (medium-public-url.json) | 4 reads | ~2604 tok |
+| 14:22 | Verified MCP server + agent startup from repo root; fixed path error by using nested DotnetAiAgentMcp/src project paths | .wolf/buglog.json, .wolf/cerebrum.md | commands validated end-to-end | ~450 |
+| 14:24 | Updated README setup/run commands to repo-root project paths and added stdio startup example | README.md | docs corrected for root execution | ~220 |
 
 ## Session: 2026-05-02 15:33
 

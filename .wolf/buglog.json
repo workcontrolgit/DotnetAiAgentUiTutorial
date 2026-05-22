@@ -715,6 +715,23 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-21T19:35:19.065Z"
+    },
+    {
+      "id": "bug-045",
+      "timestamp": "2026-05-22T14:21:30.000Z",
+      "error_message": "dotnet run --project src/HrMcp.McpServer -- --stdio failed with 'The provided file path does not exist'",
+      "file": "terminal command (workspace root)",
+      "root_cause": "Command was executed from repository root while the .NET projects live under DotnetAiAgentMcp/src, so the relative project path was incorrect.",
+      "fix": "Run with the nested project path from repo root: dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stdio (and similarly for HrMcp.Agent).",
+      "tags": [
+        "command-path",
+        "dotnet-run",
+        "workspace-structure",
+        "mcp-server"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-22T14:21:30.000Z"
     }
   ]
 }

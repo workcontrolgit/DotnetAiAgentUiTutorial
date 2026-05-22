@@ -40,25 +40,28 @@ The solution follows Clean Architecture with five projects:
 ```bash
 # Clone
 git clone https://github.com/workcontrolgit/DotnetAiAgentMcp.git
-cd DotnetAiAgentMcp/DotnetAiAgentMcp
+cd DotnetAiAgentMcp
 
 # Restore and build
-dotnet build DotnetAiAgentMcp.slnx
+dotnet build DotnetAiAgentMcp/DotnetAiAgentMcp.slnx
 
 # Run database migrations
 dotnet ef database update \
-  --project src/HrMcp.Infrastructure.Persistence \
-  --startup-project src/HrMcp.McpServer
+  --project DotnetAiAgentMcp/src/HrMcp.Infrastructure.Persistence \
+  --startup-project DotnetAiAgentMcp/src/HrMcp.McpServer
 
 # Start the MCP server (HTTP/SSE on port 5100)
-dotnet run --project src/HrMcp.McpServer
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer
+
+# Optional: start MCP server in stdio mode (for MCP desktop clients)
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stdio
 ```
 
 ### Run the AI Agent
 
 ```bash
 # In a second terminal — connects to the MCP server via HTTP
-dotnet run --project src/HrMcp.Agent
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent
 ```
 
 The agent connects to the MCP server, discovers the available tools, and answers HR questions in natural language using Ollama locally.
