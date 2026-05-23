@@ -31,23 +31,13 @@ var configuredTransport = tempConfig["McpServer:Transport:Type"] ?? "stdio";
 var useStdio = explicitStdio || (!explicitStreamHttp &&
     string.Equals(configuredTransport, "stdio", StringComparison.OrdinalIgnoreCase));
 
-var logBase = Path.Combine(AppContext.BaseDirectory, "logs");
-
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(tempConfig)
-    .WriteTo.Conditional(_ => !useStdio, wt => wt.Console())
-    .WriteTo.File(
-        Path.Combine(logBase, "info", "info-.log"),
-        rollingInterval: RollingInterval.Day,
-        retainedFileCountLimit: 7,
-        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
-        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-    .WriteTo.File(
-        Path.Combine(logBase, "error", "error-.log"),
-        rollingInterval: RollingInterval.Day,
-        retainedFileCountLimit: 30,
-        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error,
-        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .WriteTo.Conditional(_ => !useStdio, wt => wt.Console(
+        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}"))
+    .WriteTo.Conditional(_ => useStdio, wt => wt.Console(
+        standardErrorFromLevel: Serilog.Events.LogEventLevel.Verbose,
+        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}"))
     .CreateLogger();
 
 try
@@ -72,6 +62,24 @@ try
 
         using var host = hostBuilder.Build();
         await InitializeDatabaseAsync(host.Services, args.Contains("--reseed"));
+
+        var lifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
+        lifetime.ApplicationStarted.Register(() =>
+        {
+            var provider = hostBuilder.Configuration["AI:Provider"] ?? "Ollama";
+            var model = string.Equals(provider, "AzureOpenAI", StringComparison.OrdinalIgnoreCase)
+                ? hostBuilder.Configuration["AI:AzureOpenAI:Deployment"] ?? "unknown"
+                : hostBuilder.Configuration["AI:Ollama:Model"] ?? "unknown";
+
+            Console.Error.WriteLine("┌─────────────────────────────────────┐");
+            Console.Error.WriteLine("│  HrMcp.McpServer                    │");
+            Console.Error.WriteLine("│  Transport : stdio                  │");
+            Console.Error.WriteLine($"│  Provider  : {provider,-23}│");
+            Console.Error.WriteLine($"│  Model     : {model,-23}│");
+            Console.Error.WriteLine("│  Status    : READY                  │");
+            Console.Error.WriteLine("└─────────────────────────────────────┘");
+        });
+
         await host.RunAsync();
         return;
     }
@@ -110,13 +118,29 @@ try
         .WithTools<PositionTools>()
         .WithTools<HiringOrganizationTools>()
         .WithTools<JobDescriptionTools>()
-        .WithHttpTransport(options =>
-        {
-            options.EnableLegacySse = false;
-        });
+        .WithHttpTransport();
 
     var app = builder.Build();
     await InitializeDatabaseAsync(app.Services, args.Contains("--reseed"));
+
+    var appLifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
+    appLifetime.ApplicationStarted.Register(() =>
+    {
+        var provider = builder.Configuration["AI:Provider"] ?? "Ollama";
+        var model = string.Equals(provider, "AzureOpenAI", StringComparison.OrdinalIgnoreCase)
+            ? builder.Configuration["AI:AzureOpenAI:Deployment"] ?? "unknown"
+            : builder.Configuration["AI:Ollama:Model"] ?? "unknown";
+        var url = builder.Configuration["McpServer:Transport:StreamHttp:Url"] ?? "http://localhost:5100";
+
+        Console.WriteLine("┌─────────────────────────────────────┐");
+        Console.WriteLine("│  HrMcp.McpServer                    │");
+        Console.WriteLine("│  Transport : stream-http             │");
+        Console.WriteLine($"│  URL       : {url,-23}│");
+        Console.WriteLine($"│  Provider  : {provider,-23}│");
+        Console.WriteLine($"│  Model     : {model,-23}│");
+        Console.WriteLine("│  Status    : READY                  │");
+        Console.WriteLine("└─────────────────────────────────────┘");
+    });
 
     if (enableOidc)
     {

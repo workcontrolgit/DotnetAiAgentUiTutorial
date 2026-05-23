@@ -2,12 +2,16 @@
 using System.ComponentModel;
 using HrMcp.Application.Services;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Server;
 
 namespace HrMcp.McpServer.Tools;
 
 [McpServerToolType]
-public sealed class JobDescriptionTools(PositionService positions, IChatClient chatClient)
+public sealed class JobDescriptionTools(
+    PositionService positions,
+    IChatClient chatClient,
+    ILogger<JobDescriptionTools> logger)
 {
     [McpServerTool(Name = "WriteJobDescription"),
      Description("Generates a USAJobs-style job announcement for the specified position using AI. Returns a fully written narrative with Summary, Duties, Qualifications, and How to Apply sections.")]
@@ -15,8 +19,13 @@ public sealed class JobDescriptionTools(PositionService positions, IChatClient c
         [Description("The numeric ID of the position to write a description for")] int positionId,
         CancellationToken ct = default)
     {
+        logger.LogInformation("[Request ] WriteJobDescription positionId={PositionId}", positionId);
         var p = await positions.GetPositionByIdAsync(positionId, ct);
-        if (p is null) return $"Position {positionId} not found.";
+        if (p is null)
+        {
+            logger.LogWarning("[Response] WriteJobDescription positionId={PositionId} => not found", positionId);
+            return $"Position {positionId} not found.";
+        }
 
         var prompt = $"""
             Write a compelling USAJobs-style job announcement for the following federal position.
@@ -46,6 +55,8 @@ public sealed class JobDescriptionTools(PositionService positions, IChatClient c
         var response = await chatClient.GetResponseAsync(
             [new ChatMessage(ChatRole.User, prompt)],
             cancellationToken: ct);
-        return response.Text ?? $"Unable to generate description for position {positionId}.";
+        var text = response.Text ?? $"Unable to generate description for position {positionId}.";
+        logger.LogInformation("[Response] WriteJobDescription positionId={PositionId} => {Chars} chars", positionId, text.Length);
+        return text;
     }
 }

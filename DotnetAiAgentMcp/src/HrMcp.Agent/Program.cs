@@ -4,6 +4,7 @@ using Azure.Identity;
 using HrMcp.Agent;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Client;
 using OllamaSharp;
 using Spectre.Console;
@@ -20,7 +21,9 @@ var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-var transportType = configuration["McpServer:Transport:Type"] ?? "stdio";
+var transportType = args.Contains("--stream-http") ? "streamHttp"
+    : args.Contains("--stdio") ? "stdio"
+    : configuration["McpServer:Transport:Type"] ?? "stdio";
 
 // OIDC feature flag
 // Set Features:EnableOidc = false in appsettings.json (or appsettings.Development.json)
@@ -66,11 +69,39 @@ if (enableOidc)
     additionalHeaders["Authorization"] = $"Bearer {accessToken}";
 }
 
+var aiProvider = configuration["AI:Provider"] ?? "Ollama";
+var aiModel = string.Equals(aiProvider, "AzureOpenAI", StringComparison.OrdinalIgnoreCase)
+    ? configuration["AI:AzureOpenAI:Deployment"] ?? "unknown"
+    : configuration["AI:Ollama:Model"] ?? "unknown";
+
 var clientTransport = await CreateClientTransportAsync(configuration, transportType, additionalHeaders);
-await using var mcpClient = await McpClient.CreateAsync(clientTransport);
+
+// Pass a logger factory so StdioClientTransport forwards captured server stderr to the console.
+// Without this, the transport redirects stderr internally and logs are silently discarded.
+using var mcpLoggerFactory = LoggerFactory.Create(b => b
+    .AddFilter((category, level) =>
+        category?.StartsWith("ModelContextProtocol", StringComparison.Ordinal) == true && level >= LogLevel.Debug)
+    .AddSimpleConsole(o => { o.SingleLine = true; o.TimestampFormat = "HH:mm:ss "; }));
+
+await using var mcpClient = await McpClient.CreateAsync(clientTransport, loggerFactory: mcpLoggerFactory);
 
 var mcpTools = await mcpClient.ListToolsAsync();
-AnsiConsole.MarkupLine($"[green]OK[/] Connected. Tools: [grey]{string.Join(", ", mcpTools.Select(t => t.Name))}[/]\n");
+var toolNames = mcpTools.Select(t => t.Name).ToList();
+
+const int W = 43;
+string L(string s) => $"│  {s.PadRight(W)}│";
+string T(string s) => $"│    - {s.PadRight(W - 4)}│";
+Console.WriteLine($"┌{new string('─', W + 2)}┐");
+Console.WriteLine(L("HrMcp.Agent"));
+Console.WriteLine(L($"Transport : {transportType}"));
+Console.WriteLine(L($"Provider  : {aiProvider}"));
+Console.WriteLine(L($"Model     : {aiModel}"));
+Console.WriteLine(L($"Tools ({toolNames.Count})  :"));
+foreach (var name in toolNames)
+    Console.WriteLine(T(name));
+Console.WriteLine(L("Status    : READY"));
+Console.WriteLine($"└{new string('─', W + 2)}┘");
+Console.WriteLine();
 
 var style = UiStyle.Structured;
 
@@ -127,8 +158,6 @@ static async Task<IClientTransport> CreateClientTransportAsync(
             workingDirectory = FindWorkspaceRoot();
         var arguments = GetStdioArguments(configuration, workingDirectory);
 
-        AnsiConsole.MarkupLine($"[green]OK[/] MCP transport: [grey]stdio[/]");
-
         return new StdioClientTransport(new StdioClientTransportOptions
         {
             Command = command,
@@ -145,7 +174,6 @@ static async Task<IClientTransport> CreateClientTransportAsync(
         "http://localhost:5100/mcp";
 
     await WaitForHttpServerAsync(mcpServerUrl);
-    AnsiConsole.MarkupLine($"[green]OK[/] MCP transport: [grey]streamHttp[/]");
 
     return new HttpClientTransport(new HttpClientTransportOptions
     {

@@ -5,19 +5,21 @@ using System.Text;
 using System.Text.RegularExpressions;
 using HrMcp.Application.Services;
 using HrMcp.Core.Entities;
+using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Server;
 
 namespace HrMcp.McpServer.Tools;
 
 [McpServerToolType]
-public sealed class PositionTools(PositionService positions)
+public sealed class PositionTools(PositionService positions, ILogger<PositionTools> logger)
 {
     [McpServerTool(Name = "GetOpenPositions"),
      Description("Returns all currently open federal job positions including title, pay grade, duty location, and security clearance requirements.")]
     public async Task<IEnumerable<object>> GetOpenPositions(CancellationToken ct = default)
     {
+        logger.LogInformation("[Request ] GetOpenPositions");
         var list = await positions.GetOpenPositionsAsync(ct);
-        return list.Select(p => (object)new
+        var result = list.Select(p => (object)new
         {
             p.Id,
             p.Title,
@@ -34,7 +36,9 @@ public sealed class PositionTools(PositionService positions)
             p.WhoMayApply,
             OrganizationName   = p.HiringOrganization?.OrganizationName,
             DepartmentName     = p.HiringOrganization?.DepartmentName
-        });
+        }).ToList();
+        logger.LogInformation("[Response] GetOpenPositions => {Count} positions", result.Count);
+        return result;
     }
 
     [McpServerTool(Name = "GetPositionById"),
@@ -43,9 +47,14 @@ public sealed class PositionTools(PositionService positions)
         [Description("The numeric ID of the position to retrieve")] int positionId,
         CancellationToken ct = default)
     {
+        logger.LogInformation("[Request ] GetPositionById positionId={PositionId}", positionId);
         var p = await positions.GetPositionByIdAsync(positionId, ct);
-        if (p is null) return null;
-
+        if (p is null)
+        {
+            logger.LogWarning("[Response] GetPositionById positionId={PositionId} => not found", positionId);
+            return null;
+        }
+        logger.LogInformation("[Response] GetPositionById positionId={PositionId} => {Title}", positionId, p.Title);
         return new
         {
             p.Id,
@@ -111,8 +120,13 @@ public sealed class PositionTools(PositionService positions)
         [Description("The numeric ID of the position to render")] int positionId,
         CancellationToken ct = default)
     {
+        logger.LogInformation("[Request ] RenderPositionAsUsaJobsHtml positionId={PositionId}", positionId);
         var p = await positions.GetPositionByIdAsync(positionId, ct);
-        if (p is null) return $"Position {positionId} not found.";
+        if (p is null)
+        {
+            logger.LogWarning("[Response] RenderPositionAsUsaJobsHtml positionId={PositionId} => not found", positionId);
+            return $"Position {positionId} not found.";
+        }
 
         var templatePath = FindLayoutFile("usajobs/layout/usajobs-template.html");
         if (templatePath is null) return "Template file not found. Expected at usajobs/layout/usajobs-template.html.";
@@ -179,7 +193,7 @@ public sealed class PositionTools(PositionService positions)
         Directory.CreateDirectory(outputDir);
         var outputPath = Path.GetFullPath(Path.Combine(outputDir, $"position-{positionId}.html"));
         await File.WriteAllTextAsync(outputPath, html, Encoding.UTF8, ct);
-
+        logger.LogInformation("[Response] RenderPositionAsUsaJobsHtml positionId={PositionId} => {OutputPath}", positionId, outputPath);
         return $"Rendered to: {outputPath}";
     }
 
@@ -343,8 +357,9 @@ public sealed class PositionTools(PositionService positions)
         [Description("The numeric ID of the hiring organization")] int organizationId,
         CancellationToken ct = default)
     {
+        logger.LogInformation("[Request ] GetPositionsByOrganization organizationId={OrganizationId}", organizationId);
         var list = await positions.GetPositionsByOrganizationAsync(organizationId, ct);
-        return list.Select(p => (object)new
+        var result = list.Select(p => (object)new
         {
             p.Id,
             p.Title,
@@ -357,6 +372,8 @@ public sealed class PositionTools(PositionService positions)
             p.TeleworkEligible,
             SecurityClearance = p.SecurityClearance.ToString(),
             p.WhoMayApply
-        });
+        }).ToList();
+        logger.LogInformation("[Response] GetPositionsByOrganization organizationId={OrganizationId} => {Count} positions", organizationId, result.Count);
+        return result;
     }
 }

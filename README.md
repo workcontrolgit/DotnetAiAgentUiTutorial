@@ -57,14 +57,53 @@ dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stdio
 dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stream-http
 ```
 
-### Run the AI Agent
+### Transport Modes
+
+Both the server and agent support two transports, selectable via command-line flag or `appsettings.json`.
+
+| Flag | Transport | When to use |
+|---|---|---|
+| `--stdio` *(default)* | stdio | Claude Desktop, VS Code Copilot, single-terminal dev |
+| `--stream-http` | Stream HTTP (port 5100) | Two-terminal dev, visible server logs, MCP Inspector |
+
+**stdio mode** — agent auto-spawns the server as a subprocess (one terminal):
 
 ```bash
-# In a second terminal — defaults to stdio and launches the server process
 dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent
 ```
 
-Configure `McpServer:Transport:Type` as `stdio` or `streamHttp` in the agent and server `appsettings.json`. The default is `stdio`.
+**Stream HTTP mode** — server and agent run as separate processes (two terminals):
+
+```bash
+# Terminal 1 — start the server
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stream-http
+
+# Terminal 2 — start the agent
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --stream-http
+```
+
+The `--stream-http` flag overrides `appsettings.json` at runtime. No config file changes needed.
+
+To persist the default, set `McpServer:Transport:Type` to `stdio` or `streamHttp` in `appsettings.json`.
+
+### User Secrets
+
+Sensitive configuration (API keys, endpoints) is stored in .NET user secrets and never committed to source control.
+
+```bash
+# List secrets for the MCP server
+dotnet user-secrets list --project DotnetAiAgentMcp/src/HrMcp.McpServer
+
+# List secrets for the AI agent
+dotnet user-secrets list --project DotnetAiAgentMcp/src/HrMcp.Agent
+```
+
+To set a secret:
+
+```bash
+dotnet user-secrets set "AI:AzureOpenAI:ApiKey" "<your-key>" \
+  --project DotnetAiAgentMcp/src/HrMcp.Agent
+```
 
 The agent connects to the MCP server, discovers the available tools, and answers HR questions in natural language using Ollama locally.
 
