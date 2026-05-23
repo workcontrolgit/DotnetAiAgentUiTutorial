@@ -3,598 +3,203 @@
   "bugs": [
     {
       "id": "bug-001",
-      "timestamp": "2026-04-26T00:00:00Z",
-      "error_message": "CS0121: The call is ambiguous between 'ChatClientBuilderChatClientExtensions.AsBuilder(IChatClient)' and 'EmbeddingGeneratorBuilderEmbeddingGeneratorExtensions.AsBuilder<TInput,TEmbedding>(IEmbeddingGenerator<TInput,TEmbedding>)'",
-      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
-      "root_cause": "OllamaApiClient implements both IChatClient and IEmbeddingGenerator<TInput,TEmbedding>. Calling .AsBuilder() directly is ambiguous.",
-      "fix": "Cast to IChatClient first: ((IChatClient)new OllamaApiClient(...)).AsBuilder().UseFunctionInvocation().Build()",
+      "timestamp": "2026-05-23T11:41:37.376Z",
+      "error_message": "Incorrect value in code",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json",
+      "root_cause": "Had \"llama3.2\"",
+      "fix": "Changed to \"gemma3:4b\"",
       "tags": [
-        "OllamaSharp",
-        "IChatClient",
-        "ambiguous-overload",
-        "AsBuilder"
+        "auto-detected",
+        "wrong-value",
+        "json"
       ],
       "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-04-26T00:00:00Z"
+      "occurrences": 4,
+      "last_seen": "2026-05-23T11:44:14.093Z"
     },
     {
       "id": "bug-002",
-      "timestamp": "2026-04-26T00:00:00Z",
-      "error_message": "Microsoft.Extensions.AI.Ollama deprecated — OllamaChatClient no longer recommended",
-      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrMcp.Agent.csproj, DotnetAiAgentMcp/src/HrMcp.McpServer/HrMcp.McpServer.csproj",
-      "root_cause": "Microsoft.Extensions.AI.Ollama is a preview-only package that is deprecated in the GA release of Microsoft.Extensions.AI.",
-      "fix": "Replace with OllamaSharp 5.*. Use OllamaApiClient instead of OllamaChatClient. Cast to IChatClient to resolve AsBuilder() ambiguity.",
+      "timestamp": "2026-05-23T11:49:43.165Z",
+      "error_message": "Incorrect value in code",
+      "file": "../../Users/Fuji Nguyen/AppData/Roaming/Microsoft/UserSecrets/DotnetAiAgentMcp-HrMcp-Agent/secrets.json",
+      "root_cause": "Had \"Ollama\"",
+      "fix": "Changed to \"AzureOpenAI\"",
       "tags": [
-        "OllamaSharp",
-        "deprecated",
-        "Microsoft.Extensions.AI.Ollama",
-        "package"
+        "auto-detected",
+        "wrong-value",
+        "json"
       ],
-      "related_bugs": [
-        "bug-001"
-      ],
+      "related_bugs": [],
       "occurrences": 1,
-      "last_seen": "2026-04-26T00:00:00Z"
+      "last_seen": "2026-05-23T11:49:43.165Z"
     },
     {
       "id": "bug-003",
-      "timestamp": "2026-04-26T19:35:05.511Z",
-      "error_message": "System.TypeLoadException: Could not load type 'Microsoft.Extensions.AI.FunctionApprovalRequestContent' from assembly 'Microsoft.Extensions.AI.Abstractions, Version=10.4.0.0'",
-      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrMcp.Agent.csproj",
-      "root_cause": "HrMcp.Agent pinned Microsoft.Extensions.AI at 9.* (resolves to 9.10.2) but OllamaSharp 5.4.25 pulls Microsoft.Extensions.AI.Abstractions 10.4.1 transitively. At runtime the newer Abstractions assembly is loaded but FunctionInvokingChatClient from 9.10.2 references types that do not exist in 10.4.1.",
-      "fix": "Bump Microsoft.Extensions.AI from 9.* to 10.* in HrMcp.Agent.csproj to align with the transitive Abstractions version.",
+      "timestamp": "2026-05-23T11:53:40.484Z",
+      "error_message": "Null/undefined access in ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Program.cs",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check) | Also: var aiProvider = configuration[\"AI:Provider\"] ?? \"Ollama\";; var aiModel = string.Equals(aiProvider, \"AzureOpenAI\", Strin",
       "tags": [
-        "Microsoft.Extensions.AI",
-        "version-mismatch",
-        "TypeLoadException",
-        "OllamaSharp",
-        "transitive-dependency"
+        "auto-detected",
+        "null-safety",
+        "cs"
       ],
-      "related_bugs": [
-        "bug-001",
-        "bug-002"
-      ],
-      "occurrences": 1,
-      "last_seen": "2026-04-26T19:35:05.511Z"
+      "related_bugs": [],
+      "occurrences": 3,
+      "last_seen": "2026-05-23T12:01:55.002Z"
     },
     {
       "id": "bug-004",
-      "timestamp": "2026-04-26T20:04:18.945Z",
-      "error_message": "Significant refactor of ",
-      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Properties/launchSettings.json",
-      "root_cause": "4 lines replaced/restructured",
-      "fix": "Rewrote 24→15 lines (4 removed)",
+      "timestamp": "2026-05-23T11:54:55.759Z",
+      "error_message": "Incorrect value in code",
+      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Program.cs",
+      "root_cause": "Had \"│  AI        : {provider,-23}│\"",
+      "fix": "Changed to \"│  AI Provider: {provider,-22}│\"",
       "tags": [
         "auto-detected",
-        "refactor",
-        "json"
+        "wrong-value",
+        "cs"
       ],
       "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-04-26T20:04:18.945Z"
+      "occurrences": 2,
+      "last_seen": "2026-05-23T11:55:40.471Z"
     },
     {
       "id": "bug-005",
-      "timestamp": "2026-04-27T01:28:33.777Z",
-      "error_message": "Wrong reference: RequireAuthorization should be Auth",
-      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Program.cs",
-      "root_cause": "Used \"RequireAuthorization\" instead of \"Auth\"",
-      "fix": "Changed RequireAuthorization → Auth",
+      "timestamp": "2026-05-23T12:05:52.779Z",
+      "error_message": "Significant refactor of ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Tools/HiringOrganizationTools.cs",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 25→31 lines (3 removed)",
       "tags": [
         "auto-detected",
-        "wrong-reference",
+        "refactor",
         "cs"
       ],
       "related_bugs": [],
-      "occurrences": 2,
-      "last_seen": "2026-04-27T01:32:33.639Z"
+      "occurrences": 1,
+      "last_seen": "2026-05-23T12:05:52.779Z"
     },
     {
       "id": "bug-006",
-      "timestamp": "2026-04-27T01:32:26.906Z",
+      "timestamp": "2026-05-23T12:06:13.760Z",
       "error_message": "Significant refactor of ",
-      "file": "blogs/series-1-ai-agent-mcp/part-3-mcp-server-dotnet.md",
-      "root_cause": "6 lines replaced/restructured",
-      "fix": "Rewrote 11→7 lines (6 removed)",
+      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Tools/JobDescriptionTools.cs",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 19→28 lines (2 removed)",
       "tags": [
         "auto-detected",
         "refactor",
-        "md"
+        "cs"
       ],
       "related_bugs": [],
       "occurrences": 1,
-      "last_seen": "2026-04-27T01:32:26.906Z"
+      "last_seen": "2026-05-23T12:06:13.760Z"
     },
     {
       "id": "bug-007",
-      "timestamp": "2026-04-27T02:07:05.704Z",
-      "error_message": "Significant refactor of ",
-      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Program.cs",
-      "root_cause": "3 lines replaced/restructured",
-      "fix": "Rewrote 18→22 lines (3 removed)",
+      "timestamp": "2026-05-23T12:06:51.270Z",
+      "error_message": "Incorrect value in code",
+      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Tools/PositionTools.cs",
+      "root_cause": "Had \"Rendered to: {outputPath}\"",
+      "fix": "Changed to \"[Response] RenderPositionAsUsaJobsHtml positionId",
       "tags": [
         "auto-detected",
-        "refactor",
+        "wrong-value",
         "cs"
       ],
       "related_bugs": [],
       "occurrences": 1,
-      "last_seen": "2026-04-27T02:07:05.704Z"
+      "last_seen": "2026-05-23T12:06:51.270Z"
     },
     {
       "id": "bug-008",
-      "timestamp": "2026-04-27T02:07:11.546Z",
-      "error_message": "Incorrect value in code",
-      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/appsettings.json",
-      "root_cause": "Had \"logs/info-.log\"",
-      "fix": "Changed to \"logs/info/info-.log\"",
+      "timestamp": "2026-05-23T12:06:59.611Z",
+      "error_message": "Significant refactor of ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Tools/PositionTools.cs",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 20→23 lines (2 removed)",
       "tags": [
         "auto-detected",
-        "wrong-value",
-        "json"
+        "refactor",
+        "cs"
       ],
       "related_bugs": [],
-      "occurrences": 2,
-      "last_seen": "2026-04-27T02:07:16.272Z"
+      "occurrences": 1,
+      "last_seen": "2026-05-23T12:06:59.611Z"
     },
     {
       "id": "bug-009",
-      "timestamp": "2026-04-26T22:44:00Z",
-      "error_message": "Part 5 blog image did not show after switching link style",
-      "file": "blogs/series-1-ai-agent-mcp/part-5-claude-desktop-integration.md",
-      "root_cause": "Changed image link format away from the established working convention used in other series parts.",
-      "fix": "Reverted image markdown to the original relative path format used by the rest of the series.",
+      "timestamp": "2026-05-23T12:21:20.148Z",
+      "error_message": "Null/undefined access in ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
       "tags": [
-        "blog",
-        "markdown",
-        "image-link",
-        "regression"
+        "auto-detected",
+        "null-safety",
+        "cs"
       ],
       "related_bugs": [],
       "occurrences": 1,
-      "last_seen": "2026-04-26T22:44:00Z"
+      "last_seen": "2026-05-23T12:21:20.148Z"
     },
     {
       "id": "bug-010",
-      "timestamp": "2026-04-27T11:33:13.498Z",
-      "error_message": "Incorrect value in code",
-      "file": "Playwright/specs/cnn-top-menu.spec.ts",
-      "root_cause": "Had 'https://www.cnn.com/sports'",
-      "fix": "Changed to 'https://www.cnn.com/sport'",
+      "timestamp": "2026-05-23T12:26:00.931Z",
+      "error_message": "Significant refactor of ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Program.cs",
+      "root_cause": "13 lines replaced/restructured",
+      "fix": "Rewrote 19→8 lines (13 removed)",
       "tags": [
         "auto-detected",
-        "wrong-value",
-        "ts"
+        "refactor",
+        "cs"
       ],
       "related_bugs": [],
-      "occurrences": 2,
-      "last_seen": "2026-04-27T11:33:50.512Z"
+      "occurrences": 1,
+      "last_seen": "2026-05-23T12:26:00.931Z"
     },
     {
       "id": "bug-011",
-      "timestamp": "2026-04-29T12:10:40.054Z",
-      "error_message": "Null/undefined access in ",
-      "file": "../../Users/Fuji Nguyen/.claude/plans/moonlit-singing-newell.md",
-      "root_cause": "Property access on potentially null/undefined value",
-      "fix": "Added null safety (optional chaining or null check)",
+      "timestamp": "2026-05-23T12:36:51.787Z",
+      "error_message": "Incorrect value in code",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
+      "root_cause": "Had \"McpServer:Transport:Type\"",
+      "fix": "Changed to \"--stream-http\"",
       "tags": [
         "auto-detected",
-        "null-safety",
-        "md"
+        "wrong-value",
+        "cs"
       ],
       "related_bugs": [],
       "occurrences": 1,
-      "last_seen": "2026-04-29T12:10:40.054Z"
+      "last_seen": "2026-05-23T12:36:51.787Z"
     },
     {
       "id": "bug-012",
-      "timestamp": "2026-04-30T03:26:57.771Z",
-      "error_message": "Incorrect value in code",
-      "file": "docs/superpowers/specs/2026-04-29-5-mcp-tools-dotnet-design.md",
-      "root_cause": "Had 't a comprehensive list. It'",
-      "fix": "Changed to \"I run everything locally against Ollama during de",
+      "timestamp": "2026-05-23T12:38:14.675Z",
+      "error_message": "Significant refactor of ",
+      "file": "README.md",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 8→28 lines (3 removed)",
       "tags": [
         "auto-detected",
-        "wrong-value",
+        "refactor",
         "md"
       ],
       "related_bugs": [],
       "occurrences": 1,
-      "last_seen": "2026-04-30T03:26:57.771Z"
+      "last_seen": "2026-05-23T12:38:14.675Z"
     },
     {
       "id": "bug-013",
-      "timestamp": "2026-04-30T03:34:39.446Z",
-      "error_message": "Incorrect value in code",
-      "file": "blogs/standalone/5-mcp-tools-dotnet.md",
-      "root_cause": "Had 're not already using it, stop here and set it up ",
-      "fix": "Changed to 't set that up yet, it'",
-      "tags": [
-        "auto-detected",
-        "wrong-value",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-04-30T03:34:39.446Z"
-    },
-    {
-      "id": "bug-014",
-      "timestamp": "2026-04-30T03:44:26.280Z",
-      "error_message": "Incorrect value in code",
-      "file": "docs/superpowers/specs/2026-04-29-5-mcp-tools-dotnet-design.md",
-      "root_cause": "Had \"5 MCP Tools Every .NET Developer Should Know (Fro",
-      "fix": "Changed to \"6 MCP Tools Every .NET Developer Should Know (Fro",
-      "tags": [
-        "auto-detected",
-        "wrong-value",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-04-30T03:44:26.280Z"
-    },
-    {
-      "id": "bug-015",
-      "timestamp": "2026-04-30T03:59:30.839Z",
-      "error_message": "Missing await",
-      "file": "../../Users/Fuji Nguyen/.claude/skills/medium-editor.md",
-      "root_cause": "Async call without await — returned Promise instead of value",
-      "fix": "Added await to async call",
-      "tags": [
-        "auto-detected",
-        "async-fix",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-04-30T03:59:30.839Z"
-    },
-    {
-      "id": "bug-016",
-      "timestamp": "2026-04-30T04:13:32.846Z",
-      "error_message": "Null/undefined access in ",
-      "file": "../../Users/Fuji Nguyen/.claude/skills/medium-editor.md",
-      "root_cause": "Property access on potentially null/undefined value",
-      "fix": "Added null safety (optional chaining or null check)",
-      "tags": [
-        "auto-detected",
-        "null-safety",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-04-30T04:13:32.846Z"
-    },
-    {
-      "id": "bug-017",
-      "timestamp": "2026-04-30T11:36:55.827Z",
-      "error_message": "Significant refactor of ",
-      "file": "../../Users/Fuji Nguyen/.claude/skills/medium-editor.md",
-      "root_cause": "18 lines replaced/restructured",
-      "fix": "Rewrote 73→127 lines (18 removed)",
-      "tags": [
-        "auto-detected",
-        "refactor",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-04-30T11:36:55.827Z"
-    },
-    {
-      "id": "bug-018",
-      "timestamp": "2026-05-01T03:36:07.312Z",
-      "error_message": "Wrong reference: Superpower should be Superpowers",
-      "file": "blogs/standalone/7-mcp-tools-dotnet.md",
-      "root_cause": "Used \"Superpower\" instead of \"Superpowers\"",
-      "fix": "Changed Superpower → Superpowers",
-      "tags": [
-        "auto-detected",
-        "wrong-reference",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-01T03:36:07.312Z"
-    },
-    {
-      "id": "bug-019",
-      "timestamp": "2026-05-01T03:56:49.545Z",
-      "error_message": "Incorrect value in code",
-      "file": "medium/medium-public-url.json",
-      "root_cause": "Had \"Magnificent 7 MCP Tools\"",
-      "fix": "Changed to \"Magnificent 7 MCP Tools Every .NET Developer Shou",
-      "tags": [
-        "auto-detected",
-        "wrong-value",
-        "json"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-01T03:56:49.546Z"
-    },
-    {
-      "id": "bug-020",
-      "timestamp": "2026-05-02T19:44:19.284Z",
-      "error_message": "Missing await",
-      "file": "../../Users/Fuji Nguyen/.claude/skills/medium-editor.md",
-      "root_cause": "Async call without await — returned Promise instead of value",
-      "fix": "Added await to async call",
-      "tags": [
-        "auto-detected",
-        "async-fix",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-02T19:44:19.284Z"
-    },
-    {
-      "id": "bug-021",
-      "timestamp": "2026-05-02T19:54:16.976Z",
-      "error_message": "Missing await",
-      "file": "../../Users/Fuji Nguyen/.claude/skills/medium-editor.md",
-      "root_cause": "Async call without await — returned Promise instead of value",
-      "fix": "Added await to async call",
-      "tags": [
-        "auto-detected",
-        "async-fix",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-02T19:54:16.976Z"
-    },
-    {
-      "id": "bug-022",
-      "timestamp": "2026-05-07T02:16:35.786Z",
-      "error_message": "Significant refactor of ",
-      "file": "docs/meetings/2026-05-06-mcp-jd-drafting-architect-review.md",
-      "root_cause": "3 lines replaced/restructured",
-      "fix": "Rewrote 5→5 lines (3 removed)",
-      "tags": [
-        "auto-detected",
-        "refactor",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-07T02:16:35.786Z"
-    },
-    {
-      "id": "bug-023",
-      "timestamp": "2026-05-07T12:36:41.936Z",
-      "error_message": "Wrong reference: with should be or",
-      "file": ".superpowers/brainstorm/1985-1778156775/content/diagram-mockup.html",
-      "root_cause": "Used \"with\" instead of \"or\"",
-      "fix": "Changed with → or",
-      "tags": [
-        "auto-detected",
-        "wrong-reference",
-        "html"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-07T12:36:41.936Z"
-    },
-    {
-      "id": "bug-024",
-      "timestamp": "2026-05-15T03:30:52.605Z",
-      "error_message": "Missing guard clause",
-      "file": "DotnetAiAgentMcp/src/HrMcp.Infrastructure.Persistence/DbSeeder.cs",
-      "root_cause": "No early return/throw for edge case: db.HiringOrganizations.Any(",
-      "fix": "Added guard clause: if (db.HiringOrganizations.Any()",
-      "tags": [
-        "auto-detected",
-        "guard-clause",
-        "cs"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-15T03:30:52.605Z"
-    },
-    {
-      "id": "bug-025",
-      "timestamp": "2026-05-15T03:50:03.001Z",
-      "error_message": "Incorrect value in code",
-      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/appsettings.json",
-      "root_cause": "Had \"Server=(localdb)\\\\mssqllocaldb;Database=HrMcpDb;T",
-      "fix": "Changed to \"Server=(localdb)\\\\HrMcpDb;Database=HrMcpDb;Truste",
-      "tags": [
-        "auto-detected",
-        "wrong-value",
-        "json"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-15T03:50:03.001Z"
-    },
-    {
-      "id": "bug-026",
-      "timestamp": "2026-05-15T04:03:29.813Z",
-      "error_message": "Incorrect value in code",
-      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/appsettings.json",
-      "root_cause": "Had \"Server=(localdb)\\\\HrMcpDb;Database=HrMcpDb;Truste",
-      "fix": "Changed to \"Server=(localdb)\\\\HrMcpInstance;Database=HrMcpDb;",
-      "tags": [
-        "auto-detected",
-        "wrong-value",
-        "json"
-      ],
-      "related_bugs": [],
-      "occurrences": 2,
-      "last_seen": "2026-05-15T04:03:34.187Z"
-    },
-    {
-      "id": "bug-027",
-      "timestamp": "2026-05-15T04:00:00.000Z",
-      "error_message": "DbSeeder falls back to hardcoded seed — only 5 records loaded instead of 52 from JSON",
-      "file": "src/HrMcp.McpServer/Program.cs",
-      "root_cause": "Directory.GetCurrentDirectory() resolves to the project dir (src/HrMcp.McpServer) when using dotnet run --project, not the solution root where data/usajobs-seed.json lives. File.Exists returns false, seeder falls back to SeedFromCode.",
-      "fix": "Replaced Directory.GetCurrentDirectory() with FindSeedFile() helper that walks up from AppContext.BaseDirectory up to 8 levels searching for data/usajobs-seed.json. Works for dotnet run, published exe, and Claude Desktop stdio.",
-      "tags": [
-        "seeder",
-        "path-resolution",
-        "working-directory",
-        "localdb"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-15T04:00:00.000Z"
-    },
-    {
-      "id": "bug-028",
-      "timestamp": "2026-05-15T04:00:00.000Z",
-      "error_message": "error CS8421: A static local function cannot contain a reference to 'args'",
-      "file": "src/HrMcp.McpServer/Program.cs",
-      "root_cause": "InitializeDatabaseAsync is a static local function; it cannot capture args from the outer scope.",
-      "fix": "Added bool forceReseed parameter to InitializeDatabaseAsync and passed args.Contains(\"--reseed\") at each call site.",
-      "tags": [
-        "compile-error",
-        "static-function",
-        "capture"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-15T04:00:00.000Z"
-    },
-    {
-      "id": "bug-029",
-      "timestamp": "2026-05-15T11:06:49.620Z",
-      "error_message": "Significant refactor of ",
-      "file": "DotnetAiAgentMcp/src/HrMcp.Infrastructure.Persistence/DbSeeder.cs",
-      "root_cause": "21 lines replaced/restructured",
-      "fix": "Rewrote 23→34 lines (21 removed) | Also: string   Title,        string   Description,   str; string   Qualifications, bool   IsOpen,        str",
-      "tags": [
-        "auto-detected",
-        "refactor",
-        "cs"
-      ],
-      "related_bugs": [],
-      "occurrences": 2,
-      "last_seen": "2026-05-15T11:07:09.106Z"
-    },
-    {
-      "id": "bug-030",
-      "timestamp": "2026-05-15T11:07:22.520Z",
-      "error_message": "Significant refactor of ",
-      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Tools/PositionTools.cs",
-      "root_cause": "11 lines replaced/restructured",
-      "fix": "Rewrote 29→40 lines (11 removed)",
-      "tags": [
-        "auto-detected",
-        "refactor",
-        "cs"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-15T11:07:22.520Z"
-    },
-    {
-      "id": "bug-031",
-      "timestamp": "2026-05-15T11:28:58.541Z",
-      "error_message": "Wrong reference: MatchedObjectId should be PositionID",
-      "file": "DotnetAiAgentMcp/tools/UsaJobsFetcher/Program.cs",
-      "root_cause": "Used \"MatchedObjectId\" instead of \"PositionID\"",
-      "fix": "Changed MatchedObjectId → PositionID",
-      "tags": [
-        "auto-detected",
-        "wrong-reference",
-        "cs"
-      ],
-      "related_bugs": [],
-      "occurrences": 2,
-      "last_seen": "2026-05-15T11:29:16.700Z"
-    },
-    {
-      "id": "bug-032",
-      "timestamp": "2026-05-15T11:29:44.456Z",
-      "error_message": "Wrong reference: PositionUri should be UsaJobsId",
-      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Tools/PositionTools.cs",
-      "root_cause": "Used \"PositionUri\" instead of \"UsaJobsId\"",
-      "fix": "Changed PositionUri → UsaJobsId",
-      "tags": [
-        "auto-detected",
-        "wrong-reference",
-        "cs"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-15T11:29:44.456Z"
-    },
-    {
-      "id": "bug-033",
-      "timestamp": "2026-05-15T11:34:27.753Z",
-      "error_message": "Null/undefined access in ",
-      "file": "DotnetAiAgentMcp/tools/UsaJobsFetcher/Program.cs",
-      "root_cause": "Property access on potentially null/undefined value",
-      "fix": "Added null safety (optional chaining or null check)",
-      "tags": [
-        "auto-detected",
-        "null-safety",
-        "cs"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-15T11:34:27.753Z"
-    },
-    {
-      "id": "bug-034",
-      "timestamp": "2026-05-15T13:03:59.275Z",
-      "error_message": "Significant refactor of ",
-      "file": "../../Users/Fuji Nguyen/AppData/Roaming/Claude/claude_desktop_config.json",
-      "root_cause": "2 lines replaced/restructured",
-      "fix": "Rewrote 4→4 lines (2 removed)",
-      "tags": [
-        "auto-detected",
-        "refactor",
-        "json"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-15T13:03:59.275Z"
-    },
-    {
-      "id": "bug-035",
-      "timestamp": "2026-05-16T11:41:13.027Z",
-      "error_message": "Null/undefined access in ",
-      "file": "DotnetAiAgentMcp/src/HrMcp.Infrastructure.Persistence/DbSeeder.cs",
-      "root_cause": "Property access on potentially null/undefined value",
-      "fix": "Added null safety (optional chaining or null check)",
-      "tags": [
-        "auto-detected",
-        "null-safety",
-        "cs"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-16T11:41:13.027Z"
-    },
-    {
-      "id": "bug-036",
-      "timestamp": "2026-05-16T14:12:55.663Z",
-      "error_message": "Significant refactor of ",
-      "file": "DotnetAiAgentMcp/tools/UsaJobsFetcher/Program.cs",
-      "root_cause": "4 lines replaced/restructured",
-      "fix": "Rewrote 5→17 lines (4 removed)",
-      "tags": [
-        "auto-detected",
-        "refactor",
-        "cs"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-16T14:12:55.663Z"
-    },
-    {
-      "id": "bug-037",
-      "timestamp": "2026-05-21T11:21:19.074Z",
-      "error_message": "Wrong reference: NET should be wolf",
+      "timestamp": "2026-05-23T13:09:51.353Z",
+      "error_message": "Wrong reference: wolf should be NET",
       "file": ".gitignore",
-      "root_cause": "Used \"NET\" instead of \"wolf\"",
-      "fix": "Changed NET → wolf",
+      "root_cause": "Used \"wolf\" instead of \"NET\"",
+      "fix": "Changed wolf → NET",
       "tags": [
         "auto-detected",
         "wrong-reference",
@@ -602,200 +207,7 @@
       ],
       "related_bugs": [],
       "occurrences": 1,
-      "last_seen": "2026-05-21T11:21:19.074Z"
-    },
-    {
-      "id": "bug-038",
-      "timestamp": "2026-05-21T14:46:36.993Z",
-      "error_message": "Wrong reference: MediumAquamarine3 should be MediumAquamarine",
-      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
-      "root_cause": "Used \"MediumAquamarine3\" instead of \"MediumAquamarine\"",
-      "fix": "Changed MediumAquamarine3 → MediumAquamarine",
-      "tags": [
-        "auto-detected",
-        "wrong-reference",
-        "cs"
-      ],
-      "related_bugs": [],
-      "occurrences": 2,
-      "last_seen": "2026-05-21T14:47:34.752Z"
-    },
-    {
-      "id": "bug-039",
-      "timestamp": "2026-05-21T14:50:26.575Z",
-      "error_message": "Missing error handling in unknown",
-      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
-      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
-      "fix": "Added try/catch block",
-      "tags": [
-        "auto-detected",
-        "error-handling",
-        "cs"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-21T14:50:26.575Z"
-    },
-    {
-      "id": "bug-040",
-      "timestamp": "2026-05-21T14:52:27.962Z",
-      "error_message": "Missing error handling in unknown",
-      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
-      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
-      "fix": "Added try/catch block",
-      "tags": [
-        "auto-detected",
-        "error-handling",
-        "cs"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-21T14:52:27.962Z"
-    },
-    {
-      "id": "bug-041",
-      "timestamp": "2026-05-21T18:56:19.322Z",
-      "error_message": "Missing error handling in Task",
-      "file": "blogs/series-1-ai-agent-mcp/part-4-ai-agent-extensions-ai.md",
-      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
-      "fix": "Added try/catch block | Also: using Microsoft.Extensions.Configuration;; using Spectre.Console;",
-      "tags": [
-        "auto-detected",
-        "error-handling",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 2,
-      "last_seen": "2026-05-21T18:56:37.597Z"
-    },
-    {
-      "id": "bug-042",
-      "timestamp": "2026-05-21T18:56:45.022Z",
-      "error_message": "Significant refactor of ",
-      "file": "blogs/series-1-ai-agent-mcp/part-4-ai-agent-extensions-ai.md",
-      "root_cause": "7 lines replaced/restructured",
-      "fix": "Rewrote 10→7 lines (7 removed)",
-      "tags": [
-        "auto-detected",
-        "refactor",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-21T18:56:45.022Z"
-    },
-    {
-      "id": "bug-043",
-      "timestamp": "2026-05-21T19:35:02.935Z",
-      "error_message": "Incorrect value in code",
-      "file": "blogs/series-1-ai-agent-mcp/part-6-mcp-security-oidc.md",
-      "root_cause": "Had \"Token acquired.\\n\"",
-      "fix": "Changed to \"[green]✔[/] Token acquired.\\n\"",
-      "tags": [
-        "auto-detected",
-        "wrong-value",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 2,
-      "last_seen": "2026-05-21T19:35:07.744Z"
-    },
-    {
-      "id": "bug-044",
-      "timestamp": "2026-05-21T19:35:19.065Z",
-      "error_message": "Significant refactor of ",
-      "file": "blogs/series-1-ai-agent-mcp/part-6-mcp-security-oidc.md",
-      "root_cause": "2 lines replaced/restructured",
-      "fix": "Rewrote 3→9 lines (2 removed)",
-      "tags": [
-        "auto-detected",
-        "refactor",
-        "md"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-21T19:35:19.065Z"
-    },
-    {
-      "id": "bug-045",
-<<<<<<< HEAD
-      "timestamp": "2026-05-22T05:17:57.332Z",
-      "error_message": "Incorrect value in code",
-      "file": "../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Application/HrAiWorkflow.Application.csproj",
-      "root_cause": "Had \"..\\HrMcp.Core\\HrMcp.Core.csproj\"",
-      "fix": "Changed to \"..\\HrAiWorkflow.Core\\HrAiWorkflow.Core.csproj\"",
-      "tags": [
-        "auto-detected",
-        "wrong-value",
-        "csproj"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-22T05:17:57.332Z"
-    },
-    {
-      "id": "bug-046",
-      "timestamp": "2026-05-22T05:18:28.962Z",
-      "error_message": "Incorrect value in code",
-      "file": "../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.Infrastructure/HrAiWorkflow.Infrastructure.csproj",
-      "root_cause": "Had \"..\\HrMcp.Core\\HrMcp.Core.csproj\"",
-      "fix": "Changed to \"..\\HrAiWorkflow.Application\\HrAiWorkflow.Applicat",
-      "tags": [
-        "auto-detected",
-        "wrong-value",
-        "csproj"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-22T05:18:28.963Z"
-    },
-    {
-      "id": "bug-047",
-      "timestamp": "2026-05-22T05:19:36.037Z",
-      "error_message": "Incorrect value in code",
-      "file": "../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.McpServer/HrAiWorkflow.McpServer.csproj",
-      "root_cause": "Had \"..\\HrMcp.Application\\HrMcp.Application.csproj\"",
-      "fix": "Changed to \"..\\HrAiWorkflow.Application\\HrAiWorkflow.Applicat",
-      "tags": [
-        "auto-detected",
-        "wrong-value",
-        "csproj"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-22T05:19:36.037Z"
-    },
-    {
-      "id": "bug-048",
-      "timestamp": "2026-05-22T05:27:14.909Z",
-      "error_message": "Incorrect value in code",
-      "file": "../DotnetAiWorkflowTutorial/HrAiWorkflow/src/HrAiWorkflow.McpServer/appsettings.json",
-      "root_cause": "Had \"Server=(localdb)\\\\MSSQLLocalDB;Database=HrMcpDb;T",
-      "fix": "Changed to \"Server=(localdb)\\\\mssqllocaldb;Database=HrAiWorkf",
-      "tags": [
-        "auto-detected",
-        "wrong-value",
-        "json"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-22T05:27:14.909Z"
-=======
-      "timestamp": "2026-05-22T14:21:30.000Z",
-      "error_message": "dotnet run --project src/HrMcp.McpServer -- --stdio failed with 'The provided file path does not exist'",
-      "file": "terminal command (workspace root)",
-      "root_cause": "Command was executed from repository root while the .NET projects live under DotnetAiAgentMcp/src, so the relative project path was incorrect.",
-      "fix": "Run with the nested project path from repo root: dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stdio (and similarly for HrMcp.Agent).",
-      "tags": [
-        "command-path",
-        "dotnet-run",
-        "workspace-structure",
-        "mcp-server"
-      ],
-      "related_bugs": [],
-      "occurrences": 1,
-      "last_seen": "2026-05-22T14:21:30.000Z"
->>>>>>> c06a30a232d190ccc0ef3d7dedb22609875cb53b
+      "last_seen": "2026-05-23T13:09:51.353Z"
     }
   ]
 }
