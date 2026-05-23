@@ -25,6 +25,9 @@ var transportType = args.Contains("--stream-http") ? "streamHttp"
     : args.Contains("--stdio") ? "stdio"
     : configuration["McpServer:Transport:Type"] ?? "stdio";
 
+var enableDebug = args.Contains("--debug") ||
+    configuration.GetValue<bool>("Features:EnableDebug");
+
 // OIDC feature flag
 // Set Features:EnableOidc = false in appsettings.json (or appsettings.Development.json)
 // to connect without authentication.
@@ -78,9 +81,10 @@ var clientTransport = await CreateClientTransportAsync(configuration, transportT
 
 // Pass a logger factory so StdioClientTransport forwards captured server stderr to the console.
 // Without this, the transport redirects stderr internally and logs are silently discarded.
+var mcpMinLevel = enableDebug ? LogLevel.Debug : LogLevel.Warning;
 using var mcpLoggerFactory = LoggerFactory.Create(b => b
     .AddFilter((category, level) =>
-        category?.StartsWith("ModelContextProtocol", StringComparison.Ordinal) == true && level >= LogLevel.Debug)
+        category?.StartsWith("ModelContextProtocol", StringComparison.Ordinal) == true && level >= mcpMinLevel)
     .AddSimpleConsole(o => { o.SingleLine = true; o.TimestampFormat = "HH:mm:ss "; }));
 
 await using var mcpClient = await McpClient.CreateAsync(clientTransport, loggerFactory: mcpLoggerFactory);

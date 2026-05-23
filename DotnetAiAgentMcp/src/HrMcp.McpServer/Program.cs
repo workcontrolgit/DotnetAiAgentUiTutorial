@@ -31,8 +31,14 @@ var configuredTransport = tempConfig["McpServer:Transport:Type"] ?? "stdio";
 var useStdio = explicitStdio || (!explicitStreamHttp &&
     string.Equals(configuredTransport, "stdio", StringComparison.OrdinalIgnoreCase));
 
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(tempConfig)
+var enableDebug = args.Contains("--debug") ||
+    tempConfig.GetValue<bool>("Features:EnableDebug");
+
+var logConfig = new LoggerConfiguration().ReadFrom.Configuration(tempConfig);
+if (enableDebug)
+    logConfig = logConfig.MinimumLevel.Debug();
+
+Log.Logger = logConfig
     .WriteTo.Conditional(_ => !useStdio, wt => wt.Console(
         outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}"))
     .WriteTo.Conditional(_ => useStdio, wt => wt.Console(

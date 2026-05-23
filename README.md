@@ -86,6 +86,26 @@ The `--stream-http` flag overrides `appsettings.json` at runtime. No config file
 
 To persist the default, set `McpServer:Transport:Type` to `stdio` or `streamHttp` in `appsettings.json`.
 
+### Debug Mode
+
+Both the server and agent support a `--debug` flag that enables verbose logging at startup.
+
+```bash
+# Start server with debug logging
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --debug
+
+# Start agent with debug logging
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --debug
+
+# Combine flags (server)
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stream-http --debug
+
+# Combine flags (agent)
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --stream-http --debug
+```
+
+To enable debug mode permanently, set `Features:EnableDebug` to `true` in `appsettings.json` for either project.
+
 ### User Secrets
 
 Sensitive configuration (API keys, endpoints) is stored in .NET user secrets and never committed to source control.
