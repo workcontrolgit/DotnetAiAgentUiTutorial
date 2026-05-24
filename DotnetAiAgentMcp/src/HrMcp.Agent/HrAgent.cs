@@ -18,7 +18,10 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         Guidelines:
         - Always call GetHiringOrganizations before GetPositionsByOrganization.
         - Use GetOpenPositions for an overview; GetPositionById for full detail.
-        - When asked to write a job description, call WriteJobDescription — do not write one yourself.
+        - When asked to write a job description, call GetPositionById to get the full position
+          data, then write a compelling USAJobs-style job announcement yourself with these sections:
+          ## Summary, ## Duties, ## Qualifications Required, ## How to Apply.
+          Use professional federal HR writing style. Be specific and engaging.
         - To export a position's full structured data, call ExportPositionToHtml(positionId) or ExportPositionToWord(positionId).
         - To export an AI-generated job description draft to Word, call ExportDraftToWord(positionId, draftContent)
           passing the full current draft text including any edits the user has made.
