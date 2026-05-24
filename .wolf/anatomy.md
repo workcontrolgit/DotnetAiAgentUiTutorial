@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-24T13:06:26.003Z
-> Files: 13 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-24T17:19:08.058Z
+> Files: 18 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
 
@@ -107,8 +107,8 @@
 ## DotnetAiAgentMcp/src/HrMcp.Agent/
 
 - `appsettings.json` (~265 tok)
-- `HrAgent.cs` — src/HrMcp.Agent/HrAgent.cs (~3651 tok)
-- `Program.cs` — src/HrMcp.Agent/Program.cs (~3132 tok)
+- `HrAgent.cs` — src/HrMcp.Agent/HrAgent.cs (~4321 tok)
+- `Program.cs` — src/HrMcp.Agent/Program.cs (~3271 tok)
 
 ## DotnetAiAgentMcp/src/HrMcp.Agent/bin/Debug/net10.0/
 
@@ -176,16 +176,17 @@
 ## DotnetAiAgentMcp/src/HrMcp.McpServer/
 
 - `appsettings.json` (~520 tok)
-- `Program.cs` — src/HrMcp.McpServer/Program.cs (~3148 tok)
+- `Program.cs` — src/HrMcp.McpServer/Program.cs (~3168 tok)
 
 ## DotnetAiAgentMcp/src/HrMcp.McpServer/Properties/
 
 
 ## DotnetAiAgentMcp/src/HrMcp.McpServer/Tools/
 
+- `ExportTools.cs` — src/HrMcp.McpServer/Tools/ExportTools.cs (~4689 tok)
 - `HiringOrganizationTools.cs` — src/HrMcp.McpServer/Tools/HiringOrganizationTools.cs (~333 tok)
 - `JobDescriptionTools.cs` — src/HrMcp.McpServer/Tools/JobDescriptionTools.cs (~866 tok)
-- `PositionTools.cs` — src/HrMcp.McpServer/Tools/PositionTools.cs (~4820 tok)
+- `PositionTools.cs` — src/HrMcp.McpServer/Tools/PositionTools.cs (~4818 tok)
 
 ## DotnetAiAgentMcp/src/HrMcp.McpServer/bin/Debug/net10.0/
 
@@ -231,9 +232,13 @@
 
 ## docs/superpowers/plans/
 
+- `2026-05-24-export-tools.md` — Export Tools Implementation Plan (~9065 tok)
+- `2026-05-24-mcp-pure-data-layer.md` — MCP Pure Data Layer Implementation Plan (~4763 tok)
 
 ## docs/superpowers/specs/
 
+- `2026-05-24-export-tools-design.md` — Export Tools Design (~2156 tok)
+- `2026-05-24-mcp-pure-data-layer-design.md` — MCP Pure Data Layer Design (~1339 tok)
 
 ## medium/
 

@@ -448,6 +448,86 @@
       "related_bugs": [],
       "occurrences": 2,
       "last_seen": "2026-05-24T12:34:46.412Z"
+    },
+    {
+      "id": "bug-029",
+      "timestamp": "2026-05-24T14:10:06.355Z",
+      "error_message": "Wrong reference: Position should be HrPosition",
+      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Tools/ExportTools.cs",
+      "root_cause": "Used \"Position\" instead of \"HrPosition\"",
+      "fix": "Changed Position → HrPosition",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 3,
+      "last_seen": "2026-05-24T14:10:20.044Z"
+    },
+    {
+      "id": "bug-030",
+      "timestamp": "2026-05-24T14:13:27.263Z",
+      "error_message": "Significant refactor of ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 23→38 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T14:13:27.263Z"
+    },
+    {
+      "id": "bug-031",
+      "timestamp": "2026-05-24T14:13:51.203Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T14:13:51.203Z"
+    },
+    {
+      "id": "bug-032",
+      "timestamp": "2026-05-24T17:16:23.583Z",
+      "error_message": "Wrong reference: Four should be Seven",
+      "file": "docs/superpowers/specs/2026-05-24-mcp-pure-data-layer-design.md",
+      "root_cause": "Used \"Four\" instead of \"Seven\"",
+      "fix": "Changed Four → Seven",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T17:16:23.583Z"
+    },
+    {
+      "id": "bug-033",
+      "timestamp": "2026-05-24T17:16:29.156Z",
+      "error_message": "Incorrect value in code",
+      "file": "docs/superpowers/specs/2026-05-24-mcp-pure-data-layer-design.md",
+      "root_cause": "Had `AI`",
+      "fix": "Changed to `McpServer/appsettings.Development.json`",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T17:16:29.156Z"
     }
   ]
 }
