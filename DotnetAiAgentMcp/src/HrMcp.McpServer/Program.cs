@@ -18,6 +18,12 @@ using System.Net.NetworkInformation;
 var explicitStdio = args.Contains("--stdio");
 var explicitStreamHttp = args.Contains("--stream-http");
 
+// --num-ctx <value> overrides AI:Ollama:NumCtx from appsettings.json
+var numCtxArg = ParseIntArg(args, "--num-ctx");
+var configOverrides = new Dictionary<string, string?>();
+if (numCtxArg.HasValue)
+    configOverrides["AI:Ollama:NumCtx"] = numCtxArg.Value.ToString();
+
 var tempConfig = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false)
@@ -25,6 +31,7 @@ var tempConfig = new ConfigurationBuilder()
         $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
         optional: true)
     .AddEnvironmentVariables()
+    .AddInMemoryCollection(configOverrides)   // CLI wins over all file sources
     .Build();
 
 var configuredTransport = tempConfig["McpServer:Transport:Type"] ?? "stdio";
@@ -56,6 +63,7 @@ try
             ContentRootPath = AppContext.BaseDirectory
         });
         hostBuilder.Services.AddSerilog();
+        hostBuilder.Configuration.AddInMemoryCollection(configOverrides);
 
         ConfigureCommonServices(hostBuilder.Services, hostBuilder.Configuration);
 
@@ -77,11 +85,14 @@ try
                 ? hostBuilder.Configuration["AI:AzureOpenAI:Deployment"] ?? "unknown"
                 : hostBuilder.Configuration["AI:Ollama:Model"] ?? "unknown";
 
+            var numCtxStdio = hostBuilder.Configuration.GetValue<int?>("AI:Ollama:NumCtx");
             Console.Error.WriteLine("┌─────────────────────────────────────┐");
             Console.Error.WriteLine("│  HrMcp.McpServer                    │");
             Console.Error.WriteLine("│  Transport : stdio                  │");
             Console.Error.WriteLine($"│  Provider  : {provider,-23}│");
             Console.Error.WriteLine($"│  Model     : {model,-23}│");
+            if (numCtxStdio.HasValue)
+                Console.Error.WriteLine($"│  NumCtx    : {numCtxStdio.Value,-23:N0}│");
             Console.Error.WriteLine("│  Status    : READY                  │");
             Console.Error.WriteLine("└─────────────────────────────────────┘");
         });
@@ -97,6 +108,7 @@ try
     });
     builder.Host.UseSerilog();
 
+    builder.Configuration.AddInMemoryCollection(configOverrides);
     ConfigureCommonServices(builder.Services, builder.Configuration);
 
     var enableOidc = builder.Configuration.GetValue<bool>("Features:EnableOidc");
@@ -138,12 +150,15 @@ try
             : builder.Configuration["AI:Ollama:Model"] ?? "unknown";
         var url = builder.Configuration["McpServer:Transport:StreamHttp:Url"] ?? "http://localhost:5100";
 
+        var numCtxHttp = builder.Configuration.GetValue<int?>("AI:Ollama:NumCtx");
         Console.WriteLine("┌─────────────────────────────────────┐");
         Console.WriteLine("│  HrMcp.McpServer                    │");
         Console.WriteLine("│  Transport : stream-http             │");
         Console.WriteLine($"│  URL       : {url,-23}│");
         Console.WriteLine($"│  Provider  : {provider,-23}│");
         Console.WriteLine($"│  Model     : {model,-23}│");
+        if (numCtxHttp.HasValue)
+            Console.WriteLine($"│  NumCtx    : {numCtxHttp.Value,-23:N0}│");
         Console.WriteLine("│  Status    : READY                  │");
         Console.WriteLine("└─────────────────────────────────────┘");
     });
@@ -241,6 +256,12 @@ static bool TryDescribePortConflict(IOException ex, IConfiguration configuration
     message =
         $"Port {uri.Port} is already in use. Stop the running server or change the configured URL before starting another instance.";
     return true;
+}
+
+static int? ParseIntArg(string[] args, string flag)
+{
+    var idx = Array.IndexOf(args, flag);
+    return idx >= 0 && idx + 1 < args.Length && int.TryParse(args[idx + 1], out var v) ? v : null;
 }
 
 static IChatClient CreateChatClient(IConfiguration configuration)

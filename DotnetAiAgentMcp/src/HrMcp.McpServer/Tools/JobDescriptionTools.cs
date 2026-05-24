@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using HrMcp.Application.Services;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Server;
 
@@ -11,6 +12,7 @@ namespace HrMcp.McpServer.Tools;
 public sealed class JobDescriptionTools(
     PositionService positions,
     IChatClient chatClient,
+    IConfiguration configuration,
     ILogger<JobDescriptionTools> logger)
 {
     [McpServerTool(Name = "WriteJobDescription"),
@@ -52,8 +54,14 @@ public sealed class JobDescriptionTools(
             ## How to Apply
             """;
 
+        var numCtx = configuration.GetValue<int?>("AI:Ollama:NumCtx");
+        var chatOptions = numCtx.HasValue
+            ? new ChatOptions { AdditionalProperties = new AdditionalPropertiesDictionary { ["num_ctx"] = numCtx.Value } }
+            : null;
+
         var response = await chatClient.GetResponseAsync(
             [new ChatMessage(ChatRole.User, prompt)],
+            chatOptions,
             cancellationToken: ct);
         var text = response.Text ?? $"Unable to generate description for position {positionId}.";
         logger.LogInformation("[Response] WriteJobDescription positionId={PositionId} => {Chars} chars", positionId, text.Length);

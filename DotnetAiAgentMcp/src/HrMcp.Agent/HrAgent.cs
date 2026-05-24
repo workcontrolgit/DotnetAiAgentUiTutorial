@@ -1,13 +1,14 @@
 // src/HrMcp.Agent/HrAgent.cs
 using Microsoft.Extensions.AI;
 using Spectre.Console;
-using System.Text.Json;
+using Spectre.Console.Rendering;
+using System.Text;
 
 namespace HrMcp.Agent;
 
 public enum UiStyle { Structured, Minimal, Panels }
 
-public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle style = UiStyle.Structured)
+public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle style = UiStyle.Structured, int? numCtx = null)
 {
     private const string SystemPrompt = """
         You are an HR assistant for a U.S. federal agency. Help users explore open job
@@ -22,13 +23,9 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         - When you receive position data, format it as a markdown table with columns:
           ID, Title, Grade, Salary, Location.
         - Keep answers concise; offer to go deeper when asked.
+        - Never present a numbered menu of options or ask the user what they want to do.
+          Respond directly to what the user said, or call a tool immediately.
         """;
-
-    // Tools whose results are paged — only PageSize records are sent to the LLM per turn
-    private static readonly HashSet<string> PositionListTools =
-        new(StringComparer.OrdinalIgnoreCase) { "GetOpenPositions", "GetPositionsByOrganization" };
-
-    private const int PageSize = 10;
 
     private readonly List<ChatMessage> _history =
     [
@@ -47,46 +44,19 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
 
             _history.Add(new ChatMessage(ChatRole.User, input));
 
-            // Run tool loop; position-list results are intercepted and paged
-            var (pageOneText, allPositions) = await RunToolLoopAsync(ct);
-
-            if (allPositions is { Count: > 0 })
-            {
-                // Show LLM prose (strip its markdown table — we render our own)
-                RenderResponse(StripMarkdownTables(pageOneText));
-
-                var totalPages = (int)Math.Ceiling(allPositions.Count / (double)PageSize);
-                for (var page = 0; page < totalPages; page++)
-                {
-                    RenderPositionPage(allPositions, page, totalPages);
-
-                    if (page < totalPages - 1)
-                    {
-                        AnsiConsole.MarkupLine($"[yellow]─── Page {page + 1} of {totalPages} ───  Enter = next page   Q = stop[/]");
-                        var key = Console.ReadLine() ?? string.Empty;
-                        if (key.Trim().Equals("Q", StringComparison.OrdinalIgnoreCase))
-                        {
-                            AnsiConsole.MarkupLine("[grey]Stopped.[/]");
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                RenderResponse(pageOneText);
-            }
+            var text = await RunToolLoopAsync(ct);
+            RenderResponse(text);
         }
     }
 
     // ── Manual tool call loop ────────────────────────────────────────────────
-    // Handles all tool calls ourselves so we can intercept position-list results
-    // and feed only PageSize records to the LLM at a time.
 
-    private async Task<(string text, List<string>? allPositions)> RunToolLoopAsync(CancellationToken ct)
+    private async Task<string> RunToolLoopAsync(CancellationToken ct)
     {
-        List<string>? capturedPositions = null;
-        var options = new ChatOptions { Tools = tools };
+        var additional = new AdditionalPropertiesDictionary();
+        if (numCtx.HasValue) additional["num_ctx"] = numCtx.Value;
+
+        var options = new ChatOptions { Tools = tools, AdditionalProperties = additional };
 
         var response = await Spin("Thinking…", _ =>
             chatClient.GetResponseAsync(_history, options, ct));
@@ -100,7 +70,7 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
             if (toolCalls.Count == 0)
             {
                 _history.AddMessages(response);
-                return (response.Text ?? string.Empty, capturedPositions);
+                return response.Text ?? string.Empty;
             }
 
             // Append assistant message (with tool call requests) to history
@@ -124,30 +94,8 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
                     catch (Exception ex) { rawResult = $"Error: {ex.Message}"; }
                 }
 
-                object? llmResult = rawResult;
-
-                // Intercept position-list tools: capture all records, send only first page to LLM
-                if (PositionListTools.Contains(call.Name ?? string.Empty))
-                {
-                    var json = rawResult switch
-                    {
-                        string s => s,
-                        JsonElement je => je.GetRawText(),
-                        _ => JsonSerializer.Serialize(rawResult)
-                    };
-
-                    var records = ParseJsonObjects(json);
-                    if (records is { Count: > 0 })
-                    {
-                        capturedPositions = records;
-                        var firstPage = records.Take(PageSize).ToList();
-                        llmResult = $"(Showing records 1–{firstPage.Count} of {records.Count} total)\n"
-                                  + $"[{string.Join(",", firstPage)}]";
-                    }
-                }
-
                 _history.Add(new ChatMessage(ChatRole.Tool,
-                    [new FunctionResultContent(call.CallId ?? string.Empty, llmResult)]));
+                    [new FunctionResultContent(call.CallId ?? string.Empty, rawResult)]));
             }
 
             response = await Spin("Thinking…", _ =>
@@ -155,94 +103,7 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         }
     }
 
-    // Render one page of positions as a Spectre.Console table (no LLM involved)
-    private static void RenderPositionPage(List<string> allRecords, int page, int totalPages)
-    {
-        var pageRecords = allRecords.Skip(page * PageSize).Take(PageSize).ToList();
-        var from = page * PageSize + 1;
-        var to = from + pageRecords.Count - 1;
-        var total = allRecords.Count;
-
-        var table = new Table()
-            .BorderColor(Color.Teal)
-            .Expand()
-            .Title($"[bold cyan]Page {page + 1} of {totalPages}[/]")
-            .Caption($"[grey]Records {from}–{to} of {total}[/]");
-
-        table.AddColumn(new TableColumn("[bold cyan]ID[/]").RightAligned());
-        table.AddColumn(new TableColumn("[bold cyan]Title[/]"));
-        table.AddColumn(new TableColumn("[bold cyan]Grade[/]").Centered());
-        table.AddColumn(new TableColumn("[bold cyan]Salary[/]"));
-        table.AddColumn(new TableColumn("[bold cyan]Location[/]"));
-
-        foreach (var raw in pageRecords)
-        {
-            try
-            {
-                using var doc = JsonDocument.Parse(raw);
-                var e = doc.RootElement;
-                table.AddRow(
-                    Markup.Escape(Str(e, "Id")),
-                    Markup.Escape(Str(e, "Title")),
-                    Markup.Escape(Grade(e)),
-                    Markup.Escape(Salary(e)),
-                    Markup.Escape(Str(e, "DutyLocation")));
-            }
-            catch { table.AddRow("?", raw, "", "", ""); }
-        }
-
-        AnsiConsole.Write(table);
-        AnsiConsole.WriteLine();
-    }
-
-    // Try PascalCase then camelCase (MCP SDK serializes with camelCase)
-    private static bool TryProp(JsonElement e, string key, out JsonElement val)
-    {
-        if (e.TryGetProperty(key, out val)) return true;
-        var camel = char.ToLowerInvariant(key[0]) + key[1..];
-        return e.TryGetProperty(camel, out val);
-    }
-
-    private static string Str(JsonElement e, string key) =>
-        TryProp(e, key, out var v) ? v.ToString() : "";
-
-    private static string Grade(JsonElement e)
-    {
-        var lo = Str(e, "PayGradeMin");
-        var hi = Str(e, "PayGradeMax");
-        return string.IsNullOrEmpty(lo) ? hi : lo == hi ? lo : $"{lo}–{hi}";
-    }
-
-    private static string Salary(JsonElement e)
-    {
-        double? min = TryProp(e, "MinimumRange", out var minP) && minP.ValueKind == JsonValueKind.Number
-            ? minP.GetDouble() : null;
-        double? max = TryProp(e, "MaximumRange", out var maxP) && maxP.ValueKind == JsonValueKind.Number
-            ? maxP.GetDouble() : null;
-        if (min is null && max is null) return "N/A";
-        if (min is null) return $"Up to ${max!.Value:N0}";
-        if (max is null) return $"${min.Value:N0}+";
-        return $"${min.Value:N0} – ${max.Value:N0}";
-    }
-
-    private static string StripMarkdownTables(string text) =>
-        string.Join('\n', text.Split('\n').Where(l => !l.TrimStart().StartsWith('|'))).Trim();
-
     // ── Helpers ──────────────────────────────────────────────────────────────
-
-    private static List<string>? ParseJsonObjects(string json)
-    {
-        try
-        {
-            using var doc = JsonDocument.Parse(json);
-            if (doc.RootElement.ValueKind != JsonValueKind.Array) return null;
-            // GetRawText() copies the bytes out before doc is disposed
-            return doc.RootElement.EnumerateArray()
-                .Select(e => e.GetRawText())
-                .ToList();
-        }
-        catch { return null; }
-    }
 
     private static Task<T> Spin<T>(string status, Func<StatusContext, Task<T>> action) =>
         AnsiConsole.Status()
@@ -273,9 +134,7 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
                 AnsiConsole.MarkupLine("[grey]Type [bold]exit[/] to quit.[/]\n");
                 break;
             default:
-                AnsiConsole.Write(new Rule("[bold cyan]HR Assistant[/]").RuleStyle("cyan").LeftJustified());
-                AnsiConsole.MarkupLine("[grey]Ask about open positions, organizations, or job descriptions. Type [bold]exit[/] to quit.[/]\n");
-                break;
+                throw new NotSupportedException($"Unknown UiStyle: {style}");
         }
     }
 
@@ -285,19 +144,26 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         {
             case UiStyle.Structured:
                 AnsiConsole.Markup("[bold yellow]You ›[/] ");
+                // Console.ReadLine used intentionally — AnsiConsole.Ask adds an unwanted extra ":"
                 return Console.ReadLine() ?? string.Empty;
             case UiStyle.Minimal:
                 AnsiConsole.Write(new Rule("[bold yellow]You[/]").RuleStyle("grey").LeftJustified());
                 return Console.ReadLine() ?? string.Empty;
             case UiStyle.Panels:
+                return AnsiConsole.Ask<string>("[bold yellow]You ›[/]");
             default:
-                return AnsiConsole.Ask<string>("[bold yellow]You[/]");
+                throw new NotSupportedException($"Unknown UiStyle: {style}");
         }
     }
 
     private void RenderResponse(string text)
     {
-        if (string.IsNullOrWhiteSpace(text)) return;
+        // I-4: show a visible notice rather than silently returning on empty response
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            AnsiConsole.MarkupLine("[grey](No response)[/]");
+            return;
+        }
 
         var segments = SplitIntoSegments(text);
 
@@ -305,27 +171,49 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         {
             case UiStyle.Structured:
                 AnsiConsole.MarkupLine("\n[bold green]Assistant ›[/]");
-                foreach (var seg in segments) RenderSegment(seg);
+                RenderSegments(segments);
                 AnsiConsole.Write(new Rule().RuleStyle("grey"));
                 AnsiConsole.WriteLine();
                 break;
             case UiStyle.Minimal:
                 AnsiConsole.Write(new Rule("[bold green]Assistant[/]").RuleStyle("grey").LeftJustified());
-                foreach (var seg in segments) RenderSegment(seg);
-                AnsiConsole.WriteLine();
-                break;
-            case UiStyle.Panels:
-                AnsiConsole.Write(new Rule("[bold green]ASSISTANT[/]").RuleStyle("aquamarine3").LeftJustified());
-                foreach (var seg in segments) RenderSegment(seg);
-                AnsiConsole.WriteLine();
-                break;
-            default:
-                AnsiConsole.MarkupLine("\n[bold green]Assistant ›[/]");
-                foreach (var seg in segments) RenderSegment(seg);
+                RenderSegments(segments);
+                // I-1: turn separator so the next "You" rule doesn't immediately follow
                 AnsiConsole.Write(new Rule().RuleStyle("grey"));
                 AnsiConsole.WriteLine();
                 break;
+            case UiStyle.Panels:
+                // I-2: wrap content in a Panel to match the welcome screen's visual contract
+                // I-3: use "Assistant" (not "ASSISTANT") to match other modes
+                var panelRows = segments
+                    .Select(seg =>
+                    {
+                        if (seg.IsTable)
+                            return BuildMarkdownTable(seg.Text) ?? (IRenderable)new Markup(Markup.Escape(seg.Text));
+                        var prose = seg.Text.Trim();
+                        return string.IsNullOrWhiteSpace(prose) ? null : (IRenderable)new Markup(ConvertInlineBold(prose));
+                    })
+                    .Where(r => r is not null)
+                    .Select(r => r!)
+                    .ToList();
+                if (panelRows.Count > 0)
+                {
+                    AnsiConsole.Write(new Panel(new Rows(panelRows))
+                        .Header("[bold green]Assistant[/]")
+                        .BorderColor(Color.Aquamarine3)
+                        .Padding(1, 0));
+                }
+                AnsiConsole.WriteLine();
+                break;
+            default:
+                throw new NotSupportedException($"Unknown UiStyle: {style}");
         }
+    }
+
+    // M-2: shared helper — avoids repeating the foreach across every switch case
+    private static void RenderSegments(List<Segment> segments)
+    {
+        foreach (var seg in segments) RenderSegment(seg);
     }
 
     // ── Markdown table renderer (used for LLM-formatted tables) ─────────────
@@ -364,24 +252,92 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         {
             var prose = seg.Text.Trim();
             if (!string.IsNullOrWhiteSpace(prose))
+                RenderMarkdownProse(prose);
+        }
+    }
+
+    // Renders LLM markdown prose to the console with basic formatting:
+    //   **bold**  → Spectre bold markup
+    //   * item    → indented bullet with • glyph
+    //   blank line → paragraph break
+    private static void RenderMarkdownProse(string text)
+    {
+        foreach (var rawLine in text.Split('\n'))
+        {
+            var line = rawLine.TrimEnd();
+
+            if (string.IsNullOrEmpty(line))
             {
-                AnsiConsole.Write(new Markup(Markup.Escape(prose)));
                 AnsiConsole.WriteLine();
+                continue;
+            }
+
+            if (IsBulletLine(line, out var bulletContent))
+            {
+                AnsiConsole.MarkupLine("  [grey]•[/] " + ConvertInlineBold(bulletContent));
+            }
+            else
+            {
+                AnsiConsole.MarkupLine(ConvertInlineBold(line));
             }
         }
+        AnsiConsole.WriteLine();
+    }
+
+    // Returns true when the line is a markdown bullet (* item or *   item)
+    private static bool IsBulletLine(string line, out string content)
+    {
+        var t = line.TrimStart();
+        if (t.Length >= 2 && t[0] == '*' && char.IsWhiteSpace(t[1]))
+        {
+            content = t.Substring(1).TrimStart();
+            return true;
+        }
+        content = string.Empty;
+        return false;
+    }
+
+    // Converts **bold** spans to Spectre markup; escapes everything else
+    private static string ConvertInlineBold(string text)
+    {
+        var parts = text.Split("**");
+        var sb = new StringBuilder();
+        for (var i = 0; i < parts.Length; i++)
+            sb.Append(i % 2 == 0
+                ? Markup.Escape(parts[i])
+                : $"[bold]{Markup.Escape(parts[i])}[/]");
+        return sb.ToString();
     }
 
     private static void RenderMarkdownTable(string tableText)
     {
+        var table = BuildMarkdownTable(tableText);
+        if (table is not null)
+        {
+            AnsiConsole.Write(table);
+            AnsiConsole.WriteLine();
+        }
+        else
+        {
+            AnsiConsole.Write(new Markup(Markup.Escape(tableText)));
+            AnsiConsole.WriteLine();
+        }
+    }
+
+    // M-1: separates building from rendering so Panels mode can reuse the Table widget.
+    // Filters separator rows by content (not by position) so a missing separator row
+    // doesn't silently eat the first data row.
+    private static Table? BuildMarkdownTable(string tableText)
+    {
         var rows = tableText.Split('\n')
             .Select(l => l.Trim())
-            .Where(l => l.StartsWith('|'))
+            .Where(l => l.StartsWith('|') && !IsSeparatorRow(l))
             .ToList();
 
-        if (rows.Count < 2) { AnsiConsole.Write(new Markup(Markup.Escape(tableText))); return; }
+        if (rows.Count < 1) return null;
 
         var headers = ParseCells(rows[0]);
-        var dataRows = rows.Skip(2).ToList(); // skip separator
+        var dataRows = rows.Skip(1).ToList();
 
         var table = new Table().BorderColor(Color.Teal).Expand();
         foreach (var h in headers)
@@ -391,12 +347,16 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         {
             var cells = ParseCells(row);
             while (cells.Count < headers.Count) cells.Add(string.Empty);
+            // Truncate to header count — LLMs occasionally produce malformed rows
             table.AddRow(cells.Take(headers.Count).Select(c => Markup.Escape(c)).ToArray());
         }
 
-        AnsiConsole.Write(table);
-        AnsiConsole.WriteLine();
+        return table;
     }
+
+    // A GFM separator row contains only |, -, :, and spaces
+    private static bool IsSeparatorRow(string row) =>
+        row.Replace("|", "").Replace("-", "").Replace(":", "").Replace(" ", "").Length == 0;
 
     private static List<string> ParseCells(string line) =>
         line.Trim('|').Split('|').Select(c => c.Trim()).ToList();

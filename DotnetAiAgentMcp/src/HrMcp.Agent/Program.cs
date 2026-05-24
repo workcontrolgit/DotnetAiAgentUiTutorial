@@ -11,6 +11,12 @@ using Spectre.Console;
 using System.Net.Http.Json;
 using System.Text.Json;
 
+// --num-ctx <value> overrides AI:Ollama:NumCtx from appsettings.json
+var numCtxArg = ParseIntArg(args, "--num-ctx");
+var configOverrides = new Dictionary<string, string?>();
+if (numCtxArg.HasValue)
+    configOverrides["AI:Ollama:NumCtx"] = numCtxArg.Value.ToString();
+
 var configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false)
@@ -19,6 +25,7 @@ var configuration = new ConfigurationBuilder()
         optional: true)
     .AddUserSecrets<Program>(optional: true)
     .AddEnvironmentVariables()
+    .AddInMemoryCollection(configOverrides)   // CLI wins over all file sources
     .Build();
 
 var transportType = args.Contains("--stream-http") ? "streamHttp"
@@ -100,6 +107,9 @@ Console.WriteLine(L("HrMcp.Agent"));
 Console.WriteLine(L($"Transport : {transportType}"));
 Console.WriteLine(L($"Provider  : {aiProvider}"));
 Console.WriteLine(L($"Model     : {aiModel}"));
+var numCtxDisplay = configuration.GetValue<int?>("AI:Ollama:NumCtx");
+if (numCtxDisplay.HasValue)
+    Console.WriteLine(L($"NumCtx    : {numCtxDisplay.Value:N0}"));
 Console.WriteLine(L($"Tools ({toolNames.Count})  :"));
 foreach (var name in toolNames)
     Console.WriteLine(T(name));
@@ -143,7 +153,9 @@ AnsiConsole.MarkupLine($"[green]{style}[/]\n");
 
 IChatClient chatClient = CreateChatClient(configuration);
 
-var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList(), style);
+var numCtx = configuration.GetValue<int?>("AI:Ollama:NumCtx");
+
+var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList(), style, numCtx);
 await agent.RunAsync();
 
 static async Task<IClientTransport> CreateClientTransportAsync(
@@ -253,6 +265,12 @@ static string FindWorkspaceRoot()
     }
 
     return AppContext.BaseDirectory;
+}
+
+static int? ParseIntArg(string[] args, string flag)
+{
+    var idx = Array.IndexOf(args, flag);
+    return idx >= 0 && idx + 1 < args.Length && int.TryParse(args[idx + 1], out var v) ? v : null;
 }
 
 static IChatClient CreateChatClient(IConfiguration configuration)

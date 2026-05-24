@@ -106,6 +106,31 @@ dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --stream-http --debug
 
 To enable debug mode permanently, set `Features:EnableDebug` to `true` in `appsettings.json` for either project.
 
+### Ollama Context Window (NumCtx)
+
+The agent sends `num_ctx` to Ollama on every request. Configure it in `DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json`:
+
+```json
+"Ollama": {
+  "Endpoint": "http://localhost:11434",
+  "Model": "gemma4:latest",
+  "NumCtx": 32768
+}
+```
+
+Omit `NumCtx` entirely to let Ollama use its own default (typically 2048, which truncates multi-turn sessions).
+
+Sizing guidelines for `gemma4:latest`:
+
+- **4096** — minimal VRAM impact; short Q&A sessions
+- **8192** — moderate; typical multi-turn chat
+- **16384** — significant; long tool result payloads
+- **32768** — heavy (`-32k` territory); slower but handles large contexts
+
+The startup banner prints the active `NumCtx` value so you can confirm it at a glance.
+
+---
+
 ### User Secrets
 
 Sensitive configuration (API keys, endpoints) is stored in .NET user secrets and never committed to source control.
