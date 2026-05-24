@@ -368,6 +368,86 @@
       "related_bugs": [],
       "occurrences": 3,
       "last_seen": "2026-05-24T05:40:08.537Z"
+    },
+    {
+      "id": "bug-024",
+      "timestamp": "2026-05-24T12:17:33.587Z",
+      "error_message": "Significant refactor of ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 4→3 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T12:17:33.587Z"
+    },
+    {
+      "id": "bug-025",
+      "timestamp": "2026-05-24T12:17:40.228Z",
+      "error_message": "Wrong return value",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Was returning: (response.Text ?? string.Empty, capturedPositions)",
+      "fix": "Now returns: response.Text ?? string.Empty;",
+      "tags": [
+        "auto-detected",
+        "return-value",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T12:17:40.228Z"
+    },
+    {
+      "id": "bug-026",
+      "timestamp": "2026-05-24T12:28:27.966Z",
+      "error_message": "Null/undefined access in ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T12:28:27.966Z"
+    },
+    {
+      "id": "bug-027",
+      "timestamp": "2026-05-24T12:28:45.047Z",
+      "error_message": "Missing guard clause",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "No early return/throw for edge case: table is not null",
+      "fix": "Added guard clause: if (table is not null)",
+      "tags": [
+        "auto-detected",
+        "guard-clause",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T12:28:45.047Z"
+    },
+    {
+      "id": "bug-028",
+      "timestamp": "2026-05-24T12:34:12.742Z",
+      "error_message": "Incorrect value in code",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json",
+      "root_cause": "Had \"gemma4-32k:latest\"",
+      "fix": "Changed to \"gemma4:latest\"",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "json"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-24T12:34:46.412Z"
     }
   ]
 }
