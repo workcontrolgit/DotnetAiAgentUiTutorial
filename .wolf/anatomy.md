@@ -1,10 +1,11 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-23T13:09:54.791Z
-> Files: 10 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-24T05:40:08.526Z
+> Files: 13 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
 
+- `indexed-jumping-garden.md` — Plan: Fix Position List — Show All Records from Tool Results (~913 tok)
 
 ## ../../Users/Fuji Nguyen/.claude/projects/c--apps-DotnetMcpTutorial/memory/
 
@@ -17,7 +18,11 @@
 
 ## ../../Users/Fuji Nguyen/AppData/Roaming/Microsoft/UserSecrets/DotnetAiAgentMcp-HrMcp-Agent/
 
-- `secrets.json` (~82 tok)
+- `secrets.json` (~80 tok)
+
+## ../../Users/Fuji Nguyen/AppData/Roaming/Microsoft/UserSecrets/DotnetAiAgentMcp-HrMcp-McpServer/
+
+- `secrets.json` (~80 tok)
 
 ## ../AngularNetTutotial/TokenService/Duende-IdentityServer/shared/
 
@@ -101,8 +106,9 @@
 
 ## DotnetAiAgentMcp/src/HrMcp.Agent/
 
-- `appsettings.json` (~256 tok)
-- `Program.cs` — src/HrMcp.Agent/Program.cs (~2873 tok)
+- `appsettings.json` (~259 tok)
+- `HrAgent.cs` — src/HrMcp.Agent/HrAgent.cs (~4237 tok)
+- `Program.cs` — src/HrMcp.Agent/Program.cs (~2918 tok)
 
 ## DotnetAiAgentMcp/src/HrMcp.Agent/bin/Debug/net10.0/
 

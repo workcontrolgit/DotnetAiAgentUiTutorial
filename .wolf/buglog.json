@@ -208,6 +208,166 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-23T13:09:51.353Z"
+    },
+    {
+      "id": "bug-014",
+      "timestamp": "2026-05-23T13:12:40.077Z",
+      "error_message": "Significant refactor of ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "10 lines replaced/restructured",
+      "fix": "Rewrote 37→117 lines (10 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-23T13:12:40.077Z"
+    },
+    {
+      "id": "bug-015",
+      "timestamp": "2026-05-23T13:14:52.362Z",
+      "error_message": "Null/undefined access in ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-23T13:14:52.362Z"
+    },
+    {
+      "id": "bug-016",
+      "timestamp": "2026-05-23T13:30:05.168Z",
+      "error_message": "Incorrect value in code",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Had \"[bold cyan]#[/]\"",
+      "fix": "Changed to \"[bold cyan]ID[/]\"",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-23T13:30:05.168Z"
+    },
+    {
+      "id": "bug-017",
+      "timestamp": "2026-05-23T13:46:27.802Z",
+      "error_message": "Wrong reference: Spinner should be Spin",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Used \"Spinner\" instead of \"Spin\"",
+      "fix": "Changed Spinner → Spin",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-23T13:47:15.776Z"
+    },
+    {
+      "id": "bug-018",
+      "timestamp": "2026-05-23T13:50:56.854Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-23T13:50:56.854Z"
+    },
+    {
+      "id": "bug-019",
+      "timestamp": "2026-05-24T04:32:35.736Z",
+      "error_message": "Incorrect value in code",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json",
+      "root_cause": "Had \"gemma4\"",
+      "fix": "Changed to \"gemma4-full-ctx:latest\"",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "json"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T04:32:35.736Z"
+    },
+    {
+      "id": "bug-020",
+      "timestamp": "2026-05-24T04:33:18.790Z",
+      "error_message": "Incorrect value in code",
+      "file": "../../Users/Fuji Nguyen/AppData/Roaming/Microsoft/UserSecrets/DotnetAiAgentMcp-HrMcp-Agent/secrets.json",
+      "root_cause": "Had \"AzureOpenAI\"",
+      "fix": "Changed to \"Ollama\"",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "json"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-24T04:33:21.070Z"
+    },
+    {
+      "id": "bug-021",
+      "timestamp": "2026-05-24T04:51:50.913Z",
+      "error_message": "Wrong return value",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
+      "root_cause": "Was returning: (IChatClient)new OllamaApiClient(new Uri(endpoint)",
+      "fix": "Now returns: (IChatClient)new OllamaApiClient(httpClient, model",
+      "tags": [
+        "auto-detected",
+        "return-value",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T04:51:50.913Z"
+    },
+    {
+      "id": "bug-022",
+      "timestamp": "2026-05-24T05:16:13.279Z",
+      "error_message": "Incorrect value in code",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json",
+      "root_cause": "Had \"gemma4-full-ctx:latest\"",
+      "fix": "Changed to \"llama3.2:latest\"",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "json"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T05:16:13.279Z"
+    },
+    {
+      "id": "bug-023",
+      "timestamp": "2026-05-24T05:35:47.428Z",
+      "error_message": "Incorrect value in code",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json",
+      "root_cause": "Had \"llama3.2:latest\"",
+      "fix": "Changed to \"gemma4:latest\"",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "json"
+      ],
+      "related_bugs": [],
+      "occurrences": 3,
+      "last_seen": "2026-05-24T05:40:08.537Z"
     }
   ]
 }

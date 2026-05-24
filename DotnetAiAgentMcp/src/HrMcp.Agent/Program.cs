@@ -141,10 +141,7 @@ catch (OperationCanceledException)
 
 AnsiConsole.MarkupLine($"[green]{style}[/]\n");
 
-IChatClient chatClient = CreateChatClient(configuration)
-    .AsBuilder()
-    .UseFunctionInvocation()
-    .Build();
+IChatClient chatClient = CreateChatClient(configuration);
 
 var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList(), style);
 await agent.RunAsync();
@@ -179,13 +176,14 @@ static async Task<IClientTransport> CreateClientTransportAsync(
 
     await WaitForHttpServerAsync(mcpServerUrl);
 
+    var httpClient = new HttpClient { Timeout = Timeout.InfiniteTimeSpan };
     return new HttpClientTransport(new HttpClientTransportOptions
     {
         Endpoint = new Uri(mcpServerUrl),
         AdditionalHeaders = additionalHeaders,
         TransportMode = HttpTransportMode.StreamableHttp,
         Name = "hr-mcp-stream-http"
-    });
+    }, httpClient, null, ownsHttpClient: true);
 }
 
 static async Task WaitForHttpServerAsync(string mcpServerUrl)
@@ -266,7 +264,8 @@ static IChatClient CreateChatClient(IConfiguration configuration)
         var endpoint = configuration["AI:Ollama:Endpoint"] ?? "http://localhost:11434";
         var model = configuration["AI:Ollama:Model"] ?? "llama3.2";
 
-        return (IChatClient)new OllamaApiClient(new Uri(endpoint), model);
+        var httpClient = new HttpClient { BaseAddress = new Uri(endpoint), Timeout = Timeout.InfiniteTimeSpan };
+        return (IChatClient)new OllamaApiClient(httpClient, model, null!);
     }
 
     var azureEndpoint = configuration["AI:AzureOpenAI:Endpoint"]
