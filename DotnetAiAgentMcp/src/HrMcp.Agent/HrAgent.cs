@@ -3,12 +3,13 @@ using Microsoft.Extensions.AI;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 using System.Text;
+using System.Text.Json;
 
 namespace HrMcp.Agent;
 
 public enum UiStyle { Structured, Minimal, Panels }
 
-public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle style = UiStyle.Structured, int? numCtx = null)
+public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle style = UiStyle.Structured, int? numCtx = null, string outputFolder = "usajobs/output")
 {
     private const string SystemPrompt = """
         You are an HR assistant for a U.S. federal agency. Help users explore open job
@@ -18,7 +19,10 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         - Always call GetHiringOrganizations before GetPositionsByOrganization.
         - Use GetOpenPositions for an overview; GetPositionById for full detail.
         - When asked to write a job description, call WriteJobDescription — do not write one yourself.
-        - For "USAJobs format" requests, call RenderPositionAsUsaJobsHtml with the position ID.
+        - To export a position's full structured data, call ExportPositionToHtml(positionId) or ExportPositionToWord(positionId).
+        - To export an AI-generated job description draft to Word, call ExportDraftToWord(positionId, draftContent)
+          passing the full current draft text including any edits the user has made.
+        - To export all open positions to Excel, call ExportPositionsToExcel().
         - Format pay ranges as "$85,000 – $110,000 per year".
         - When you receive position data, format it as a markdown table with columns:
           ID, Title, Grade, Salary, Location.
@@ -26,6 +30,18 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         - Never present a numbered menu of options or ask the user what they want to do.
           Respond directly to what the user said, or call a tool immediately.
         """;
+
+    // Tools that return { "fileName": "...", "content": "<base64>" } — agent saves the file
+    private static readonly HashSet<string> ExportToolNames =
+        new(StringComparer.OrdinalIgnoreCase)
+        {
+            "ExportPositionToHtml",
+            "ExportPositionToWord",
+            "ExportDraftToWord",
+            "ExportPositionsToExcel"
+        };
+
+    private readonly string _outputFolder = outputFolder;
 
     private readonly List<ChatMessage> _history =
     [
@@ -94,6 +110,19 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
                     catch (Exception ex) { rawResult = $"Error: {ex.Message}"; }
                 }
 
+                // Intercept export tool results — decode base64 and save to output folder
+                if (ExportToolNames.Contains(call.Name ?? string.Empty))
+                {
+                    var json = rawResult switch
+                    {
+                        string s => s,
+                        JsonElement je => je.GetRawText(),
+                        _ => JsonSerializer.Serialize(rawResult)
+                    };
+                    var saved = TrySaveExportFile(json, _outputFolder);
+                    if (saved is not null) rawResult = saved;
+                }
+
                 _history.Add(new ChatMessage(ChatRole.Tool,
                     [new FunctionResultContent(call.CallId ?? string.Empty, rawResult)]));
             }
@@ -104,6 +133,35 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────
+
+    // Decodes a base64 export payload and saves the file to outputFolder.
+    // Returns "Saved to: <path>" on success, null if the payload is not an export result.
+    private static string? TrySaveExportFile(string json, string outputFolder)
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+            if (!root.TryGetProperty("fileName", out var fileNameEl) ||
+                !root.TryGetProperty("content", out var contentEl))
+                return null;
+
+            var fileName = fileNameEl.GetString();
+            var base64   = contentEl.GetString();
+            if (string.IsNullOrWhiteSpace(fileName) || string.IsNullOrWhiteSpace(base64))
+                return null;
+
+            var bytes = Convert.FromBase64String(base64);
+            Directory.CreateDirectory(outputFolder);
+            var fullPath = Path.GetFullPath(Path.Combine(outputFolder, fileName));
+            File.WriteAllBytes(fullPath, bytes);
+            return $"Saved to: {fullPath}";
+        }
+        catch
+        {
+            return null;
+        }
+    }
 
     private static Task<T> Spin<T>(string status, Func<StatusContext, Task<T>> action) =>
         AnsiConsole.Status()

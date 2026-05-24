@@ -72,6 +72,7 @@ try
             .WithTools<PositionTools>()
             .WithTools<HiringOrganizationTools>()
             .WithTools<JobDescriptionTools>()
+            .WithTools<ExportTools>()
             .WithStdioServerTransport();
 
         using var host = hostBuilder.Build();
@@ -136,6 +137,7 @@ try
         .WithTools<PositionTools>()
         .WithTools<HiringOrganizationTools>()
         .WithTools<JobDescriptionTools>()
+        .WithTools<ExportTools>()
         .WithHttpTransport();
 
     var app = builder.Build();
