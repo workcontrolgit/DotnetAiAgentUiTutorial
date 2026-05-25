@@ -222,8 +222,7 @@ builder.Services.AddScoped<HiringOrganizationService>();
 var mcp = builder.Services
     .AddMcpServer()
     .WithTools<PositionTools>()
-    .WithTools<HiringOrganizationTools>()
-    .WithTools<JobDescriptionTools>();
+    .WithTools<HiringOrganizationTools>();
 
 if (isStdio)
     mcp.WithStdioServerTransport();
@@ -302,9 +301,9 @@ The inspector starts on `http://localhost:6274`. Open it in a browser.
 
 ### What you will see
 
-The **Tools** tab lists all five tools auto-discovered from the server. Click any tool to see its description and a **Run Tool** button. The right panel shows the live JSON-RPC response.
+The **Tools** tab lists all four tools auto-discovered from the server. Click any tool to see its description and a **Run Tool** button. The right panel shows the live JSON-RPC response.
 
-![MCP Inspector connected to HrMcp.McpServer — all 5 tools listed, GetHiringOrganizations result shown](diagrams/part-3-diagram-2-inspector-tools.png)
+![MCP Inspector connected to HrMcp.McpServer — all 4 tools listed, GetHiringOrganizations result shown](diagrams/part-3-diagram-2-inspector-tools.png)
 
 ### Calling `GetHiringOrganizations`
 
@@ -336,19 +335,6 @@ Click `GetPositionsByOrganization`, enter `organizationId: 1` → **Run Tool**. 
 ### Calling `GetPositionById`
 
 Click `GetPositionById`, enter `positionId: 1` → **Run Tool**. Returns full position detail including duties and qualifications.
-
-### Calling `WriteJobDescription`
-
-Click `WriteJobDescription`, enter `positionId: 1` → **Run Tool**. Returns the structured Markdown template:
-
-```text
-## IT Specialist (SYSADMIN)
-
-**Department:** Department of Homeland Security
-**Organization:** U.S. Citizenship and Immigration Services
-...
-*[Stub — LLM-generated narrative added in Part 4]*
-```
 
 All four tools respond correctly. The server is working.
 
