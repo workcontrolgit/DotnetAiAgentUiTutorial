@@ -1,6 +1,6 @@
 # Part 3: Building an MCP Server in .NET 10
 
-**Series:** AI Agents & MCP with .NET 10 | **Part 3 of 5**  
+**Series:** AI Agents & MCP with .NET 10 | **Part 3 of 6**  
 **GitHub:** [workcontrolgit/DotnetAiAgentMcp](https://github.com/workcontrolgit/DotnetAiAgentMcp)
 
 ---
@@ -11,7 +11,7 @@ In Part 2 we built the mental model for MCP. In this part we make it real.
 
 By the end of this post you will have a running MCP server that exposes four tools over HTTP/SSE, supports stdio transport for Claude Desktop, and can be tested interactively with MCP Inspector — without any AI host involved.
 
-The server lives in `HrMcp.McpServer`, the project we scaffolded in Part 1. All we are adding is the MCP SDK and three tool classes.
+The server lives in `HrMcp.McpServer`, the project we scaffolded in Part 1. All we are adding is the MCP SDK and two tool classes.
 
 ![Part 3 steps overview — swim lane across Developer, MCP Server, and MCP Inspector](diagrams/part-3-diagram-1-build-steps.png)
 
@@ -43,7 +43,6 @@ src/HrMcp.McpServer/
   Tools/
     PositionTools.cs
     HiringOrganizationTools.cs
-    JobDescriptionTools.cs
 ```
 
 ### `PositionTools.cs`
@@ -185,58 +184,6 @@ public sealed class HiringOrganizationTools(HiringOrganizationService organizati
             o.AgencyDescription,
             OpenPositionCount = o.Positions.Count(p => p.IsOpen)
         });
-    }
-}
-```
-
-### `JobDescriptionTools.cs`
-
-One tool: generate a USAJobs-format job description. In this part it returns a structured template. In Part 4 we replace the template with real LLM output.
-
-```csharp
-// src/HrMcp.McpServer/Tools/JobDescriptionTools.cs
-using System.ComponentModel;
-using HrMcp.Application.Services;
-using ModelContextProtocol.Server;
-
-namespace HrMcp.McpServer.Tools;
-
-[McpServerToolType]
-public sealed class JobDescriptionTools(PositionService positions)
-{
-    [McpServerTool(Name = "WriteJobDescription"),
-     Description("Generates a formatted USAJobs-style job description for the specified position. Returns a structured template in Part 3; upgraded to LLM-generated narrative in Part 4.")]
-    public async Task<string> WriteJobDescription(
-        [Description("The numeric ID of the position to write a description for")] int positionId,
-        CancellationToken ct = default)
-    {
-        var p = await positions.GetPositionByIdAsync(positionId, ct);
-        if (p is null) return $"Position {positionId} not found.";
-
-        return $"""
-            ## {p.Title}
-
-            **Department:** {p.HiringOrganization?.DepartmentName}
-            **Organization:** {p.HiringOrganization?.OrganizationName}
-            **Series & Grade:** {p.OccupationalSeries} | {p.PayGradeMin}–{p.PayGradeMax}
-            **Salary:** ${p.PositionRemuneration?.MinimumRange:N0} – ${p.PositionRemuneration?.MaximumRange:N0} per year
-            **Location:** {p.DutyLocation}
-            **Telework:** {(p.TeleworkEligible ? "Eligible" : "Not eligible")}
-            **Security Clearance:** {p.SecurityClearance}
-            **Who May Apply:** {p.WhoMayApply}
-
-            ### Summary
-            {p.Description}
-
-            ### Duties
-            {p.Duties}
-
-            ### Qualifications
-            {p.Qualifications}
-
-            ---
-            *[Stub — LLM-generated narrative added in Part 4]*
-            """;
     }
 }
 ```
