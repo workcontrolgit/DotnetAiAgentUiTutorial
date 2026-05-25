@@ -356,13 +356,12 @@ No ASP.NET Core startup output appears on stdout. The process blocks waiting for
 
 ## What We Built
 
-- **`ModelContextProtocol.AspNetCore` 1.2.0** installed in `HrMcp.McpServer`
-- **3 tool classes** — `PositionTools` (3 tools), `HiringOrganizationTools` (1 tool), `JobDescriptionTools` (1 tool)
+- **`ModelContextProtocol.AspNetCore` 1.x** installed in `HrMcp.McpServer`
+- **2 tool classes** — `PositionTools` (3 tools), `HiringOrganizationTools` (1 tool)
 - **`--stdio` flag** — single binary, two transports, no code duplication
 - **Verified with MCP Inspector** — all 4 tools discovered and callable against real DHS data
-- **`WriteJobDescription`** returns a structured stub, ready for LLM upgrade in Part 4
 
-The AI still knows nothing about any of this. In Part 4, we wire in an LLM via `Microsoft.Extensions.AI` and Ollama, let it call these tools, and replace the `WriteJobDescription` stub with a real generated narrative.
+The AI still knows nothing about any of this. In Part 4, we wire in an LLM via `Microsoft.Extensions.AI` and Ollama, connect it to these tools, and add export tools that let the agent save positions and job description drafts as Word and Excel files.
 
 ---
 
@@ -370,7 +369,7 @@ The AI still knows nothing about any of this. In Part 4, we wire in an LLM via `
 
 **[Part 4: AI Agent with Microsoft.Extensions.AI + Ollama →](part-4-ai-agent-extensions-ai.md)**
 
-We build the `HrMcp.Agent` console app: connect it to the MCP server, register Ollama as the chat client, and let the AI call `GetOpenPositions`, `GetHiringOrganizations`, and `WriteJobDescription` in a live conversation.
+We build the `HrMcp.Agent` console app: connect it to the MCP server, configure multi-model support (Ollama with gemma4 as default, Azure OpenAI as a config swap), and let the AI answer HR questions and export positions and drafts as Word and Excel files.
 
 ---
 
