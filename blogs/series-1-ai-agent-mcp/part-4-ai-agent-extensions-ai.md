@@ -386,13 +386,9 @@ The agent uses colored labels, a spinner while calling MCP tools, and a horizont
 
 ## Job Descriptions — the LLM Writes Them
 
-Earlier versions of this series included a `WriteJobDescription` MCP tool that called Ollama server-side to generate a narrative. That tool has been removed. Here is why — and what replaced it.
+There is no `WriteJobDescription` MCP tool. The MCP server is a **pure data layer** — it exposes data and export tools, and has no LLM dependency at all. Job descriptions are written by the agent itself, guided by the system prompt.
 
-**The old approach:** `JobDescriptionTools.cs` on the McpServer injected `IChatClient` and called the LLM inside the tool. The agent saw it as a black box: call tool, get text back.
-
-**The problem:** It coupled the MCP server to a specific LLM provider and required Ollama to be reachable from the server process — even when running in Claude Desktop or a cloud deployment where only the agent has LLM access. It also meant the job description was written without conversational context (no history, no user feedback loop).
-
-**The new approach:** The agent's system prompt instructs the model to call `GetPositionById` first, then write the job announcement itself:
+The agent's system prompt instructs the model to call `GetPositionById` first to fetch the full position data, then write the USAJobs-style announcement directly:
 
 ```
 - When asked to write a job description, call GetPositionById to get the full position
@@ -401,9 +397,7 @@ Earlier versions of this series included a `WriteJobDescription` MCP tool that c
   Use professional federal HR writing style. Be specific and engaging.
 ```
 
-No extra code. No extra tool. The LLM already has the full position data from the tool call and writes the narrative in the same turn. The user can then ask for edits ("make the qualifications section stronger"), and the model refines it — something the server-side tool could never do.
-
-The MCP server is now a **pure data layer**: it exposes data and export tools, and has no LLM dependency at all.
+No extra code. No extra tool. The LLM already has the full position data from the tool call and writes the narrative in the same turn. The user can then ask for edits ("make the qualifications section stronger") and the model refines it — all within the same conversational context.
 
 ---
 
@@ -620,18 +614,6 @@ For the question "Show me IT positions at USCIS", the model made two tool calls 
 The `UseFunctionInvocation` middleware handled both dispatches automatically. Your code in
 `HrAgent.cs` called `GetResponseAsync` once and got back the final answer — the middleware
 looped through tool calls transparently.
-
----
-
-## What Changed in the SDK (M.E.AI 9.x)
-
-If you have seen older `Microsoft.Extensions.AI` examples, two things changed in 9.x:
-
-- **`CompleteAsync` → `GetResponseAsync`** — the method on `IChatClient` was renamed
-- **`ChatCompletion` → `ChatResponse`** — the return type was renamed; use `.Text` for the assistant's text
-- **`McpClientFactory` + `SseClientTransport` → `McpClient.CreateAsync` + `HttpClientTransport`** — the MCP client API was updated in `ModelContextProtocol.Core` 1.x
-
-The underlying concepts are identical — the renames are surfaced here so you know why the older patterns no longer compile.
 
 ---
 
