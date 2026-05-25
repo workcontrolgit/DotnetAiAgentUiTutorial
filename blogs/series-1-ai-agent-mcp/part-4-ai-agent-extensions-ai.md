@@ -1,4 +1,4 @@
-# Part 4: AI Agent with Microsoft.Extensions.AI + Ollama
+# Part 4: Multi-Model AI Agent with Microsoft.Extensions.AI
 
 **Series:** AI Agents & MCP with .NET 10 | **Part 4 of 6**  
 **GitHub:** [workcontrolgit/DotnetAiAgentMcp](https://github.com/workcontrolgit/DotnetAiAgentMcp)
@@ -7,11 +7,11 @@
 
 ## Introduction
 
-In Part 3 we built an MCP server with five tools and verified them with MCP Inspector. The tools work — but no AI is involved yet. That changes now.
+In Part 3 we built an MCP server with four tools and verified them with MCP Inspector. The tools work — but no AI is involved yet. That changes now.
 
-In this part we wire up the `HrMcp.Agent` console app: it connects to the MCP server over HTTP, hands the tools to an Ollama-backed `IChatClient`, and holds a live conversation where the AI decides which tools to call and when. We also upgrade `WriteJobDescription` from a static template to a real LLM-generated narrative.
+In this part we wire up the `HrMcp.Agent` console app: it connects to the MCP server over HTTP, hands the tools to an `IChatClient`, and holds a live conversation where the AI decides which tools to call and when. The agent supports multiple LLM providers — Ollama with gemma4 as the local default, and Azure OpenAI as a production swap-in — all controlled by a single config key. We also add Export Tools that let the AI write positions and job description drafts to Word and Excel files, saved directly to your machine.
 
-By the end you will have a running AI agent that answers HR questions by calling your MCP tools — no hard-coded logic, no manual tool routing.
+By the end you will have a running AI agent that answers HR questions, writes job descriptions, and exports files — no hard-coded logic, no manual tool routing.
 
 ---
 
@@ -19,7 +19,7 @@ By the end you will have a running AI agent that answers HR questions by calling
 
 ![MCP Tool Architecture — Agent, IChatClient, McpClient, and MCP Server](diagrams/part-4-diagram-1-mcp-tool-architecture.png)
 
-`Microsoft.Extensions.AI` is the abstraction layer. Ollama is the provider — swap it for Azure OpenAI or any other provider without touching `HrAgent.cs`.
+`Microsoft.Extensions.AI` is the abstraction layer. `HrAgent.cs` depends only on `IChatClient` — it has no knowledge of whether Ollama or Azure OpenAI is underneath. Provider selection happens in `Program.cs` via a `CreateChatClient()` helper that reads `AI:Provider` from config.
 
 `McpClientTool` bridges the two worlds: it is an `AIFunction` (a `Microsoft.Extensions.AI` type) that dispatches calls to the MCP server over the wire. The chat client's function-invocation middleware handles the loop — call tool, send result back to model, repeat until the model stops calling tools.
 
@@ -27,14 +27,20 @@ By the end you will have a running AI agent that answers HR questions by calling
 
 ## Prerequisites
 
-Before running `HrMcp.Agent`, you need Ollama running locally with the `llama3.2` model pulled:
+**Option A — Ollama (local, default)**
+
+Run the agent locally for free with no cloud account required:
 
 - **Install Ollama** — download from [ollama.com](https://ollama.com) and install
-- **Pull the model** — `ollama pull llama3.2`
-- **Verify** — `ollama run llama3.2 "Say hello"` (should print a greeting)
+- **Pull the model** — `ollama pull gemma4`
+- **Verify** — `ollama run gemma4 "Say hello"` (should print a greeting)
 - **Confirm the API is up** — `curl http://localhost:11434/api/tags` (lists pulled models)
 
-Ollama runs a local HTTP server on port `11434`. The `OllamaChatClient` points at this address. Nothing leaves your machine.
+Ollama runs a local HTTP server on port `11434`. Nothing leaves your machine.
+
+**Option B — Azure OpenAI**
+
+Set `AI:Provider` to `AzureOpenAI` in `appsettings.json` and fill in your endpoint, deployment name, and API key. See the [Multi-Model Configuration](#multi-model-configuration) section below for details. `HrAgent.cs` is unchanged — only `Program.cs` and config differ.
 
 ---
 
@@ -45,26 +51,22 @@ Ollama runs a local HTTP server on port `11434`. The `OllamaChatClient` points a
 ```bash
 dotnet add src/HrMcp.Agent package Microsoft.Extensions.AI --version 9.*
 dotnet add src/HrMcp.Agent package OllamaSharp --version 5.*
+dotnet add src/HrMcp.Agent package Azure.AI.OpenAI --version 2.*
 dotnet add src/HrMcp.Agent package ModelContextProtocol --version 1.*
 ```
 
-The agent is a pure MCP client — it has no direct database access. The two project references to `HrMcp.Application` and `HrMcp.Infrastructure.Persistence` that were scaffolded in Part 1 are removed.
+The agent is a pure MCP client — it has no direct database access.
 
-Why three packages:
+Why four packages:
 
 - **`Microsoft.Extensions.AI`** — `IChatClient`, `ChatMessage`, `ChatOptions`, `AITool` abstractions
-- **`OllamaSharp`** — `OllamaApiClient`, the GA-recommended Ollama provider; implements `IChatClient` natively
+- **`OllamaSharp`** — `OllamaApiClient`, the Ollama provider; implements `IChatClient` natively. Use for local development with gemma4.
+- **`Azure.AI.OpenAI`** — `AzureOpenAIClient`, for production deployment via Azure. Only active when `AI:Provider = AzureOpenAI` in config.
 - **`ModelContextProtocol`** — `McpClient`, `HttpClientTransport`, `McpClientTool`; the client half of the MCP SDK
 
 > **Note:** `Microsoft.Extensions.AI.Ollama` was the early preview provider and is now deprecated in the GA release. The official Microsoft.Extensions.AI GA guidance recommends `OllamaSharp` instead. `OllamaApiClient` (from `OllamaSharp`) implements `IChatClient` directly — no wrapper needed.
 
-### `HrMcp.McpServer`
-
-```bash
-dotnet add src/HrMcp.McpServer package OllamaSharp --version 5.*
-```
-
-The server needs `OllamaApiClient` to power the `WriteJobDescription` tool upgrade.
+The MCP server has no AI dependency. It is a pure data layer — no LLM packages required.
 
 ---
 
@@ -281,7 +283,7 @@ AnsiConsole.MarkupLine($"[green]{style}[/]\n");
 // ─────────────────────────────────────────────────────────────────────────────
 
 IChatClient chatClient = ((IChatClient)new OllamaApiClient(
-        new Uri("http://localhost:11434"), "llama3.2"))
+        new Uri("http://localhost:11434"), "gemma4"))
     .AsBuilder()
     .UseFunctionInvocation()
     .Build();
@@ -406,7 +408,7 @@ builder.Services.AddScoped<HiringOrganizationService>();
 
 // IChatClient used by WriteJobDescription tool to generate LLM narratives
 builder.Services.AddSingleton<IChatClient>(
-    new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.2"));
+    new OllamaApiClient(new Uri("http://localhost:11434"), "gemma4"));
 
 var mcp = builder.Services
     .AddMcpServer()
