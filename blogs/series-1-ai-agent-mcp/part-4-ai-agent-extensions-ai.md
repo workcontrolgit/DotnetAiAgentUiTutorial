@@ -508,6 +508,108 @@ builder.Services
 
 ---
 
+## Agent-Side File Interception
+
+The export tools return `{ "fileName": "...", "content": "<base64>" }` — they never write files to disk themselves. The agent intercepts these results and saves the files. This is a deliberate architectural choice.
+
+### Why base64 over the wire?
+
+The MCP server has no knowledge of where the client is running. Consider who can call these tools:
+
+- **This console agent** — running on your developer machine with a local filesystem
+- **Claude Desktop** — running on a different machine or sandbox; the server cannot reach its filesystem
+- **A future SPA client** — running in a browser, where the server has no filesystem access at all
+
+By returning base64, the same server tool works for all three clients. Each client decodes and saves (or downloads) the file in whatever way makes sense for its environment. The server stays stateless and transport-agnostic.
+
+### How the agent intercepts
+
+```csharp
+// src/HrMcp.Agent/HrAgent.cs
+
+// Tools that return { "fileName": "...", "content": "<base64>" }
+private static readonly HashSet<string> ExportToolNames =
+    new(StringComparer.OrdinalIgnoreCase)
+    {
+        "ExportPositionToHtml",
+        "ExportPositionToWord",
+        "ExportDraftToWord",
+        "ExportPositionsToExcel"
+    };
+
+// In RunToolLoopAsync, after fn.InvokeAsync():
+if (ExportToolNames.Contains(call.Name ?? string.Empty))
+{
+    // The MCP SDK returns tool results as TextContent objects, not plain strings.
+    // TextContent.Text holds the JSON payload.
+    var json = rawResult switch
+    {
+        string s => s,
+        TextContent tc => tc.Text ?? string.Empty,
+        JsonElement je when je.ValueKind == JsonValueKind.String => je.GetString() ?? string.Empty,
+        JsonElement je => je.GetRawText(),
+        _ => JsonSerializer.Serialize(rawResult)
+    };
+    var saved = TrySaveExportFile(json, _outputFolder);
+    if (saved is not null) rawResult = saved;
+}
+```
+
+The `TextContent` unwrapping (`TextContent tc => tc.Text`) is critical. The MCP SDK wraps tool return values in a `TextContent` object — calling `JsonSerializer.Serialize(rawResult)` on it produces a serialized wrapper object, not the JSON string inside it.
+
+### TrySaveExportFile
+
+```csharp
+private static string? TrySaveExportFile(string json, string outputFolder)
+{
+    try
+    {
+        using var doc = JsonDocument.Parse(json);
+        var root = doc.RootElement;
+        if (!root.TryGetProperty("fileName", out var fileNameEl) ||
+            !root.TryGetProperty("content", out var contentEl))
+            return null;
+
+        var fileName = fileNameEl.GetString();
+        var base64   = contentEl.GetString();
+        if (string.IsNullOrWhiteSpace(fileName) || string.IsNullOrWhiteSpace(base64))
+            return null;
+
+        var bytes = Convert.FromBase64String(base64);
+        Directory.CreateDirectory(outputFolder);
+        var fullPath = Path.GetFullPath(Path.Combine(outputFolder, fileName));
+        File.WriteAllBytes(fullPath, bytes);
+        return $"Saved to: {fullPath}";
+    }
+    catch (Exception ex)
+    {
+        return $"Export save failed: {ex.Message}";
+    }
+}
+```
+
+The return value replaces the raw tool result in `_history` — the LLM sees `"Saved to: C:\...\usajobs\output\positions.xlsx"` and can report that back to the user.
+
+### Output folder
+
+`FindOutputFolder()` in `Program.cs` walks up from `AppContext.BaseDirectory` looking for a `usajobs/` directory. For a standard `dotnet run` from the solution root, it resolves to `DotnetAiAgentMcp/usajobs/output/`. The folder is created if it doesn't exist.
+
+### OpenXML flush gotcha
+
+One non-obvious requirement: `ms.ToArray()` must be called **after** the `WordprocessingDocument` or `SpreadsheetDocument` is disposed. OpenXML writes the ZIP container to the stream on `Dispose()` — calling `ms.ToArray()` while the document is still open returns an empty or incomplete byte array. The builders use a nested `using` block to ensure disposal happens before reading the stream:
+
+```csharp
+var ms = new MemoryStream();
+using (var doc = WordprocessingDocument.Create(ms, WordprocessingDocumentType.Document, true))
+{
+    // ... build content ...
+    doc.Save();
+} // Dispose flushes ZIP to ms
+return ms.ToArray();
+```
+
+---
+
 ## What Happened Under the Hood
 
 For the question "Show me IT positions at USCIS", the model made two tool calls before answering:
