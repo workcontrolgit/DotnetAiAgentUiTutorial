@@ -234,71 +234,115 @@ Design notes:
 
 ## Step 3 — `Program.cs` for `HrMcp.Agent`
 
+`Program.cs` wires together three concerns: transport (how to reach the MCP server), LLM provider (which model to use), and the agent itself.
+
 ```csharp
-// src/HrMcp.Agent/Program.cs
+// src/HrMcp.Agent/Program.cs (simplified — see GitHub for full version with OIDC + stdio transport)
+using Azure.AI.OpenAI;
+using Azure.Identity;
+using HrMcp.Agent;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using ModelContextProtocol.Client;
 using OllamaSharp;
-using HrMcp.Agent;
 using Spectre.Console;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false)
+    .AddUserSecrets<Program>(optional: true)
     .AddEnvironmentVariables()
     .Build();
 
-// Connect to the MCP server (must be running on http://localhost:5100)
+// Connect to the MCP server over HTTP (must be running on http://localhost:5100)
 await using var mcpClient = await McpClient.CreateAsync(
     new HttpClientTransport(new HttpClientTransportOptions
     {
-        Endpoint = new Uri("http://localhost:5100/mcp")
+        Endpoint = new Uri(configuration["McpServer:Transport:StreamHttp:Url"] ?? "http://localhost:5100/mcp"),
+        TransportMode = HttpTransportMode.StreamableHttp,
+        Name = "hr-mcp-stream-http"
     }));
 
 var mcpTools = await mcpClient.ListToolsAsync();
-AnsiConsole.MarkupLine($"[green]✔[/] Connected · Tools: [grey]{string.Join(", ", mcpTools.Select(t => t.Name))}[/]\n");
 
-// ── Style picker (2-second auto-select, defaults to Structured) ───────────────
+// Style picker — 2-second auto-select, defaults to Structured
 var style = UiStyle.Structured;
-AnsiConsole.MarkupLine("[bold]Select UI style:[/]");
-AnsiConsole.MarkupLine("  [cyan][[1]][/] Structured — tables, panels, spinners [grey](default)[/]");
-AnsiConsole.MarkupLine("  [cyan][[2]][/] Minimal    — rule-separated turns");
-AnsiConsole.MarkupLine("  [cyan][[3]][/] Panels     — bordered panel per message");
-AnsiConsole.Markup("[grey]Choice [[1]]:[/] ");
+// ... (see GitHub for full picker code)
 
-try
-{
-    var deadline = DateTime.UtcNow.AddSeconds(2);
-    while (DateTime.UtcNow < deadline && !Console.KeyAvailable)
-        await Task.Delay(100);
-    if (Console.KeyAvailable)
-    {
-        var key = Console.ReadKey(intercept: true);
-        style = key.KeyChar switch { '2' => UiStyle.Minimal, '3' => UiStyle.Panels, _ => UiStyle.Structured };
-    }
-}
-catch (OperationCanceledException) { }
-AnsiConsole.MarkupLine($"[green]{style}[/]\n");
-// ─────────────────────────────────────────────────────────────────────────────
+IChatClient chatClient = CreateChatClient(configuration);
 
-IChatClient chatClient = ((IChatClient)new OllamaApiClient(
-        new Uri("http://localhost:11434"), "gemma4"))
-    .AsBuilder()
-    .UseFunctionInvocation()
-    .Build();
-
-var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList(), style);
+var numCtx = configuration.GetValue<int?>("AI:Ollama:NumCtx");
+var outputFolder = FindOutputFolder();
+var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList(), style, numCtx, outputFolder);
 await agent.RunAsync();
+
+static IChatClient CreateChatClient(IConfiguration configuration)
+{
+    var provider = configuration["AI:Provider"] ?? "Ollama";
+
+    if (string.Equals(provider, "Ollama", StringComparison.OrdinalIgnoreCase))
+    {
+        var endpoint = configuration["AI:Ollama:Endpoint"] ?? "http://localhost:11434";
+        var model = configuration["AI:Ollama:Model"] ?? "gemma4:latest";
+        var httpClient = new HttpClient { BaseAddress = new Uri(endpoint), Timeout = Timeout.InfiniteTimeSpan };
+        return (IChatClient)new OllamaApiClient(httpClient, model, null!);
+    }
+
+    // Azure OpenAI
+    var azureEndpoint = configuration["AI:AzureOpenAI:Endpoint"]!;
+    var azureDeployment = configuration["AI:AzureOpenAI:Deployment"]!;
+    var apiKey = configuration["AI:AzureOpenAI:ApiKey"];
+
+    var client = string.IsNullOrWhiteSpace(apiKey)
+        ? new AzureOpenAIClient(new Uri(azureEndpoint), new DefaultAzureCredential())
+        : new AzureOpenAIClient(new Uri(azureEndpoint), new System.ClientModel.ApiKeyCredential(apiKey));
+
+    return client.GetChatClient(azureDeployment).AsIChatClient();
+}
+
+static string FindOutputFolder()
+{
+    var dir = new DirectoryInfo(AppContext.BaseDirectory);
+    for (var i = 0; i < 8 && dir is not null; i++, dir = dir.Parent)
+    {
+        if (Directory.Exists(Path.Combine(dir.FullName, "usajobs")))
+            return Path.Combine(dir.FullName, "usajobs", "output");
+    }
+    return Path.GetFullPath("usajobs/output");
+}
 ```
 
-What each piece does:
+### Multi-Model Configuration
 
-- **`McpClient.CreateAsync`** — creates an MCP client connected to the running server via `HttpClientTransport`. In `ModelContextProtocol` 1.x, this replaces the earlier `McpClientFactory.CreateAsync` + `SseClientTransport` pattern.
-- **`mcpClient.ListToolsAsync()`** — fetches the tool list from the server. Returns `IList<McpClientTool>`. Each `McpClientTool` is an `AIFunction` (which is an `AITool`) — this is the bridge between the MCP protocol and `Microsoft.Extensions.AI`.
-- **`OllamaApiClient`** — the GA-recommended Ollama provider from `OllamaSharp`. Implements `IChatClient` (and `IEmbeddingGenerator`) natively. The explicit `(IChatClient)` cast resolves the `AsBuilder()` overload ambiguity.
-- **`UseFunctionInvocation()`** — middleware that intercepts tool-call requests from the model, dispatches them to the MCP server through the `McpClientTool` implementations, and feeds results back into the conversation automatically.
-- **`mcpTools.Cast<AITool>()`** — `McpClientTool` inherits from `AIFunction` which inherits from `AITool`, so the cast is safe. `HrAgent` only needs the `AITool` abstraction.
+Provider selection is driven by `appsettings.json` — no code changes required to switch models:
+
+```json
+{
+  "AI": {
+    "Provider": "Ollama",
+    "Ollama": {
+      "Endpoint": "http://localhost:11434",
+      "Model": "gemma4:latest",
+      "NumCtx": 32768
+    },
+    "AzureOpenAI": {
+      "Endpoint": "https://YOUR-RESOURCE-NAME.openai.azure.com/",
+      "Deployment": "gpt-4.1-mini",
+      "ApiKey": "YOUR_AZURE_OPENAI_KEY"
+    }
+  }
+}
+```
+
+Set `AI:Provider` to `"AzureOpenAI"` to switch providers. For production, store `ApiKey` in user secrets or an environment variable — never in committed config.
+
+### What each piece does
+
+- **`McpClient.CreateAsync`** — creates an MCP client connected to the running server. `StreamableHttp` is the modern transport mode (replaces SSE from earlier SDK versions).
+- **`mcpClient.ListToolsAsync()`** — fetches the tool list from the server. Returns `IList<McpClientTool>`. Each `McpClientTool` is an `AIFunction` (which is an `AITool`) — the bridge between the MCP protocol and `Microsoft.Extensions.AI`.
+- **`CreateChatClient()`** — branches on `AI:Provider`. Returns `OllamaApiClient` for local dev or `AzureOpenAIClient` for cloud. Either way the return type is `IChatClient` — `HrAgent` never sees the difference.
+- **`FindOutputFolder()`** — walks up from the binary's directory to find the `usajobs/` folder, then returns `usajobs/output/` as the save target for exported files.
+- **`numCtx`** — Ollama context window size, passed to `HrAgent` as an `AdditionalProperties` hint. Ignored when using Azure OpenAI.
 
 ---
 
