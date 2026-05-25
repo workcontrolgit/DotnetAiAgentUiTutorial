@@ -346,146 +346,7 @@ Set `AI:Provider` to `"AzureOpenAI"` to switch providers. For production, store 
 
 ---
 
-## Step 4 — Upgrade `WriteJobDescription` to LLM Output
-
-### Before (Part 3 stub)
-
-```csharp
-// Returns a hand-crafted Markdown template
-return $"""
-    ## {p.Title}
-    ...
-    *[Stub — LLM-generated narrative added in Part 4]*
-    """;
-```
-
-### After (Part 4 — LLM-generated)
-
-`JobDescriptionTools.cs` now injects `IChatClient` and calls Ollama to write the narrative:
-
-```csharp
-// src/HrMcp.McpServer/Tools/JobDescriptionTools.cs
-using System.ComponentModel;
-using HrMcp.Application.Services;
-using Microsoft.Extensions.AI;
-using ModelContextProtocol.Server;
-
-namespace HrMcp.McpServer.Tools;
-
-[McpServerToolType]
-public sealed class JobDescriptionTools(PositionService positions, IChatClient chatClient)
-{
-    [McpServerTool(Name = "WriteJobDescription"),
-     Description("Generates a USAJobs-style job announcement for the specified position using AI. Returns a fully written narrative with Summary, Duties, Qualifications, and How to Apply sections.")]
-    public async Task<string> WriteJobDescription(
-        [Description("The numeric ID of the position to write a description for")] int positionId,
-        CancellationToken ct = default)
-    {
-        var p = await positions.GetPositionByIdAsync(positionId, ct);
-        if (p is null) return $"Position {positionId} not found.";
-
-        var prompt = $"""
-            Write a compelling USAJobs-style job announcement for the following federal position.
-            Use professional government HR writing style. Be specific and engaging.
-
-            Position Data:
-            - Title: {p.Title}
-            - Department: {p.HiringOrganization?.DepartmentName}
-            - Organization: {p.HiringOrganization?.OrganizationName}
-            - Series & Grade: {p.OccupationalSeries} | {p.PayGradeMin}–{p.PayGradeMax}
-            - Salary: ${p.PositionRemuneration?.MinimumRange:N0} – ${p.PositionRemuneration?.MaximumRange:N0} per year
-            - Location: {p.DutyLocation}
-            - Telework: {(p.TeleworkEligible ? "Eligible" : "Not eligible")}
-            - Security Clearance: {p.SecurityClearance}
-            - Who May Apply: {p.WhoMayApply}
-            - Description: {p.Description}
-            - Duties: {p.Duties}
-            - Qualifications: {p.Qualifications}
-
-            Format the output as a complete job announcement with these sections:
-            ## Summary
-            ## Duties
-            ## Qualifications Required
-            ## How to Apply
-            """;
-
-        var response = await chatClient.GetResponseAsync(
-            [new ChatMessage(ChatRole.User, prompt)],
-            cancellationToken: ct);
-        return response.Text ?? $"Unable to generate description for position {positionId}.";
-    }
-}
-```
-
-The `IChatClient` is registered in `McpServer/Program.cs` as a singleton (shown in Step 5). The tool gets it via constructor injection — no change to how tools are registered with `WithTools<JobDescriptionTools>()`.
-
----
-
-## Step 5 — Register `IChatClient` in `McpServer/Program.cs`
-
-Add one line to the services block:
-
-```csharp
-// src/HrMcp.McpServer/Program.cs
-using HrMcp.Application.Services;
-using HrMcp.Infrastructure.Persistence;
-using HrMcp.McpServer.Tools;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.AI;
-using OllamaSharp;
-
-var isStdio = args.Contains("--stdio");
-
-var builder = WebApplication.CreateBuilder(args);
-
-if (isStdio)
-{
-    builder.Logging.ClearProviders();
-    builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = Microsoft.Extensions.Logging.LogLevel.Trace);
-    builder.WebHost.UseUrls();
-}
-
-builder.Services.AddPersistence(
-    builder.Configuration.GetConnectionString("DefaultConnection")!);
-builder.Services.AddScoped<PositionService>();
-builder.Services.AddScoped<HiringOrganizationService>();
-
-// IChatClient used by WriteJobDescription tool to generate LLM narratives
-builder.Services.AddSingleton<IChatClient>(
-    new OllamaApiClient(new Uri("http://localhost:11434"), "gemma4"));
-
-var mcp = builder.Services
-    .AddMcpServer()
-    .WithTools<PositionTools>()
-    .WithTools<HiringOrganizationTools>()
-    .WithTools<JobDescriptionTools>();
-
-if (isStdio)
-    mcp.WithStdioServerTransport();
-else
-    mcp.WithHttpTransport();
-
-var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<HrDbContext>();
-    db.Database.Migrate();
-    var seedPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "usajobs-seed.json");
-    DbSeeder.Seed(db, seedPath);
-}
-
-if (!isStdio)
-    app.MapMcp("/mcp");
-
-await app.RunAsync();
-```
-
-`IChatClient` is registered as `Singleton` because `OllamaApiClient` wraps an `HttpClient` and is thread-safe. `JobDescriptionTools` is scoped (registered via `WithTools<>`), so it receives the singleton through normal DI — no lifetime mismatch.
-
----
-
-## Step 6 — Build
+## Step 4 — Build
 
 ```bash
 dotnet build DotnetAiAgentMcp.slnx   # 0 errors, 0 warnings
@@ -493,7 +354,7 @@ dotnet build DotnetAiAgentMcp.slnx   # 0 errors, 0 warnings
 
 ---
 
-## Step 7 — Run a Conversation
+## Step 5 — Run a Conversation
 
 Start the MCP server in one terminal:
 
@@ -533,9 +394,6 @@ For the question "Show me IT positions at USCIS", the model made two tool calls 
 The `UseFunctionInvocation` middleware handled both dispatches automatically. Your code in
 `HrAgent.cs` called `GetResponseAsync` once and got back the final answer — the middleware
 looped through tool calls transparently.
-
-For `WriteJobDescription`, the tool itself calls Ollama internally (server-side), so from the
-agent's perspective it is just another tool call that returns a string.
 
 ---
 
@@ -588,8 +446,6 @@ are the only addition. `HrAgent`, `HrMcp.McpServer`, and all tool classes are un
 - **`HrAgent.cs`** — conversation loop with system prompt and full history management
 - **`McpClient` + `HttpClientTransport`** — MCP client connected to the running server
 - **`UseFunctionInvocation` middleware** — automatic tool dispatch, no manual routing
-- **`WriteJobDescription` upgraded** — from static stub to LLM-generated USAJobs narrative
-- **`IChatClient` in McpServer** — Ollama registered as singleton, injected into the tool
 - **Build** — 0 errors, 0 warnings
 
 ---
