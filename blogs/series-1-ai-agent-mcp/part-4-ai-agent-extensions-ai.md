@@ -407,6 +407,107 @@ The MCP server is now a **pure data layer**: it exposes data and export tools, a
 
 ---
 
+## Export Tools
+
+The MCP server exposes four export tools — two for Word documents, one for HTML, one for Excel. All four live in `ExportTools.cs` (and `PositionTools.cs` for HTML), and all four follow the same contract: return a JSON payload with a `fileName` and base64-encoded file `content`.
+
+### NuGet Package
+
+```bash
+dotnet add src/HrMcp.McpServer package DocumentFormat.OpenXml --version "3.*"
+```
+
+`DocumentFormat.OpenXml` from the Open XML SDK handles both `.docx` (Word) and `.xlsx` (Excel) generation without requiring Microsoft Office to be installed.
+
+### The Four Export Tools
+
+| Tool | Output | File |
+|---|---|---|
+| `ExportPositionToHtml` | USAJobs-style HTML page | `position-{id}.html` |
+| `ExportPositionToWord` | Full position data as `.docx` | `position-{id}.docx` |
+| `ExportDraftToWord` | LLM-generated draft as `.docx` | `position-{id}-draft.docx` |
+| `ExportPositionsToExcel` | All open positions as `.xlsx` | `positions.xlsx` |
+
+### ExportTools.cs (key structure)
+
+```csharp
+// src/HrMcp.McpServer/Tools/ExportTools.cs
+[McpServerToolType]
+public sealed class ExportTools(PositionService positions, ILogger<ExportTools> logger)
+{
+    [McpServerTool(Name = "ExportPositionToWord"),
+     Description("Exports a position's full structured data to a Word (.docx) file. Returns a JSON payload with fileName and base64-encoded content for the agent to save locally.")]
+    public async Task<string> ExportPositionToWord(
+        [Description("The numeric ID of the position to export")] int positionId,
+        CancellationToken ct = default)
+    {
+        var p = await positions.GetPositionByIdAsync(positionId, ct);
+        if (p is null) return $"Position {positionId} not found.";
+        var bytes = BuildPositionDocx(p);
+        return ToBase64Json($"position-{positionId}.docx", bytes);
+    }
+
+    [McpServerTool(Name = "ExportDraftToWord"),
+     Description("Exports an AI-generated job description draft to an editable Word (.docx) file. Markdown headings (##) become Word headings; **bold** spans become bold runs; * bullets become indented bullet paragraphs.")]
+    public async Task<string> ExportDraftToWord(
+        [Description("The numeric ID of the position the draft is for")] int positionId,
+        [Description("The full job description draft text, including any user edits.")] string draftContent,
+        CancellationToken ct = default)
+    {
+        var p = await positions.GetPositionByIdAsync(positionId, ct);
+        var title = p?.Title ?? $"Position {positionId}";
+        var org = p is null ? "" : $"{p.HiringOrganization?.DepartmentName} | {p.HiringOrganization?.OrganizationName}";
+        var bytes = BuildDraftDocx(title, org, draftContent);
+        return ToBase64Json($"position-{positionId}-draft.docx", bytes);
+    }
+
+    [McpServerTool(Name = "ExportPositionsToExcel"),
+     Description("Exports all open positions to an Excel (.xlsx) spreadsheet.")]
+    public async Task<string> ExportPositionsToExcel(CancellationToken ct = default)
+    {
+        var list = (await positions.GetOpenPositionsAsync(ct)).ToList();
+        var bytes = BuildPositionsExcel(list);
+        return ToBase64Json("positions.xlsx", bytes);
+    }
+
+    private static string ToBase64Json(string fileName, byte[] bytes) =>
+        JsonSerializer.Serialize(new { fileName, content = Convert.ToBase64String(bytes) });
+}
+```
+
+### Markdown-to-Word Rendering
+
+`ExportDraftToWord` passes the LLM-generated draft through `AppendMarkdownContent`, which converts markdown to OpenXML:
+
+- `## Heading` → Word Heading2 style
+- `### Heading` → Word Heading3 style
+- `* bullet` / `- bullet` → indented paragraph with `•` prefix
+- `**bold text**` → `<Run>` with `<Bold/>` property (inline within any paragraph)
+
+This means a draft like:
+
+```
+## Qualifications Required
+
+* **Subject Matter Expertise:** Proven knowledge of OECD processes.
+* **Analytical Acuity:** Exceptional ability to analyze complex information.
+```
+
+Opens in Word with proper heading styles, indented bullets, and bold labels — not raw markdown text.
+
+### Registering ExportTools
+
+```csharp
+// src/HrMcp.McpServer/Program.cs
+builder.Services
+    .AddMcpServer()
+    .WithTools<PositionTools>()
+    .WithTools<HiringOrganizationTools>()
+    .WithTools<ExportTools>();
+```
+
+---
+
 ## What Happened Under the Hood
 
 For the question "Show me IT positions at USCIS", the model made two tool calls before answering:
