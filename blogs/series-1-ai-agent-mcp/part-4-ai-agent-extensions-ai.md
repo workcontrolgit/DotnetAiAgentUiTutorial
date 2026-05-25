@@ -637,8 +637,7 @@ The underlying concepts are identical — the renames are surfaced here so you k
 
 ## Swapping Providers
 
-`HrAgent.cs` depends only on `IChatClient`. To switch from Ollama to another provider, change
-three lines in `Program.cs` — nothing else:
+`HrAgent.cs` depends only on `IChatClient`. To switch providers, change `AI:Provider` in `appsettings.json` — nothing in `HrAgent.cs` changes. For reference, here are the `CreateChatClient()` patterns for other providers:
 
 **Azure OpenAI:**
 ```csharp
@@ -669,9 +668,13 @@ are the only addition. `HrAgent`, `HrMcp.McpServer`, and all tool classes are un
 ## What We Built
 
 - **`HrMcp.Agent`** — console AI agent using `IChatClient` + MCP tools
-- **`HrAgent.cs`** — conversation loop with system prompt and full history management
-- **`McpClient` + `HttpClientTransport`** — MCP client connected to the running server
-- **`UseFunctionInvocation` middleware** — automatic tool dispatch, no manual routing
+- **`HrAgent.cs`** — conversation loop with system prompt, full history management, and export interception
+- **`McpClient` + `HttpClientTransport`** — MCP client connected to the running server over Streamable HTTP
+- **Multi-model support** — Ollama (gemma4, default) or Azure OpenAI, switched via `AI:Provider` config key
+- **Job descriptions** — LLM writes them from position data; no server-side tool needed
+- **`ExportTools`** — 4 export tools (HTML, Word, draft Word, Excel) returning base64 payloads
+- **Agent-side interception** — `TrySaveExportFile` decodes base64 and saves to `usajobs/output/`
+- **McpServer is a pure data layer** — no LLM dependency
 - **Build** — 0 errors, 0 warnings
 
 ---
@@ -693,4 +696,6 @@ professional AI host with no agent code required.
 - [ModelContextProtocol — NuGet](https://www.nuget.org/packages/ModelContextProtocol)
 - [ModelContextProtocol C# SDK — GitHub](https://github.com/modelcontextprotocol/csharp-sdk)
 - [Ollama — Download](https://ollama.com)
+- [Azure.AI.OpenAI — NuGet](https://www.nuget.org/packages/Azure.AI.OpenAI)
+- [DocumentFormat.OpenXml — NuGet](https://www.nuget.org/packages/DocumentFormat.OpenXml)
 - [Microsoft.Extensions.AI — Announcement Blog](https://devblogs.microsoft.com/dotnet/introducing-microsoft-extensions-ai-preview/)
