@@ -384,6 +384,29 @@ The agent uses colored labels, a spinner while calling MCP tools, and a horizont
 
 ---
 
+## Job Descriptions — the LLM Writes Them
+
+Earlier versions of this series included a `WriteJobDescription` MCP tool that called Ollama server-side to generate a narrative. That tool has been removed. Here is why — and what replaced it.
+
+**The old approach:** `JobDescriptionTools.cs` on the McpServer injected `IChatClient` and called the LLM inside the tool. The agent saw it as a black box: call tool, get text back.
+
+**The problem:** It coupled the MCP server to a specific LLM provider and required Ollama to be reachable from the server process — even when running in Claude Desktop or a cloud deployment where only the agent has LLM access. It also meant the job description was written without conversational context (no history, no user feedback loop).
+
+**The new approach:** The agent's system prompt instructs the model to call `GetPositionById` first, then write the job announcement itself:
+
+```
+- When asked to write a job description, call GetPositionById to get the full position
+  data, then write a compelling USAJobs-style job announcement yourself with these sections:
+  ## Summary, ## Duties, ## Qualifications Required, ## How to Apply.
+  Use professional federal HR writing style. Be specific and engaging.
+```
+
+No extra code. No extra tool. The LLM already has the full position data from the tool call and writes the narrative in the same turn. The user can then ask for edits ("make the qualifications section stronger"), and the model refines it — something the server-side tool could never do.
+
+The MCP server is now a **pure data layer**: it exposes data and export tools, and has no LLM dependency at all.
+
+---
+
 ## What Happened Under the Hood
 
 For the question "Show me IT positions at USCIS", the model made two tool calls before answering:
