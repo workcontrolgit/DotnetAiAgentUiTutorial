@@ -448,6 +448,342 @@
       "related_bugs": [],
       "occurrences": 2,
       "last_seen": "2026-05-24T12:34:46.412Z"
+    },
+    {
+      "id": "bug-029",
+      "timestamp": "2026-05-24T14:10:06.355Z",
+      "error_message": "Wrong reference: Position should be HrPosition",
+      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Tools/ExportTools.cs",
+      "root_cause": "Used \"Position\" instead of \"HrPosition\"",
+      "fix": "Changed Position → HrPosition",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 3,
+      "last_seen": "2026-05-24T14:10:20.044Z"
+    },
+    {
+      "id": "bug-030",
+      "timestamp": "2026-05-24T14:13:27.263Z",
+      "error_message": "Significant refactor of ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 23→38 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T14:13:27.263Z"
+    },
+    {
+      "id": "bug-031",
+      "timestamp": "2026-05-24T14:13:51.203Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T14:13:51.203Z"
+    },
+    {
+      "id": "bug-032",
+      "timestamp": "2026-05-24T17:16:23.583Z",
+      "error_message": "Wrong reference: Four should be Seven",
+      "file": "docs/superpowers/specs/2026-05-24-mcp-pure-data-layer-design.md",
+      "root_cause": "Used \"Four\" instead of \"Seven\"",
+      "fix": "Changed Four → Seven",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T17:16:23.583Z"
+    },
+    {
+      "id": "bug-033",
+      "timestamp": "2026-05-24T17:16:29.156Z",
+      "error_message": "Incorrect value in code",
+      "file": "docs/superpowers/specs/2026-05-24-mcp-pure-data-layer-design.md",
+      "root_cause": "Had `AI`",
+      "fix": "Changed to `McpServer/appsettings.Development.json`",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-24T17:16:29.156Z"
+    },
+    {
+      "id": "bug-034",
+      "timestamp": "2026-05-25T01:45:40.975Z",
+      "error_message": "Incorrect value in code",
+      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/appsettings.json",
+      "root_cause": "Had \"Server=(localdb)\\MSSQLLocalDB;Database=HrMcpDb;Tr",
+      "fix": "Changed to \"Server=(localdb)\\\\MSSQLLocalDB;Database=HrMcpDb;T",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "json"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-25T01:45:40.975Z"
+    },
+    {
+      "id": "bug-035",
+      "timestamp": "2026-05-25T01:50:50.322Z",
+      "error_message": "Null/undefined access in ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check) | Also: AnsiConsole.MarkupLine($\"[grey][DBG] export intercept: type=; AnsiConsole.MarkupLine($\"[grey][DBG] TrySaveExportFile => {s | Also: Console.WriteLine($\"[DBG] rawResult type={rawResult?.GetType; Console.WriteLine($\"[DBG] json preview={json[..Math.Min(120,",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 3,
+      "last_seen": "2026-05-25T01:58:04.499Z"
+    },
+    {
+      "id": "bug-036",
+      "timestamp": "2026-05-25T01:50:54.593Z",
+      "error_message": "Wrong return value",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Was returning: null;",
+      "fix": "Now returns: $\"Export save failed: {ex.Message}\";",
+      "tags": [
+        "auto-detected",
+        "return-value",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-25T01:50:54.593Z"
+    },
+    {
+      "id": "bug-037",
+      "timestamp": "2026-05-25T01:54:17.143Z",
+      "error_message": "Incorrect value in code",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "Had \"[grey][DBG] export intercept: type={rawResult?.Ge",
+      "fix": "Changed to \"[DBG] export intercept: type={rawResult?.GetType(",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-25T01:54:17.143Z"
+    },
+    {
+      "id": "bug-038",
+      "timestamp": "2026-05-25T02:04:15.221Z",
+      "error_message": "Missing guard clause",
+      "file": "DotnetAiAgentMcp/src/HrMcp.McpServer/Tools/ExportTools.cs",
+      "root_cause": "No early return/throw for edge case: line.StartsWith(\"## \"",
+      "fix": "Added guard clause: if (line.StartsWith(\"## \")",
+      "tags": [
+        "auto-detected",
+        "guard-clause",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-25T02:04:15.221Z"
+    },
+    {
+      "id": "bug-039",
+      "timestamp": "2026-05-25T03:46:55.849Z",
+      "error_message": "Wrong reference: three should be two",
+      "file": "blogs/series-1-ai-agent-mcp/part-3-mcp-server-dotnet.md",
+      "root_cause": "Used \"three\" instead of \"two\"",
+      "fix": "Changed three → two",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-25T03:49:23.425Z"
+    },
+    {
+      "id": "bug-040",
+      "timestamp": "2026-05-25T03:47:13.834Z",
+      "error_message": "Significant refactor of ",
+      "file": "blogs/series-1-ai-agent-mcp/part-3-mcp-server-dotnet.md",
+      "root_cause": "40 lines replaced/restructured",
+      "fix": "Rewrote 55→3 lines (40 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-25T03:47:13.834Z"
+    },
+    {
+      "id": "bug-041",
+      "timestamp": "2026-05-25T03:58:01.718Z",
+      "error_message": "Significant refactor of ",
+      "file": "blogs/series-1-ai-agent-mcp/part-4-ai-agent-extensions-ai.md",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 5→5 lines (3 removed) | Also: Before running `HrMcp.Agent`, you need Ollama runn; - **Pull the model** — `ollama pull llama3.2`",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-25T03:58:17.279Z"
+    },
+    {
+      "id": "bug-042",
+      "timestamp": "2026-05-25T03:58:54.802Z",
+      "error_message": "Incorrect value in code",
+      "file": "blogs/series-1-ai-agent-mcp/part-4-ai-agent-extensions-ai.md",
+      "root_cause": "Had \"llama3.2\"",
+      "fix": "Changed to \"gemma4\"",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-25T03:58:54.802Z"
+    },
+    {
+      "id": "bug-043",
+      "timestamp": "2026-05-25T04:05:03.867Z",
+      "error_message": "Null/undefined access in ",
+      "file": "blogs/series-1-ai-agent-mcp/part-4-ai-agent-extensions-ai.md",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-25T04:05:03.867Z"
+    },
+    {
+      "id": "bug-044",
+      "timestamp": "2026-05-25T04:41:47.625Z",
+      "error_message": "Significant refactor of ",
+      "file": "blogs/series-1-ai-agent-mcp/part-4-ai-agent-extensions-ai.md",
+      "root_cause": "108 lines replaced/restructured",
+      "fix": "Rewrote 142→3 lines (108 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-25T04:41:47.625Z"
+    },
+    {
+      "id": "bug-045",
+      "timestamp": "2026-05-25T04:53:14.990Z",
+      "error_message": "Null/undefined access in ",
+      "file": "blogs/series-1-ai-agent-mcp/part-4-ai-agent-extensions-ai.md",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-25T04:53:14.990Z"
+    },
+    {
+      "id": "bug-046",
+      "timestamp": "2026-05-25T04:55:33.516Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "blogs/series-1-ai-agent-mcp/part-4-ai-agent-extensions-ai.md",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-25T04:55:33.516Z"
+    },
+    {
+      "id": "bug-047",
+      "timestamp": "2026-05-25T04:57:22.012Z",
+      "error_message": "Significant refactor of ",
+      "file": "blogs/series-1-ai-agent-mcp/part-4-ai-agent-extensions-ai.md",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 4→3 lines (2 removed) | Also: - **`HrAgent.cs`** — conversation loop with system; - **`McpClient` + `HttpClientTransport`** — MCP cl",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-25T04:57:32.540Z"
+    },
+    {
+      "id": "bug-048",
+      "timestamp": "2026-05-25T05:05:47.295Z",
+      "error_message": "Significant refactor of ",
+      "file": "blogs/series-1-ai-agent-mcp/part-4-ai-agent-extensions-ai.md",
+      "root_cause": "6 lines replaced/restructured",
+      "fix": "Rewrote 18→12 lines (6 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-25T05:05:47.295Z"
+    },
+    {
+      "id": "bug-049",
+      "timestamp": "2026-05-25T18:15:29.763Z",
+      "error_message": "Null/undefined access in ",
+      "file": "../../Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-25T18:15:29.763Z"
     }
   ]
 }

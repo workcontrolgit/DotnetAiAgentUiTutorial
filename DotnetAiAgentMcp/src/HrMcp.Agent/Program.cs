@@ -155,7 +155,8 @@ IChatClient chatClient = CreateChatClient(configuration);
 
 var numCtx = configuration.GetValue<int?>("AI:Ollama:NumCtx");
 
-var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList(), style, numCtx);
+var outputFolder = FindOutputFolder();
+var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList(), style, numCtx, outputFolder);
 await agent.RunAsync();
 
 static async Task<IClientTransport> CreateClientTransportAsync(
@@ -265,6 +266,19 @@ static string FindWorkspaceRoot()
     }
 
     return AppContext.BaseDirectory;
+}
+
+static string FindOutputFolder()
+{
+    var dir = new DirectoryInfo(AppContext.BaseDirectory);
+    for (var i = 0; i < 8 && dir is not null; i++, dir = dir.Parent)
+    {
+        var candidate = Path.Combine(dir.FullName, "usajobs", "output");
+        if (Directory.Exists(Path.Combine(dir.FullName, "usajobs")))
+            return candidate;
+    }
+    // Fallback: relative to current working directory
+    return Path.GetFullPath("usajobs/output");
 }
 
 static int? ParseIntArg(string[] args, string flag)

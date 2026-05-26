@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using HrMcp.Application.Services;
 using HrMcp.Core.Entities;
@@ -114,17 +115,17 @@ public sealed class PositionTools(PositionService positions, ILogger<PositionToo
         };
     }
 
-    [McpServerTool(Name = "RenderPositionAsUsaJobsHtml"),
-     Description("Renders a position as a USAJobs-style HTML page and saves it to disk. Returns the output file path. Use when the user asks to display a position in USAJobs format.")]
-    public async Task<string> RenderPositionAsUsaJobsHtml(
-        [Description("The numeric ID of the position to render")] int positionId,
+    [McpServerTool(Name = "ExportPositionToHtml"),
+     Description("Exports a position as a USAJobs-style HTML page. Returns a JSON payload with fileName and base64-encoded content for the agent to save locally. Use when the user asks to export or download a position in USAJobs HTML format.")]
+    public async Task<string> ExportPositionToHtml(
+        [Description("The numeric ID of the position to export")] int positionId,
         CancellationToken ct = default)
     {
-        logger.LogInformation("[Request ] RenderPositionAsUsaJobsHtml positionId={PositionId}", positionId);
+        logger.LogInformation("[Request ] ExportPositionToHtml positionId={PositionId}", positionId);
         var p = await positions.GetPositionByIdAsync(positionId, ct);
         if (p is null)
         {
-            logger.LogWarning("[Response] RenderPositionAsUsaJobsHtml positionId={PositionId} => not found", positionId);
+            logger.LogWarning("[Response] ExportPositionToHtml positionId={PositionId} => not found", positionId);
             return $"Position {positionId} not found.";
         }
 
@@ -145,56 +146,54 @@ public sealed class PositionTools(PositionService positions, ILogger<PositionToo
         var hiringPathsHtml = BuildHiringPathsHtml(p.HiringPath);
 
         var html = template
-            .Replace("{{TITLE}}",                  Encode(p.Title))
-            .Replace("{{DEPARTMENT_NAME}}",         Encode(p.HiringOrganization?.DepartmentName ?? ""))
-            .Replace("{{ORGANIZATION_NAME}}",       Encode(p.HiringOrganization?.OrganizationName ?? ""))
-            .Replace("{{STATUS_CLASS}}",            p.IsOpen ? "open" : "closed")
-            .Replace("{{STATUS_TEXT}}",             p.IsOpen ? "Accepting applications" : "Closed")
-            .Replace("{{OPEN_DATE}}",               p.OpenDate.ToString("MM/dd/yyyy"))
-            .Replace("{{CLOSE_DATE}}",              p.CloseDate?.ToString("MM/dd/yyyy") ?? "Open until filled")
-            .Replace("{{SALARY_MIN}}",              minSalary)
-            .Replace("{{SALARY_MAX}}",              maxSalary)
-            .Replace("{{PAY_GRADE}}",               Encode(payGrade))
-            .Replace("{{DUTY_LOCATION}}",           Encode(p.DutyLocation))
-            .Replace("{{TOTAL_OPENINGS}}",          string.IsNullOrWhiteSpace(p.TotalOpenings) ? "1 vacancy" : $"{p.TotalOpenings} vacancies")
-            .Replace("{{REMOTE_ELIGIBLE}}",         p.RemoteEligible ? "Yes" : "No")
-            .Replace("{{TELEWORK_ELIGIBLE}}",       p.TeleworkEligible ? "Yes — Per Agency Policy" : "No")
-            .Replace("{{TRAVEL_REQUIRED}}",         Encode(p.TravelRequired.ToString()))
-            .Replace("{{RELOCATION_AUTHORIZED}}",   p.RelocationAuthorized ? "Yes" : "No")
-            .Replace("{{APPOINTMENT_TYPE}}",        Encode(p.AppointmentType.ToString()))
-            .Replace("{{WORK_SCHEDULE}}",           Encode(p.WorkSchedule.ToString()))
-            .Replace("{{SERVICE_TYPE}}",            Encode(p.ServiceType))
-            .Replace("{{PROMOTION_POTENTIAL}}",     Encode(p.PromotionPotential))
-            .Replace("{{OCCUPATIONAL_SERIES}}",     Encode(p.OccupationalSeries))
+            .Replace("{{TITLE}}",                    Encode(p.Title))
+            .Replace("{{DEPARTMENT_NAME}}",           Encode(p.HiringOrganization?.DepartmentName ?? ""))
+            .Replace("{{ORGANIZATION_NAME}}",         Encode(p.HiringOrganization?.OrganizationName ?? ""))
+            .Replace("{{STATUS_CLASS}}",              p.IsOpen ? "open" : "closed")
+            .Replace("{{STATUS_TEXT}}",               p.IsOpen ? "Accepting applications" : "Closed")
+            .Replace("{{OPEN_DATE}}",                 p.OpenDate.ToString("MM/dd/yyyy"))
+            .Replace("{{CLOSE_DATE}}",                p.CloseDate?.ToString("MM/dd/yyyy") ?? "Open until filled")
+            .Replace("{{SALARY_MIN}}",                minSalary)
+            .Replace("{{SALARY_MAX}}",                maxSalary)
+            .Replace("{{PAY_GRADE}}",                 Encode(payGrade))
+            .Replace("{{DUTY_LOCATION}}",             Encode(p.DutyLocation))
+            .Replace("{{TOTAL_OPENINGS}}",            string.IsNullOrWhiteSpace(p.TotalOpenings) ? "1 vacancy" : $"{p.TotalOpenings} vacancies")
+            .Replace("{{REMOTE_ELIGIBLE}}",           p.RemoteEligible ? "Yes" : "No")
+            .Replace("{{TELEWORK_ELIGIBLE}}",         p.TeleworkEligible ? "Yes — Per Agency Policy" : "No")
+            .Replace("{{TRAVEL_REQUIRED}}",           Encode(p.TravelRequired.ToString()))
+            .Replace("{{RELOCATION_AUTHORIZED}}",     p.RelocationAuthorized ? "Yes" : "No")
+            .Replace("{{APPOINTMENT_TYPE}}",          Encode(p.AppointmentType.ToString()))
+            .Replace("{{WORK_SCHEDULE}}",             Encode(p.WorkSchedule.ToString()))
+            .Replace("{{SERVICE_TYPE}}",              Encode(p.ServiceType))
+            .Replace("{{PROMOTION_POTENTIAL}}",       Encode(p.PromotionPotential))
+            .Replace("{{OCCUPATIONAL_SERIES}}",       Encode(p.OccupationalSeries))
             .Replace("{{OCCUPATIONAL_SERIES_TITLE}}", Encode(p.OccupationalSeriesTitle))
-            .Replace("{{SUPERVISORY_STATUS}}",      p.SupervisoryStatus ? "Yes" : "No")
-            .Replace("{{SECURITY_CLEARANCE}}",      Encode(p.SecurityClearance.ToString()))
-            .Replace("{{DRUG_TEST_REQUIRED}}",      p.DrugTestRequired ? "Yes" : "No")
-            .Replace("{{ADJUDICATION_TYPE}}",       adjudicationHtml)
-            .Replace("{{ANNOUNCEMENT_NUMBER}}",     Encode(p.AnnouncementNumber))
-            .Replace("{{USAJOBS_ID}}",              Encode(p.UsaJobsId))
-            .Replace("{{CONTACT_NAME}}",            Encode(p.ContactName))
-            .Replace("{{CONTACT_PHONE}}",           Encode(p.ContactPhone.Trim()))
-            .Replace("{{CONTACT_EMAIL}}",           Encode(p.ContactEmail))
-            .Replace("{{CONTACT_ADDRESS}}",         Encode(p.ContactAddress).Replace("\n", "<br/>"))
-            .Replace("{{HIRING_PATHS_HTML}}",       hiringPathsHtml)
-            .Replace("{{DESCRIPTION_HTML}}",        TextToHtml(p.Description))
-            .Replace("{{DUTIES_HTML}}",             TextToHtml(p.Duties))
-            .Replace("{{CONDITIONS_HTML}}",         TextToHtml(p.ConditionsOfEmployment))
-            .Replace("{{QUALIFICATIONS_HTML}}",     TextToHtml(p.Qualifications))
-            .Replace("{{EDUCATION_HTML}}",          TextToHtml(p.Education))
-            .Replace("{{ADDITIONAL_INFO_HTML}}",    TextToHtml(p.AdditionalInformation))
-            .Replace("{{EVALUATIONS_HTML}}",        TextToHtml(p.Evaluations))
-            .Replace("{{REQUIRED_DOCUMENTS_HTML}}", TextToHtml(p.RequiredDocuments))
-            .Replace("{{HOW_TO_APPLY_HTML}}",       TextToHtml(p.HowToApply))
-            .Replace("{{NEXT_STEPS_HTML}}",         TextToHtml(p.NextSteps));
+            .Replace("{{SUPERVISORY_STATUS}}",        p.SupervisoryStatus ? "Yes" : "No")
+            .Replace("{{SECURITY_CLEARANCE}}",        Encode(p.SecurityClearance.ToString()))
+            .Replace("{{DRUG_TEST_REQUIRED}}",        p.DrugTestRequired ? "Yes" : "No")
+            .Replace("{{ADJUDICATION_TYPE}}",         adjudicationHtml)
+            .Replace("{{ANNOUNCEMENT_NUMBER}}",       Encode(p.AnnouncementNumber))
+            .Replace("{{USAJOBS_ID}}",                Encode(p.UsaJobsId))
+            .Replace("{{CONTACT_NAME}}",              Encode(p.ContactName))
+            .Replace("{{CONTACT_PHONE}}",             Encode(p.ContactPhone.Trim()))
+            .Replace("{{CONTACT_EMAIL}}",             Encode(p.ContactEmail))
+            .Replace("{{CONTACT_ADDRESS}}",           Encode(p.ContactAddress).Replace("\n", "<br/>"))
+            .Replace("{{HIRING_PATHS_HTML}}",         hiringPathsHtml)
+            .Replace("{{DESCRIPTION_HTML}}",          TextToHtml(p.Description))
+            .Replace("{{DUTIES_HTML}}",               TextToHtml(p.Duties))
+            .Replace("{{CONDITIONS_HTML}}",           TextToHtml(p.ConditionsOfEmployment))
+            .Replace("{{QUALIFICATIONS_HTML}}",       TextToHtml(p.Qualifications))
+            .Replace("{{EDUCATION_HTML}}",            TextToHtml(p.Education))
+            .Replace("{{ADDITIONAL_INFO_HTML}}",      TextToHtml(p.AdditionalInformation))
+            .Replace("{{EVALUATIONS_HTML}}",          TextToHtml(p.Evaluations))
+            .Replace("{{REQUIRED_DOCUMENTS_HTML}}",   TextToHtml(p.RequiredDocuments))
+            .Replace("{{HOW_TO_APPLY_HTML}}",         TextToHtml(p.HowToApply))
+            .Replace("{{NEXT_STEPS_HTML}}",           TextToHtml(p.NextSteps));
 
-        var outputDir = Path.Combine(Path.GetDirectoryName(templatePath)!, "..", "output");
-        Directory.CreateDirectory(outputDir);
-        var outputPath = Path.GetFullPath(Path.Combine(outputDir, $"position-{positionId}.html"));
-        await File.WriteAllTextAsync(outputPath, html, Encoding.UTF8, ct);
-        logger.LogInformation("[Response] RenderPositionAsUsaJobsHtml positionId={PositionId} => {OutputPath}", positionId, outputPath);
-        return $"Rendered to: {outputPath}";
+        var bytes = Encoding.UTF8.GetBytes(html);
+        var result = JsonSerializer.Serialize(new { fileName = $"position-{positionId}.html", content = Convert.ToBase64String(bytes) });
+        logger.LogInformation("[Response] ExportPositionToHtml positionId={PositionId} => {Bytes} bytes", positionId, bytes.Length);
+        return result;
     }
 
     private static readonly Regex SectionHeaderRegex = new(

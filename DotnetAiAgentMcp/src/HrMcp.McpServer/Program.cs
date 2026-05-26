@@ -1,28 +1,18 @@
 // src/HrMcp.McpServer/Program.cs
-using Azure.AI.OpenAI;
-using Azure.Identity;
 using HrMcp.Application.Services;
 using HrMcp.Infrastructure.Persistence;
 using HrMcp.McpServer.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OllamaSharp;
 using Serilog;
 using System.Net;
 using System.Net.NetworkInformation;
 
 var explicitStdio = args.Contains("--stdio");
 var explicitStreamHttp = args.Contains("--stream-http");
-
-// --num-ctx <value> overrides AI:Ollama:NumCtx from appsettings.json
-var numCtxArg = ParseIntArg(args, "--num-ctx");
-var configOverrides = new Dictionary<string, string?>();
-if (numCtxArg.HasValue)
-    configOverrides["AI:Ollama:NumCtx"] = numCtxArg.Value.ToString();
 
 var tempConfig = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -31,7 +21,6 @@ var tempConfig = new ConfigurationBuilder()
         $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
         optional: true)
     .AddEnvironmentVariables()
-    .AddInMemoryCollection(configOverrides)   // CLI wins over all file sources
     .Build();
 
 var configuredTransport = tempConfig["McpServer:Transport:Type"] ?? "stdio";
@@ -63,7 +52,6 @@ try
             ContentRootPath = AppContext.BaseDirectory
         });
         hostBuilder.Services.AddSerilog();
-        hostBuilder.Configuration.AddInMemoryCollection(configOverrides);
 
         ConfigureCommonServices(hostBuilder.Services, hostBuilder.Configuration);
 
@@ -71,7 +59,7 @@ try
             .AddMcpServer()
             .WithTools<PositionTools>()
             .WithTools<HiringOrganizationTools>()
-            .WithTools<JobDescriptionTools>()
+            .WithTools<ExportTools>()
             .WithStdioServerTransport();
 
         using var host = hostBuilder.Build();
@@ -80,19 +68,9 @@ try
         var lifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
         lifetime.ApplicationStarted.Register(() =>
         {
-            var provider = hostBuilder.Configuration["AI:Provider"] ?? "Ollama";
-            var model = string.Equals(provider, "AzureOpenAI", StringComparison.OrdinalIgnoreCase)
-                ? hostBuilder.Configuration["AI:AzureOpenAI:Deployment"] ?? "unknown"
-                : hostBuilder.Configuration["AI:Ollama:Model"] ?? "unknown";
-
-            var numCtxStdio = hostBuilder.Configuration.GetValue<int?>("AI:Ollama:NumCtx");
             Console.Error.WriteLine("┌─────────────────────────────────────┐");
             Console.Error.WriteLine("│  HrMcp.McpServer                    │");
             Console.Error.WriteLine("│  Transport : stdio                  │");
-            Console.Error.WriteLine($"│  Provider  : {provider,-23}│");
-            Console.Error.WriteLine($"│  Model     : {model,-23}│");
-            if (numCtxStdio.HasValue)
-                Console.Error.WriteLine($"│  NumCtx    : {numCtxStdio.Value,-23:N0}│");
             Console.Error.WriteLine("│  Status    : READY                  │");
             Console.Error.WriteLine("└─────────────────────────────────────┘");
         });
@@ -108,7 +86,6 @@ try
     });
     builder.Host.UseSerilog();
 
-    builder.Configuration.AddInMemoryCollection(configOverrides);
     ConfigureCommonServices(builder.Services, builder.Configuration);
 
     var enableOidc = builder.Configuration.GetValue<bool>("Features:EnableOidc");
@@ -135,7 +112,7 @@ try
         .AddMcpServer()
         .WithTools<PositionTools>()
         .WithTools<HiringOrganizationTools>()
-        .WithTools<JobDescriptionTools>()
+        .WithTools<ExportTools>()
         .WithHttpTransport();
 
     var app = builder.Build();
@@ -144,21 +121,11 @@ try
     var appLifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
     appLifetime.ApplicationStarted.Register(() =>
     {
-        var provider = builder.Configuration["AI:Provider"] ?? "Ollama";
-        var model = string.Equals(provider, "AzureOpenAI", StringComparison.OrdinalIgnoreCase)
-            ? builder.Configuration["AI:AzureOpenAI:Deployment"] ?? "unknown"
-            : builder.Configuration["AI:Ollama:Model"] ?? "unknown";
         var url = builder.Configuration["McpServer:Transport:StreamHttp:Url"] ?? "http://localhost:5100";
-
-        var numCtxHttp = builder.Configuration.GetValue<int?>("AI:Ollama:NumCtx");
         Console.WriteLine("┌─────────────────────────────────────┐");
         Console.WriteLine("│  HrMcp.McpServer                    │");
         Console.WriteLine("│  Transport : stream-http             │");
         Console.WriteLine($"│  URL       : {url,-23}│");
-        Console.WriteLine($"│  Provider  : {provider,-23}│");
-        Console.WriteLine($"│  Model     : {model,-23}│");
-        if (numCtxHttp.HasValue)
-            Console.WriteLine($"│  NumCtx    : {numCtxHttp.Value,-23:N0}│");
         Console.WriteLine("│  Status    : READY                  │");
         Console.WriteLine("└─────────────────────────────────────┘");
     });
@@ -193,7 +160,6 @@ static void ConfigureCommonServices(IServiceCollection services, IConfiguration 
         configuration.GetConnectionString("DefaultConnection")!);
     services.AddScoped<PositionService>();
     services.AddScoped<HiringOrganizationService>();
-    services.AddSingleton<IChatClient>(_ => CreateChatClient(configuration));
 }
 
 static async Task InitializeDatabaseAsync(IServiceProvider services, bool forceReseed = false)
@@ -256,35 +222,4 @@ static bool TryDescribePortConflict(IOException ex, IConfiguration configuration
     message =
         $"Port {uri.Port} is already in use. Stop the running server or change the configured URL before starting another instance.";
     return true;
-}
-
-static int? ParseIntArg(string[] args, string flag)
-{
-    var idx = Array.IndexOf(args, flag);
-    return idx >= 0 && idx + 1 < args.Length && int.TryParse(args[idx + 1], out var v) ? v : null;
-}
-
-static IChatClient CreateChatClient(IConfiguration configuration)
-{
-    var provider = configuration["AI:Provider"] ?? "Ollama";
-
-    if (string.Equals(provider, "Ollama", StringComparison.OrdinalIgnoreCase))
-    {
-        var endpoint = configuration["AI:Ollama:Endpoint"] ?? "http://localhost:11434";
-        var model = configuration["AI:Ollama:Model"] ?? "llama3.2";
-
-        return (IChatClient)new OllamaApiClient(new Uri(endpoint), model);
-    }
-
-    var azureEndpoint = configuration["AI:AzureOpenAI:Endpoint"]
-        ?? throw new InvalidOperationException("Missing configuration: AI:AzureOpenAI:Endpoint");
-    var azureDeployment = configuration["AI:AzureOpenAI:Deployment"]
-        ?? throw new InvalidOperationException("Missing configuration: AI:AzureOpenAI:Deployment");
-    var apiKey = configuration["AI:AzureOpenAI:ApiKey"];
-
-    var client = string.IsNullOrWhiteSpace(apiKey)
-        ? new AzureOpenAIClient(new Uri(azureEndpoint), new DefaultAzureCredential())
-        : new AzureOpenAIClient(new Uri(azureEndpoint), new System.ClientModel.ApiKeyCredential(apiKey));
-
-    return client.GetChatClient(azureDeployment).AsIChatClient();
 }
