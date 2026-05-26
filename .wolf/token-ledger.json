@@ -2,14 +2,14 @@
   "version": 1,
   "created_at": "2026-04-26T17:37:09.902Z",
   "lifetime": {
-    "total_tokens_estimated": 3986747,
-    "total_reads": 3321,
-    "total_writes": 4525,
+    "total_tokens_estimated": 3996855,
+    "total_reads": 3323,
+    "total_writes": 4528,
     "total_sessions": 79,
-    "anatomy_hits": 933,
-    "anatomy_misses": 2372,
+    "anatomy_hits": 934,
+    "anatomy_misses": 2373,
     "repeated_reads_blocked": 1728,
-    "estimated_savings_vs_bare_cli": 3655227
+    "estimated_savings_vs_bare_cli": 3655427
   },
   "sessions": [
     {
@@ -50037,6 +50037,50 @@
       "id": "session-2026-05-25-1332",
       "started": "2026-05-25T17:32:09.898Z",
       "ended": "2026-05-25T18:37:11.458Z",
+      "reads": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+          "tokens_estimated": 5428,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/plugins/cache/claude-plugins-official/commit-commands/unknown/.claude-plugin/plugin.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+          "tokens_estimated": 1812,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
+          "tokens_estimated": 95,
+          "action": "edit"
+        },
+        {
+          "file": "c:/apps/claude-medium-editor/docs/superpowers/specs/2026-05-25-claude-medium-editor-design.md",
+          "tokens_estimated": 2773,
+          "action": "create"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 5428,
+        "output_tokens_estimated": 4680,
+        "reads_count": 2,
+        "writes_count": 3,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 1
+      }
+    },
+    {
+      "id": "session-2026-05-25-1332",
+      "started": "2026-05-25T17:32:09.898Z",
+      "ended": "2026-05-26T02:15:04.905Z",
       "reads": [
         {
           "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
