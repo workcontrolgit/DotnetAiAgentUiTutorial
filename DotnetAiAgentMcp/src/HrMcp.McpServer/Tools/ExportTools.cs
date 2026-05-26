@@ -78,8 +78,9 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
 
     private static byte[] BuildPositionDocx(HrPosition p)
     {
-        using var ms = new MemoryStream();
-        using var doc = WordprocessingDocument.Create(ms, WordprocessingDocumentType.Document, true);
+        var ms = new MemoryStream();
+        using (var doc = WordprocessingDocument.Create(ms, WordprocessingDocumentType.Document, true))
+        {
 
         var mainPart = doc.AddMainDocumentPart();
         AddStylesPart(mainPart);
@@ -124,13 +125,15 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
         AppendSection(body, "Next Steps", p.NextSteps, "Heading3");
 
         doc.Save();
+        } // dispose flushes ZIP to ms
         return ms.ToArray();
     }
 
     private static byte[] BuildDraftDocx(string title, string org, string markdownDraft)
     {
-        using var ms = new MemoryStream();
-        using var doc = WordprocessingDocument.Create(ms, WordprocessingDocumentType.Document, true);
+        var ms = new MemoryStream();
+        using (var doc = WordprocessingDocument.Create(ms, WordprocessingDocumentType.Document, true))
+        {
 
         var mainPart = doc.AddMainDocumentPart();
         AddStylesPart(mainPart);
@@ -155,6 +158,7 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
         AppendMarkdownContent(body, markdownDraft);
 
         doc.Save();
+        } // dispose flushes ZIP to ms
         return ms.ToArray();
     }
 
@@ -165,15 +169,63 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
             var line = rawLine.TrimEnd();
 
             if (line.StartsWith("## "))
-                body.AppendChild(StyledParagraph("Heading2", line[3..].Trim()));
+                body.AppendChild(RichParagraph("Heading2", line[3..].Trim()));
             else if (line.StartsWith("### "))
-                body.AppendChild(StyledParagraph("Heading3", line[4..].Trim()));
-            else if (line.Length >= 2 && line.TrimStart()[0] == '*' && char.IsWhiteSpace(line.TrimStart()[1]))
-                body.AppendChild(NormalParagraph("• " + line.TrimStart().Substring(1).TrimStart()));
+                body.AppendChild(RichParagraph("Heading3", line[4..].Trim()));
+            else if (IsBulletLine(line, out var bulletText))
+                body.AppendChild(BulletParagraph(bulletText));
             else if (string.IsNullOrWhiteSpace(line))
                 body.AppendChild(new Paragraph());
             else
-                body.AppendChild(NormalParagraph(line));
+                body.AppendChild(RichParagraph(null, line));
+        }
+    }
+
+    private static bool IsBulletLine(string line, out string content)
+    {
+        var t = line.TrimStart();
+        if (t.Length >= 2 && (t[0] == '*' || t[0] == '-') && char.IsWhiteSpace(t[1]))
+        {
+            content = t[1..].TrimStart();
+            return true;
+        }
+        content = string.Empty;
+        return false;
+    }
+
+    // Paragraph with optional Word style and inline **bold** support
+    private static Paragraph RichParagraph(string? styleId, string text)
+    {
+        var para = new Paragraph();
+        if (styleId is not null)
+            para.AppendChild(new ParagraphProperties(new ParagraphStyleId { Val = styleId }));
+        AppendInlineRuns(para, text);
+        return para;
+    }
+
+    // Indented bullet (• prefix) with inline **bold** support
+    private static Paragraph BulletParagraph(string text)
+    {
+        var para = new Paragraph();
+        var pp = new ParagraphProperties();
+        pp.AppendChild(new Indentation { Left = "360", Hanging = "360" });
+        para.AppendChild(pp);
+        para.AppendChild(new Run(new Text("• ") { Space = SpaceProcessingModeValues.Preserve }));
+        AppendInlineRuns(para, text);
+        return para;
+    }
+
+    // Splits on ** markers; odd-indexed segments become bold runs
+    private static void AppendInlineRuns(Paragraph para, string text)
+    {
+        var parts = text.Split("**");
+        for (var i = 0; i < parts.Length; i++)
+        {
+            if (parts[i].Length == 0) continue;
+            var run = new Run(new Text(parts[i]) { Space = SpaceProcessingModeValues.Preserve });
+            if (i % 2 == 1)
+                run.PrependChild(new RunProperties(new Bold()));
+            para.AppendChild(run);
         }
     }
 
@@ -181,8 +233,9 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
 
     private static byte[] BuildPositionsExcel(IEnumerable<HrPosition> positionList)
     {
-        using var ms = new MemoryStream();
-        using var doc = SpreadsheetDocument.Create(ms, SpreadsheetDocumentType.Workbook, true);
+        var ms = new MemoryStream();
+        using (var doc = SpreadsheetDocument.Create(ms, SpreadsheetDocumentType.Workbook, true))
+        {
 
         var workbookPart = doc.AddWorkbookPart();
         workbookPart.Workbook = new SS.Workbook();
@@ -234,6 +287,7 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
         }
 
         workbookPart.Workbook.Save();
+        } // dispose flushes ZIP to ms
         return ms.ToArray();
     }
 

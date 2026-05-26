@@ -1,7 +1,8 @@
-# Series 1: AI Agents & MCP with .NET 10 — Preface
+# AI Agents & MCP with .NET 10 — Blog Series
 
 **Series:** AI Agents & MCP with .NET 10  
 **GitHub:** [workcontrolgit/DotnetAiAgentMcp](https://github.com/workcontrolgit/DotnetAiAgentMcp)
+![AI Agents & MCP with .NET 10 blog cover](screenshots/blog-cover.png)
 
 ---
 
@@ -45,7 +46,7 @@ The five-project Clean Architecture solution:
 - **HrMcp.Application** — application services. Depends only on Core.
 - **HrMcp.Infrastructure.Persistence** — EF Core + SQL Server. Implements Core interfaces.
 - **HrMcp.McpServer** — ASP.NET Core MCP server. Exposes tools to AI clients.
-- **HrMcp.Agent** — console AI agent. Connects to the MCP server with Ollama + llama3.2.
+- **HrMcp.Agent** — console AI agent. Connects to the MCP server over `stdio` or Streamable HTTP and uses Ollama or Azure OpenAI through `IChatClient`.
 
 ---
 
@@ -57,16 +58,16 @@ This is not a survey course. Every skill is exercised through working code you w
 How to structure a .NET solution so that domain logic is independent of both database infrastructure and AI infrastructure. Swap Ollama for Claude API without touching a single service class.
 
 **Model Context Protocol from first principles**
-What MCP is, how JSON-RPC 2.0 messages flow between client and server, and how stdio and HTTP/SSE transports differ. You will understand the protocol, not just the SDK.
+What MCP is, how JSON-RPC 2.0 messages flow between client and server, and how `stdio` and Streamable HTTP transports differ. You will understand the protocol, not just the SDK.
 
 **Building MCP tools in .NET**
 How to use the `ModelContextProtocol.AspNetCore` NuGet package to turn C# methods into AI-callable tools with `[McpServerTool]` and `[McpServerToolType]`. How to write `[Description]` text that gives the AI the context it needs to call tools correctly.
 
 **Microsoft.Extensions.AI — the AI abstraction layer**
-How `IChatClient` lets you write model-agnostic agent code. How the function-invocation middleware handles the tool-call loop automatically. How to swap providers with a single line change.
+How `IChatClient` lets you write model-agnostic agent code. How the agent's manual tool loop routes MCP tool calls. How to swap providers with a config change.
 
 **Local AI with Ollama**
-How to run `llama3.2` on your own machine, connect it to an MCP server, and use it to generate job descriptions — with zero data leaving your environment.
+How to run Ollama locally, connect it to an MCP server, and use it as one backing model option for the agent — with zero data leaving your environment.
 
 **Claude Desktop and VS Code Copilot integration**
 How to configure two MCP clients to connect to the same server. How stdio transport works under the hood. How to debug the JSON-RPC stream when things go wrong.
@@ -84,7 +85,7 @@ The skills in this series transfer directly to production scenarios. Here is the
 The same pattern — `[McpServerTool]` over an application service — works for any existing API. You are not rewriting your application; you are adding an MCP surface on top of what already exists.
 
 **You have an ASP.NET Core web app.**
-The HTTP/SSE transport in Part 3 means your existing web host can become an MCP server with one `builder.Services.AddMcpServer()` call and a route mapping. No new project required.
+The Streamable HTTP transport in Part 3 means your existing web host can become an MCP server with one `builder.Services.AddMcpServer()` call and a route mapping. No new project required.
 
 **You have a SQL Server database.**
 EF Core is the bridge. Your existing DbContext and repositories become the data layer behind MCP tools. The AI never touches the database directly — it calls tools, tools call services, services call repositories.
@@ -106,25 +107,25 @@ Build the .NET 10 solution skeleton and the federal HR domain. Entities aligned 
 ---
 
 **Part 2 — Introduction to Model Context Protocol**
-No code — pure concepts. The N×M integration problem MCP solves. The three MCP primitives (Tools, Resources, Prompts). How stdio and HTTP/SSE transports work. The .NET SDK overview. Read this before writing any MCP code.
+No code — pure concepts. The N×M integration problem MCP solves. The three MCP primitives (Tools, Resources, Prompts). How `stdio` and Streamable HTTP transports work. The .NET SDK overview. Read this before writing any MCP code.
 → *[Read Part 2](part-2-intro-to-mcp.md)*
 
 ---
 
 **Part 3 — Building an MCP Server in .NET 10**
-Install `ModelContextProtocol.AspNetCore`. Write three tool classes with attribute-based registration. Configure both transports in `Program.cs`. Test with MCP Inspector — no AI host needed.
+Install `ModelContextProtocol.AspNetCore`. Register three tool classes and expose the current 8-tool MCP surface. Configure both transports in `Program.cs`. Test with MCP Inspector — no AI host needed.
 → *[Read Part 3](part-3-mcp-server-dotnet.md)*
 
 ---
 
 **Part 4 — AI Agent with Microsoft.Extensions.AI + Ollama**
-Set up Ollama locally. Connect the `HrMcp.Agent` console app to the MCP server via HTTP. Wire `IChatClient` with automatic tool-call dispatch. Watch the agent call your tools and answer HR questions in natural language.
+Set up Ollama locally. Connect the `HrMcp.Agent` console app to the MCP server over `stdio` by default or Streamable HTTP when needed. Use the current manual tool loop to call your MCP tools and answer HR questions in natural language.
 → *[Read Part 4](part-4-ai-agent-extensions-ai.md)*
 
 ---
 
 **Part 5 — Claude Desktop Integration & End-to-End Demo**
-Publish the server as a self-contained executable. Configure Claude Desktop to launch it via stdio. Configure VS Code Copilot to connect via HTTP/SSE. Debug the protocol stream. Walk through a live HR session calling all five tools.
+Publish the server as a self-contained executable. Configure Claude Desktop to launch it via `stdio`. Optionally point other tools at the HTTP route. Debug the protocol stream. Walk through a live HR session calling the current 8-tool MCP surface.
 → *[Read Part 5](part-5-claude-desktop-integration.md)*
 
 ---

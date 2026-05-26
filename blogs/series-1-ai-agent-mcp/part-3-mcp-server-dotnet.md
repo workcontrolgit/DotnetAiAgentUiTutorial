@@ -1,7 +1,8 @@
 # Part 3: Building an MCP Server in .NET 10
 
-**Series:** AI Agents & MCP with .NET 10 | **Part 3 of 6**  
+**Series:** [AI Agents & MCP with .NET 10](preface.md) | **Part 3 of 6**  
 **GitHub:** [workcontrolgit/DotnetAiAgentMcp](https://github.com/workcontrolgit/DotnetAiAgentMcp)
+![AI Agents & MCP with .NET 10 blog cover](screenshots/blog-cover.png)
 
 ---
 
@@ -9,15 +10,15 @@
 
 In Part 2 we built the mental model for MCP. In this part we make it real.
 
-By the end of this post you will have a running MCP server that exposes four tools over HTTP/SSE, supports stdio transport for Claude Desktop, and can be tested interactively with MCP Inspector — without any AI host involved.
+By the end of this post you will have a running MCP server that exposes both **data tools** and **export tools**, supports `stdio` transport for local MCP clients such as Claude Desktop, and can be tested interactively with MCP Inspector without any AI host involved.
 
-The server lives in `HrMcp.McpServer`, the project we scaffolded in Part 1. All we are adding is the MCP SDK and two tool classes.
+The server lives in `HrMcp.McpServer`, the project we scaffolded in Part 1. We add the MCP SDK, register three tool classes, and expose the same domain through both HTTP and `stdio`.
 
-![Part 3 steps overview — swim lane across Developer, MCP Server, and MCP Inspector](diagrams/part-3-diagram-1-build-steps.png)
+![Part 3 steps overview - swim lane across Developer, MCP Server, and MCP Inspector](diagrams/part-3-diagram-1-build-steps.png)
 
 ---
 
-## Step 1 — Install the SDK
+## Step 1 - Install the SDK
 
 Add the official ASP.NET Core MCP package to `HrMcp.McpServer`:
 
@@ -25,177 +26,142 @@ Add the official ASP.NET Core MCP package to `HrMcp.McpServer`:
 dotnet add src/HrMcp.McpServer package ModelContextProtocol.AspNetCore --version 1.*
 ```
 
-This pulls in two transitive packages automatically:
-
-- **`ModelContextProtocol`** — core protocol, types, attributes
-- **`ModelContextProtocol.Core`** — low-level JSON-RPC primitives
-
-You only need to reference `ModelContextProtocol.AspNetCore` directly. The rest comes along for free.
+This pulls in the MCP core packages transitively. You only reference `ModelContextProtocol.AspNetCore` directly.
 
 ---
 
-## Step 2 — Tool Classes (`HrMcp.McpServer/Tools/`)
+## Step 2 - Tool Classes (`HrMcp.McpServer/Tools/`)
 
-Create the `Tools/` folder inside `HrMcp.McpServer`. Each class carries a `[McpServerToolType]` attribute; each method that becomes an MCP tool carries `[McpServerTool]`. The `[Description]` attributes are what the AI reads to understand when and how to call each tool — write them as if you are explaining the tool to a developer who has never seen your schema.
+Create the `Tools/` folder inside `HrMcp.McpServer`. Each class uses `[McpServerToolType]`, and each exposed method uses `[McpServerTool]`. The `[Description]` attributes matter because MCP clients and LLMs use them to decide when to call a tool and how to populate arguments.
 
 ```text
 src/HrMcp.McpServer/
   Tools/
     PositionTools.cs
     HiringOrganizationTools.cs
+    ExportTools.cs
 ```
+
+### What the server exposes
+
+The current project exposes **8 MCP tools** total.
+
+**Data retrieval tools**
+
+- `GetHiringOrganizations`
+- `GetOpenPositions`
+- `GetPositionById`
+- `GetPositionsByOrganization`
+
+**Export tools**
+
+- `ExportPositionToHtml`
+- `ExportPositionToWord`
+- `ExportDraftToWord`
+- `ExportPositionsToExcel`
+
+That split is important. MCP tools are not limited to query methods. They can also package server-side business data into outputs that a client saves locally.
 
 ### `PositionTools.cs`
 
-Three tools: list open positions, get a single position by ID, and filter by organization.
+`PositionTools` contains three query tools plus one HTML export tool:
 
 ```csharp
 // src/HrMcp.McpServer/Tools/PositionTools.cs
-using System.ComponentModel;
-using HrMcp.Application.Services;
-using ModelContextProtocol.Server;
-
-namespace HrMcp.McpServer.Tools;
-
 [McpServerToolType]
-public sealed class PositionTools(PositionService positions)
+public sealed class PositionTools(PositionService positions, ILogger<PositionTools> logger)
 {
-    [McpServerTool(Name = "GetOpenPositions"),
-     Description("Returns all currently open federal job positions including title, pay grade, duty location, and security clearance requirements.")]
-    public async Task<IEnumerable<object>> GetOpenPositions(CancellationToken ct = default)
-    {
-        var list = await positions.GetOpenPositionsAsync(ct);
-        return list.Select(p => (object)new
-        {
-            p.Id,
-            p.Title,
-            p.Description,
-            p.OccupationalSeries,
-            p.PayGradeMin,
-            p.PayGradeMax,
-            MinimumRange     = p.PositionRemuneration?.MinimumRange,
-            MaximumRange     = p.PositionRemuneration?.MaximumRange,
-            RateIntervalCode = p.PositionRemuneration?.RateIntervalCode,
-            p.DutyLocation,
-            p.TeleworkEligible,
-            SecurityClearance  = p.SecurityClearance.ToString(),
-            p.WhoMayApply,
-            OrganizationName   = p.HiringOrganization?.OrganizationName,
-            DepartmentName     = p.HiringOrganization?.DepartmentName
-        });
-    }
+    [McpServerTool(Name = "GetOpenPositions")]
+    public async Task<IEnumerable<object>> GetOpenPositions(CancellationToken ct = default) { ... }
 
-    [McpServerTool(Name = "GetPositionById"),
-     Description("Returns full details for a specific position by its ID, including duties, qualifications, and pay information.")]
-    public async Task<object?> GetPositionById(
-        [Description("The numeric ID of the position to retrieve")] int positionId,
-        CancellationToken ct = default)
-    {
-        var p = await positions.GetPositionByIdAsync(positionId, ct);
-        if (p is null) return null;
+    [McpServerTool(Name = "GetPositionById")]
+    public async Task<object?> GetPositionById(int positionId, CancellationToken ct = default) { ... }
 
-        return new
-        {
-            p.Id,
-            p.Title,
-            p.Description,
-            p.Duties,
-            p.Qualifications,
-            p.OccupationalSeries,
-            p.PayGradeMin,
-            p.PayGradeMax,
-            MinimumRange         = p.PositionRemuneration?.MinimumRange,
-            MaximumRange         = p.PositionRemuneration?.MaximumRange,
-            RateIntervalCode     = p.PositionRemuneration?.RateIntervalCode,
-            p.IsOpen,
-            p.DutyLocation,
-            p.TeleworkEligible,
-            SecurityClearance    = p.SecurityClearance.ToString(),
-            TravelRequired       = p.TravelRequired.ToString(),
-            AppointmentType      = p.AppointmentType.ToString(),
-            WorkSchedule         = p.WorkSchedule.ToString(),
-            p.WhoMayApply,
-            p.SupervisoryStatus,
-            p.RelocationAuthorized,
-            p.DrugTestRequired,
-            OpenDate             = p.OpenDate.ToString("yyyy-MM-dd"),
-            CloseDate            = p.CloseDate?.ToString("yyyy-MM-dd"),
-            OrganizationName     = p.HiringOrganization?.OrganizationName,
-            DepartmentName       = p.HiringOrganization?.DepartmentName
-        };
-    }
+    [McpServerTool(Name = "GetPositionsByOrganization")]
+    public async Task<IEnumerable<object>> GetPositionsByOrganization(int organizationId, CancellationToken ct = default) { ... }
 
-    [McpServerTool(Name = "GetPositionsByOrganization"),
-     Description("Returns all positions for a specific federal hiring organization. Use GetHiringOrganizations first to get valid organization IDs.")]
-    public async Task<IEnumerable<object>> GetPositionsByOrganization(
-        [Description("The numeric ID of the hiring organization")] int organizationId,
-        CancellationToken ct = default)
-    {
-        var list = await positions.GetPositionsByOrganizationAsync(organizationId, ct);
-        return list.Select(p => (object)new
-        {
-            p.Id,
-            p.Title,
-            p.Description,
-            p.OccupationalSeries,
-            p.PayGradeMin,
-            p.PayGradeMax,
-            p.IsOpen,
-            p.DutyLocation,
-            p.TeleworkEligible,
-            SecurityClearance = p.SecurityClearance.ToString(),
-            p.WhoMayApply
-        });
-    }
+    [McpServerTool(Name = "ExportPositionToHtml")]
+    public async Task<string> ExportPositionToHtml(int positionId, CancellationToken ct = default) { ... }
 }
 ```
 
-A few design notes:
+What each tool does:
 
-- **Return anonymous projections, not entities.** Domain entities have navigation properties that create circular references and bloat JSON. Project only the fields the AI needs.
-- **Enums as strings.** `p.SecurityClearance.ToString()` gives the AI `"Secret"` instead of `3`. Self-explanatory values require no schema lookup.
-- **`CancellationToken` as the last parameter.** The SDK passes the request cancellation token automatically when a method accepts it. Always include it for async tools.
+- `GetOpenPositions` returns the lightweight list view for open jobs.
+- `GetPositionById` returns the full detail view for one job, including duties, qualifications, contact info, and application fields.
+- `GetPositionsByOrganization` narrows positions to a single hiring organization after the client discovers valid IDs.
+- `ExportPositionToHtml` renders a USAJobs-style HTML page and returns a JSON payload with `fileName` and base64 `content`.
 
 ### `HiringOrganizationTools.cs`
 
-One tool: list all hiring organizations with open position counts.
+`HiringOrganizationTools` provides the discovery entry point for agencies:
 
 ```csharp
 // src/HrMcp.McpServer/Tools/HiringOrganizationTools.cs
-using System.ComponentModel;
-using HrMcp.Application.Services;
-using ModelContextProtocol.Server;
-
-namespace HrMcp.McpServer.Tools;
-
 [McpServerToolType]
-public sealed class HiringOrganizationTools(HiringOrganizationService organizations)
+public sealed class HiringOrganizationTools(
+    HiringOrganizationService organizations,
+    ILogger<HiringOrganizationTools> logger)
 {
-    [McpServerTool(Name = "GetHiringOrganizations"),
-     Description("Returns all federal hiring organizations in the database with their department affiliations, IDs, and open position count.")]
-    public async Task<IEnumerable<object>> GetHiringOrganizations(CancellationToken ct = default)
-    {
-        var list = await organizations.GetAllOrganizationsAsync(ct);
-        return list.Select(o => (object)new
-        {
-            o.Id,
-            o.OrganizationName,
-            o.DepartmentName,
-            o.AgencyDescription,
-            OpenPositionCount = o.Positions.Count(p => p.IsOpen)
-        });
-    }
+    [McpServerTool(Name = "GetHiringOrganizations")]
+    public async Task<IEnumerable<object>> GetHiringOrganizations(CancellationToken ct = default) { ... }
 }
 ```
 
----
+This tool returns agencies, department names, and open-position counts. In practice, that makes later calls like `GetPositionsByOrganization(organizationId)` grounded instead of guesswork.
 
-## Step 3 — Update `Program.cs`
+### `ExportTools.cs`
 
-The updated `Program.cs` handles both transports from a single binary. The `--stdio` flag switches the server into stdio mode, which is required by Claude Desktop and VS Code Copilot Chat.
+The remaining export tools live in `ExportTools.cs` because they all produce document payloads:
 
 ```csharp
-// src/HrMcp.McpServer/Program.cs
+// src/HrMcp.McpServer/Tools/ExportTools.cs
+[McpServerToolType]
+public sealed class ExportTools(PositionService positions, ILogger<ExportTools> logger)
+{
+    [McpServerTool(Name = "ExportPositionToWord")]
+    public async Task<string> ExportPositionToWord(int positionId, CancellationToken ct = default) { ... }
+
+    [McpServerTool(Name = "ExportDraftToWord")]
+    public async Task<string> ExportDraftToWord(int positionId, string draftContent, CancellationToken ct = default) { ... }
+
+    [McpServerTool(Name = "ExportPositionsToExcel")]
+    public async Task<string> ExportPositionsToExcel(CancellationToken ct = default) { ... }
+}
+```
+
+What each export tool does:
+
+- `ExportPositionToWord` packages one position's full structured data into `.docx`.
+- `ExportDraftToWord` packages an AI-written draft into editable `.docx`.
+- `ExportPositionsToExcel` packages all open positions into `.xlsx`.
+
+These are still MCP tools, not HTTP file downloads. The server returns JSON like:
+
+```json
+{
+  "fileName": "position-1.docx",
+  "content": "UEsDBBQAAAAI..."
+}
+```
+
+The client decides where to save the file. That makes the same tool usable from a console agent, Claude Desktop, or a future web client.
+
+### Design Notes
+
+- Return anonymous projections for data tools rather than EF/domain entities directly.
+- Convert enums to strings so the client sees meaningful values like `"Secret"` instead of numeric codes.
+- Keep `CancellationToken` as the last parameter so the SDK can flow request cancellation automatically.
+- Treat exports as first-class MCP tools. They are part of the same domain surface, just with a different return contract.
+
+---
+
+## Step 3 - Update `Program.cs`
+
+The updated `Program.cs` handles both transports from a single binary. The real current file is more feature-rich than the minimal sketch below: it supports config-driven default transport, `--stdio`, `--stream-http`, optional OIDC on the HTTP route, debug logging, reseeding, and the same three tool registrations in both hosting paths.
+
+```csharp
+// src/HrMcp.McpServer/Program.cs (representative shape from the current codebase)
 using HrMcp.Application.Services;
 using HrMcp.Infrastructure.Persistence;
 using HrMcp.McpServer.Tools;
@@ -205,13 +171,12 @@ var isStdio = args.Contains("--stdio");
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Stdout must contain only JSON-RPC when running as a stdio server.
-// Clear all log providers so nothing leaks into stdout.
 if (isStdio)
 {
+    // Stdout must contain only JSON-RPC when running as a stdio server.
     builder.Logging.ClearProviders();
     builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = Microsoft.Extensions.Logging.LogLevel.Trace);
-    builder.WebHost.UseUrls(); // no HTTP listener in stdio mode
+    builder.WebHost.UseUrls();
 }
 
 builder.Services.AddPersistence(
@@ -222,7 +187,8 @@ builder.Services.AddScoped<HiringOrganizationService>();
 var mcp = builder.Services
     .AddMcpServer()
     .WithTools<PositionTools>()
-    .WithTools<HiringOrganizationTools>();
+    .WithTools<HiringOrganizationTools>()
+    .WithTools<ExportTools>();
 
 if (isStdio)
     mcp.WithStdioServerTransport();
@@ -236,7 +202,6 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<HrDbContext>();
     db.Database.Migrate();
 
-    // Looks for data/usajobs-seed.json in the working directory (solution root when using dotnet run)
     var seedPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "usajobs-seed.json");
     DbSeeder.Seed(db, seedPath);
 }
@@ -247,49 +212,34 @@ if (!isStdio)
 await app.RunAsync();
 ```
 
-**What changed from Part 1:**
+What changed from Part 1:
 
-- `--stdio` flag detection at startup
-- Logging cleared and redirected to stderr in stdio mode (`UseUrls()` prevents Kestrel binding)
-- `AddMcpServer()` with tool registrations
-- `WithStdioServerTransport()` or `WithHttpTransport()` depending on the flag
-- `app.MapMcp("/mcp")` wires the HTTP/SSE endpoint when running in HTTP mode
+- dual transport support
+- MCP server registration with all three tool classes
+- transport-specific hosting behavior
+- HTTP route mapping for inspector and remote clients
 
 ---
 
-## Step 4 — Build
+## Step 4 - Build
 
 ```bash
-dotnet build DotnetAiAgentMcp.slnx   # 0 errors, 0 warnings
+dotnet build DotnetAiAgentMcp.slnx
 ```
 
 ---
 
-## Step 5 — Run in HTTP Mode
+## Step 5 - Run in HTTP Mode
 
 ```bash
 dotnet run --project src/HrMcp.McpServer
 ```
 
-The server starts on `http://localhost:5100`. You will see the usual ASP.NET Core startup output, ending with:
-
-```text
-info: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:5100
-```
+The server starts on `http://localhost:5100`.
 
 ---
 
-## Step 6 — Testing with MCP Inspector — Your MCP Postman + Swagger
-
-If you have built REST APIs with .NET, you know this workflow:
-
-- **Swagger UI** — start the server, open the browser, see all endpoints auto-discovered, click to call one
-- **Postman** — send a request with custom inputs, inspect the raw JSON response
-
-MCP Inspector does both in one UI for MCP servers. It connects to your running server, discovers all tools, and lets you call them with custom arguments and inspect the raw JSON-RPC exchange.
-
-> **Prerequisite:** Node.js 22.7.5 or later. Check with `node --version`.
+## Step 6 - Test with MCP Inspector
 
 With the server running in HTTP mode, open a second terminal and run:
 
@@ -297,86 +247,71 @@ With the server running in HTTP mode, open a second terminal and run:
 npx @modelcontextprotocol/inspector http://localhost:5100/mcp
 ```
 
-The inspector starts on `http://localhost:6274`. Open it in a browser.
+The inspector starts on `http://localhost:6274`.
 
 ### What you will see
 
-The **Tools** tab lists all four tools auto-discovered from the server. Click any tool to see its description and a **Run Tool** button. The right panel shows the live JSON-RPC response.
+The **Tools** tab lists all **8 tools** discovered from the server. That includes both query-style tools and export tools.
 
-![MCP Inspector connected to HrMcp.McpServer — all 4 tools listed, GetHiringOrganizations result shown](diagrams/part-3-diagram-2-inspector-tools.png)
+![MCP Inspector connected to HrMcp.McpServer - tools listed, GetHiringOrganizations result shown](diagrams/part-3-diagram-2-inspector-tools.png)
 
-### Calling `GetHiringOrganizations`
+### Data tool examples
 
-Click `GetHiringOrganizations` → **Run Tool**. Expected response:
+- `GetHiringOrganizations` returns agencies plus open-position counts.
+- `GetOpenPositions` returns all open jobs with summary fields like pay grade and duty location.
+- `GetPositionsByOrganization` filters jobs by organization ID.
+- `GetPositionById` returns the full position detail for one job.
 
-```json
-[
-  {
-    "id": 1,
-    "organizationName": "U.S. Citizenship and Immigration Services",
-    "departmentName": "Department of Homeland Security",
-    "agencyDescription": "",
-    "openPositionCount": 4
-  },
-  ...
-]
-```
+### Export tool examples
 
-6 organizations returned (from the real DHS seed data).
+- `ExportPositionToHtml` returns a base64 payload for a USAJobs-style HTML page.
+- `ExportPositionToWord` returns a base64 payload for a `.docx` export.
+- `ExportDraftToWord` returns a base64 payload for a draft `.docx`.
+- `ExportPositionsToExcel` returns a base64 payload for an `.xlsx` spreadsheet.
 
-### Calling `GetOpenPositions`
+MCP Inspector is enough to verify the contract: tool name, arguments, and JSON payload shape. In Part 4, the agent will take those export payloads and save the files locally.
 
-Click `GetOpenPositions` → **Run Tool**. Returns all positions where `IsOpen = true` with pay ranges and clearance levels.
-
-### Calling `GetPositionsByOrganization`
-
-Click `GetPositionsByOrganization`, enter `organizationId: 1` → **Run Tool**. Returns only positions belonging to organization 1.
-
-### Calling `GetPositionById`
-
-Click `GetPositionById`, enter `positionId: 1` → **Run Tool**. Returns full position detail including duties and qualifications.
-
-All four tools respond correctly. The server is working.
-
-> **Tip:** If tools are not appearing or calls are failing, check the inspector first before touching the stdio transport. Inspector runs in HTTP mode — if it works here, the server is correct and any Claude Desktop issues are stdio-specific.
+> Tip: if the tools work in Inspector but not in a local MCP client, the problem is usually in the `stdio` integration rather than the server logic itself.
 
 ---
 
-## Step 7 — Verify stdio Mode
+## Step 7 - Verify `stdio` Mode
 
-Stop the server. Run in stdio mode:
+Stop the HTTP server and run:
 
 ```bash
 dotnet run --project src/HrMcp.McpServer -- --stdio
 ```
 
-No ASP.NET Core startup output appears on stdout. The process blocks waiting for JSON-RPC input on stdin — which is exactly the behaviour Claude Desktop expects. Press `Ctrl+C` to exit.
+No ASP.NET Core startup output should appear on stdout. The process waits for JSON-RPC input on stdin, which is exactly what local clients such as Claude Desktop expect.
 
 ---
 
 ## What We Built
 
-- **`ModelContextProtocol.AspNetCore` 1.x** installed in `HrMcp.McpServer`
-- **2 tool classes** — `PositionTools` (3 tools), `HiringOrganizationTools` (1 tool)
-- **`--stdio` flag** — single binary, two transports, no code duplication
-- **Verified with MCP Inspector** — all 4 tools discovered and callable against real DHS data
+- `ModelContextProtocol.AspNetCore` added to `HrMcp.McpServer`
+- 3 tool classes
+- 8 MCP tools total
+- both data retrieval and export workflows
+- one binary supporting both HTTP and `stdio`
+- verification through MCP Inspector
 
-The AI still knows nothing about any of this. In Part 4, we wire in an LLM via `Microsoft.Extensions.AI` and Ollama, connect it to these tools, and add export tools that let the agent save positions and job description drafts as Word and Excel files.
+The AI still knows nothing about any of this. In Part 4, we connect an AI agent to these tools and let it consume both structured data results and export payloads.
 
 ---
 
 ## Next Up
 
-**[Part 4: AI Agent with Microsoft.Extensions.AI + Ollama →](part-4-ai-agent-extensions-ai.md)**
+**[Part 4: AI Agent with Microsoft.Extensions.AI + Ollama ->](part-4-ai-agent-extensions-ai.md)**
 
-We build the `HrMcp.Agent` console app: connect it to the MCP server, configure multi-model support (Ollama with gemma4 as default, Azure OpenAI as a config swap), and let the AI answer HR questions and export positions and drafts as Word and Excel files.
+We build the `HrMcp.Agent` console app, connect it to the MCP server, and let the model use these tools to answer HR questions and save exported files locally.
 
 ---
 
 ## Sources
 
-- [ModelContextProtocol C# SDK — GitHub](https://github.com/modelcontextprotocol/csharp-sdk)
+- [ModelContextProtocol C# SDK - GitHub](https://github.com/modelcontextprotocol/csharp-sdk)
 - [ModelContextProtocol NuGet Package](https://www.nuget.org/packages/ModelContextProtocol)
 - [ModelContextProtocol.AspNetCore NuGet Package](https://www.nuget.org/packages/ModelContextProtocol.AspNetCore)
-- [MCP Inspector — GitHub](https://github.com/modelcontextprotocol/inspector)
-- [MCP Specification — Transports](https://spec.modelcontextprotocol.io/specification/basic/transports/)
+- [MCP Inspector - GitHub](https://github.com/modelcontextprotocol/inspector)
+- [MCP Specification - Transports](https://spec.modelcontextprotocol.io/specification/basic/transports/)

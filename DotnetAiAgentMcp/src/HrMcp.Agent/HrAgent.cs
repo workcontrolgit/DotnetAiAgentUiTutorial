@@ -113,16 +113,22 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
                     catch (Exception ex) { rawResult = $"Error: {ex.Message}"; }
                 }
 
+                Console.WriteLine($"[DBG] call.Name={call.Name}");
                 // Intercept export tool results — decode base64 and save to output folder
                 if (ExportToolNames.Contains(call.Name ?? string.Empty))
                 {
+                    Console.WriteLine($"[DBG] rawResult type={rawResult?.GetType().Name}");
                     var json = rawResult switch
                     {
                         string s => s,
+                        TextContent tc => tc.Text ?? string.Empty,
+                        JsonElement je when je.ValueKind == JsonValueKind.String => je.GetString() ?? string.Empty,
                         JsonElement je => je.GetRawText(),
                         _ => JsonSerializer.Serialize(rawResult)
                     };
+                    Console.WriteLine($"[DBG] json preview={json[..Math.Min(120, json.Length)]}");
                     var saved = TrySaveExportFile(json, _outputFolder);
+                    Console.WriteLine($"[DBG] saved={saved ?? "null"}");
                     if (saved is not null) rawResult = saved;
                 }
 
@@ -160,9 +166,9 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
             File.WriteAllBytes(fullPath, bytes);
             return $"Saved to: {fullPath}";
         }
-        catch
+        catch (Exception ex)
         {
-            return null;
+            return $"Export save failed: {ex.Message}";
         }
     }
 
