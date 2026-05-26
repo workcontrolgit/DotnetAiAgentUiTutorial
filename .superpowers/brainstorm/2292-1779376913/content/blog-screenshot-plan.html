@@ -1,0 +1,67 @@
+<h2>Blog Update Plan — Screenshots Needed</h2>
+<p class="subtitle">Two posts · four real terminal screenshots · code snippet updates</p>
+
+<div class="section">
+  <h3>Part 4 — AI Agent with Microsoft.Extensions.AI</h3>
+  <p>Three sections need new screenshots and code updates:</p>
+
+  <div style="display:flex;flex-direction:column;gap:12px;margin-top:12px">
+
+    <div style="background:#1a1a2e;border-left:4px solid #4fc3f7;padding:12px 16px;border-radius:4px">
+      <div style="color:#4fc3f7;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Screenshot 1 — MCP Server startup</div>
+      <div style="font-family:monospace;font-size:11px;color:#e0e0e0">dotnet run --project src/HrMcp.McpServer</div>
+      <div style="color:#aaa;font-size:11px;margin-top:4px">Shows: server listening on http://localhost:5100 · replaces the old plain-text "You should see:" block</div>
+    </div>
+
+    <div style="background:#1a1a2e;border-left:4px solid #ffb74d;padding:12px 16px;border-radius:4px">
+      <div style="color:#ffb74d;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Screenshot 2 — Agent startup (style picker)</div>
+      <div style="font-family:monospace;font-size:11px;color:#e0e0e0">dotnet run --project src/HrMcp.Agent</div>
+      <div style="color:#aaa;font-size:11px;margin-top:4px">Shows: green ✔ Connected · style picker menu · "Structured" auto-selected · cyan HR Assistant rule · replaces old connected + "HR Assistant ready" block</div>
+    </div>
+
+    <div style="background:#1a1a2e;border-left:4px solid #a5d6a7;padding:12px 16px;border-radius:4px">
+      <div style="color:#a5d6a7;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Screenshot 3 — Sample conversation (Structured style)</div>
+      <div style="font-family:monospace;font-size:11px;color:#e0e0e0">Ask: "What organizations are hiring right now?"</div>
+      <div style="color:#aaa;font-size:11px;margin-top:4px">Shows: yellow You › · blue spinner · green Assistant › · bordered response · replaces plain-text sample conversation transcript</div>
+    </div>
+
+    <div style="background:#1a1a2e;border-left:4px solid #ef9a9a;padding:12px 16px;border-radius:4px">
+      <div style="color:#ef9a9a;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Code update — HrAgent.cs listing</div>
+      <div style="color:#aaa;font-size:11px">Replace old Console.Write/WriteLine listing with the Spectre.Console version (UiStyle enum + RunAsync with spinner + 3 render helpers). Add csproj Spectre.Console reference note.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <h3>Part 6 — MCP Security with OIDC</h3>
+  <p>Smaller update — one screenshot, one code patch:</p>
+
+  <div style="display:flex;flex-direction:column;gap:12px;margin-top:12px">
+
+    <div style="background:#1a1a2e;border-left:4px solid #ffb74d;padding:12px 16px;border-radius:4px">
+      <div style="color:#ffb74d;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Screenshot 4 — Agent startup with OIDC token</div>
+      <div style="font-family:monospace;font-size:11px;color:#e0e0e0">dotnet run --project src/HrMcp.Agent (with OIDC enabled)</div>
+      <div style="color:#aaa;font-size:11px;margin-top:4px">Shows: "Token acquired." line → green ✔ Connected → style picker · replaces old plain-text sample run block</div>
+    </div>
+
+    <div style="background:#1a1a2e;border-left:4px solid #ef9a9a;padding:12px 16px;border-radius:4px">
+      <div style="color:#ef9a9a;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Code update — Program.cs listing (2 lines)</div>
+      <div style="color:#aaa;font-size:11px">Update <code>Console.WriteLine("Token acquired.")</code> and <code>Console.WriteLine($"Connected...")</code> to their AnsiConsole equivalents. Add <code>style</code> param to <code>new HrAgent(...)</code>.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <h3>Screenshot folder</h3>
+  <p>Save to <code>blogs/series-1-ai-agent-mcp/screenshots/</code> (new folder) — no screenshots exist there yet.</p>
+  <div style="font-family:monospace;font-size:11px;color:#aaa;margin-top:8px;line-height:2">
+    part-4-screenshot-1-mcp-server-startup.png<br>
+    part-4-screenshot-2-agent-startup-style-picker.png<br>
+    part-4-screenshot-3-sample-conversation.png<br>
+    part-6-screenshot-1-agent-startup-oidc.png
+  </div>
+</div>
+
+<p class="subtitle">Does this plan look right? Any screenshots to add or skip?</p>

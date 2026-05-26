@@ -18,7 +18,7 @@ The solution follows Clean Architecture with five projects:
 | **HrMcp.Application** | Application services. Depends only on Core. |
 | **HrMcp.Infrastructure.Persistence** | EF Core + SQL Server. Implements Core interfaces. |
 | **HrMcp.McpServer** | ASP.NET Core MCP server. Exposes tools to AI clients. |
-| **HrMcp.Agent** | Console AI agent. Connects to the MCP server via Ollama + llama3.2. |
+| **HrMcp.Agent** | Console AI agent. Connects to the MCP server over configurable `stdio` or stream HTTP transport. |
 
 **Why MCP?** Traditional AI integration requires a custom connector for every AI tool × every data source (N×M). MCP replaces that with a shared protocol — N+M integrations instead.
 
@@ -40,25 +40,114 @@ The solution follows Clean Architecture with five projects:
 ```bash
 # Clone
 git clone https://github.com/workcontrolgit/DotnetAiAgentMcp.git
-cd DotnetAiAgentMcp/DotnetAiAgentMcp
+cd DotnetAiAgentMcp
 
 # Restore and build
-dotnet build DotnetAiAgentMcp.slnx
+dotnet build DotnetAiAgentMcp/DotnetAiAgentMcp.slnx
 
 # Run database migrations
 dotnet ef database update \
-  --project src/HrMcp.Infrastructure.Persistence \
-  --startup-project src/HrMcp.McpServer
+  --project DotnetAiAgentMcp/src/HrMcp.Infrastructure.Persistence \
+  --startup-project DotnetAiAgentMcp/src/HrMcp.McpServer
 
-# Start the MCP server (HTTP/SSE on port 5100)
-dotnet run --project src/HrMcp.McpServer
+# Start the MCP server with the default transport (stdio)
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stdio
+
+# Or start the MCP server with stream HTTP on port 5100
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stream-http
 ```
 
-### Run the AI Agent
+### Transport Modes
+
+Both the server and agent support two transports, selectable via command-line flag or `appsettings.json`.
+
+| Flag | Transport | When to use |
+|---|---|---|
+| `--stdio` *(default)* | stdio | Claude Desktop, VS Code Copilot, single-terminal dev |
+| `--stream-http` | Stream HTTP (port 5100) | Two-terminal dev, visible server logs, MCP Inspector |
+
+**stdio mode** — agent auto-spawns the server as a subprocess (one terminal):
 
 ```bash
-# In a second terminal — connects to the MCP server via HTTP
-dotnet run --project src/HrMcp.Agent
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent
+```
+
+**Stream HTTP mode** — server and agent run as separate processes (two terminals):
+
+```bash
+# Terminal 1 — start the server
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stream-http
+
+# Terminal 2 — start the agent
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --stream-http
+```
+
+The `--stream-http` flag overrides `appsettings.json` at runtime. No config file changes needed.
+
+To persist the default, set `McpServer:Transport:Type` to `stdio` or `streamHttp` in `appsettings.json`.
+
+### Debug Mode
+
+Both the server and agent support a `--debug` flag that enables verbose logging at startup.
+
+```bash
+# Start server with debug logging
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --debug
+
+# Start agent with debug logging
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --debug
+
+# Combine flags (server)
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stream-http --debug
+
+# Combine flags (agent)
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --stream-http --debug
+```
+
+To enable debug mode permanently, set `Features:EnableDebug` to `true` in `appsettings.json` for either project.
+
+### Ollama Context Window (NumCtx)
+
+The agent sends `num_ctx` to Ollama on every request. Configure it in `DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json`:
+
+```json
+"Ollama": {
+  "Endpoint": "http://localhost:11434",
+  "Model": "gemma4:latest",
+  "NumCtx": 32768
+}
+```
+
+Omit `NumCtx` entirely to let Ollama use its own default (typically 2048, which truncates multi-turn sessions).
+
+Sizing guidelines for `gemma4:latest`:
+
+- **4096** — minimal VRAM impact; short Q&A sessions
+- **8192** — moderate; typical multi-turn chat
+- **16384** — significant; long tool result payloads
+- **32768** — heavy (`-32k` territory); slower but handles large contexts
+
+The startup banner prints the active `NumCtx` value so you can confirm it at a glance.
+
+---
+
+### User Secrets
+
+Sensitive configuration (API keys, endpoints) is stored in .NET user secrets and never committed to source control.
+
+```bash
+# List secrets for the MCP server
+dotnet user-secrets list --project DotnetAiAgentMcp/src/HrMcp.McpServer
+
+# List secrets for the AI agent
+dotnet user-secrets list --project DotnetAiAgentMcp/src/HrMcp.Agent
+```
+
+To set a secret:
+
+```bash
+dotnet user-secrets set "AI:AzureOpenAI:ApiKey" "<your-key>" \
+  --project DotnetAiAgentMcp/src/HrMcp.Agent
 ```
 
 The agent connects to the MCP server, discovers the available tools, and answers HR questions in natural language using Ollama locally.
