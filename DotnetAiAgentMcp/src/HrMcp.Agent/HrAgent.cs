@@ -1,8 +1,6 @@
 // src/HrMcp.Agent/HrAgent.cs
 using Microsoft.Extensions.AI;
 using Spectre.Console;
-using Spectre.Console.Rendering;
-using System.Text;
 using System.Text.Json;
 
 namespace HrMcp.Agent;
@@ -225,206 +223,34 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
 
     private void RenderResponse(string text)
     {
-        // I-4: show a visible notice rather than silently returning on empty response
         if (string.IsNullOrWhiteSpace(text))
         {
             AnsiConsole.MarkupLine("[grey](No response)[/]");
             return;
         }
 
-        var segments = SplitIntoSegments(text);
-
         switch (style)
         {
             case UiStyle.Structured:
                 AnsiConsole.MarkupLine("\n[bold green]Assistant ›[/]");
-                RenderSegments(segments);
+                MarkdigSpectreRenderer.Render(text);
                 AnsiConsole.Write(new Rule().RuleStyle("grey"));
                 AnsiConsole.WriteLine();
                 break;
             case UiStyle.Minimal:
                 AnsiConsole.Write(new Rule("[bold green]Assistant[/]").RuleStyle("grey").LeftJustified());
-                RenderSegments(segments);
-                // I-1: turn separator so the next "You" rule doesn't immediately follow
+                MarkdigSpectreRenderer.Render(text);
                 AnsiConsole.Write(new Rule().RuleStyle("grey"));
                 AnsiConsole.WriteLine();
                 break;
             case UiStyle.Panels:
-                // I-2: wrap content in a Panel to match the welcome screen's visual contract
-                // I-3: use "Assistant" (not "ASSISTANT") to match other modes
-                var panelRows = segments
-                    .Select(seg =>
-                    {
-                        if (seg.IsTable)
-                            return BuildMarkdownTable(seg.Text) ?? (IRenderable)new Markup(Markup.Escape(seg.Text));
-                        var prose = seg.Text.Trim();
-                        return string.IsNullOrWhiteSpace(prose) ? null : (IRenderable)new Markup(ConvertInlineBold(prose));
-                    })
-                    .Where(r => r is not null)
-                    .Select(r => r!)
-                    .ToList();
-                if (panelRows.Count > 0)
-                {
-                    AnsiConsole.Write(new Panel(new Rows(panelRows))
-                        .Header("[bold green]Assistant[/]")
-                        .BorderColor(Color.Aquamarine3)
-                        .Padding(1, 0));
-                }
+                AnsiConsole.Write(new Rule("[bold green]Assistant[/]").RuleStyle("aquamarine3").LeftJustified());
+                MarkdigSpectreRenderer.Render(text);
+                AnsiConsole.Write(new Rule().RuleStyle("aquamarine3"));
                 AnsiConsole.WriteLine();
                 break;
             default:
                 throw new NotSupportedException($"Unknown UiStyle: {style}");
         }
     }
-
-    // M-2: shared helper — avoids repeating the foreach across every switch case
-    private static void RenderSegments(List<Segment> segments)
-    {
-        foreach (var seg in segments) RenderSegment(seg);
-    }
-
-    // ── Markdown table renderer (used for LLM-formatted tables) ─────────────
-
-    private record Segment(string Text, bool IsTable);
-
-    private static List<Segment> SplitIntoSegments(string text)
-    {
-        var segments = new List<Segment>();
-        var buffer = new List<string>();
-        bool inTable = false;
-
-        foreach (var line in text.Split('\n'))
-        {
-            bool isTableLine = line.TrimEnd().StartsWith('|');
-            if (isTableLine != inTable)
-            {
-                if (buffer.Count > 0)
-                    segments.Add(new Segment(string.Join('\n', buffer), inTable));
-                buffer.Clear();
-                inTable = isTableLine;
-            }
-            buffer.Add(line.TrimEnd());
-        }
-        if (buffer.Count > 0)
-            segments.Add(new Segment(string.Join('\n', buffer), inTable));
-
-        return segments;
-    }
-
-    private static void RenderSegment(Segment seg)
-    {
-        if (seg.IsTable)
-            RenderMarkdownTable(seg.Text);
-        else
-        {
-            var prose = seg.Text.Trim();
-            if (!string.IsNullOrWhiteSpace(prose))
-                RenderMarkdownProse(prose);
-        }
-    }
-
-    // Renders LLM markdown prose to the console with basic formatting:
-    //   **bold**  → Spectre bold markup
-    //   * item    → indented bullet with • glyph
-    //   blank line → paragraph break
-    private static void RenderMarkdownProse(string text)
-    {
-        foreach (var rawLine in text.Split('\n'))
-        {
-            var line = rawLine.TrimEnd();
-
-            if (string.IsNullOrEmpty(line))
-            {
-                AnsiConsole.WriteLine();
-                continue;
-            }
-
-            if (IsBulletLine(line, out var bulletContent))
-            {
-                AnsiConsole.MarkupLine("  [grey]•[/] " + ConvertInlineBold(bulletContent));
-            }
-            else
-            {
-                AnsiConsole.MarkupLine(ConvertInlineBold(line));
-            }
-        }
-        AnsiConsole.WriteLine();
-    }
-
-    // Returns true when the line is a markdown bullet (* item or *   item)
-    private static bool IsBulletLine(string line, out string content)
-    {
-        var t = line.TrimStart();
-        if (t.Length >= 2 && t[0] == '*' && char.IsWhiteSpace(t[1]))
-        {
-            content = t.Substring(1).TrimStart();
-            return true;
-        }
-        content = string.Empty;
-        return false;
-    }
-
-    // Converts **bold** spans to Spectre markup; escapes everything else
-    private static string ConvertInlineBold(string text)
-    {
-        var parts = text.Split("**");
-        var sb = new StringBuilder();
-        for (var i = 0; i < parts.Length; i++)
-            sb.Append(i % 2 == 0
-                ? Markup.Escape(parts[i])
-                : $"[bold]{Markup.Escape(parts[i])}[/]");
-        return sb.ToString();
-    }
-
-    private static void RenderMarkdownTable(string tableText)
-    {
-        var table = BuildMarkdownTable(tableText);
-        if (table is not null)
-        {
-            AnsiConsole.Write(table);
-            AnsiConsole.WriteLine();
-        }
-        else
-        {
-            AnsiConsole.Write(new Markup(Markup.Escape(tableText)));
-            AnsiConsole.WriteLine();
-        }
-    }
-
-    // M-1: separates building from rendering so Panels mode can reuse the Table widget.
-    // Filters separator rows by content (not by position) so a missing separator row
-    // doesn't silently eat the first data row.
-    private static Table? BuildMarkdownTable(string tableText)
-    {
-        var rows = tableText.Split('\n')
-            .Select(l => l.Trim())
-            .Where(l => l.StartsWith('|') && !IsSeparatorRow(l))
-            .ToList();
-
-        if (rows.Count < 1) return null;
-
-        var headers = ParseCells(rows[0]);
-        var dataRows = rows.Skip(1).ToList();
-
-        var table = new Table().BorderColor(Color.Teal).Expand();
-        foreach (var h in headers)
-            table.AddColumn(new TableColumn($"[bold cyan]{Markup.Escape(h)}[/]"));
-
-        foreach (var row in dataRows)
-        {
-            var cells = ParseCells(row);
-            while (cells.Count < headers.Count) cells.Add(string.Empty);
-            // Truncate to header count — LLMs occasionally produce malformed rows
-            table.AddRow(cells.Take(headers.Count).Select(c => Markup.Escape(c)).ToArray());
-        }
-
-        return table;
-    }
-
-    // A GFM separator row contains only |, -, :, and spaces
-    private static bool IsSeparatorRow(string row) =>
-        row.Replace("|", "").Replace("-", "").Replace(":", "").Replace(" ", "").Length == 0;
-
-    private static List<string> ParseCells(string line) =>
-        line.Trim('|').Split('|').Select(c => c.Trim()).ToList();
 }

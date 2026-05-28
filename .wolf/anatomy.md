@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-28T10:08:31.899Z
-> Files: 3 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-28T11:27:27.495Z
+> Files: 7 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
 
@@ -107,6 +107,9 @@
 
 ## DotnetAiAgentMcp/src/HrMcp.Agent/
 
+- `HrAgent.cs` — src/HrMcp.Agent/HrAgent.cs (~2996 tok)
+- `HrMcp.Agent.csproj` (~463 tok)
+- `MarkdigSpectreRenderer.cs` — Renders a markdown string to the console using Spectre.Console widgets. Uses Markdig to parse the AS (~1967 tok)
 
 ## DotnetAiAgentMcp/src/HrMcp.Agent/bin/Debug/net10.0/
 
@@ -239,6 +242,10 @@
 
 ## publish/McpServer/
 
+
+## scripts/
+
+- `start-stream-http.ps1` — start-stream-http.ps1 (~406 tok)
 
 ## scripts/blog-screenshots/
 
