@@ -1,45 +1,79 @@
 {
-  "session_id": "session-2026-05-25-1332",
-  "started": "2026-05-25T17:32:09.898Z",
+  "session_id": "session-2026-05-28-0603",
+  "started": "2026-05-28T10:03:00.281Z",
   "files_read": {
-    "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md": {
+    "c:/apps/DotnetMcpTutorial/docs/superpowers/plans/2026-05-27-ollama-context-window.md": {
       "count": 1,
-      "tokens": 5428,
-      "first_read": "2026-05-25T18:14:02.356Z"
+      "tokens": 4605,
+      "first_read": "2026-05-28T10:05:22.818Z"
     },
-    "C:/Users/Fuji Nguyen/.claude/plugins/cache/claude-plugins-official/commit-commands/unknown/.claude-plugin/plugin.json": {
+    "c:/apps/DotnetMcpTutorial/docs/superpowers/specs/2026-05-27-ollama-context-window-design.md": {
       "count": 1,
-      "tokens": 0,
-      "first_read": "2026-05-25T18:18:11.811Z"
+      "tokens": 2176,
+      "first_read": "2026-05-28T10:05:22.844Z"
+    },
+    "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md": {
+      "count": 1,
+      "tokens": 3224,
+      "first_read": "2026-05-28T10:08:35.086Z"
     }
   },
   "files_written": [
     {
-      "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
-      "action": "edit",
-      "tokens": 1812,
-      "at": "2026-05-25T18:15:29.760Z"
-    },
-    {
-      "file": "C:/Users/Fuji Nguyen/.claude/skills/medium-editor.md",
-      "action": "edit",
-      "tokens": 95,
-      "at": "2026-05-25T18:15:48.313Z"
-    },
-    {
-      "file": "c:/apps/claude-medium-editor/docs/superpowers/specs/2026-05-25-claude-medium-editor-design.md",
+      "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
       "action": "create",
-      "tokens": 2773,
-      "at": "2026-05-25T18:35:48.567Z"
+      "tokens": 316,
+      "at": "2026-05-28T10:06:20.312Z"
+    },
+    {
+      "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
+      "action": "edit",
+      "tokens": 259,
+      "at": "2026-05-28T10:06:35.010Z"
+    },
+    {
+      "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
+      "action": "edit",
+      "tokens": 373,
+      "at": "2026-05-28T10:06:50.731Z"
+    },
+    {
+      "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
+      "action": "edit",
+      "tokens": 800,
+      "at": "2026-05-28T10:07:14.299Z"
+    },
+    {
+      "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
+      "action": "edit",
+      "tokens": 310,
+      "at": "2026-05-28T10:07:28.634Z"
+    },
+    {
+      "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
+      "action": "edit",
+      "tokens": 414,
+      "at": "2026-05-28T10:07:46.377Z"
+    },
+    {
+      "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
+      "action": "edit",
+      "tokens": 751,
+      "at": "2026-05-28T10:08:08.611Z"
+    },
+    {
+      "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
+      "action": "edit",
+      "tokens": 818,
+      "at": "2026-05-28T10:08:31.901Z"
     }
   ],
   "edit_counts": {
-    "../../Users/Fuji Nguyen/.claude/skills/medium-editor.md": 2,
-    "../claude-medium-editor/docs/superpowers/specs/2026-05-25-claude-medium-editor-design.md": 1
+    "blogs/standalone/ollama-context-window.md": 8
   },
-  "anatomy_hits": 1,
-  "anatomy_misses": 1,
+  "anatomy_hits": 3,
+  "anatomy_misses": 0,
   "repeated_reads_warned": 0,
   "cerebrum_warnings": 0,
-  "stop_count": 15
+  "stop_count": 3
 }

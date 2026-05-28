@@ -784,6 +784,22 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-25T18:15:29.763Z"
+    },
+    {
+      "id": "bug-050",
+      "timestamp": "2026-05-28T02:38:38.043Z",
+      "error_message": "Incorrect value in code",
+      "file": "docs/superpowers/specs/2026-05-27-ollama-context-window-design.md",
+      "root_cause": "Had 's response metadata:**\nThe Ollama API returns a `",
+      "fix": "Changed to 's response metadata:**\nThe Ollama API returns usa",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-28T02:38:38.043Z"
     }
   ]
 }

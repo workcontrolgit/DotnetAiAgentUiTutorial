@@ -1147,3 +1147,53 @@
 | 14:36 | Session end: 3 writes across 2 files (medium-editor.md, 2026-05-25-claude-medium-editor-design.md) | 2 reads | ~10108 tok |
 | 14:37 | Session end: 3 writes across 2 files (medium-editor.md, 2026-05-25-claude-medium-editor-design.md) | 2 reads | ~10108 tok |
 | 22:15 | Session end: 3 writes across 2 files (medium-editor.md, 2026-05-25-claude-medium-editor-design.md) | 2 reads | ~10108 tok |
+| 22:16 | Session end: 3 writes across 2 files (medium-editor.md, 2026-05-25-claude-medium-editor-design.md) | 2 reads | ~10108 tok |
+| 22:17 | Session end: 3 writes across 2 files (medium-editor.md, 2026-05-25-claude-medium-editor-design.md) | 2 reads | ~10108 tok |
+
+## Session: 2026-05-26 09:38
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+
+## Session: 2026-05-26 09:38
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+
+## Session: 2026-05-27 07:36
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+
+## Session: 2026-05-27 07:36
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 22:38 | Created docs/superpowers/specs/2026-05-27-ollama-context-window-design.md | — | ~1814 |
+| 22:38 | Edited docs/superpowers/specs/2026-05-27-ollama-context-window-design.md | 2→2 lines | ~77 |
+| 22:38 | Session end: 2 writes across 1 files (2026-05-27-ollama-context-window-design.md) | 6 reads | ~2026 tok |
+| 22:40 | Edited docs/superpowers/specs/2026-05-27-ollama-context-window-design.md | expanded (+43 lines) | ~425 |
+| 22:40 | Edited docs/superpowers/specs/2026-05-27-ollama-context-window-design.md | expanded (+12 lines) | ~97 |
+| 22:40 | Session end: 4 writes across 1 files (2026-05-27-ollama-context-window-design.md) | 7 reads | ~4302 tok |
+| 22:43 | Created docs/superpowers/plans/2026-05-27-ollama-context-window.md | — | ~4912 |
+| 22:43 | Session end: 5 writes across 2 files (2026-05-27-ollama-context-window-design.md, 2026-05-27-ollama-context-window.md) | 7 reads | ~10024 tok |
+
+## Session: 2026-05-28 06:03
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+
+## Session: 2026-05-28 06:03
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 06:06 | Created blogs/standalone/ollama-context-window.md | — | ~295 |
+| 06:06 | Edited blogs/standalone/ollama-context-window.md | expanded (+12 lines) | ~242 |
+| 06:06 | Edited blogs/standalone/ollama-context-window.md | expanded (+19 lines) | ~348 |
+| 06:07 | Edited blogs/standalone/ollama-context-window.md | added 2 condition(s) | ~746 |
+| 06:07 | Edited blogs/standalone/ollama-context-window.md | expanded (+31 lines) | ~289 |
+| 06:07 | Edited blogs/standalone/ollama-context-window.md | modified approach() | ~387 |
+| 06:08 | Edited blogs/standalone/ollama-context-window.md | expanded (+58 lines) | ~701 |
+| 06:08 | Edited blogs/standalone/ollama-context-window.md | modified Tools() | ~764 |
+| 06:14 | Session end: 8 writes across 1 files (ollama-context-window.md) | 3 reads | ~14046 tok |
+| 06:58 | Session end: 8 writes across 1 files (ollama-context-window.md) | 3 reads | ~14046 tok |
