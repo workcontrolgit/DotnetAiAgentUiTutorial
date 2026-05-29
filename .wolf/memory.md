@@ -1224,3 +1224,39 @@
 | 07:27 | Edited scripts/start-stream-http.ps1 | inline fix | ~22 |
 | 07:27 | Edited scripts/start-stream-http.ps1 | "McpServer starting in new" → "McpServer starting in new" | ~28 |
 | 07:27 | Session end: 25 writes across 5 files (ollama-context-window.md, HrMcp.Agent.csproj, MarkdigSpectreRenderer.cs, HrAgent.cs, start-stream-http.ps1) | 12 reads | ~20064 tok |
+| 07:53 | Session end: 25 writes across 5 files (ollama-context-window.md, HrMcp.Agent.csproj, MarkdigSpectreRenderer.cs, HrAgent.cs, start-stream-http.ps1) | 12 reads | ~20064 tok |
+| 07:53 | Edited blogs/standalone/ollama-context-window.md | 1→3 lines | ~23 |
+| 07:53 | Session end: 26 writes across 5 files (ollama-context-window.md, HrMcp.Agent.csproj, MarkdigSpectreRenderer.cs, HrAgent.cs, start-stream-http.ps1) | 12 reads | ~20089 tok |
+| 07:54 | Session end: 26 writes across 5 files (ollama-context-window.md, HrMcp.Agent.csproj, MarkdigSpectreRenderer.cs, HrAgent.cs, start-stream-http.ps1) | 14 reads | ~20089 tok |
+| 07:59 | Session end: 26 writes across 5 files (ollama-context-window.md, HrMcp.Agent.csproj, MarkdigSpectreRenderer.cs, HrAgent.cs, start-stream-http.ps1) | 17 reads | ~23329 tok |
+| 14:53 | Session end: 26 writes across 5 files (ollama-context-window.md, HrMcp.Agent.csproj, MarkdigSpectreRenderer.cs, HrAgent.cs, start-stream-http.ps1) | 18 reads | ~23329 tok |
+| 14:54 | Session end: 26 writes across 5 files (ollama-context-window.md, HrMcp.Agent.csproj, MarkdigSpectreRenderer.cs, HrAgent.cs, start-stream-http.ps1) | 18 reads | ~23329 tok |
+| 17:57 | Session end: 26 writes across 5 files (ollama-context-window.md, HrMcp.Agent.csproj, MarkdigSpectreRenderer.cs, HrAgent.cs, start-stream-http.ps1) | 18 reads | ~23329 tok |
+
+## Session: 2026-05-29 22:40
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 14:06 | Edited blogs/standalone/ollama-context-window.md | inline fix | ~4 |
+| 14:06 | Session end: 1 writes across 1 files (ollama-context-window.md) | 0 reads | ~4 tok |
+| 14:09 | Session end: 1 writes across 1 files (ollama-context-window.md) | 2 reads | ~4 tok |
+| 14:10 | Session end: 1 writes across 1 files (ollama-context-window.md) | 2 reads | ~4 tok |
+| 14:11 | Session end: 1 writes across 1 files (ollama-context-window.md) | 2 reads | ~4 tok |
+| 14:14 | Edited blogs/standalone/ollama-context-window.md | expanded (+10 lines) | ~97 |
+| 14:14 | Edited blogs/standalone/ollama-context-window.md | 9→7 lines | ~42 |
+| 14:14 | Edited blogs/standalone/ollama-context-window.md | 7→7 lines | ~40 |
+| 14:14 | Session end: 4 writes across 1 files (ollama-context-window.md) | 3 reads | ~3439 tok |
+| 14:16 | Edited blogs/standalone/ollama-context-window.md | removed 9 lines | ~4 |
+| 14:16 | Edited blogs/series-1-ai-agent-mcp/preface.md | expanded (+8 lines) | ~99 |
+| 14:16 | Edited blogs/series-1-ai-agent-mcp/preface.md | 7→7 lines | ~75 |
+| 14:16 | Session end: 7 writes across 2 files (ollama-context-window.md, preface.md) | 4 reads | ~3629 tok |
+| 14:17 | Edited blogs/series-1-ai-agent-mcp/preface.md | 5→7 lines | ~124 |
+| 14:17 | Session end: 8 writes across 2 files (ollama-context-window.md, preface.md) | 4 reads | ~3762 tok |
+| 14:18 | Edited blogs/series-1-ai-agent-mcp/preface.md | 3→3 lines | ~90 |
+| 14:18 | Session end: 9 writes across 2 files (ollama-context-window.md, preface.md) | 4 reads | ~3859 tok |
+| 14:19 | Edited blogs/series-1-ai-agent-mcp/preface.md | 3→3 lines | ~117 |
+| 14:22 | Session end: 10 writes across 2 files (ollama-context-window.md, preface.md) | 4 reads | ~3984 tok |
+| 14:27 | Session end: 10 writes across 2 files (ollama-context-window.md, preface.md) | 4 reads | ~3984 tok |
+| 16:54 | Session end: 10 writes across 2 files (ollama-context-window.md, preface.md) | 4 reads | ~3984 tok |
+| 16:55 | Session end: 10 writes across 2 files (ollama-context-window.md, preface.md) | 4 reads | ~3984 tok |
+| 16:55 | Session end: 10 writes across 2 files (ollama-context-window.md, preface.md) | 4 reads | ~3984 tok |

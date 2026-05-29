@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-28T11:27:27.495Z
-> Files: 7 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-29T18:19:54.321Z
+> Files: 8 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
 
@@ -212,13 +212,14 @@
 
 ## blogs/series-1-ai-agent-mcp/
 
+- `preface.md` — AI Agents & MCP with .NET 10 — Blog Series (~2552 tok)
 
 ## blogs/series-1-ai-agent-mcp/diagrams/
 
 
 ## blogs/standalone/
 
-- `ollama-context-window.md` — Why Ollama Goes Silent on Large Inputs — and How to Fix It in .NET (~3224 tok)
+- `ollama-context-window.md` — Why Ollama Goes Silent on Large Inputs — and How to Fix It in .NET (~3243 tok)
 
 ## docs/
 

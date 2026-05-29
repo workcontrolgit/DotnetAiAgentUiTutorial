@@ -880,6 +880,38 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-28T11:27:27.505Z"
+    },
+    {
+      "id": "bug-056",
+      "timestamp": "2026-05-29T18:06:46.796Z",
+      "error_message": "Wrong reference: main should be master",
+      "file": "blogs/standalone/ollama-context-window.md",
+      "root_cause": "Used \"main\" instead of \"master\"",
+      "fix": "Changed main → master",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-29T18:06:46.796Z"
+    },
+    {
+      "id": "bug-057",
+      "timestamp": "2026-05-29T18:14:33.667Z",
+      "error_message": "Significant refactor of ",
+      "file": "blogs/standalone/ollama-context-window.md",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 9→7 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-29T18:14:33.667Z"
     }
   ]
 }

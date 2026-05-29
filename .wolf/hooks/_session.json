@@ -1,230 +1,97 @@
 {
-  "session_id": "session-2026-05-28-0603",
-  "started": "2026-05-28T10:03:00.281Z",
+  "session_id": "session-2026-05-29-2240",
+  "started": "2026-05-29T02:40:51.915Z",
   "files_read": {
-    "c:/apps/DotnetMcpTutorial/docs/superpowers/plans/2026-05-27-ollama-context-window.md": {
+    "C:/apps/claude-medium-editor/skills/medium-editor/references/update-links.md": {
       "count": 1,
-      "tokens": 4605,
-      "first_read": "2026-05-28T10:05:22.818Z"
+      "tokens": 0,
+      "first_read": "2026-05-29T18:07:33.551Z"
     },
-    "c:/apps/DotnetMcpTutorial/docs/superpowers/specs/2026-05-27-ollama-context-window-design.md": {
+    "C:/Users/Fuji Nguyen/medium/medium-public-url.json": {
       "count": 1,
-      "tokens": 2176,
-      "first_read": "2026-05-28T10:05:22.844Z"
+      "tokens": 0,
+      "first_read": "2026-05-29T18:07:40.261Z"
     },
     "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md": {
       "count": 1,
-      "tokens": 3224,
-      "first_read": "2026-05-28T10:08:35.086Z"
+      "tokens": 3243,
+      "first_read": "2026-05-29T18:14:15.477Z"
     },
-    "c:/apps/DotnetMcpTutorial/.wolf/anatomy.md": {
+    "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md": {
       "count": 1,
       "tokens": 0,
-      "first_read": "2026-05-28T11:00:39.860Z"
-    },
-    "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-05-28T11:02:45.082Z"
-    },
-    "c:/apps/DotnetMcpTutorial/.wolf/cerebrum.md": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-05-28T11:08:44.491Z"
-    },
-    "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrMcp.Agent.csproj": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-05-28T11:08:54.396Z"
-    },
-    "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs": {
-      "count": 2,
-      "tokens": 1818,
-      "first_read": "2026-05-28T11:16:41.753Z"
-    },
-    "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-05-28T11:23:22.158Z"
-    },
-    "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.McpServer/Program.cs": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-05-28T11:23:22.647Z"
-    },
-    "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-05-28T11:23:35.610Z"
-    },
-    "c:/apps/DotnetMcpTutorial/scripts/start-stream-http.ps1": {
-      "count": 1,
-      "tokens": 384,
-      "first_read": "2026-05-28T11:25:56.224Z"
+      "first_read": "2026-05-29T18:16:14.173Z"
     }
   },
   "files_written": [
     {
       "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
-      "action": "create",
-      "tokens": 316,
-      "at": "2026-05-28T10:06:20.312Z"
+      "action": "edit",
+      "tokens": 4,
+      "at": "2026-05-29T18:06:46.793Z"
     },
     {
       "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
       "action": "edit",
-      "tokens": 259,
-      "at": "2026-05-28T10:06:35.010Z"
+      "tokens": 104,
+      "at": "2026-05-29T18:14:20.441Z"
     },
     {
       "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
       "action": "edit",
-      "tokens": 373,
-      "at": "2026-05-28T10:06:50.731Z"
+      "tokens": 45,
+      "at": "2026-05-29T18:14:33.664Z"
     },
     {
       "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
       "action": "edit",
-      "tokens": 800,
-      "at": "2026-05-28T10:07:14.299Z"
+      "tokens": 43,
+      "at": "2026-05-29T18:14:38.934Z"
     },
     {
       "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
       "action": "edit",
-      "tokens": 310,
-      "at": "2026-05-28T10:07:28.634Z"
+      "tokens": 4,
+      "at": "2026-05-29T18:16:09.897Z"
     },
     {
-      "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
+      "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
       "action": "edit",
-      "tokens": 414,
-      "at": "2026-05-28T10:07:46.377Z"
+      "tokens": 106,
+      "at": "2026-05-29T18:16:20.295Z"
     },
     {
-      "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
+      "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
       "action": "edit",
-      "tokens": 751,
-      "at": "2026-05-28T10:08:08.611Z"
+      "tokens": 80,
+      "at": "2026-05-29T18:16:41.410Z"
     },
     {
-      "file": "c:/apps/DotnetMcpTutorial/blogs/standalone/ollama-context-window.md",
+      "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
       "action": "edit",
-      "tokens": 818,
-      "at": "2026-05-28T10:08:31.901Z"
+      "tokens": 133,
+      "at": "2026-05-29T18:17:31.705Z"
     },
     {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrMcp.Agent.csproj",
+      "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
       "action": "edit",
-      "tokens": 37,
-      "at": "2026-05-28T11:09:51.505Z"
+      "tokens": 97,
+      "at": "2026-05-29T18:18:32.517Z"
     },
     {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
-      "action": "create",
-      "tokens": 1944,
-      "at": "2026-05-28T11:10:23.828Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "file": "c:/apps/DotnetMcpTutorial/blogs/series-1-ai-agent-mcp/preface.md",
       "action": "edit",
-      "tokens": 31,
-      "at": "2026-05-28T11:10:33.025Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
-      "action": "edit",
-      "tokens": 371,
-      "at": "2026-05-28T11:11:10.974Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
-      "action": "edit",
-      "tokens": 49,
-      "at": "2026-05-28T11:11:25.791Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
-      "action": "edit",
-      "tokens": 24,
-      "at": "2026-05-28T11:11:30.565Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
-      "action": "edit",
-      "tokens": 23,
-      "at": "2026-05-28T11:11:38.539Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
-      "action": "edit",
-      "tokens": 21,
-      "at": "2026-05-28T11:11:42.694Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
-      "action": "edit",
-      "tokens": 27,
-      "at": "2026-05-28T11:11:47.757Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
-      "action": "edit",
-      "tokens": 10,
-      "at": "2026-05-28T11:12:03.923Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
-      "action": "edit",
-      "tokens": 192,
-      "at": "2026-05-28T11:16:53.495Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
-      "action": "edit",
-      "tokens": 85,
-      "at": "2026-05-28T11:16:59.751Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
-      "action": "edit",
-      "tokens": 101,
-      "at": "2026-05-28T11:17:05.519Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/scripts/start-stream-http.ps1",
-      "action": "create",
-      "tokens": 412,
-      "at": "2026-05-28T11:24:01.366Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/scripts/start-stream-http.ps1",
-      "action": "create",
-      "tokens": 435,
-      "at": "2026-05-28T11:26:04.238Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/scripts/start-stream-http.ps1",
-      "action": "edit",
-      "tokens": 24,
-      "at": "2026-05-28T11:27:22.351Z"
-    },
-    {
-      "file": "c:/apps/DotnetMcpTutorial/scripts/start-stream-http.ps1",
-      "action": "edit",
-      "tokens": 30,
-      "at": "2026-05-28T11:27:27.503Z"
+      "tokens": 125,
+      "at": "2026-05-29T18:19:54.335Z"
     }
   ],
   "edit_counts": {
-    "blogs/standalone/ollama-context-window.md": 8,
-    "DotnetAiAgentMcp/src/HrMcp.Agent/HrMcp.Agent.csproj": 1,
-    "DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs": 10,
-    "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs": 2,
-    "scripts/start-stream-http.ps1": 4
+    "blogs/standalone/ollama-context-window.md": 5,
+    "blogs/series-1-ai-agent-mcp/preface.md": 5
   },
-  "anatomy_hits": 5,
-  "anatomy_misses": 7,
-  "repeated_reads_warned": 1,
+  "anatomy_hits": 1,
+  "anatomy_misses": 3,
+  "repeated_reads_warned": 0,
   "cerebrum_warnings": 0,
   "stop_count": 13
 }
