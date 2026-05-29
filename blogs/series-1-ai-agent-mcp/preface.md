@@ -164,6 +164,16 @@ Every code listing in this series is in the companion GitHub repository. You can
 
 ---
 
+## Supplement Blogs
+
+Standalone guides that go deeper on specific topics from this series:
+
+- [Why Ollama Goes Silent on Large Inputs — and How to Fix It in .NET](https://medium.com/scrum-and-coke/why-ollama-goes-silent-on-large-inputs-and-how-to-fix-it-in-net-97d3dd7ec860)
+- [From Ollama to Azure Foundry: LLM Setup for .NET MCP](https://medium.com/scrum-and-coke/from-ollama-to-azure-foundry-llm-setup-for-net-mcp-6e7a2e06f64f)
+- [Magnificent 7 Tools Every .NET MCP Developer Should Know](../standalone/7-mcp-tools-dotnet.md)
+
+---
+
 *Ready? Start with Part 1 and build the foundation.*
 
 → **[Part 1: Clean Architecture Foundation with HR Domain](part-1-clean-architecture-hr-domain.md)**

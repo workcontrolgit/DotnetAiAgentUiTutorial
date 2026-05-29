@@ -1,5 +1,7 @@
 # Why Ollama Goes Silent on Large Inputs — and How to Fix It in .NET
 
+![Ollama Context Window](screenshots/ollama_context_window.png)
+
 ## About This Article
 
 This is a companion guide to the blog series **[AI Agents & MCP with .NET 10](https://medium.com/scrum-and-coke/ai-agents-mcp-with-net-10-preface-64314313e3e7)**.
@@ -51,7 +53,7 @@ There are three layers to understand.
 
 ### Layer 1 — appsettings.json
 
-File: [DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json)
+File: [DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/master/DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json)
 
 ```json
 "Ollama": {
@@ -65,7 +67,7 @@ File: [DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json](https://github.com/wor
 
 ### Layer 2 — ChatOptions.AdditionalProperties in HrAgent.cs
 
-File: [DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs)
+File: [DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/master/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs)
 
 ```csharp
 var additional = new AdditionalPropertiesDictionary();
@@ -80,7 +82,7 @@ The `ChatOptions` object is passed to every `GetResponseAsync` call in the tool 
 
 ### Layer 3 — --num-ctx CLI Override in Program.cs
 
-File: [DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs)
+File: [DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/master/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs)
 
 ```csharp
 var numCtxArg = ParseIntArg(args, "--num-ctx");
@@ -262,6 +264,6 @@ All code shown in this post is from the [workcontrolgit/DotnetAiAgentMcp](https:
 
 Key files:
 
-- [appsettings.json](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json) — `NumCtx` configuration value
-- [HrAgent.cs](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs) — `ChatOptions.AdditionalProperties` wiring
-- [Program.cs](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/main/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs) — `--num-ctx` CLI override and startup banner
+- [appsettings.json](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/master/DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json) — `NumCtx` configuration value
+- [HrAgent.cs](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/master/DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs) — `ChatOptions.AdditionalProperties` wiring
+- [Program.cs](https://github.com/workcontrolgit/DotnetAiAgentMcp/blob/master/DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs) — `--num-ctx` CLI override and startup banner
