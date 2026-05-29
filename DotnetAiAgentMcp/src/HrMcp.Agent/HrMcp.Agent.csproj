@@ -14,6 +14,7 @@
     <PackageReference Include="OllamaSharp" Version="5.*" />
     <PackageReference Include="ModelContextProtocol" Version="1.*" />
     <PackageReference Include="Spectre.Console" Version="0.49.*" />
+    <PackageReference Include="Markdig" Version="0.40.*" />
   </ItemGroup>
 
   <ItemGroup>

@@ -784,6 +784,102 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-25T18:15:29.763Z"
+    },
+    {
+      "id": "bug-050",
+      "timestamp": "2026-05-28T02:38:38.043Z",
+      "error_message": "Incorrect value in code",
+      "file": "docs/superpowers/specs/2026-05-27-ollama-context-window-design.md",
+      "root_cause": "Had 's response metadata:**\nThe Ollama API returns a `",
+      "fix": "Changed to 's response metadata:**\nThe Ollama API returns usa",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-28T02:38:38.043Z"
+    },
+    {
+      "id": "bug-051",
+      "timestamp": "2026-05-28T11:10:33.027Z",
+      "error_message": "Significant refactor of ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrAgent.cs",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 6→4 lines (2 removed) | Also: // I-4: show a visible notice rather than silently; var segments = SplitIntoSegments(text);",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-28T11:11:10.977Z"
+    },
+    {
+      "id": "bug-052",
+      "timestamp": "2026-05-28T11:11:25.793Z",
+      "error_message": "Significant refactor of ",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 3→3 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-28T11:11:25.793Z"
+    },
+    {
+      "id": "bug-053",
+      "timestamp": "2026-05-28T11:11:38.541Z",
+      "error_message": "Wrong reference: TableRow should be Markdig",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
+      "root_cause": "Used \"TableRow\" instead of \"Markdig\"",
+      "fix": "Changed TableRow → Markdig",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-28T11:11:42.696Z"
+    },
+    {
+      "id": "bug-054",
+      "timestamp": "2026-05-28T11:16:59.754Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/MarkdigSpectreRenderer.cs",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block | Also: try { AnsiConsole.MarkupLine($\"{indent}[grey]{prefix}[/] {ma; catch (InvalidOperationException) { AnsiConsole.WriteLine($\"",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "cs"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-28T11:17:05.521Z"
+    },
+    {
+      "id": "bug-055",
+      "timestamp": "2026-05-28T11:27:27.505Z",
+      "error_message": "Incorrect value in code",
+      "file": "scripts/start-stream-http.ps1",
+      "root_cause": "Had \"McpServer starting in new window — agent will wai",
+      "fix": "Changed to \"McpServer starting in new window - agent will wai",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "ps1"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-28T11:27:27.505Z"
     }
   ]
 }
