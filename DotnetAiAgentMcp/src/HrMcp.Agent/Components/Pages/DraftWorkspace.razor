@@ -1,0 +1,437 @@
+@page "/"
+@using HrMcp.Agent.Web.Models
+@using HrMcp.Agent.Web.Services
+@using Markdig
+@using Microsoft.AspNetCore.Components.Web
+@using System.Net
+@using System.Text
+@using System.Text.RegularExpressions
+@inject IAgentDraftService AgentDraftService
+@inject IJSRuntime JS
+
+<div class="workspace-topbar">
+    <h1>Position Description Builder</h1>
+    <button class="ghost-btn" @onclick="ToggleLeftPanel">
+        @(_leftPanelHidden ? "Show Chat" : "Hide Chat")
+    </button>
+</div>
+
+<div class="workspace" style="@WorkspaceGridStyle" @onmousemove="HandleResize" @onmouseup="EndResize" @onmouseleave="EndResize">
+    @if (!_leftPanelHidden)
+    {
+        <section class="left-chat">
+            <h3>Writing Assistant</h3>
+            <div class="chat-thread">
+                @if (_turns.Count == 0)
+                {
+                    <div class="chat-item">Chat responses appear here after you send a prompt.</div>
+                }
+                else
+                {
+                    @foreach (var turn in _turns)
+                    {
+                        var isUser = string.Equals(turn.Role, "You", StringComparison.OrdinalIgnoreCase);
+                        <div class="chat-bubble-row @(isUser ? "chat-bubble-row--user" : "chat-bubble-row--assistant")">
+                            <div class="chat-bubble">
+                                <strong>@turn.Role:</strong>
+                                @if (isUser)
+                                {
+                                    <span> @turn.Text</span>
+                                }
+                                else
+                                {
+                                    <div class="chat-bubble-content">@RenderAssistantMarkdown(turn.Text)</div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    @if (_busy)
+                    {
+                        <div class="chat-bubble-row chat-bubble-row--assistant">
+                            <div class="chat-bubble chat-bubble--loading" role="status" aria-live="polite">
+                                <span class="chat-spinner" aria-hidden="true"></span>
+                                <span>Assistant is drafting your response...</span>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="chat-composer">
+                <textarea class="chat-input" @bind="Prompt" @bind:event="oninput" @onkeydown="HandlePromptKeyDown" placeholder="Ask for help drafting or improving your position description..."></textarea>
+                <div class="panel-actions panel-actions--chat">
+                    <div class="panel-actions-row panel-actions-row--end">
+                        <span
+                            class="help-icon"
+                            title="Enter to send, Shift+Enter for a new line. Draft updates automatically for draft/refine prompts."
+                            aria-label="Help: Enter to send, Shift+Enter for a new line. Draft updates automatically for draft/refine prompts.">?</span>
+                        <button class="primary-btn primary-btn--compact" @onclick="SendPromptAsync" disabled="@_busy">Send</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="splitter" role="separator" aria-label="Resize chat and draft panels" @onmousedown="StartResize"></div>
+    }
+
+    <section class="right-editor">
+        <div class="right-header">
+            <h3>Your Position Description Draft</h3>
+            <div class="doc-tabs" role="tablist" aria-label="Draft tabs">
+                <button class="tab-btn @(_activeTab == DocumentTab.Edit ? "tab-btn--active" : string.Empty)" role="tab" aria-selected="@(_activeTab == DocumentTab.Edit)" @onclick="() => _activeTab = DocumentTab.Edit">Edit Draft</button>
+                <button class="tab-btn @(_activeTab == DocumentTab.View ? "tab-btn--active" : string.Empty)" role="tab" aria-selected="@(_activeTab == DocumentTab.View)" @onclick="() => _activeTab = DocumentTab.View">Preview Draft</button>
+            </div>
+        </div>
+
+        @if (_activeTab == DocumentTab.Edit)
+        {
+            <textarea class="doc-editor" @bind="_document.DraftText" placeholder="Your draft will appear here. You can edit it directly."></textarea>
+        }
+        else
+        {
+            <div class="markdown-preview markdown-preview--full" aria-label="Draft preview">
+                @if (string.IsNullOrWhiteSpace(_document.DraftText))
+                {
+                    <p class="preview-placeholder">Rendered preview appears here.</p>
+                }
+                else
+                {
+                    @DraftPreview
+                }
+            </div>
+        }
+
+        <div class="panel-actions panel-actions--editor">
+            <div class="panel-actions-row panel-actions-row--end">
+                <button class="primary-btn primary-btn--compact" @onclick="ExportWordAsync" disabled="@_busy">Export Word</button>
+                @if (!string.IsNullOrWhiteSpace(_status))
+                {
+                    <div class="chat-item panel-status">@_status</div>
+                }
+            </div>
+        </div>
+    </section>
+</div>
+
+@code {
+    private string Prompt { get; set; } = string.Empty;
+    private readonly List<ChatTurn> _turns = [];
+    private DraftDocumentState _document = new(string.Empty, 0);
+    private bool _busy;
+    private string _status = string.Empty;
+    private bool _leftPanelHidden;
+    private bool _resizing;
+    private int _leftPanelWidth = 420;
+    private const int MinLeftPanelWidth = 320;
+    private const int MaxLeftPanelWidth = 760;
+    private static readonly string[] DraftIntentTerms =
+    [
+        "draft",
+        "job description",
+        "jd",
+        "pd",
+        "position description",
+        "rewrite",
+        "revise",
+        "refine",
+        "improve",
+        "edit",
+        "add",
+        "include",
+        "qualification",
+        "qualifications",
+        "requirement",
+        "requirements"
+    ];
+    private static readonly string[] NonDraftIntentTerms =
+    [
+        "list open position",
+        "list open positions",
+        "open position",
+        "open positions",
+        "show open position",
+        "show open positions"
+    ];
+    private DocumentTab _activeTab = DocumentTab.Edit;
+    private static readonly MarkdownPipeline ChatMarkdownPipeline = new MarkdownPipelineBuilder()
+        .UseAdvancedExtensions()
+        .DisableHtml()
+        .Build();
+    private MarkupString DraftPreview => new(Markdown.ToHtml(_document.DraftText ?? string.Empty));
+    private string WorkspaceGridStyle => _leftPanelHidden
+        ? "grid-template-columns: minmax(0, 1fr);"
+        : $"grid-template-columns: {_leftPanelWidth}px 8px minmax(0, 1fr);";
+
+    private enum DocumentTab
+    {
+        Edit,
+        View
+    }
+
+    private void ToggleLeftPanel()
+    {
+        _leftPanelHidden = !_leftPanelHidden;
+        _resizing = false;
+    }
+
+    private void StartResize()
+    {
+        if (_leftPanelHidden)
+            return;
+
+        _resizing = true;
+    }
+
+    private void EndResize()
+    {
+        _resizing = false;
+    }
+
+    private void HandleResize(MouseEventArgs args)
+    {
+        if (!_resizing || _leftPanelHidden)
+            return;
+
+        var nextWidth = (int)args.ClientX - 24;
+        _leftPanelWidth = Math.Clamp(nextWidth, MinLeftPanelWidth, MaxLeftPanelWidth);
+    }
+
+    private async Task HandlePromptKeyDown(KeyboardEventArgs args)
+    {
+        if (!string.Equals(args.Key, "Enter", StringComparison.Ordinal) || args.ShiftKey)
+            return;
+
+        Prompt = Prompt.TrimEnd('\r', '\n');
+        await SendPromptAsync();
+    }
+
+    private async Task SendPromptAsync()
+    {
+        if (_busy || string.IsNullOrWhiteSpace(Prompt))
+            return;
+
+        _busy = true;
+        _status = string.Empty;
+        var input = Prompt.Trim();
+        Prompt = string.Empty;
+        _turns.Add(new ChatTurn("You", input, DateTimeOffset.UtcNow));
+
+        try
+        {
+            var response = await AgentDraftService.SendPromptAsync(input);
+            _turns.Add(new ChatTurn("Assistant", response, DateTimeOffset.UtcNow));
+
+            if (ShouldSyncDraft(input, response))
+            {
+                _document.DraftText = response.Trim();
+                _document.Revision += 1;
+                _activeTab = DocumentTab.View;
+            }
+        }
+        catch (Exception ex)
+        {
+            _status = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            _busy = false;
+        }
+    }
+
+    private async Task ExportWordAsync()
+    {
+        if (_busy || string.IsNullOrWhiteSpace(_document.DraftText))
+        {
+            _status = "Draft is empty. Add content before exporting.";
+            return;
+        }
+
+        _busy = true;
+        _status = string.Empty;
+
+        try
+        {
+            var (message, fileName, fileBytes) = await AgentDraftService.ExportDraftToWordAsync(_document.DraftText);
+
+            if (fileName is not null && fileBytes is not null)
+            {
+                _status = $"\u2705 Word document ready: {fileName}";
+                await JS.InvokeVoidAsync("downloadFile", fileName, Convert.ToBase64String(fileBytes));
+            }
+            else
+            {
+                _status = message;
+            }
+        }
+        catch (Exception ex)
+        {
+            _status = $"Export failed: {ex.Message}";
+        }
+        finally
+        {
+            _busy = false;
+        }
+    }
+
+    private static bool ShouldSyncDraft(string prompt, string response)
+    {
+        if (string.IsNullOrWhiteSpace(response) || string.IsNullOrWhiteSpace(prompt))
+            return false;
+
+        return IsDraftIntentPrompt(prompt);
+    }
+
+    private static bool IsDraftIntentPrompt(string prompt)
+    {
+        var normalized = prompt.ToLowerInvariant();
+
+        if (NonDraftIntentTerms.Any(term => normalized.Contains(term, StringComparison.Ordinal)))
+            return false;
+
+        return DraftIntentTerms.Any(term => normalized.Contains(term, StringComparison.Ordinal));
+    }
+
+    private static MarkupString RenderAssistantMarkdown(string? text)
+    {
+        var source = text ?? string.Empty;
+
+        if (TryBuildPipeTableHtml(source, out var tableHtml))
+            return new MarkupString(tableHtml);
+
+        try
+        {
+            var normalized = NormalizeMarkdownTables(source);
+            var html = Markdown.ToHtml(normalized, ChatMarkdownPipeline);
+            return new MarkupString(html);
+        }
+        catch
+        {
+            // Never break the chat render pipeline on malformed markdown.
+            var fallback = $"<pre>{WebUtility.HtmlEncode(source)}</pre>";
+            return new MarkupString(fallback);
+        }
+    }
+
+    private static string NormalizeMarkdownTables(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input) || !input.Contains(":---", StringComparison.Ordinal))
+            return input;
+
+        var normalized = input;
+
+        // Add spacing before a markdown table header if the model returns table text inline.
+        normalized = Regex.Replace(normalized, "(?<=[.!?])\\s+\\|", "\\n\\n|");
+
+        // Split flattened markdown table rows like "| Uruguay | | 2 | ..." into separate lines.
+        normalized = Regex.Replace(normalized, "\\|\\s+\\|(?=\\s*\\d+\\s*\\|)", "|\\n|");
+
+        return normalized;
+    }
+
+    private static bool TryBuildPipeTableHtml(string input, out string html)
+    {
+        html = string.Empty;
+        if (string.IsNullOrWhiteSpace(input) || !input.Contains('|', StringComparison.Ordinal))
+            return false;
+
+        var lines = input
+            .Split(["\r\n", "\n"], StringSplitOptions.None)
+            .Select(line => line.TrimEnd())
+            .ToList();
+
+        var headerIndex = -1;
+        for (var i = 0; i < lines.Count - 1; i++)
+        {
+            var headerCells = ParsePipeRow(lines[i]);
+            var separatorCells = ParsePipeRow(lines[i + 1]);
+
+            if (headerCells.Length == 0 || separatorCells.Length == 0)
+                continue;
+
+            if (separatorCells.Length == headerCells.Length && IsSeparatorRow(separatorCells))
+            {
+                headerIndex = i;
+                break;
+            }
+        }
+
+        if (headerIndex < 0)
+            return false;
+
+        var header = ParsePipeRow(lines[headerIndex]);
+        if (header.Length == 0)
+            return false;
+
+        var dataRows = new List<string[]>();
+        var dataStart = headerIndex + 2;
+        for (var i = dataStart; i < lines.Count; i++)
+        {
+            var row = ParsePipeRow(lines[i]);
+            if (row.Length == 0)
+                break;
+
+            dataRows.Add(row);
+        }
+
+        if (dataRows.Count == 0)
+            return false;
+
+        var sb = new StringBuilder();
+
+        var preface = string.Join("\n", lines.Take(headerIndex)).Trim();
+        if (!string.IsNullOrWhiteSpace(preface))
+            sb.Append($"<p>{WebUtility.HtmlEncode(preface)}</p>");
+
+        sb.Append("<table><thead><tr>");
+        foreach (var cell in header)
+            sb.Append($"<th>{WebUtility.HtmlEncode(cell)}</th>");
+        sb.Append("</tr></thead><tbody>");
+
+        foreach (var row in dataRows)
+        {
+            sb.Append("<tr>");
+            if (row.Length == header.Length)
+            {
+                foreach (var cell in row)
+                    sb.Append($"<td>{WebUtility.HtmlEncode(cell)}</td>");
+            }
+            else
+            {
+                sb.Append($"<td colspan=\"{header.Length}\">{WebUtility.HtmlEncode(string.Join(" | ", row))}</td>");
+            }
+
+            sb.Append("</tr>");
+        }
+
+        sb.Append("</tbody></table>");
+
+        var tailStart = dataStart + dataRows.Count;
+        if (tailStart < lines.Count)
+        {
+            var tail = string.Join("\n", lines.Skip(tailStart)).Trim();
+            if (!string.IsNullOrWhiteSpace(tail))
+                sb.Append($"<p>{WebUtility.HtmlEncode(tail)}</p>");
+        }
+
+        html = sb.ToString();
+        return true;
+    }
+
+    private static string[] ParsePipeRow(string row)
+    {
+        var trimmed = row.Trim();
+        if (!trimmed.StartsWith('|') || !trimmed.EndsWith('|'))
+            return [];
+
+        return trimmed
+            .Trim('|')
+            .Split('|')
+            .Select(cell => cell.Trim())
+            .ToArray();
+    }
+
+    private static bool IsSeparatorRow(string[] cells)
+    {
+        return cells.All(cell => Regex.IsMatch(cell, "^:?-{3,}:?$"));
+    }
+}

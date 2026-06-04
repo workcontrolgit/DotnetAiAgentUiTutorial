@@ -44,6 +44,9 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
 
     private readonly string _outputFolder = outputFolder;
 
+    public string? LastExportedFileName { get; private set; }
+    public byte[]? LastExportedFileBytes { get; private set; }
+
     private readonly List<ChatMessage> _history =
     [
         new(ChatRole.System, SystemPrompt)
@@ -64,6 +67,15 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
             var text = await RunToolLoopAsync(ct);
             RenderResponse(text);
         }
+    }
+
+    public async Task<string> AskAsync(string input, CancellationToken ct = default)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            return string.Empty;
+
+        _history.Add(new ChatMessage(ChatRole.User, input));
+        return await RunToolLoopAsync(ct);
     }
 
     // ── Manual tool call loop ────────────────────────────────────────────────
@@ -143,7 +155,7 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
 
     // Decodes a base64 export payload and saves the file to outputFolder.
     // Returns "Saved to: <path>" on success, null if the payload is not an export result.
-    private static string? TrySaveExportFile(string json, string outputFolder)
+    private string? TrySaveExportFile(string json, string outputFolder)
     {
         try
         {
@@ -162,6 +174,11 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
             Directory.CreateDirectory(outputFolder);
             var fullPath = Path.GetFullPath(Path.Combine(outputFolder, fileName));
             File.WriteAllBytes(fullPath, bytes);
+
+            // Track for browser download
+            LastExportedFileName = fileName;
+            LastExportedFileBytes = bytes;
+
             return $"Saved to: {fullPath}";
         }
         catch (Exception ex)
