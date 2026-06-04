@@ -48,6 +48,7 @@ desktop.ini
 .playwright-mcp/
 
 # OpenWolf
+.wolf/
 /test-results/
 /playwright-report/
 /blob-report/

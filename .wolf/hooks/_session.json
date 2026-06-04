@@ -21,6 +21,11 @@
       "count": 1,
       "tokens": 0,
       "first_read": "2026-05-29T18:16:14.173Z"
+    },
+    "c:/apps/DotnetMcpTutorial/.gitignore": {
+      "count": 2,
+      "tokens": 0,
+      "first_read": "2026-06-04T10:03:53.051Z"
     }
   },
   "files_written": [
@@ -83,15 +88,22 @@
       "action": "edit",
       "tokens": 125,
       "at": "2026-05-29T18:19:54.335Z"
+    },
+    {
+      "file": "c:/apps/DotnetMcpTutorial/.gitignore",
+      "action": "edit",
+      "tokens": 10,
+      "at": "2026-06-04T10:03:58.392Z"
     }
   ],
   "edit_counts": {
     "blogs/standalone/ollama-context-window.md": 5,
-    "blogs/series-1-ai-agent-mcp/preface.md": 5
+    "blogs/series-1-ai-agent-mcp/preface.md": 5,
+    ".gitignore": 1
   },
   "anatomy_hits": 1,
-  "anatomy_misses": 3,
-  "repeated_reads_warned": 0,
+  "anatomy_misses": 4,
+  "repeated_reads_warned": 1,
   "cerebrum_warnings": 0,
-  "stop_count": 13
+  "stop_count": 15
 }

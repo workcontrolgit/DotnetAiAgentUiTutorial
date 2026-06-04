@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-29T18:19:54.321Z
-> Files: 8 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-06-04T10:03:58.389Z
+> Files: 1 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
 
@@ -65,6 +65,7 @@
 
 ## ./
 
+- `.gitignore` — Git ignore rules (~171 tok)
 
 ## .claude/
 
@@ -107,9 +108,6 @@
 
 ## DotnetAiAgentMcp/src/HrMcp.Agent/
 
-- `HrAgent.cs` — src/HrMcp.Agent/HrAgent.cs (~2996 tok)
-- `HrMcp.Agent.csproj` (~463 tok)
-- `MarkdigSpectreRenderer.cs` — Renders a markdown string to the console using Spectre.Console widgets. Uses Markdig to parse the AS (~1967 tok)
 
 ## DotnetAiAgentMcp/src/HrMcp.Agent/bin/Debug/net10.0/
 
@@ -212,14 +210,12 @@
 
 ## blogs/series-1-ai-agent-mcp/
 
-- `preface.md` — AI Agents & MCP with .NET 10 — Blog Series (~2552 tok)
 
 ## blogs/series-1-ai-agent-mcp/diagrams/
 
 
 ## blogs/standalone/
 
-- `ollama-context-window.md` — Why Ollama Goes Silent on Large Inputs — and How to Fix It in .NET (~3243 tok)
 
 ## docs/
 
@@ -229,11 +225,9 @@
 
 ## docs/superpowers/plans/
 
-- `2026-05-27-ollama-context-window.md` — Ollama Context Window Blog Post Implementation Plan (~4605 tok)
 
 ## docs/superpowers/specs/
 
-- `2026-05-27-ollama-context-window-design.md` — Blog Design: Why Ollama Goes Silent on Large Inputs — and How to Fix It in .NET (~2176 tok)
 
 ## medium/
 
@@ -246,7 +240,6 @@
 
 ## scripts/
 
-- `start-stream-http.ps1` — start-stream-http.ps1 (~406 tok)
 
 ## scripts/blog-screenshots/
 
