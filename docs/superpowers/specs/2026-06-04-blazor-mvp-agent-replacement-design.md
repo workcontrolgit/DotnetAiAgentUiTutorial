@@ -1,7 +1,7 @@
 # Blazor MVP Design: Replace Console Agent UI In-Place
 
 Date: 2026-06-04
-Status: Proposed (Validated in brainstorming)
+Status: Proposed (Validated in brainstorming; in-place upgrade confirmed)
 Scope: Phase 1 MVP only
 
 ## Context
@@ -29,6 +29,25 @@ Demonstrate AI-assisted drafting for a hiring manager:
 - Do not create new projects in the solution for MVP.
 - Keep the existing tutorial structure understandable and incremental.
 - Preserve the current working console flow during migration, then de-emphasize it.
+- Keep code movement to a minimum so existing blog content requires only targeted updates.
+
+## In-Place Upgrade Requirement
+
+This design is an in-place upgrade, not a greenfield rewrite.
+
+- Upgrade existing projects in the current solution only.
+- Do not add a new client/UI project for MVP.
+- Treat HrMcp.Agent as the migration surface from console to Blazor UI.
+- Keep the console path temporarily for tutorial continuity, then phase it down.
+
+## Minimal-Change Tutorial Mode (MVP Rule)
+
+For this tutorial MVP, prioritize a UI swap over architectural refactoring.
+
+- Keep existing orchestration logic in `HrMcp.Agent` for MVP.
+- Do not move major workflow code to `HrMcp.Application` in this phase.
+- Limit changes to hosting, UI components, and wiring needed for Blazor Server.
+- Defer deeper layering refactors to a follow-up tutorial phase.
 
 ## Architecture Decision
 
@@ -36,14 +55,22 @@ Use an in-place evolution approach:
 
 - Keep the same solution and project count.
 - Evolve HrMcp.Agent from console-first to web-first client.
-- Move orchestration contracts and use-case logic into HrMcp.Application.
+- Keep orchestration in HrMcp.Agent for MVP to minimize tutorial churn.
 - Keep HrMcp.McpServer unchanged as MCP data/tool provider.
 
 Recommendation rationale:
 
 - Avoids tutorial disruption from adding projects.
 - Enables a side-by-side migration story (console to web).
-- Preserves clean architecture boundaries by keeping business orchestration out of UI components.
+- Minimizes blog rewrite effort while still demonstrating the core UI transition.
+
+## In-Place Upgrade Sequence
+
+1. Keep `HrMcp.Agent` console path working as-is.
+2. Add Blazor Server + MudBlazor to `HrMcp.Agent` and introduce split-view UI pages.
+3. Reuse existing orchestration methods/services from the same project.
+4. Make web the default tutorial path; keep console as fallback for one transition phase.
+5. Optionally extract orchestration into `HrMcp.Application` in a later phase.
 
 ## Component Design
 
@@ -68,9 +95,9 @@ Proposed internal folders:
 
 Responsibilities in MVP:
 
-- Define orchestration contracts behind interfaces.
-- Host draft-generation and edit-application use cases.
-- Normalize AI edit proposals into deterministic patch operations.
+- No required MVP changes for the tutorial UI swap.
+- Optional future phase: host orchestration contracts and draft workflow use cases.
+- Optional future phase: normalize AI edit proposals into deterministic patch operations.
 
 Proposed contracts (examples):
 
@@ -166,6 +193,9 @@ Responsibilities in MVP:
 
 - Risk: Migration confusion between console and web paths.
   - Mitigation: clear mode flags, document web as primary path in tutorial updates.
+
+- Risk: Delaying refactor can leave orchestration coupled to UI code.
+  - Mitigation: explicitly mark extraction to `HrMcp.Application` as Phase 2 technical debt.
 
 ## Implementation Readiness
 

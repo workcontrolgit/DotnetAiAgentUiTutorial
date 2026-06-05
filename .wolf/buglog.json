@@ -912,6 +912,442 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-29T18:14:33.667Z"
+    },
+    {
+      "id": "bug-058",
+      "timestamp": "2026-06-04T11:45:00.000Z",
+      "error_message": "NU1101: Unable to find package MudBlazor.Services",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrMcp.Agent.csproj",
+      "root_cause": "Attempted to add non-existent NuGet package id `MudBlazor.Services` while trying to make service registration dependency explicit.",
+      "fix": "Removed `MudBlazor.Services` package reference and kept `MudBlazor` package only; rebuild succeeded.",
+      "tags": [
+        "build-failure",
+        "nuget",
+        "wrong-package-id",
+        "csproj"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T11:45:00.000Z"
+    },
+    {
+      "id": "bug-059",
+      "timestamp": "2026-06-04T11:56:00.000Z",
+      "error_message": "500 Internal Server Error on /_content/MudBlazor/MudBlazor.min.css",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/App.razor",
+      "root_cause": "Task 2 shell linked MudBlazor stylesheet before static asset path was available in this minimal setup, causing runtime file lookup failure.",
+      "fix": "Removed the MudBlazor stylesheet link from App.razor for MVP shell and kept local app.css; runtime endpoints now return 200 for / and /css/app.css.",
+      "tags": [
+        "runtime-error",
+        "static-assets",
+        "blazor",
+        "mvp-scope"
+      ],
+      "related_bugs": [
+        "bug-058"
+      ],
+      "occurrences": 1,
+    {
+      "id": "bug-015",
+      "timestamp": "2026-06-04T14:28:00.000Z",
+      "error_message": "UI action buttons consumed too much vertical space",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Send and Export Word were stacked as separate standalone controls instead of compact toolbar actions",
+      "fix": "Moved the buttons into footer action rows and reduced button padding",
+      "tags": [
+        "ui",
+        "layout",
+        "blazor"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T14:28:00.000Z"
+    }
+      "last_seen": "2026-06-04T11:56:00.000Z"
+    },
+    {
+      "id": "bug-060",
+      "timestamp": "2026-06-04T12:03:00.000Z",
+      "error_message": "Task 3 compile errors: CS1503 and CS8852",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Web/Services/AgentDraftService.cs",
+      "root_cause": "Used unsupported ListToolsAsync(ct) overload and bound Razor textarea to init-only record property in DraftDocumentState.",
+      "fix": "Switched to ListToolsAsync() and changed DraftDocumentState to mutable class with settable properties; updated page state mutation logic.",
+      "tags": [
+        "build-failure",
+        "csharp",
+        "api-mismatch",
+        "blazor-binding"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T12:03:00.000Z"
+    },
+    {
+      "id": "bug-061",
+      "timestamp": "2026-06-04T12:06:00.000Z",
+      "error_message": "MSB3027/MSB3021 build failed due locked HrMcp.Agent.exe",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/HrMcp.Agent.csproj",
+      "root_cause": "Attempted to build while web-mode process was still running and holding apphost target file lock.",
+      "fix": "Stopped running HrMcp.Agent process before rebuilding; subsequent build succeeded.",
+      "tags": [
+        "build-failure",
+        "file-lock",
+        "process-management"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T12:06:00.000Z"
+    },
+    {
+      "id": "bug-062",
+      "timestamp": "2026-06-04T12:10:00.000Z",
+      "error_message": "GET /_framework/blazor.web.js returned 500 in --web mode",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs",
+      "root_cause": "Web host started in Production without static web assets enabled, causing Blazor boot script resolution to look for missing local wwwroot/_framework file.",
+      "fix": "Enabled static web assets explicitly in RunWebAsync via builder.WebHost.UseStaticWebAssets(); verified /_framework/blazor.web.js returns HTTP 200.",
+      "tags": [
+        "runtime-error",
+        "blazor",
+        "static-assets",
+        "web-mode"
+      ],
+      "related_bugs": [
+        "bug-059"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T12:10:00.000Z"
+    },
+    {
+      "id": "bug-063",
+      "timestamp": "2026-06-04T12:18:00.000Z",
+      "error_message": "Clicking Send in web UI appeared to do nothing",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/App.razor",
+      "root_cause": "Routes were rendered without interactive server render mode, so button @onclick handlers were not wired to a live Blazor circuit.",
+      "fix": "Set interactive render mode in App.razor: HeadOutlet and Routes now use @rendermode=\"RenderMode.InteractiveServer\"; verified /_blazor negotiate and websocket are active and Send appends user message.",
+      "tags": [
+        "runtime-error",
+        "blazor",
+        "interactivity",
+        "ui-events"
+      ],
+      "related_bugs": [
+        "bug-062"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T12:18:00.000Z"
+    },
+    {
+      "id": "bug-064",
+      "timestamp": "2026-06-04T12:46:00.000Z",
+      "error_message": "JD/PD Draft panel stayed blank after assistant response",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Draft update logic only copied assistant text when response contained markdown heading token `## `, so plain-text responses never populated the right editor.",
+      "fix": "Changed SendPromptAsync to update draft for any non-empty assistant response; verified right panel now mirrors assistant output text.",
+      "tags": [
+        "runtime-error",
+        "blazor",
+        "state-sync",
+        "mvp-flow"
+      ],
+      "related_bugs": [
+        "bug-063"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T12:46:00.000Z"
+    },
+    {
+      "id": "bug-065",
+      "timestamp": "2026-06-04T13:00:00.000Z",
+      "error_message": "Prompt 'Show me open positions' appeared to do nothing in UI",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Large MCP + LLM response latency for open positions had no explicit in-progress text, so users perceived no action despite request being processed.",
+      "fix": "Added visible busy-state message under Send button: 'AI is thinking... fetching positions and drafting response.'",
+      "tags": [
+        "ux",
+        "blazor",
+        "perceived-latency",
+        "chat"
+      ],
+      "related_bugs": [
+        "bug-063"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T13:00:00.000Z"
+    },
+    {
+      "id": "bug-066",
+      "timestamp": "2026-06-04T13:12:00.000Z",
+      "error_message": "Right draft panel showed non-draft chat responses",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "SendPromptAsync mirrored every non-empty assistant response into the draft editor, including informational chat answers like open-position lists.",
+      "fix": "Added draft-intent filtering (ShouldSyncDraft + prompt/response keyword checks) so only draft-related interactions update the right panel.",
+      "tags": [
+        "ux",
+        "blazor",
+        "state-sync",
+        "drafting"
+      ],
+      "related_bugs": [
+        "bug-064",
+        "bug-065"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T13:12:00.000Z"
+    },
+    {
+      "id": "bug-067",
+      "timestamp": "2026-06-04T14:02:00.000Z",
+      "error_message": "Web prompt path ignored --stream-http and attempted stdio MCP process",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Web/Services/AgentDraftService.cs",
+      "root_cause": "AgentDraftService resolved transport only from configuration default (`stdio`) and did not honor runtime CLI flags used to start web mode.",
+      "fix": "Added ResolveTransportType to read command-line args (`--stream-http`/`--stdio`) before config fallback, ensuring web requests use intended transport.",
+      "tags": [
+        "runtime-error",
+        "blazor",
+        "transport",
+        "mcp"
+      ],
+      "related_bugs": [
+        "bug-063",
+        "bug-065"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T14:02:00.000Z"
+    },
+    {
+      "id": "bug-068",
+      "timestamp": "2026-06-04T14:18:00.000Z",
+      "error_message": "Drafting prompt for position 1 looked non-functional because draft panel stayed empty",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "After introducing the Send-to-Draft toggle, default OFF state meant drafting responses appeared only in chat unless user manually enabled sync.",
+      "fix": "Set Send-to-Draft default to ON and added explicit status text ('Draft sync: On/Off') to make synchronization state visible.",
+      "tags": [
+        "ux",
+        "blazor",
+        "drafting",
+        "prototype"
+      ],
+      "related_bugs": [
+        "bug-066"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T14:18:00.000Z"
+    },
+    {
+      "id": "bug-069",
+      "timestamp": "2026-06-04T14:45:00.000Z",
+      "error_message": "Prompt submit returned 'MCP server process exited unexpectedly (exit code: 1)' during web UI validation",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Runtime prompt path spawned MCP process but the child build/run step failed with an MSBuild internal node-provider error in the local environment.",
+      "fix": "Logged failure during UI verification and preserved UI-side behavior checks (Enter-to-send, panel/tabs/splitter); backend transport/process issue requires follow-up in MCP runtime path.",
+      "tags": [
+        "runtime-error",
+        "mcp",
+        "web-ui",
+        "msbuild"
+      ],
+      "related_bugs": [
+        "bug-067"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T14:45:00.000Z"
+    },
+    {
+      "id": "bug-070",
+      "timestamp": "2026-06-04T14:56:00.000Z",
+      "error_message": "Multiple iterative edits were required in DraftWorkspace during chat UX refinements",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Rapid UI iterations and live-browser validation loops caused more than two edits to the same file in one session.",
+      "fix": "Added explicit waiting spinner bubble and consolidated waiting-state behavior in one rendering path to reduce future churn.",
+      "tags": [
+        "ui",
+        "iteration",
+        "blazor",
+        "chat"
+      ],
+      "related_bugs": [
+        "bug-068",
+        "bug-069"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T14:56:00.000Z"
+    },
+    {
+      "id": "bug-071",
+      "timestamp": "2026-06-04T15:12:00.000Z",
+      "error_message": "Open-position query response appeared in right draft panel",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Recent UI refactors removed the draft-intent gating and mirrored all non-empty assistant responses into the draft editor whenever Sync to Draft was enabled.",
+      "fix": "Reintroduced intent-based synchronization via ShouldSyncDraft/IsDraftIntentPrompt so only draft/refine prompts can update the draft panel.",
+      "tags": [
+        "ux",
+        "blazor",
+        "drafting",
+        "state-sync"
+      ],
+      "related_bugs": [
+        "bug-066",
+        "bug-068"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T15:12:00.000Z"
+    },
+    {
+      "id": "bug-072",
+      "timestamp": "2026-06-04T15:18:00.000Z",
+      "error_message": "Page and panel titles were too technical for hiring manager users",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "UI labels used internal abbreviations (JD/PD, assistant-centric wording) that were less clear to non-technical business users.",
+      "fix": "Renamed top-level titles, panel headings, tab labels, and placeholders to plain-language copy focused on hiring manager workflows.",
+      "tags": [
+        "ux",
+        "copy",
+        "blazor",
+        "accessibility"
+      ],
+      "related_bugs": [
+        "bug-070"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T15:18:00.000Z"
+    },
+    {
+      "id": "bug-073",
+      "timestamp": "2026-06-04T15:28:00.000Z",
+      "error_message": "Open positions response appeared as raw markdown table text in chat",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Assistant turns were rendered as plain text, so markdown table syntax was not converted to HTML.",
+      "fix": "Rendered assistant responses via Markdig pipeline (UseAdvancedExtensions + DisableHtml) and added CSS table styles for chat bubbles.",
+      "tags": [
+        "ux",
+        "markdown",
+        "blazor",
+        "chat"
+      ],
+      "related_bugs": [
+        "bug-071"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T15:28:00.000Z"
+    },
+    {
+      "id": "bug-074",
+      "timestamp": "2026-06-04T15:31:00.000Z",
+      "error_message": "Open positions markdown table still displayed as plain text when rows arrived flattened on one line",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Model output used inline row separators (`| |`) without newlines, which prevented Markdig pipe-table parsing.",
+      "fix": "Added NormalizeMarkdownTables to insert line breaks before/within flattened markdown tables before Markdown.ToHtml.",
+      "tags": [
+        "ux",
+        "markdown",
+        "blazor",
+        "tables"
+      ],
+      "related_bugs": [
+        "bug-073"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T15:31:00.000Z"
+    },
+    {
+      "id": "bug-075",
+      "timestamp": "2026-06-04T15:36:00.000Z",
+      "error_message": "Open positions request appeared to timeout due to unhandled Markdig depth-limit exception",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Flattened table normalization was too aggressive, creating malformed markdown that triggered `Markdown elements ... too deeply nested` and circuit failure.",
+      "fix": "Narrowed row-split regex to data-row boundaries and added try/catch fallback in RenderAssistantMarkdown to avoid chat render crashes.",
+      "tags": [
+        "runtime-error",
+        "markdown",
+        "blazor",
+        "timeout-like"
+      ],
+      "related_bugs": [
+        "bug-073",
+        "bug-074"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T15:36:00.000Z"
+    },
+    {
+      "id": "bug-076",
+      "timestamp": "2026-06-04T15:42:00.000Z",
+      "error_message": "Open positions response still not displayed as table for some flattened markdown payloads",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Line-break normalization remained heuristic; certain flattened payload shapes were still ambiguous for markdown parser table detection.",
+      "fix": "Added deterministic pipe-table extraction and HTML generation (header/separator/data rows) before generic Markdig rendering.",
+      "tags": [
+        "ux",
+        "markdown",
+        "blazor",
+        "tables"
+      ],
+      "related_bugs": [
+        "bug-074",
+        "bug-075"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T15:42:00.000Z"
+    },
+    {
+      "id": "bug-077",
+      "timestamp": "2026-06-04T16:20:00.000Z",
+      "error_message": "Assistant markdown table rendered in escaped <pre> fallback instead of HTML table",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Regex-wide table row extraction was fragile when preface/tail text wrapped large markdown tables, causing table parse miss and fallback rendering.",
+      "fix": "Replaced regex-wide extraction with line-based detection of header/separator/data rows, and generated HTML table while preserving preface/tail text.",
+      "tags": [
+        "ux",
+        "markdown",
+        "blazor",
+        "tables",
+        "fallback"
+      ],
+      "related_bugs": [
+        "bug-076"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T16:20:00.000Z"
+    },
+    {
+      "id": "bug-078",
+      "timestamp": "2026-06-04T16:32:00.000Z",
+      "error_message": "Draft prompts showed raw markdown in right panel instead of formatted HTML preview",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Right panel defaulted to Edit tab after sync, which displays raw markdown text in textarea.",
+      "fix": "After successful draft sync in SendPromptAsync, automatically set active tab to Preview Draft so markdown is rendered as HTML.",
+      "tags": [
+        "ux",
+        "blazor",
+        "draft",
+        "markdown",
+        "html"
+      ],
+      "related_bugs": [
+        "bug-072"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T16:32:00.000Z"
+    },
+    {
+      "id": "bug-079",
+      "timestamp": "2026-06-04T16:50:00.000Z",
+      "error_message": "Follow-up draft edit prompt ('Add to Qualifications ...') did not update right draft panel",
+      "file": "DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor",
+      "root_cause": "Draft-intent keyword list did not include add/include qualification/requirement refinement language, so sync was skipped.",
+      "fix": "Expanded DraftIntentTerms to include add/include/qualification(s)/requirement(s), enabling follow-up draft refinement prompts to sync to preview.",
+      "tags": [
+        "ux",
+        "blazor",
+        "draft",
+        "intent-detection"
+      ],
+      "related_bugs": [
+        "bug-072",
+        "bug-078"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-06-04T16:50:00.000Z"
     }
   ]
 }

@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-06-04T10:03:58.389Z
-> Files: 1 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-06-04T16:50:00.000Z
+> Files: 17 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../Users/Fuji Nguyen/.claude/plans/
 
@@ -66,6 +66,25 @@
 ## ./
 
 - `.gitignore` — Git ignore rules (~171 tok)
+- `.wolf/anatomy.md` — OpenWolf file inventory metadata
+- `.wolf/cerebrum.md` — OpenWolf learning and decision log
+- `.wolf/memory.md` — OpenWolf session activity ledger
+- `docs/superpowers/specs/2026-06-04-blazor-mvp-agent-replacement-design.md` — MVP split-view Blazor replacement design spec
+- `docs/superpowers/plans/2026-06-04-inplace-console-to-blazor-mvp.md` — Minimal-change in-place implementation plan
+- `README.md` — Project setup and runtime instructions
+- `blogs/series-1-ai-agent-mcp/preface.md` — Series overview and architecture narrative
+- `blogs/series-1-ai-agent-mcp/part-4-ai-agent-extensions-ai.md` — Agent runtime and transport tutorial details
+- `DotnetAiAgentMcp/src/HrMcp.Agent/HrMcp.Agent.csproj` — Agent project dependencies
+- `DotnetAiAgentMcp/src/HrMcp.Agent/Program.cs` — Agent startup and runtime wiring
+- `DotnetAiAgentMcp/src/HrMcp.Agent/Components/App.razor` — Web app shell document
+- `DotnetAiAgentMcp/src/HrMcp.Agent/Components/Routes.razor` — Route mapping
+- `DotnetAiAgentMcp/src/HrMcp.Agent/Components/Layout/MainLayout.razor` — Main layout container
+- `DotnetAiAgentMcp/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor` — Split-view MVP workspace page
+- `DotnetAiAgentMcp/src/HrMcp.Agent/Components/_Imports.razor` — Razor component imports
+- `DotnetAiAgentMcp/src/HrMcp.Agent/wwwroot/css/app.css` — Split-view shell styling
+- `DotnetAiAgentMcp/src/HrMcp.Agent/Web/Services/AgentDraftService.cs` — Web-side draft orchestration wrapper
+- `DotnetAiAgentMcp/src/HrMcp.Agent/Web/Models/ChatTurn.cs` — Web chat message model
+- `DotnetAiAgentMcp/src/HrMcp.Agent/Web/Models/DraftDocumentState.cs` — Web document editor state
 
 ## .claude/
 
