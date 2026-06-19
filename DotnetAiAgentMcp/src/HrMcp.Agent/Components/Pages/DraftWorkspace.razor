@@ -3,7 +3,6 @@
 @using HrMcp.Agent.Web.Services
 @using Markdig
 @using Microsoft.AspNetCore.Components.Web
-@using System.Net
 @using System.Text
 @using System.Text.RegularExpressions
 @inject IAgentDraftService AgentDraftService
@@ -71,55 +70,66 @@
             </div>
         </section>
 
-        <div class="splitter" role="separator" aria-label="Resize chat and draft panels" @onmousedown="StartResize"></div>
+        @if (_draftVisible)
+        {
+            <div class="splitter" role="separator" aria-label="Resize chat and draft panels" @onmousedown="StartResize"></div>
+        }
     }
 
-    <section class="right-editor">
-        <div class="right-header">
-            <h3>Your Position Description Draft</h3>
-            <div class="doc-tabs" role="tablist" aria-label="Draft tabs">
-                <button class="tab-btn @(_activeTab == DocumentTab.Edit ? "tab-btn--active" : string.Empty)" role="tab" aria-selected="@(_activeTab == DocumentTab.Edit)" @onclick="() => _activeTab = DocumentTab.Edit">Edit Draft</button>
-                <button class="tab-btn @(_activeTab == DocumentTab.View ? "tab-btn--active" : string.Empty)" role="tab" aria-selected="@(_activeTab == DocumentTab.View)" @onclick="() => _activeTab = DocumentTab.View">Preview Draft</button>
+    @if (_draftVisible)
+    {
+        <section class="right-editor">
+            <div class="right-header">
+                <h3>Your Position Description Draft</h3>
             </div>
-        </div>
 
-        @if (_activeTab == DocumentTab.Edit)
-        {
-            <textarea class="doc-editor" @bind="_document.DraftText" placeholder="Your draft will appear here. You can edit it directly."></textarea>
-        }
-        else
-        {
-            <div class="markdown-preview markdown-preview--full" aria-label="Draft preview">
-                @if (string.IsNullOrWhiteSpace(_document.DraftText))
-                {
-                    <p class="preview-placeholder">Rendered preview appears here.</p>
-                }
-                else
-                {
-                    @DraftPreview
-                }
-            </div>
-        }
+            <BlazoredTextEditor @ref="_richEditor"
+                                Placeholder="Your draft will appear here. You can edit it directly.">
+                <ToolbarContent>
+                    <select class="ql-header">
+                        <option selected=""></option>
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                    </select>
+                    <button class="ql-bold"></button>
+                    <button class="ql-italic"></button>
+                    <button class="ql-underline"></button>
+                    <button class="ql-strike"></button>
+                    <span class="ql-formats">
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                        <button class="ql-indent" value="-1"></button>
+                        <button class="ql-indent" value="+1"></button>
+                    </span>
+                    <button class="ql-background"></button>
+                    <button class="ql-clean"></button>
+                </ToolbarContent>
+                <EditorContent>
+                </EditorContent>
+            </BlazoredTextEditor>
 
-        <div class="panel-actions panel-actions--editor">
-            <div class="panel-actions-row panel-actions-row--end">
-                <button class="primary-btn primary-btn--compact" @onclick="ExportWordAsync" disabled="@_busy">Export Word</button>
-                @if (!string.IsNullOrWhiteSpace(_status))
-                {
-                    <div class="chat-item panel-status">@_status</div>
-                }
+            <div class="panel-actions panel-actions--editor">
+                <div class="panel-actions-row panel-actions-row--end">
+                    <button class="primary-btn primary-btn--compact" @onclick="ExportWordAsync" disabled="@_busy">Export Word</button>
+                    @if (!string.IsNullOrWhiteSpace(_status))
+                    {
+                        <div class="chat-item panel-status">@_status</div>
+                    }
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    }
 </div>
 
 @code {
     private string Prompt { get; set; } = string.Empty;
     private readonly List<ChatTurn> _turns = [];
-    private DraftDocumentState _document = new(string.Empty, 0);
     private bool _busy;
     private string _status = string.Empty;
     private bool _leftPanelHidden;
+    private bool _draftVisible;
+    private BlazoredTextEditor _richEditor = default!;
     private bool _resizing;
     private int _leftPanelWidth = 420;
     private const int MinLeftPanelWidth = 320;
@@ -152,21 +162,13 @@
         "show open position",
         "show open positions"
     ];
-    private DocumentTab _activeTab = DocumentTab.Edit;
     private static readonly MarkdownPipeline ChatMarkdownPipeline = new MarkdownPipelineBuilder()
         .UseAdvancedExtensions()
         .DisableHtml()
         .Build();
-    private MarkupString DraftPreview => new(Markdown.ToHtml(_document.DraftText ?? string.Empty));
-    private string WorkspaceGridStyle => _leftPanelHidden
+    private string WorkspaceGridStyle => _leftPanelHidden || !_draftVisible
         ? "grid-template-columns: minmax(0, 1fr);"
         : $"grid-template-columns: {_leftPanelWidth}px 8px minmax(0, 1fr);";
-
-    private enum DocumentTab
-    {
-        Edit,
-        View
-    }
 
     private void ToggleLeftPanel()
     {
@@ -223,9 +225,10 @@
 
             if (ShouldSyncDraft(input, response))
             {
-                _document.DraftText = response.Trim();
-                _document.Revision += 1;
-                _activeTab = DocumentTab.View;
+                var html = Markdown.ToHtml(response.Trim());
+                _draftVisible = true;
+                await Task.Yield(); // allow Blazor to render the editor before loading content
+                await _richEditor.LoadHTMLContent(html);
             }
         }
         catch (Exception ex)
@@ -240,7 +243,8 @@
 
     private async Task ExportWordAsync()
     {
-        if (_busy || string.IsNullOrWhiteSpace(_document.DraftText))
+        var currentHtml = await _richEditor.GetHTML();
+        if (_busy || string.IsNullOrWhiteSpace(currentHtml))
         {
             _status = "Draft is empty. Add content before exporting.";
             return;
@@ -251,7 +255,7 @@
 
         try
         {
-            var (message, fileName, fileBytes) = await AgentDraftService.ExportDraftToWordAsync(_document.DraftText);
+            var (message, fileName, fileBytes) = await AgentDraftService.ExportDraftToWordAsync(currentHtml);
 
             if (fileName is not null && fileBytes is not null)
             {
@@ -307,7 +311,7 @@
         catch
         {
             // Never break the chat render pipeline on malformed markdown.
-            var fallback = $"<pre>{WebUtility.HtmlEncode(source)}</pre>";
+            var fallback = $"<pre>{System.Net.WebUtility.HtmlEncode(source)}</pre>";
             return new MarkupString(fallback);
         }
     }
@@ -380,11 +384,11 @@
 
         var preface = string.Join("\n", lines.Take(headerIndex)).Trim();
         if (!string.IsNullOrWhiteSpace(preface))
-            sb.Append($"<p>{WebUtility.HtmlEncode(preface)}</p>");
+            sb.Append($"<p>{System.Net.WebUtility.HtmlEncode(preface)}</p>");
 
         sb.Append("<table><thead><tr>");
         foreach (var cell in header)
-            sb.Append($"<th>{WebUtility.HtmlEncode(cell)}</th>");
+            sb.Append($"<th>{System.Net.WebUtility.HtmlEncode(cell)}</th>");
         sb.Append("</tr></thead><tbody>");
 
         foreach (var row in dataRows)
@@ -393,11 +397,11 @@
             if (row.Length == header.Length)
             {
                 foreach (var cell in row)
-                    sb.Append($"<td>{WebUtility.HtmlEncode(cell)}</td>");
+                    sb.Append($"<td>{System.Net.WebUtility.HtmlEncode(cell)}</td>");
             }
             else
             {
-                sb.Append($"<td colspan=\"{header.Length}\">{WebUtility.HtmlEncode(string.Join(" | ", row))}</td>");
+                sb.Append($"<td colspan=\"{header.Length}\">{System.Net.WebUtility.HtmlEncode(string.Join(" | ", row))}</td>");
             }
 
             sb.Append("</tr>");
@@ -410,7 +414,7 @@
         {
             var tail = string.Join("\n", lines.Skip(tailStart)).Trim();
             if (!string.IsNullOrWhiteSpace(tail))
-                sb.Append($"<p>{WebUtility.HtmlEncode(tail)}</p>");
+                sb.Append($"<p>{System.Net.WebUtility.HtmlEncode(tail)}</p>");
         }
 
         html = sb.ToString();
