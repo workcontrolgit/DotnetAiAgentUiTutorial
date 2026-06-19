@@ -106,6 +106,10 @@
                     <button class="ql-clean"></button>
                 </ToolbarContent>
                 <EditorContent>
+                    @if (_initialHtml is not null)
+                    {
+                        @((MarkupString)_initialHtml)
+                    }
                 </EditorContent>
             </BlazoredTextEditor>
 
@@ -130,7 +134,7 @@
     private bool _leftPanelHidden;
     private bool _draftVisible;
     private BlazoredTextEditor _richEditor = default!;
-    private string? _pendingHtml;
+    private string? _initialHtml;
     private bool _resizing;
     private int _leftPanelWidth = 420;
     private const int MinLeftPanelWidth = 320;
@@ -170,16 +174,6 @@
     private string WorkspaceGridStyle => _leftPanelHidden || !_draftVisible
         ? "grid-template-columns: minmax(0, 1fr);"
         : $"grid-template-columns: {_leftPanelWidth}px 8px minmax(0, 1fr);";
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (_pendingHtml is not null && _draftVisible)
-        {
-            var html = _pendingHtml;
-            _pendingHtml = null;
-            await _richEditor.LoadHTMLContent(html);
-        }
-    }
 
     private void ToggleLeftPanel()
     {
@@ -236,9 +230,18 @@
 
             if (ShouldSyncDraft(input, response))
             {
-                _pendingHtml = Markdown.ToHtml(response.Trim());
-                _draftVisible = true;
-                // Content is injected in OnAfterRenderAsync after BlazoredTextEditor initializes Quill
+                var html = Markdown.ToHtml(response.Trim());
+                if (!_draftVisible)
+                {
+                    // First draft: Quill reads <EditorContent> HTML during createQuill — no JS call needed
+                    _initialHtml = html;
+                    _draftVisible = true;
+                }
+                else
+                {
+                    // Editor already initialized — inject directly via Quill API
+                    await _richEditor.LoadHTMLContent(html);
+                }
             }
         }
         catch (Exception ex)
