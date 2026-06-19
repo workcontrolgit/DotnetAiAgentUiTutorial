@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
     <link rel="stylesheet" href="css/app.css" />
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
     <HeadOutlet @rendermode="RenderMode.InteractiveServer" />
 </head>
 <body>
     <Routes @rendermode="RenderMode.InteractiveServer" />
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="_content/Blazored.TextEditor/quill-blaze.js"></script>
     <script src="_framework/blazor.web.js"></script>
     <script>
         window.downloadFile = function (fileName, base64Content) {
