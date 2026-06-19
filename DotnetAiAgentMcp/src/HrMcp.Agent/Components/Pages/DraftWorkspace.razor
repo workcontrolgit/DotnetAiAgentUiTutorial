@@ -230,7 +230,7 @@
 
             if (ShouldSyncDraft(input, response))
             {
-                var html = Markdown.ToHtml(response.Trim());
+                var html = Markdown.ToHtml(response.Trim(), ChatMarkdownPipeline);
                 if (!_draftVisible)
                 {
                     // First draft: Quill reads <EditorContent> HTML during createQuill — no JS call needed
@@ -397,7 +397,7 @@
 
         var preface = string.Join("\n", lines.Take(headerIndex)).Trim();
         if (!string.IsNullOrWhiteSpace(preface))
-            sb.Append($"<p>{System.Net.WebUtility.HtmlEncode(preface)}</p>");
+            sb.Append(Markdown.ToHtml(preface, ChatMarkdownPipeline));
 
         sb.Append("<table><thead><tr>");
         foreach (var cell in header)
@@ -427,7 +427,7 @@
         {
             var tail = string.Join("\n", lines.Skip(tailStart)).Trim();
             if (!string.IsNullOrWhiteSpace(tail))
-                sb.Append($"<p>{System.Net.WebUtility.HtmlEncode(tail)}</p>");
+                sb.Append(Markdown.ToHtml(tail, ChatMarkdownPipeline));
         }
 
         html = sb.ToString();
