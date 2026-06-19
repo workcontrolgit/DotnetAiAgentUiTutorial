@@ -83,35 +83,31 @@
                 <h3>Your Position Description Draft</h3>
             </div>
 
-            <BlazoredTextEditor @ref="_richEditor"
-                                Placeholder="Your draft will appear here. You can edit it directly.">
-                <ToolbarContent>
-                    <select class="ql-header">
-                        <option selected=""></option>
-                        <option value="1"></option>
-                        <option value="2"></option>
-                        <option value="3"></option>
-                    </select>
-                    <button class="ql-bold"></button>
-                    <button class="ql-italic"></button>
-                    <button class="ql-underline"></button>
-                    <button class="ql-strike"></button>
-                    <span class="ql-formats">
-                        <button class="ql-list" value="ordered"></button>
-                        <button class="ql-list" value="bullet"></button>
-                        <button class="ql-indent" value="-1"></button>
-                        <button class="ql-indent" value="+1"></button>
-                    </span>
-                    <button class="ql-background"></button>
-                    <button class="ql-clean"></button>
-                </ToolbarContent>
-                <EditorContent>
-                    @if (_initialHtml is not null)
-                    {
-                        @((MarkupString)_initialHtml)
-                    }
-                </EditorContent>
-            </BlazoredTextEditor>
+            <div id="quill-editor-wrapper">
+                <BlazoredTextEditor @ref="_richEditor"
+                                    Placeholder="Your draft will appear here. You can edit it directly.">
+                    <ToolbarContent>
+                        <select class="ql-header">
+                            <option selected=""></option>
+                            <option value="1"></option>
+                            <option value="2"></option>
+                            <option value="3"></option>
+                        </select>
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                        <span class="ql-formats">
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-list" value="bullet"></button>
+                            <button class="ql-indent" value="-1"></button>
+                            <button class="ql-indent" value="+1"></button>
+                        </span>
+                        <button class="ql-background"></button>
+                        <button class="ql-clean"></button>
+                    </ToolbarContent>
+                </BlazoredTextEditor>
+            </div>
 
             <div class="panel-actions panel-actions--editor">
                 <div class="panel-actions-row panel-actions-row--end">
@@ -134,7 +130,7 @@
     private bool _leftPanelHidden;
     private bool _draftVisible;
     private BlazoredTextEditor _richEditor = default!;
-    private string? _initialHtml;
+    private string? _pendingHtml;
     private bool _resizing;
     private int _leftPanelWidth = 420;
     private const int MinLeftPanelWidth = 320;
@@ -179,6 +175,17 @@
     {
         _leftPanelHidden = !_leftPanelHidden;
         _resizing = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_pendingHtml is not null)
+        {
+            var html = _pendingHtml;
+            _pendingHtml = null;
+            // Quill may not be initialized yet — JS function polls until ready, then loads via dangerouslyPasteHTML
+            await JS.InvokeVoidAsync("loadQuillWhenReady", "quill-editor-wrapper", html);
+        }
     }
 
     private void StartResize()
@@ -233,8 +240,8 @@
                 var html = Markdown.ToHtml(response.Trim(), ChatMarkdownPipeline);
                 if (!_draftVisible)
                 {
-                    // First draft: Quill reads <EditorContent> HTML during createQuill — no JS call needed
-                    _initialHtml = html;
+                    // First draft: show the panel and let OnAfterRenderAsync load content via JS polling
+                    _pendingHtml = html;
                     _draftVisible = true;
                 }
                 else

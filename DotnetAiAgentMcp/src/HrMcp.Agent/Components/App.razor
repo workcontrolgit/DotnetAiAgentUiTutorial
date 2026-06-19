@@ -15,6 +15,26 @@
     <script src="_content/Blazored.TextEditor/Blazored-BlazorQuill.js"></script>
     <script src="_framework/blazor.web.js"></script>
     <script>
+        // Polls until Quill is fully initialized (root set), then loads HTML via dangerouslyPasteHTML.
+        // Needed because Blazor's OnAfterRenderAsync on the parent fires before child's createQuill completes.
+        window.loadQuillWhenReady = function (wrapperId, html) {
+            var wrapper = document.getElementById(wrapperId);
+            if (!wrapper) return;
+            var attempts = 0;
+            var check = setInterval(function () {
+                attempts++;
+                var nodes = wrapper.querySelectorAll('*');
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].__quill && nodes[i].__quill.root) {
+                        clearInterval(check);
+                        nodes[i].__quill.clipboard.dangerouslyPasteHTML(html);
+                        return;
+                    }
+                }
+                if (attempts >= 40) clearInterval(check); // give up after ~2 s
+            }, 50);
+        };
+
         window.downloadFile = function (fileName, base64Content) {
             const byteChars = atob(base64Content);
             const byteNums = new Array(byteChars.length);
