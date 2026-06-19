@@ -246,8 +246,8 @@
                 }
                 else
                 {
-                    // Editor already initialized — inject directly via Quill API
-                    await _richEditor.LoadHTMLContent(html);
+                    // Editor already initialized — set content via custom Delta builder
+                    await JS.InvokeVoidAsync("setQuillContent", "quill-editor-wrapper", html);
                 }
             }
         }

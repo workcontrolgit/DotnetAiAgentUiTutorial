@@ -15,23 +15,80 @@
     <script src="_content/Blazored.TextEditor/Blazored-BlazorQuill.js"></script>
     <script src="_framework/blazor.web.js"></script>
     <script>
-        // Polls until Quill is fully initialized (root set), then loads HTML via dangerouslyPasteHTML.
-        // Needed because Blazor's OnAfterRenderAsync on the parent fires before child's createQuill completes.
-        window.loadQuillWhenReady = function (wrapperId, html) {
+        // Converts HTML to a Quill Delta directly, bypassing Quill v1.3.6's clipboard.convert
+        // which drops <ul>/<li> elements when they contain nested inline tags like <strong>.
+        function htmlToDelta(html) {
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            var ops = [];
+
+            function walk(node, fmt) {
+                if (node.nodeType === 3) { // text node
+                    var t = node.textContent;
+                    if (!t.trim()) return; // skip structural whitespace
+                    ops.push(Object.keys(fmt).length
+                        ? { insert: t, attributes: Object.assign({}, fmt) }
+                        : { insert: t });
+                    return;
+                }
+                var tag = (node.tagName || '').toLowerCase();
+                var f = Object.assign({}, fmt);
+
+                // Inline formatting — accumulates into children
+                if (tag === 'strong' || tag === 'b') f.bold = true;
+                else if (tag === 'em' || tag === 'i') f.italic = true;
+                else if (tag === 'u') f.underline = true;
+                else if (tag === 's' || tag === 'del') f.strike = true;
+                else if (tag === 'mark') f.background = 'yellow';
+                else if (tag === 'br') { ops.push({ insert: '\n' }); return; }
+
+                // Block-level newline attribute (null = no closing newline)
+                var blockFmt = null;
+                if (tag === 'h1') blockFmt = { header: 1 };
+                else if (tag === 'h2') blockFmt = { header: 2 };
+                else if (tag === 'h3') blockFmt = { header: 3 };
+                else if (tag === 'p' || tag === 'div') blockFmt = {};
+                else if (tag === 'li') {
+                    var p = node.parentElement;
+                    blockFmt = { list: p && p.tagName.toLowerCase() === 'ol' ? 'ordered' : 'bullet' };
+                }
+                // <ul>, <ol>: walk children, no closing newline
+
+                Array.from(node.childNodes).forEach(function (c) { walk(c, f); });
+
+                if (blockFmt !== null) {
+                    var nl = { insert: '\n' };
+                    if (Object.keys(blockFmt).length) nl.attributes = blockFmt;
+                    ops.push(nl);
+                }
+            }
+
+            Array.from(doc.body.childNodes).forEach(function (n) { walk(n, {}); });
+            if (!ops.length || ops[ops.length - 1].insert !== '\n') ops.push({ insert: '\n' });
+            return { ops: ops };
+        }
+
+        // Sets Quill content synchronously (for use when editor is already initialized).
+        window.setQuillContent = function (wrapperId, html) {
             var wrapper = document.getElementById(wrapperId);
-            if (!wrapper) return;
+            if (!wrapper) return false;
+            var nodes = wrapper.querySelectorAll('*');
+            for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].__quill && nodes[i].__quill.root) {
+                    try { nodes[i].__quill.setContents(htmlToDelta(html)); return true; }
+                    catch (e) { return false; }
+                }
+            }
+            return false;
+        };
+
+        // Polls until Quill's root is set (fully initialized), then loads HTML.
+        // Needed because Blazor's parent OnAfterRenderAsync fires before child's createQuill completes.
+        window.loadQuillWhenReady = function (wrapperId, html) {
             var attempts = 0;
             var check = setInterval(function () {
                 attempts++;
-                var nodes = wrapper.querySelectorAll('*');
-                for (var i = 0; i < nodes.length; i++) {
-                    if (nodes[i].__quill && nodes[i].__quill.root) {
-                        clearInterval(check);
-                        nodes[i].__quill.clipboard.dangerouslyPasteHTML(html);
-                        return;
-                    }
-                }
-                if (attempts >= 40) clearInterval(check); // give up after ~2 s
+                if (window.setQuillContent(wrapperId, html)) { clearInterval(check); }
+                else if (attempts >= 40) { clearInterval(check); } // give up after ~2 s
             }, 50);
         };
 
