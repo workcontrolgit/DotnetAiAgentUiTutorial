@@ -130,6 +130,7 @@
     private bool _leftPanelHidden;
     private bool _draftVisible;
     private BlazoredTextEditor _richEditor = default!;
+    private string? _pendingHtml;
     private bool _resizing;
     private int _leftPanelWidth = 420;
     private const int MinLeftPanelWidth = 320;
@@ -169,6 +170,16 @@
     private string WorkspaceGridStyle => _leftPanelHidden || !_draftVisible
         ? "grid-template-columns: minmax(0, 1fr);"
         : $"grid-template-columns: {_leftPanelWidth}px 8px minmax(0, 1fr);";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_pendingHtml is not null && _draftVisible)
+        {
+            var html = _pendingHtml;
+            _pendingHtml = null;
+            await _richEditor.LoadHTMLContent(html);
+        }
+    }
 
     private void ToggleLeftPanel()
     {
@@ -225,10 +236,9 @@
 
             if (ShouldSyncDraft(input, response))
             {
-                var html = Markdown.ToHtml(response.Trim());
+                _pendingHtml = Markdown.ToHtml(response.Trim());
                 _draftVisible = true;
-                await Task.Yield(); // allow Blazor to render the editor before loading content
-                await _richEditor.LoadHTMLContent(html);
+                // Content is injected in OnAfterRenderAsync after BlazoredTextEditor initializes Quill
             }
         }
         catch (Exception ex)
