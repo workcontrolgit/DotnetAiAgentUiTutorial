@@ -237,7 +237,7 @@
 
             if (ShouldSyncDraft(input, response))
             {
-                var html = Markdown.ToHtml(response.Trim(), ChatMarkdownPipeline);
+                var html = NormalizeHtmlForQuill(Markdown.ToHtml(response.Trim(), ChatMarkdownPipeline));
                 if (!_draftVisible)
                 {
                     // First draft: show the panel and let OnAfterRenderAsync load content via JS polling
@@ -296,6 +296,12 @@
             _busy = false;
         }
     }
+
+    // Markdig UseAdvancedExtensions produces loose lists: <li><p>text</p></li>.
+    // Quill's MutationObserver normalizes <p> inside <li> and truncates the content.
+    // Strip the <p> wrapper so Quill receives simple <li>text</li> elements.
+    private static string NormalizeHtmlForQuill(string html) =>
+        Regex.Replace(html, @"<li>\s*<p>(.*?)</p>\s*</li>", "<li>$1</li>", RegexOptions.Singleline);
 
     private static bool ShouldSyncDraft(string prompt, string response)
     {
