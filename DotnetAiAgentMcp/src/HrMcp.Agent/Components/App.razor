@@ -37,6 +37,19 @@
             return findQuillAndSetHTML(wrapperId, html);
         };
 
+        // Reads the current HTML from the Quill root.
+        window.getQuillContent = function (wrapperId) {
+            var wrapper = document.getElementById(wrapperId);
+            if (!wrapper) return '';
+            var nodes = wrapper.querySelectorAll('*');
+            for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].__quill && nodes[i].__quill.root) {
+                    return nodes[i].__quill.root.innerHTML;
+                }
+            }
+            return '';
+        };
+
         // Polls until Quill is fully initialized (clipboard ready), then loads HTML.
         // Needed because Blazor's parent OnAfterRenderAsync fires before child's createQuill completes.
         window.loadQuillWhenReady = function (wrapperId, html) {

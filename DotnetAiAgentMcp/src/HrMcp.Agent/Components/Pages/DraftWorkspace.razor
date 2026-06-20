@@ -264,8 +264,8 @@
 
     private async Task ExportWordAsync()
     {
-        var currentHtml = await _richEditor.GetHTML();
-        if (_busy || string.IsNullOrWhiteSpace(currentHtml))
+        var currentHtml = await JS.InvokeAsync<string>("getQuillContent", "quill-editor-wrapper");
+        if (_busy || string.IsNullOrWhiteSpace(currentHtml) || currentHtml == "<p><br></p>")
         {
             _status = "Draft is empty. Add content before exporting.";
             return;
