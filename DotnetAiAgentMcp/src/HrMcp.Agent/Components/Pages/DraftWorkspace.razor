@@ -246,17 +246,20 @@
             if (ShouldSyncDraft(input, response))
             {
                 var draftMarkdown = ExtractDraftMarkdown(response);
-                var html = NormalizeHtmlForQuill(Markdown.ToHtml(draftMarkdown, ChatMarkdownPipeline));
-                if (!_draftVisible)
+                if (draftMarkdown is not null)
                 {
-                    // First draft: show the panel and let OnAfterRenderAsync load content via JS polling
-                    _pendingHtml = html;
-                    _draftVisible = true;
-                }
-                else
-                {
-                    // Editor already initialized — set content via custom Delta builder
-                    await JS.InvokeVoidAsync("setQuillContent", "quill-editor-wrapper", html);
+                    var html = NormalizeHtmlForQuill(Markdown.ToHtml(draftMarkdown, ChatMarkdownPipeline));
+                    if (!_draftVisible)
+                    {
+                        // First draft: show the panel and let OnAfterRenderAsync load content via JS polling
+                        _pendingHtml = html;
+                        _draftVisible = true;
+                    }
+                    else
+                    {
+                        // Editor already initialized — set content via custom Delta builder
+                        await JS.InvokeVoidAsync("setQuillContent", "quill-editor-wrapper", html);
+                    }
                 }
             }
         }
@@ -310,11 +313,12 @@
 
     // Extracts the markdown draft body from an AI response that may include conversational
     // preamble (before the first ## heading) and a closing question/offer at the end.
-    private static string ExtractDraftMarkdown(string response)
+    // Returns null when the response contains no markdown headings — caller skips draft update.
+    private static string? ExtractDraftMarkdown(string response)
     {
         var lines = response.Split(["\r\n", "\n"], StringSplitOptions.None);
 
-        // Find the first line that starts a markdown heading or the draft body
+        // Find the first line that starts a markdown heading
         var start = -1;
         for (var i = 0; i < lines.Length; i++)
         {
@@ -325,9 +329,9 @@
             }
         }
 
-        // No heading found — return the full response as-is
+        // No heading found — this is a conversational reply, do not update the draft
         if (start < 0)
-            return response.Trim();
+            return null;
 
         // Strip trailing conversational closing lines (questions/offers after the last content block)
         var end = lines.Length - 1;
