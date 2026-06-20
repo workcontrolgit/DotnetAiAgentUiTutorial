@@ -15,28 +15,17 @@
     <script src="_content/Blazored.TextEditor/Blazored-BlazorQuill.js"></script>
     <script src="_framework/blazor.web.js"></script>
     <script>
-        // Sets Quill's content by writing directly to root.innerHTML.
-        // Quill's MutationObserver is temporarily disconnected so its normalization pass
-        // cannot strip list items after the assignment. The observer is reconnected with
-        // the same options Quill v1.3.6 uses so future user edits are tracked normally.
-        // GetHTML() reads root.innerHTML so Word export continues to work correctly.
+        // Finds the Quill instance inside wrapperId and sets content via dangerouslyPasteHTML.
+        // This is reliable for clean HTML (no <p> inside <li>) which Markdig produces
+        // when list items have no blank lines between them.
         function findQuillAndSetHTML(wrapperId, html) {
             var wrapper = document.getElementById(wrapperId);
             if (!wrapper) return false;
             var nodes = wrapper.querySelectorAll('*');
             for (var i = 0; i < nodes.length; i++) {
                 var q = nodes[i].__quill;
-                if (q && q.root) {
-                    var obs = q.editor && q.editor.observer;
-                    if (obs) obs.disconnect();
-                    q.root.innerHTML = html;
-                    if (obs) obs.observe(q.root, {
-                        attributes: true,
-                        characterData: true,
-                        characterDataOldValue: true,
-                        childList: true,
-                        subtree: true
-                    });
+                if (q && q.root && q.clipboard) {
+                    q.clipboard.dangerouslyPasteHTML(0, html);
                     return true;
                 }
             }
@@ -48,7 +37,7 @@
             return findQuillAndSetHTML(wrapperId, html);
         };
 
-        // Polls until Quill's root is set (fully initialized), then loads HTML.
+        // Polls until Quill is fully initialized (clipboard ready), then loads HTML.
         // Needed because Blazor's parent OnAfterRenderAsync fires before child's createQuill completes.
         window.loadQuillWhenReady = function (wrapperId, html) {
             var attempts = 0;
