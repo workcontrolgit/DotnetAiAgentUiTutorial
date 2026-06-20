@@ -112,7 +112,14 @@
             <div class="panel-actions panel-actions--editor">
                 <div class="panel-actions-row panel-actions-row--end">
                     <button class="primary-btn primary-btn--compact" @onclick="ExportWordAsync" disabled="@_busy">Export Word</button>
-                    @if (!string.IsNullOrWhiteSpace(_status))
+                    @if (_exportBusy)
+                    {
+                        <span class="export-status">
+                            <span class="chat-spinner" aria-hidden="true"></span>
+                            <span>Generating Word document...</span>
+                        </span>
+                    }
+                    else if (!string.IsNullOrWhiteSpace(_status))
                     {
                         <div class="chat-item panel-status">@_status</div>
                     }
@@ -126,6 +133,7 @@
     private string Prompt { get; set; } = string.Empty;
     private readonly List<ChatTurn> _turns = [];
     private bool _busy;
+    private bool _exportBusy;
     private string _status = string.Empty;
     private bool _leftPanelHidden;
     private bool _draftVisible;
@@ -272,6 +280,7 @@
         }
 
         _busy = true;
+        _exportBusy = true;
         _status = string.Empty;
 
         try
@@ -295,6 +304,7 @@
         finally
         {
             _busy = false;
+            _exportBusy = false;
         }
     }
 

@@ -238,6 +238,15 @@ html, body {
     margin-left: auto;
 }
 
+.export-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #4e5a74;
+    font-size: 0.875rem;
+    margin-left: 8px;
+}
+
 .help-icon {
     width: 20px;
     height: 20px;
