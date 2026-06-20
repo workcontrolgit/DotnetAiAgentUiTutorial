@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+    <HeadOutlet @rendermode="RenderMode.InteractiveServer" />
+</head>
+<body>
+    <Routes @rendermode="RenderMode.InteractiveServer" />
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="_content/Blazored.TextEditor/quill-blot-formatter.min.js"></script>
+    <script src="_content/Blazored.TextEditor/Blazored-BlazorQuill.js"></script>
+    <script src="_framework/blazor.web.js"></script>
+    <script>
+        // Finds the Quill instance inside wrapperId and sets content via dangerouslyPasteHTML.
+        // This is reliable for clean HTML (no <p> inside <li>) which Markdig produces
+        // when list items have no blank lines between them.
+        function findQuillAndSetHTML(wrapperId, html) {
+            var wrapper = document.getElementById(wrapperId);
+            if (!wrapper) return false;
+            var nodes = wrapper.querySelectorAll('*');
+            for (var i = 0; i < nodes.length; i++) {
+                var q = nodes[i].__quill;
+                if (q && q.root && q.clipboard) {
+                    q.clipboard.dangerouslyPasteHTML(0, html);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Sets Quill content (for use when editor is already initialized).
+        window.setQuillContent = function (wrapperId, html) {
+            return findQuillAndSetHTML(wrapperId, html);
+        };
+
+        // Polls until Quill is fully initialized (clipboard ready), then loads HTML.
+        // Needed because Blazor's parent OnAfterRenderAsync fires before child's createQuill completes.
+        window.loadQuillWhenReady = function (wrapperId, html) {
+            var attempts = 0;
+            var check = setInterval(function () {
+                attempts++;
+                if (findQuillAndSetHTML(wrapperId, html)) { clearInterval(check); }
+                else if (attempts >= 40) { clearInterval(check); }
+            }, 50);
+        };
+
+        window.downloadFile = function (fileName, base64Content) {
+            const byteChars = atob(base64Content);
+            const byteNums = new Array(byteChars.length);
+            for (let i = 0; i < byteChars.length; i++) byteNums[i] = byteChars.charCodeAt(i);
+            const blob = new Blob([new Uint8Array(byteNums)], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        };
+    </script>
+</body>
+</html>

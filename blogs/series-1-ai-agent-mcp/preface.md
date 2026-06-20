@@ -46,7 +46,7 @@ The five-project Clean Architecture solution:
 - **HrMcp.Application** — application services. Depends only on Core.
 - **HrMcp.Infrastructure.Persistence** — EF Core + SQL Server. Implements Core interfaces.
 - **HrMcp.McpServer** — ASP.NET Core MCP server. Exposes tools to AI clients.
-- **HrMcp.Agent** — console AI agent. Connects to the MCP server over `stdio` or Streamable HTTP and uses Ollama or Azure OpenAI through `IChatClient`.
+- **HrMcp.Agent** — AI agent host with Blazor Server web mode (`--web`) and console fallback. Connects to the MCP server over `stdio` or Streamable HTTP and uses Ollama or Azure OpenAI through `IChatClient`.
 
 ---
 
@@ -119,7 +119,7 @@ Install `ModelContextProtocol.AspNetCore`. Register three tool classes and expos
 ---
 
 **Part 4 — AI Agent with Microsoft.Extensions.AI + Ollama**
-Set up Ollama locally. Connect the `HrMcp.Agent` console app to the MCP server over `stdio` by default or Streamable HTTP when needed. Use the current manual tool loop to call your MCP tools and answer HR questions in natural language.
+Set up Ollama locally. Connect the `HrMcp.Agent` web mode (`--web`) or console fallback to the MCP server over `stdio` by default or Streamable HTTP when needed. Use the current manual tool loop to call your MCP tools and answer HR questions in natural language.
 → *[Read Part 4](part-4-ai-agent-extensions-ai.md)*
 
 ---

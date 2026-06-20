@@ -18,7 +18,7 @@ The solution follows Clean Architecture with five projects:
 | **HrMcp.Application** | Application services. Depends only on Core. |
 | **HrMcp.Infrastructure.Persistence** | EF Core + SQL Server. Implements Core interfaces. |
 | **HrMcp.McpServer** | ASP.NET Core MCP server. Exposes tools to AI clients. |
-| **HrMcp.Agent** | Console AI agent. Connects to the MCP server over configurable `stdio` or stream HTTP transport. |
+| **HrMcp.Agent** | AI agent host with web mode (`--web`) and console fallback. Connects to the MCP server over configurable `stdio` or stream HTTP transport. |
 
 **Why MCP?** Traditional AI integration requires a custom connector for every AI tool × every data source (N×M). MCP replaces that with a shared protocol — N+M integrations instead.
 
@@ -65,6 +65,14 @@ Both the server and agent support two transports, selectable via command-line fl
 |---|---|---|
 | `--stdio` *(default)* | stdio | Claude Desktop, VS Code Copilot, single-terminal dev |
 | `--stream-http` | Stream HTTP (port 5100) | Two-terminal dev, visible server logs, MCP Inspector |
+
+**Web mode (MVP default)** — start the agent UI in Blazor Server:
+
+```bash
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --web
+```
+
+Use `--web --stream-http` when running the MCP server in a separate terminal.
 
 **stdio mode** — agent auto-spawns the server as a subprocess (one terminal):
 
