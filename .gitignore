@@ -6,6 +6,8 @@ obj/
 *.suo
 .vscode/*
 !.vscode/mcp.json
+*.rsuser
+TestResults/
 *.swp
 
 ## Secrets & environment
@@ -15,6 +17,9 @@ appsettings.Staging.json
 *.pfx
 *.p12
 secrets.json
+medium-auth-state.json
+.env
+.env.*
 
 ## EF Core
 *.db
@@ -28,6 +33,7 @@ Logs/
 ## Publish output
 publish/
 artifacts/
+appsDotnetMcpTutorialpublishMcpServer/
 
 ## USAJobs fetcher output
 DotnetAiAgentMcp/usajobs/output/
@@ -35,9 +41,13 @@ DotnetAiAgentMcp/usajobs/output/
 ## NuGet
 *.nupkg
 .nuget/
+packages/
 
 ## Node
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 ## OS
 .DS_Store
@@ -54,3 +64,8 @@ desktop.ini
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Local tooling
+.claude/
+.superpowers/
+debug.log
