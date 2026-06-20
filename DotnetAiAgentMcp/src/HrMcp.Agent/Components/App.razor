@@ -15,24 +15,35 @@
     <script src="_content/Blazored.TextEditor/Blazored-BlazorQuill.js"></script>
     <script src="_framework/blazor.web.js"></script>
     <script>
-        // Finds the Quill instance inside wrapperId and sets its content by writing directly
-        // to root.innerHTML. This bypasses Quill v1.3.6's clipboard.convert which drops
-        // <ul>/<li> elements containing nested inline tags. GetHTML() reads root.innerHTML
-        // so Word export continues to work correctly.
+        // Sets Quill's content by writing directly to root.innerHTML.
+        // Quill's MutationObserver is temporarily disconnected so its normalization pass
+        // cannot strip list items after the assignment. The observer is reconnected with
+        // the same options Quill v1.3.6 uses so future user edits are tracked normally.
+        // GetHTML() reads root.innerHTML so Word export continues to work correctly.
         function findQuillAndSetHTML(wrapperId, html) {
             var wrapper = document.getElementById(wrapperId);
             if (!wrapper) return false;
             var nodes = wrapper.querySelectorAll('*');
             for (var i = 0; i < nodes.length; i++) {
-                if (nodes[i].__quill && nodes[i].__quill.root) {
-                    nodes[i].__quill.root.innerHTML = html;
+                var q = nodes[i].__quill;
+                if (q && q.root) {
+                    var obs = q.editor && q.editor.observer;
+                    if (obs) obs.disconnect();
+                    q.root.innerHTML = html;
+                    if (obs) obs.observe(q.root, {
+                        attributes: true,
+                        characterData: true,
+                        characterDataOldValue: true,
+                        childList: true,
+                        subtree: true
+                    });
                     return true;
                 }
             }
             return false;
         }
 
-        // Sets Quill content synchronously (for use when editor is already initialized).
+        // Sets Quill content (for use when editor is already initialized).
         window.setQuillContent = function (wrapperId, html) {
             return findQuillAndSetHTML(wrapperId, html);
         };
