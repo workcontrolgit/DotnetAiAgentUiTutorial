@@ -182,6 +182,20 @@ html, body {
     font-family: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
 }
 
+.right-editor #quill-editor-wrapper {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.right-editor #quill-editor-wrapper > * {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
 .right-editor .ql-container.ql-snow {
     flex: 1;
     overflow: auto;
