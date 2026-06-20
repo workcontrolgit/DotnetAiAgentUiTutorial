@@ -112,7 +112,14 @@
             <div class="panel-actions panel-actions--editor">
                 <div class="panel-actions-row panel-actions-row--end">
                     <button class="primary-btn primary-btn--compact" @onclick="ExportWordAsync" disabled="@_busy">Export Word</button>
-                    @if (!string.IsNullOrWhiteSpace(_status))
+                    @if (_exportBusy)
+                    {
+                        <span class="export-status">
+                            <span class="chat-spinner" aria-hidden="true"></span>
+                            <span>Generating Word document...</span>
+                        </span>
+                    }
+                    else if (!string.IsNullOrWhiteSpace(_status))
                     {
                         <div class="chat-item panel-status">@_status</div>
                     }
@@ -126,6 +133,7 @@
     private string Prompt { get; set; } = string.Empty;
     private readonly List<ChatTurn> _turns = [];
     private bool _busy;
+    private bool _exportBusy;
     private string _status = string.Empty;
     private bool _leftPanelHidden;
     private bool _draftVisible;
@@ -238,17 +246,20 @@
             if (ShouldSyncDraft(input, response))
             {
                 var draftMarkdown = ExtractDraftMarkdown(response);
-                var html = NormalizeHtmlForQuill(Markdown.ToHtml(draftMarkdown, ChatMarkdownPipeline));
-                if (!_draftVisible)
+                if (draftMarkdown is not null)
                 {
-                    // First draft: show the panel and let OnAfterRenderAsync load content via JS polling
-                    _pendingHtml = html;
-                    _draftVisible = true;
-                }
-                else
-                {
-                    // Editor already initialized — set content via custom Delta builder
-                    await JS.InvokeVoidAsync("setQuillContent", "quill-editor-wrapper", html);
+                    var html = NormalizeHtmlForQuill(Markdown.ToHtml(draftMarkdown, ChatMarkdownPipeline));
+                    if (!_draftVisible)
+                    {
+                        // First draft: show the panel and let OnAfterRenderAsync load content via JS polling
+                        _pendingHtml = html;
+                        _draftVisible = true;
+                    }
+                    else
+                    {
+                        // Editor already initialized — set content via custom Delta builder
+                        await JS.InvokeVoidAsync("setQuillContent", "quill-editor-wrapper", html);
+                    }
                 }
             }
         }
@@ -264,14 +275,15 @@
 
     private async Task ExportWordAsync()
     {
-        var currentHtml = await _richEditor.GetHTML();
-        if (_busy || string.IsNullOrWhiteSpace(currentHtml))
+        var currentHtml = await JS.InvokeAsync<string>("getQuillContent", "quill-editor-wrapper");
+        if (_busy || string.IsNullOrWhiteSpace(currentHtml) || currentHtml == "<p><br></p>")
         {
             _status = "Draft is empty. Add content before exporting.";
             return;
         }
 
         _busy = true;
+        _exportBusy = true;
         _status = string.Empty;
 
         try
@@ -295,16 +307,18 @@
         finally
         {
             _busy = false;
+            _exportBusy = false;
         }
     }
 
     // Extracts the markdown draft body from an AI response that may include conversational
     // preamble (before the first ## heading) and a closing question/offer at the end.
-    private static string ExtractDraftMarkdown(string response)
+    // Returns null when the response contains no markdown headings — caller skips draft update.
+    private static string? ExtractDraftMarkdown(string response)
     {
         var lines = response.Split(["\r\n", "\n"], StringSplitOptions.None);
 
-        // Find the first line that starts a markdown heading or the draft body
+        // Find the first line that starts a markdown heading
         var start = -1;
         for (var i = 0; i < lines.Length; i++)
         {
@@ -315,9 +329,9 @@
             }
         }
 
-        // No heading found — return the full response as-is
+        // No heading found — this is a conversational reply, do not update the draft
         if (start < 0)
-            return response.Trim();
+            return null;
 
         // Strip trailing conversational closing lines (questions/offers after the last content block)
         var end = lines.Length - 1;
