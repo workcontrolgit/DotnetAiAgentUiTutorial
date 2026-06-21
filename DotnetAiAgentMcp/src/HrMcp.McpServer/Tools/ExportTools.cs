@@ -1,6 +1,9 @@
 // src/HrMcp.McpServer/Tools/ExportTools.cs
 using System.ComponentModel;
 using System.Text.Json;
+using AngleSharp.Html.Parser;
+using AngleSharp.Dom;
+using OxDocument = DocumentFormat.OpenXml.Wordprocessing.Document;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -42,7 +45,7 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
      Description("Exports an AI-generated job description draft to an editable Word (.docx) file. Pass the full current draft text (which may have been updated by the user). Returns a JSON payload with fileName and base64-encoded content for the agent to save locally.")]
     public async Task<string> ExportDraftToWord(
         [Description("The numeric ID of the position the draft is for (used for the document title)")] int positionId,
-        [Description("The full job description draft text, including any user edits. Markdown headings (##) become Word headings.")] string draftContent,
+        [Description("The full job description draft content. Accepts HTML (from web editor) or markdown (from console). Headings, bullets, and bold text are preserved in the Word output.")] string draftContent,
         CancellationToken ct = default)
     {
         logger.LogInformation("[Request ] ExportDraftToWord positionId={PositionId}", positionId);
@@ -84,7 +87,7 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
 
         var mainPart = doc.AddMainDocumentPart();
         AddStylesPart(mainPart);
-        mainPart.Document = new Document();
+        mainPart.Document = new OxDocument();
         var body = new Body();
         mainPart.Document.AppendChild(body);
 
@@ -129,7 +132,7 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
         return ms.ToArray();
     }
 
-    private static byte[] BuildDraftDocx(string title, string org, string markdownDraft)
+    private static byte[] BuildDraftDocx(string title, string org, string draftContent)
     {
         var ms = new MemoryStream();
         using (var doc = WordprocessingDocument.Create(ms, WordprocessingDocumentType.Document, true))
@@ -137,7 +140,7 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
 
         var mainPart = doc.AddMainDocumentPart();
         AddStylesPart(mainPart);
-        mainPart.Document = new Document();
+        mainPart.Document = new OxDocument();
         var body = new Body();
         mainPart.Document.AppendChild(body);
 
@@ -154,8 +157,11 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
         body.AppendChild(notice);
         body.AppendChild(new Paragraph());
 
-        // Parse markdown into Word paragraphs
-        AppendMarkdownContent(body, markdownDraft);
+        // Auto-detect format: Blazor web mode sends Quill HTML; console mode sends markdown.
+        if (draftContent.TrimStart().StartsWith('<'))
+            AppendHtmlContent(body, draftContent);
+        else
+            AppendMarkdownContent(body, draftContent);
 
         doc.Save();
         } // dispose flushes ZIP to ms
@@ -179,6 +185,79 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
             else
                 body.AppendChild(RichParagraph(null, line));
         }
+    }
+
+    private static void AppendHtmlContent(Body body, string html)
+    {
+        var parser = new HtmlParser();
+        using var document = parser.ParseDocument(html);
+
+        foreach (var node in document.Body!.ChildNodes)
+        {
+            if (node is not IElement element)
+                continue;
+
+            switch (element.TagName.ToLowerInvariant())
+            {
+                case "h1":
+                    body.AppendChild(StyledParagraph("Heading1", element.TextContent.Trim()));
+                    break;
+                case "h2":
+                    body.AppendChild(StyledParagraph("Heading2", element.TextContent.Trim()));
+                    break;
+                case "h3":
+                    body.AppendChild(StyledParagraph("Heading3", element.TextContent.Trim()));
+                    break;
+                case "p":
+                    if (!string.IsNullOrWhiteSpace(element.TextContent))
+                        body.AppendChild(BuildHtmlParagraph(element));
+                    else
+                        body.AppendChild(new Paragraph());
+                    break;
+                case "ul":
+                case "ol":
+                    foreach (var li in element.QuerySelectorAll("li"))
+                        body.AppendChild(BulletParagraph(li.TextContent.Trim()));
+                    break;
+            }
+        }
+    }
+
+    private static Paragraph BuildHtmlParagraph(IElement element)
+    {
+        var para = new Paragraph();
+
+        foreach (var child in element.ChildNodes)
+        {
+            if (child is IText textNode)
+            {
+                if (!string.IsNullOrEmpty(textNode.TextContent))
+                    para.AppendChild(new Run(
+                        new Text(textNode.TextContent) { Space = SpaceProcessingModeValues.Preserve }));
+            }
+            else if (child is IElement inline)
+            {
+                var run = new Run(
+                    new Text(inline.TextContent) { Space = SpaceProcessingModeValues.Preserve });
+
+                var rp = new RunProperties();
+                switch (inline.TagName.ToLowerInvariant())
+                {
+                    case "strong": rp.AppendChild(new Bold()); break;
+                    case "em":     rp.AppendChild(new Italic()); break;
+                    case "u":      rp.AppendChild(new Underline { Val = UnderlineValues.Single }); break;
+                    case "s":      rp.AppendChild(new Strike()); break;
+                    case "mark":   rp.AppendChild(new Highlight { Val = HighlightColorValues.Yellow }); break;
+                }
+
+                if (rp.HasChildren)
+                    run.PrependChild(rp);
+
+                para.AppendChild(run);
+            }
+        }
+
+        return para;
     }
 
     private static bool IsBulletLine(string line, out string content)

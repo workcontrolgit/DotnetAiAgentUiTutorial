@@ -10,11 +10,11 @@
 
 In Part 3 we built an MCP server with eight tools and verified them with MCP Inspector. The tools work, but no AI is involved yet. That changes now.
 
-In this part we wire up the `HrMcp.Agent` console app. It connects to the MCP server over `stdio` by default or Streamable HTTP when requested, hands the MCP tools to an `IChatClient`, and lets the model decide which tools to call and when. The agent supports multiple providers through configuration: Ollama for local runs and Azure OpenAI for cloud-backed runs.
+In this part we wire up the `HrMcp.Agent` runtime that now supports a Blazor Server web mode (`--web`) plus the original console flow as fallback. It connects to the MCP server over `stdio` by default or Streamable HTTP when requested, hands the MCP tools to an `IChatClient`, and lets the model decide which tools to call and when. The agent supports multiple providers through configuration: Ollama for local runs and Azure OpenAI for cloud-backed runs.
 
 One important implementation detail in the real project: the agent does **not** use `UseFunctionInvocation()` middleware. `HrAgent.cs` runs the tool loop manually by reading `FunctionCallContent`, invoking the matching MCP tool, appending `FunctionResultContent`, and asking the model for the next step.
 
-By the end you will have a running AI agent that answers HR questions, writes job descriptions from tool-returned data, and exports files to HTML, Word, and Excel.
+By the end you will have a running AI agent backend that answers HR questions, writes job descriptions from tool-returned data, and exports files to HTML, Word, and Excel. You can drive that flow from the web UI (MVP path) or the console flow (fallback/tutorial compatibility).
 
 ---
 
@@ -381,6 +381,7 @@ So the rule of thumb is:
 
 `HrMcp.Agent` supports several command-line flags that map directly to the real `Program.cs` behavior:
 
+- `--web` starts the Blazor Server UI host (MVP default for this tutorial phase).
 - `--stdio` forces `stdio` transport.
 - `--stream-http` forces Streamable HTTP transport.
 - `--debug` enables verbose MCP transport logging.
@@ -418,26 +419,32 @@ dotnet build DotnetAiAgentMcp.slnx
 
 ---
 
-## Step 5 - Run a Conversation
+## Step 5 - Run the Agent (Web First, Console Fallback)
 
-Because the project defaults to `stdio`, the simplest run is:
+For the MVP walkthrough, start the web workspace:
 
 ```bash
-dotnet run --project src/HrMcp.Agent
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --web
 ```
 
-If you want to run the server separately over Streamable HTTP:
+If you want to run the MCP server separately over Streamable HTTP:
 
 ```bash
-dotnet run --project src/HrMcp.McpServer
-dotnet run --project src/HrMcp.Agent -- --stream-http
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stream-http
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --web --stream-http
+```
+
+Console fallback remains available for compatibility with earlier steps:
+
+```bash
+dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent
 ```
 
 You should see the MCP server log in the first terminal:
 
 ![MCP server listening on http://localhost:5100](screenshots/part-4-screenshot-1-mcp-server.png)
 
-And in the agent terminal, the style picker:
+And in the console agent terminal (fallback path), the style picker:
 
 ![Agent startup showing style picker](screenshots/part-4-screenshot-2-agent-startup.png)
 
@@ -560,7 +567,7 @@ The project's current Ollama path uses `OllamaApiClient`, and the Azure path use
 
 ## What We Built
 
-- `HrMcp.Agent` console agent using `IChatClient` plus MCP tools
+- `HrMcp.Agent` in-place runtime with web mode (`--web`) and console fallback
 - manual tool dispatch in `HrAgent.cs`
 - `stdio` transport by default, Streamable HTTP as an option
 - multi-provider model selection through config

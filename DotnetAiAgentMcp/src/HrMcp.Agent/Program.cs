@@ -1,15 +1,28 @@
 // src/HrMcp.Agent/Program.cs
 using Azure.AI.OpenAI;
 using Azure.Identity;
+using HrMcp.Agent.Components;
 using HrMcp.Agent;
+using HrMcp.Agent.Web.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Client;
 using OllamaSharp;
+using Serilog;
 using Spectre.Console;
 using System.Net.Http.Json;
 using System.Text.Json;
+
+var runWeb = args.Contains("--web", StringComparer.OrdinalIgnoreCase);
+if (runWeb)
+{
+    await RunWebAsync(args);
+    return;
+}
 
 // --num-ctx <value> overrides AI:Ollama:NumCtx from appsettings.json
 var numCtxArg = ParseIntArg(args, "--num-ctx");
@@ -34,6 +47,19 @@ var transportType = args.Contains("--stream-http") ? "streamHttp"
 
 var enableDebug = args.Contains("--debug") ||
     configuration.GetValue<bool>("Features:EnableDebug");
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Is(enableDebug ? Serilog.Events.LogEventLevel.Debug : Serilog.Events.LogEventLevel.Information)
+    .WriteTo.File(
+        path: Path.Combine("logs", "error-.log"),
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: 14,
+        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error,
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .CreateLogger();
+
+try
+{
 
 // OIDC feature flag
 // Set Features:EnableOidc = false in appsettings.json (or appsettings.Development.json)
@@ -158,6 +184,36 @@ var numCtx = configuration.GetValue<int?>("AI:Ollama:NumCtx");
 var outputFolder = FindOutputFolder();
 var agent = new HrAgent(chatClient, mcpTools.Cast<AITool>().ToList(), style, numCtx, outputFolder);
 await agent.RunAsync();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Unhandled exception in HrMcp.Agent");
+    Console.Error.WriteLine("A fatal error occurred. Check logs/error-*.log for details.");
+    Environment.ExitCode = 1;
+}
+finally
+{
+    await Log.CloseAndFlushAsync();
+}
+
+static async Task RunWebAsync(string[] args)
+{
+    var builder = WebApplication.CreateBuilder(args);
+    builder.WebHost.UseStaticWebAssets();
+    builder.Services.AddRazorComponents()
+        .AddInteractiveServerComponents();
+    builder.Services.AddScoped<IAgentDraftService, AgentDraftService>();
+
+    var app = builder.Build();
+    app.UseStaticFiles();
+    app.MapStaticAssets();
+    app.UseAntiforgery();
+    app.MapRazorComponents<App>()
+        .AddInteractiveServerRenderMode();
+
+    Console.WriteLine("HrMcp.Agent starting in --web mode.");
+    await app.RunAsync();
+}
 
 static async Task<IClientTransport> CreateClientTransportAsync(
     IConfiguration configuration,
