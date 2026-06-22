@@ -255,7 +255,7 @@ docker compose -f docker-compose.identity.yml up -d
 **2. Start the MCP server with OIDC enabled:**
 
 ```bash
-cd DotnetAiAgentMcp
+cd DotnetAiAgentUI
 dotnet run --project src/HrMcp.McpServer -- --stream-http
 ```
 
