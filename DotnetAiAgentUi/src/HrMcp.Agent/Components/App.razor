@@ -75,6 +75,11 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         };
+
+        window.scrollChatToBottom = function (id) {
+            var el = document.getElementById(id);
+            if (el) el.scrollTop = el.scrollHeight;
+        };
     </script>
 </body>
 </html>

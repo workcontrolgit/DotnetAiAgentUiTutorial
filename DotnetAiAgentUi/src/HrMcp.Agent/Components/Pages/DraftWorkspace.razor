@@ -20,7 +20,7 @@
     {
         <section class="left-chat">
             <h3>Writing Assistant</h3>
-            <div class="chat-thread">
+            <div class="chat-thread" id="chat-thread">
                 @if (_turns.Count == 0)
                 {
                     <div class="chat-item">Chat responses appear here after you send a prompt.</div>
@@ -137,6 +137,8 @@
     private string _status = string.Empty;
     private bool _leftPanelHidden;
     private bool _draftVisible;
+    private int _lastScrollTurnCount;
+    private bool _lastScrollBusy;
     private BlazoredTextEditor _richEditor = default!;
     private string? _pendingHtml;
     private bool _resizing;
@@ -191,8 +193,15 @@
         {
             var html = _pendingHtml;
             _pendingHtml = null;
-            // Quill may not be initialized yet — JS function polls until ready, then loads via dangerouslyPasteHTML
             await JS.InvokeVoidAsync("loadQuillWhenReady", "quill-editor-wrapper", html);
+        }
+
+        var shouldScroll = _turns.Count != _lastScrollTurnCount || _busy != _lastScrollBusy;
+        if (shouldScroll)
+        {
+            _lastScrollTurnCount = _turns.Count;
+            _lastScrollBusy = _busy;
+            await JS.InvokeVoidAsync("scrollChatToBottom", "chat-thread");
         }
     }
 
