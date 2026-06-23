@@ -19,7 +19,6 @@
     @if (!_leftPanelHidden)
     {
         <section class="left-chat">
-            <h3>Writing Assistant</h3>
             <div class="chat-thread" id="chat-thread">
                 @if (_turns.Count == 0)
                 {
@@ -32,10 +31,9 @@
                         var isUser = string.Equals(turn.Role, "You", StringComparison.OrdinalIgnoreCase);
                         <div class="chat-bubble-row @(isUser ? "chat-bubble-row--user" : "chat-bubble-row--assistant")">
                             <div class="chat-bubble">
-                                <strong>@turn.Role:</strong>
                                 @if (isUser)
                                 {
-                                    <span> @turn.Text</span>
+                                    <span>@turn.Text</span>
                                 }
                                 else
                                 {
@@ -57,7 +55,7 @@
                 }
             </div>
             <div class="chat-composer">
-                <textarea class="chat-input" @bind="Prompt" @bind:event="oninput" @onkeydown="HandlePromptKeyDown" placeholder="Ask for help drafting or improving your position description..."></textarea>
+                <textarea class="chat-input" @bind="Prompt" @bind:event="oninput" @onkeydown="HandlePromptKeyDown" placeholder="Message the assistant — e.g. &quot;Draft a mid-level software engineer PD&quot;"></textarea>
                 <div class="panel-actions panel-actions--chat">
                     <div class="panel-actions-row panel-actions-row--end">
                         <span

@@ -63,11 +63,8 @@ html, body {
 .chat-thread {
     flex: 1;
     overflow: auto;
-    border: 1px solid #e4e8f0;
-    border-radius: 6px;
     padding: 10px;
     margin-bottom: 8px;
-    background: linear-gradient(180deg, #f9fbff 0%, #f6f9ff 100%);
 }
 
 .chat-item {
