@@ -301,7 +301,7 @@
     // Extracts the markdown draft body from an AI response that may include conversational
     // preamble (before the first ## heading) and a closing question/offer at the end.
     // Returns null when the response contains no markdown headings — caller skips draft update.
-    private static string? ExtractDraftMarkdown(string response)
+    internal static string? ExtractDraftMarkdown(string response)
     {
         var lines = response.Split(["\r\n", "\n"], StringSplitOptions.None);
 
@@ -328,7 +328,7 @@
         return string.Join("\n", lines[start..(end + 1)]).Trim();
     }
 
-    private static bool IsClosingLine(string line)
+    internal static bool IsClosingLine(string line)
     {
         var t = line.Trim();
         if (string.IsNullOrWhiteSpace(t)) return true;
@@ -355,7 +355,7 @@
         return IsDraftIntentPrompt(prompt);
     }
 
-    private static bool IsDraftIntentPrompt(string prompt)
+    internal static bool IsDraftIntentPrompt(string prompt)
     {
         var normalized = prompt.ToLowerInvariant();
 
