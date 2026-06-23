@@ -157,7 +157,7 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
             var projectPath = configuration["McpServer:Transport:Stdio:ProjectPath"];
             if (string.IsNullOrWhiteSpace(projectPath))
             {
-                projectPath = Path.Combine(workingDirectory, "DotnetAiAgentMcp", "src", "HrMcp.McpServer", "HrMcp.McpServer.csproj");
+                projectPath = Path.Combine(workingDirectory, "DotnetAiAgentUi", "src", "HrMcp.McpServer", "HrMcp.McpServer.csproj");
             }
 
             return new StdioClientTransport(new StdioClientTransportOptions
@@ -214,7 +214,7 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         for (var i = 0; i < 8 && dir is not null; i++, dir = dir.Parent)
         {
-            if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentMcp")))
+            if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentUi")))
                 return dir.FullName;
         }
 
