@@ -8,70 +8,60 @@
 @inject IAgentDraftService AgentDraftService
 @inject IJSRuntime JS
 
-<div class="workspace-topbar">
-    <h1>Position Description Builder</h1>
-    <button class="ghost-btn" @onclick="ToggleLeftPanel">
-        @(_leftPanelHidden ? "Show Chat" : "Hide Chat")
-    </button>
-</div>
-
 <div class="workspace" style="@WorkspaceGridStyle" @onmousemove="HandleResize" @onmouseup="EndResize" @onmouseleave="EndResize">
-    @if (!_leftPanelHidden)
-    {
-        <section class="left-chat">
-            <div class="chat-thread" id="chat-thread">
-                @if (_turns.Count == 0)
+    <section class="left-chat">
+        <div class="chat-thread" id="chat-thread">
+            @if (_turns.Count == 0)
+            {
+                <div class="chat-item">Chat responses appear here after you send a prompt.</div>
+            }
+            else
+            {
+                @foreach (var turn in _turns)
                 {
-                    <div class="chat-item">Chat responses appear here after you send a prompt.</div>
-                }
-                else
-                {
-                    @foreach (var turn in _turns)
-                    {
-                        var isUser = string.Equals(turn.Role, "You", StringComparison.OrdinalIgnoreCase);
-                        <div class="chat-bubble-row @(isUser ? "chat-bubble-row--user" : "chat-bubble-row--assistant")">
-                            <div class="chat-bubble">
-                                @if (isUser)
-                                {
-                                    <span>@turn.Text</span>
-                                }
-                                else
-                                {
-                                    <div class="chat-bubble-content">@RenderAssistantMarkdown(turn.Text)</div>
-                                }
-                            </div>
+                    var isUser = string.Equals(turn.Role, "You", StringComparison.OrdinalIgnoreCase);
+                    <div class="chat-bubble-row @(isUser ? "chat-bubble-row--user" : "chat-bubble-row--assistant")">
+                        <div class="chat-bubble">
+                            @if (isUser)
+                            {
+                                <span>@turn.Text</span>
+                            }
+                            else
+                            {
+                                <div class="chat-bubble-content">@RenderAssistantMarkdown(turn.Text)</div>
+                            }
                         </div>
-                    }
-
-                    @if (_busy)
-                    {
-                        <div class="chat-bubble-row chat-bubble-row--assistant">
-                            <div class="chat-bubble chat-bubble--loading" role="status" aria-live="polite">
-                                <span class="chat-spinner" aria-hidden="true"></span>
-                                <span>Assistant is drafting your response...</span>
-                            </div>
-                        </div>
-                    }
-                }
-            </div>
-            <div class="chat-composer">
-                <textarea class="chat-input" @bind="Prompt" @bind:event="oninput" @onkeydown="HandlePromptKeyDown" placeholder="Message the assistant — e.g. &quot;Draft a mid-level software engineer PD&quot;"></textarea>
-                <div class="panel-actions panel-actions--chat">
-                    <div class="panel-actions-row panel-actions-row--end">
-                        <span
-                            class="help-icon"
-                            title="Enter to send, Shift+Enter for a new line. Draft updates automatically for draft/refine prompts."
-                            aria-label="Help: Enter to send, Shift+Enter for a new line. Draft updates automatically for draft/refine prompts.">?</span>
-                        <button class="primary-btn primary-btn--compact" @onclick="SendPromptAsync" disabled="@_busy">Send</button>
                     </div>
+                }
+
+                @if (_busy)
+                {
+                    <div class="chat-bubble-row chat-bubble-row--assistant">
+                        <div class="chat-bubble chat-bubble--loading" role="status" aria-live="polite">
+                            <span class="chat-spinner" aria-hidden="true"></span>
+                            <span>Assistant is drafting your response...</span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="chat-composer">
+            <textarea class="chat-input" @bind="Prompt" @bind:event="oninput" @onkeydown="HandlePromptKeyDown" placeholder="Message the assistant — e.g. &quot;Draft a mid-level software engineer PD&quot;"></textarea>
+            <div class="panel-actions panel-actions--chat">
+                <div class="panel-actions-row panel-actions-row--end">
+                    <span
+                        class="help-icon"
+                        title="Enter to send, Shift+Enter for a new line. Draft updates automatically for draft/refine prompts."
+                        aria-label="Help: Enter to send, Shift+Enter for a new line. Draft updates automatically for draft/refine prompts.">?</span>
+                    <button class="primary-btn primary-btn--compact" @onclick="SendPromptAsync" disabled="@_busy">Send</button>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        @if (_draftVisible)
-        {
-            <div class="splitter" role="separator" aria-label="Resize chat and draft panels" @onmousedown="StartResize"></div>
-        }
+    @if (_draftVisible)
+    {
+        <div class="splitter" role="separator" aria-label="Resize chat and draft panels" @onmousedown="StartResize"></div>
     }
 
     @if (_draftVisible)
@@ -133,7 +123,6 @@
     private bool _busy;
     private bool _exportBusy;
     private string _status = string.Empty;
-    private bool _leftPanelHidden;
     private bool _draftVisible;
     private int _lastScrollTurnCount;
     private bool _lastScrollBusy;
@@ -175,15 +164,9 @@
         .UseAdvancedExtensions()
         .DisableHtml()
         .Build();
-    private string WorkspaceGridStyle => _leftPanelHidden || !_draftVisible
+    private string WorkspaceGridStyle => !_draftVisible
         ? "grid-template-columns: minmax(0, 1fr);"
         : $"grid-template-columns: {_leftPanelWidth}px 8px minmax(0, 1fr);";
-
-    private void ToggleLeftPanel()
-    {
-        _leftPanelHidden = !_leftPanelHidden;
-        _resizing = false;
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -205,9 +188,6 @@
 
     private void StartResize()
     {
-        if (_leftPanelHidden)
-            return;
-
         _resizing = true;
     }
 
@@ -218,7 +198,7 @@
 
     private void HandleResize(MouseEventArgs args)
     {
-        if (!_resizing || _leftPanelHidden)
+        if (!_resizing)
             return;
 
         var nextWidth = (int)args.ClientX - 24;
