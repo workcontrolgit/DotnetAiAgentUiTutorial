@@ -17,8 +17,8 @@ using Spectre.Console;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-var runWeb = args.Contains("--web", StringComparer.OrdinalIgnoreCase);
-if (runWeb)
+var runConsole = args.Contains("--console", StringComparer.OrdinalIgnoreCase);
+if (!runConsole)
 {
     await RunWebAsync(args);
     return;
@@ -211,7 +211,7 @@ static async Task RunWebAsync(string[] args)
     app.MapRazorComponents<App>()
         .AddInteractiveServerRenderMode();
 
-    Console.WriteLine("HrMcp.Agent starting in --web mode.");
+    Console.WriteLine("HrMcp.Agent starting in web mode (use --console for terminal mode).");
     await app.RunAsync();
 }
 
