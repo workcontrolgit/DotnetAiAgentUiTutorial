@@ -47,4 +47,20 @@ public sealed class DraftIntentTests
         Assert.DoesNotContain("Let me know", result);
         Assert.Contains("This is the body.", result);
     }
+
+    [Theory]
+    [InlineData("Do you want me to revise this?")]
+    [InlineData("Would you like any changes?")]
+    [InlineData("Let me know if this works.")]
+    [InlineData("Feel free to ask for more.")]
+    [InlineData("Please let me know your thoughts.")]
+    [InlineData("If you need anything, just ask.")]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void IsClosingLine_ReturnsTrue(string line) =>
+        Assert.True(DraftWorkspace.IsClosingLine(line));
+
+    [Fact]
+    public void IsClosingLine_ContentLine_ReturnsFalse() =>
+        Assert.False(DraftWorkspace.IsClosingLine("## Summary"));
 }

@@ -77,7 +77,9 @@ public sealed class DraftWorkspaceTests : TestContext
         cut.Find("textarea").Input("hello");
         cut.Find("button.primary-btn").Click();
         cut.WaitForAssertion(() =>
-            Assert.NotEmpty(cut.FindAll(".chat-bubble")));
-        Assert.Empty(cut.FindAll(".chat-bubble strong"));
+        {
+            Assert.NotEmpty(cut.FindAll(".chat-bubble"));
+            Assert.Empty(cut.FindAll(".chat-bubble strong"));
+        });
     }
 }
