@@ -80,6 +80,9 @@ Use `--web --stream-http` when running the MCP server in a separate terminal.
 dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent
 ```
 
+> **Why you don't need to start the MCP server separately in stdio mode:**
+> The agent uses `StdioClientTransport`, which runs `dotnet run --project HrMcp.McpServer -- --stdio` as a child process when the agent starts. The server lives for the lifetime of the agent and is shut down automatically when the agent exits. You only need a separate terminal when using `--stream-http`, which connects to an already-running HTTP server.
+
 **Stream HTTP mode** — server and agent run as separate processes (two terminals):
 
 ```bash
