@@ -22,6 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HrMcp.Core\HrMcp.Core.csproj" />
+    <ProjectReference Include="..\HrMcp.Application\HrMcp.Application.csproj" />
+    <ProjectReference Include="..\HrMcp.Infrastructure.Persistence\HrMcp.Infrastructure.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -4,6 +4,7 @@ using Azure.Identity;
 using HrMcp.Agent.Components;
 using HrMcp.Agent;
 using HrMcp.Agent.Web.Services;
+using HrMcp.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -202,6 +203,10 @@ static async Task RunWebAsync(string[] args)
     builder.WebHost.UseStaticWebAssets();
     builder.Services.AddRazorComponents()
         .AddInteractiveServerComponents();
+
+    var connectionString = builder.Configuration.GetConnectionString("HrDb")
+        ?? throw new InvalidOperationException("Missing ConnectionStrings:HrDb");
+    builder.Services.AddPersistence(connectionString);
     builder.Services.AddScoped<IAgentDraftService, AgentDraftService>();
 
     var app = builder.Build();
