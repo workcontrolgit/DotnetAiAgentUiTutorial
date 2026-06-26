@@ -1,6 +1,7 @@
 // src/HrMcp.Infrastructure.Persistence/DependencyInjection.cs
 using HrMcp.Core.Interfaces;
 using HrMcp.Infrastructure.Persistence.Repositories;
+using HrMcp.Infrastructure.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +18,7 @@ public static class DependencyInjection
 
         services.AddScoped<IPositionRepository, PositionRepository>();
         services.AddScoped<IHiringOrganizationRepository, HiringOrganizationRepository>();
+        services.AddScoped<IConversationService, ConversationService>();
 
         return services;
     }
