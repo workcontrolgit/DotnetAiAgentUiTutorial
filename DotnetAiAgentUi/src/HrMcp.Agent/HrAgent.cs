@@ -52,6 +52,14 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         new(ChatRole.System, SystemPrompt)
     ];
 
+    public void ResetHistory(IReadOnlyList<ChatMessage> priorMessages)
+    {
+        _history.Clear();
+        _history.Add(new ChatMessage(ChatRole.System, SystemPrompt));
+        foreach (var msg in priorMessages)
+            _history.Add(msg);
+    }
+
     public async Task RunAsync(CancellationToken ct = default)
     {
         RenderWelcome();
