@@ -2,6 +2,7 @@
 @using HrMcp.Core.Entities
 @using HrMcp.Core.Interfaces
 @inject IConversationService ConversationService
+@inject HrMcp.Agent.Web.Services.UserContext UserContext
 @inject NavigationManager Nav
 @implements IDisposable
 
@@ -46,7 +47,7 @@
 </div>
 
 @code {
-    private const string DevUserId = "dev-user";
+    private string _userId = string.Empty;
     private List<ConversationSession> _sessions = [];
     private Guid? _renamingId;
     private string _renameValue = string.Empty;
@@ -54,6 +55,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _userId = await UserContext.GetUserIdAsync() ?? string.Empty;
         await LoadSessionsAsync();
         Nav.LocationChanged += OnLocationChanged;
     }
@@ -66,7 +68,7 @@
 
     private async Task LoadSessionsAsync()
     {
-        _sessions = (await ConversationService.GetSessionsAsync(DevUserId)).ToList();
+        _sessions = (await ConversationService.GetSessionsAsync(_userId)).ToList();
     }
 
     private void NewChat() => Nav.NavigateTo("/");
@@ -82,7 +84,7 @@
     private async Task CommitRename(Guid id)
     {
         if (!string.IsNullOrWhiteSpace(_renameValue))
-            await ConversationService.RenameSessionAsync(id, DevUserId, _renameValue.Trim());
+            await ConversationService.RenameSessionAsync(id, _userId, _renameValue.Trim());
         _renamingId = null;
         await LoadSessionsAsync();
     }
@@ -95,7 +97,7 @@
 
     private async Task DeleteSession(Guid id)
     {
-        await ConversationService.DeleteSessionAsync(id, DevUserId);
+        await ConversationService.DeleteSessionAsync(id, _userId);
         if (Nav.Uri.Contains(id.ToString(), StringComparison.OrdinalIgnoreCase))
             Nav.NavigateTo("/");
         await LoadSessionsAsync();

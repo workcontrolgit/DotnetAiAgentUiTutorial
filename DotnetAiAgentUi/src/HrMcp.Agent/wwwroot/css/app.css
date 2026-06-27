@@ -526,3 +526,19 @@ html, body {
     text-align: center;
     justify-content: center;
 }
+
+.topbar-auth {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #313244;
+    background: #1e1e2e;
+    font-size: 0.8rem;
+    color: #a6adc8;
+}
+
+.topbar-user {
+    color: #cdd6f4;
+}

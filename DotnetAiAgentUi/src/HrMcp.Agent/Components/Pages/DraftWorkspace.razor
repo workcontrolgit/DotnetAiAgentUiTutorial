@@ -1,14 +1,17 @@
 @page "/"
 @page "/workspace/{SessionId:guid}"
+@attribute [Authorize]
 @using HrMcp.Agent.Web.Models
 @using HrMcp.Agent.Web.Services
 @using HrMcp.Core.Interfaces
 @using Markdig
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Web
 @using System.Text
 @using System.Text.RegularExpressions
 @inject IAgentDraftService AgentDraftService
 @inject IConversationService ConversationService
+@inject UserContext UserContext
 @inject NavigationManager Nav
 @inject IJSRuntime JS
 
@@ -185,7 +188,7 @@
 
     [Parameter] public Guid? SessionId { get; set; }
 
-    private const string DevUserId = "dev-user";
+    private string _userId = string.Empty;
 
     private void ToggleLeftPanel()
     {
@@ -206,13 +209,15 @@
 
     protected override async Task OnParametersSetAsync()
     {
+        _userId = await UserContext.GetUserIdAsync() ?? string.Empty;
+
         if (SessionId is null)
         {
             _turns.Clear();
             return;
         }
 
-        var session = await ConversationService.GetSessionAsync(SessionId.Value, DevUserId);
+        var session = await ConversationService.GetSessionAsync(SessionId.Value, _userId);
         if (session is null)
         {
             Nav.NavigateTo("/");
@@ -271,7 +276,7 @@
         // Create a new session on the first turn
         if (SessionId is null)
         {
-            var newSession = await ConversationService.CreateSessionAsync(DevUserId, input);
+            var newSession = await ConversationService.CreateSessionAsync(_userId, input);
             SessionId = newSession.Id;
             Nav.NavigateTo($"/workspace/{SessionId}", forceLoad: false);
         }

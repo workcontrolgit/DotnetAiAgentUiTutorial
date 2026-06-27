@@ -20,13 +20,15 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
     private const int DefaultExportContextPositionId = 1;
 
     private readonly IConversationService _conversationService;
+    private readonly UserContext _userContext;
     private HrAgent? _agent;
     private McpClient? _mcpClient;
     private IConfiguration? _configuration;
 
-    public AgentDraftService(IConversationService conversationService)
+    public AgentDraftService(IConversationService conversationService, UserContext userContext)
     {
         _conversationService = conversationService;
+        _userContext = userContext;
     }
 
     public async Task<string> SendPromptAsync(string prompt, Guid? sessionId = null, CancellationToken ct = default)
@@ -35,7 +37,8 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
 
         if (sessionId.HasValue)
         {
-            var session = await _conversationService.GetSessionAsync(sessionId.Value, "dev-user", ct);
+            var userId = await _userContext.GetUserIdAsync() ?? "dev-user";
+            var session = await _conversationService.GetSessionAsync(sessionId.Value, userId, ct);
             if (session is not null && session.Turns.Count > 0)
             {
                 var priorMessages = session.Turns
