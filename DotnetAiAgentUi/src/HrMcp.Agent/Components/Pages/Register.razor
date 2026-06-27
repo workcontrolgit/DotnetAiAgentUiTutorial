@@ -1,0 +1,63 @@
+@* DotnetAiAgentUi/src/HrMcp.Agent/Components/Pages/Register.razor *@
+@page "/register"
+@using HrMcp.Core.Entities
+@using Microsoft.AspNetCore.Identity
+@attribute [ExcludeFromInteractiveRouting]
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Nav
+
+<div class="auth-page">
+    <div class="auth-card">
+        <h2>Create Account</h2>
+
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <div class="auth-error">@ErrorMessage</div>
+        }
+
+        <form method="post" @formname="register" @onsubmit="RegisterAsync">
+            <AntiforgeryToken />
+            <div class="auth-field">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="you@example.com" required />
+            </div>
+            <div class="auth-field">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="At least 6 characters" required />
+            </div>
+            <button type="submit" class="primary-btn">Create Account</button>
+        </form>
+
+        <p class="auth-link">Already have an account? <a href="/login">Sign in</a></p>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm] public string? email { get; set; }
+    [SupplyParameterFromForm] public string? password { get; set; }
+
+    private string? ErrorMessage { get; set; }
+
+    private async Task RegisterAsync()
+    {
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            ErrorMessage = "Please enter your email and password.";
+            return;
+        }
+
+        var user = new ApplicationUser { UserName = email, Email = email };
+        var result = await UserManager.CreateAsync(user, password);
+
+        if (result.Succeeded)
+        {
+            await SignInManager.SignInAsync(user, isPersistent: false);
+            Nav.NavigateTo("/", forceLoad: true);
+        }
+        else
+        {
+            ErrorMessage = string.Join(" ", result.Errors.Select(e => e.Description));
+        }
+    }
+}

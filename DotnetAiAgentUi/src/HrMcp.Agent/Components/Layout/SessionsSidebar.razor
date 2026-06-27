@@ -1,0 +1,107 @@
+@* DotnetAiAgentUi/src/HrMcp.Agent/Components/Layout/SessionsSidebar.razor *@
+@using HrMcp.Core.Entities
+@using HrMcp.Core.Interfaces
+@inject IConversationService ConversationService
+@inject HrMcp.Agent.Web.Services.UserContext UserContext
+@inject NavigationManager Nav
+@implements IDisposable
+
+<div class="sessions-sidebar">
+    <div class="sessions-header">
+        <span class="sessions-title">Conversations</span>
+        <button class="ghost-btn ghost-btn--sm" @onclick="NewChat" title="New Chat">+ New</button>
+    </div>
+
+    @if (_sessions.Count == 0)
+    {
+        <div class="sessions-empty">No conversations yet.</div>
+    }
+    else
+    {
+        <ul class="sessions-list">
+            @foreach (var session in _sessions)
+            {
+                var isActive = Nav.Uri.Contains(session.Id.ToString(), StringComparison.OrdinalIgnoreCase);
+                <li class="session-item @(isActive ? "session-item--active" : "")" @key="session.Id">
+                    @if (_renamingId == session.Id)
+                    {
+                        <input class="session-rename-input"
+                               @bind="_renameValue"
+                               @onblur="() => CommitRename(session.Id)"
+                               @onkeydown="e => HandleRenameKey(e, session.Id)"
+                               @ref="_renameInput" />
+                    }
+                    else
+                    {
+                        <span class="session-name" @onclick="() => OpenSession(session.Id)"
+                              @ondblclick="() => StartRename(session)">
+                            @session.Name
+                        </span>
+                        <button class="ghost-btn ghost-btn--icon" @onclick="() => DeleteSession(session.Id)"
+                                title="Delete">✕</button>
+                    }
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+@code {
+    private string _userId = string.Empty;
+    private List<ConversationSession> _sessions = [];
+    private Guid? _renamingId;
+    private string _renameValue = string.Empty;
+    private ElementReference _renameInput;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _userId = await UserContext.GetUserIdAsync() ?? string.Empty;
+        await LoadSessionsAsync();
+        Nav.LocationChanged += OnLocationChanged;
+    }
+
+    private async void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        await LoadSessionsAsync();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task LoadSessionsAsync()
+    {
+        _sessions = (await ConversationService.GetSessionsAsync(_userId)).ToList();
+    }
+
+    private void NewChat() => Nav.NavigateTo("/");
+
+    private void OpenSession(Guid id) => Nav.NavigateTo($"/workspace/{id}");
+
+    private void StartRename(ConversationSession session)
+    {
+        _renamingId = session.Id;
+        _renameValue = session.Name;
+    }
+
+    private async Task CommitRename(Guid id)
+    {
+        if (!string.IsNullOrWhiteSpace(_renameValue))
+            await ConversationService.RenameSessionAsync(id, _userId, _renameValue.Trim());
+        _renamingId = null;
+        await LoadSessionsAsync();
+    }
+
+    private async Task HandleRenameKey(KeyboardEventArgs e, Guid id)
+    {
+        if (e.Key == "Enter") await CommitRename(id);
+        if (e.Key == "Escape") _renamingId = null;
+    }
+
+    private async Task DeleteSession(Guid id)
+    {
+        await ConversationService.DeleteSessionAsync(id, _userId);
+        if (Nav.Uri.Contains(id.ToString(), StringComparison.OrdinalIgnoreCase))
+            Nav.NavigateTo("/");
+        await LoadSessionsAsync();
+    }
+
+    public void Dispose() => Nav.LocationChanged -= OnLocationChanged;
+}

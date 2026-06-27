@@ -4,6 +4,8 @@ using Azure.Identity;
 using HrMcp.Agent.Components;
 using HrMcp.Agent;
 using HrMcp.Agent.Web.Services;
+using HrMcp.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -202,12 +204,53 @@ static async Task RunWebAsync(string[] args)
     builder.WebHost.UseStaticWebAssets();
     builder.Services.AddRazorComponents()
         .AddInteractiveServerComponents();
+
+    var connectionString = builder.Configuration.GetConnectionString("HrDb")
+        ?? throw new InvalidOperationException("Missing ConnectionStrings:HrDb");
+    builder.Services.AddPersistence(connectionString);
     builder.Services.AddScoped<IAgentDraftService, AgentDraftService>();
+    // TODO: UserContext full implementation is Task B5; stub registered here so DI compiles.
+    builder.Services.AddScoped<UserContext>();
+
+    // Cookie auth (set by Identity above) + optional OIDC federation
+    var enableOidc = builder.Configuration.GetValue<bool>("Features:EnableOidc");
+    if (enableOidc)
+    {
+        builder.Services.AddAuthentication()
+            .AddOpenIdConnect("oidc", options =>
+            {
+                options.Authority = builder.Configuration["Oidc:UserLogin:Authority"]
+                    ?? throw new InvalidOperationException("Missing Oidc:UserLogin:Authority");
+                options.ClientId = builder.Configuration["Oidc:UserLogin:ClientId"]
+                    ?? throw new InvalidOperationException("Missing Oidc:UserLogin:ClientId");
+                options.ClientSecret = builder.Configuration["Oidc:UserLogin:ClientSecret"];
+                options.ResponseType = "code";
+                options.SaveTokens = true;
+                options.GetClaimsFromUserInfoEndpoint = true;
+            });
+    }
+
+    builder.Services.AddAuthorization();
 
     var app = builder.Build();
     app.UseStaticFiles();
     app.MapStaticAssets();
+    app.UseAuthentication();
+    app.UseAuthorization();
     app.UseAntiforgery();
+
+    if (enableOidc)
+    {
+        app.MapGet("/challenge/oidc", async (HttpContext ctx, string? returnUrl) =>
+        {
+            var props = new AuthenticationProperties
+            {
+                RedirectUri = string.IsNullOrWhiteSpace(returnUrl) ? "/" : returnUrl
+            };
+            await ctx.ChallengeAsync("oidc", props);
+        });
+    }
+
     app.MapRazorComponents<App>()
         .AddInteractiveServerRenderMode();
 
