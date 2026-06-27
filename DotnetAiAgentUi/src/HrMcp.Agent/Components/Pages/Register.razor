@@ -2,6 +2,7 @@
 @page "/register"
 @using HrMcp.Core.Entities
 @using Microsoft.AspNetCore.Identity
+@attribute [ExcludeFromInteractiveRouting]
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
 @inject NavigationManager Nav
@@ -10,37 +11,44 @@
     <div class="auth-card">
         <h2>Create Account</h2>
 
-        @if (!string.IsNullOrWhiteSpace(_error))
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
         {
-            <div class="auth-error">@_error</div>
+            <div class="auth-error">@ErrorMessage</div>
         }
 
-        <div class="auth-field">
-            <label>Email</label>
-            <input type="email" @bind="_email" placeholder="you@example.com" />
-        </div>
-        <div class="auth-field">
-            <label>Password</label>
-            <input type="password" @bind="_password" placeholder="At least 6 characters" />
-        </div>
-        <button class="primary-btn" @onclick="RegisterAsync" disabled="@_busy">Create Account</button>
+        <form method="post" @formname="register" @onsubmit="RegisterAsync">
+            <AntiforgeryToken />
+            <div class="auth-field">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="you@example.com" required />
+            </div>
+            <div class="auth-field">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="At least 6 characters" required />
+            </div>
+            <button type="submit" class="primary-btn">Create Account</button>
+        </form>
+
         <p class="auth-link">Already have an account? <a href="/login">Sign in</a></p>
     </div>
 </div>
 
 @code {
-    private string _email = string.Empty;
-    private string _password = string.Empty;
-    private string _error = string.Empty;
-    private bool _busy;
+    [SupplyParameterFromForm] public string? email { get; set; }
+    [SupplyParameterFromForm] public string? password { get; set; }
+
+    private string? ErrorMessage { get; set; }
 
     private async Task RegisterAsync()
     {
-        _busy = true;
-        _error = string.Empty;
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            ErrorMessage = "Please enter your email and password.";
+            return;
+        }
 
-        var user = new ApplicationUser { UserName = _email, Email = _email };
-        var result = await UserManager.CreateAsync(user, _password);
+        var user = new ApplicationUser { UserName = email, Email = email };
+        var result = await UserManager.CreateAsync(user, password);
 
         if (result.Succeeded)
         {
@@ -49,9 +57,7 @@
         }
         else
         {
-            _error = string.Join(" ", result.Errors.Select(e => e.Description));
+            ErrorMessage = string.Join(" ", result.Errors.Select(e => e.Description));
         }
-
-        _busy = false;
     }
 }

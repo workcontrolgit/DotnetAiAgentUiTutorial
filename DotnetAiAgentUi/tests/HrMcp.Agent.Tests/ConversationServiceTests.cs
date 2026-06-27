@@ -48,12 +48,24 @@ public sealed class ConversationServiceTests : IDisposable
     {
         var session = await _sut.CreateSessionAsync("user1", "Hello", default);
 
-        await _sut.AddTurnAsync(session.Id, "user", "Hello", default);
-        await _sut.AddTurnAsync(session.Id, "assistant", "Hi there!", default);
+        await _sut.AddTurnAsync(session.Id, "user1", "user", "Hello", default);
+        await _sut.AddTurnAsync(session.Id, "user1", "assistant", "Hi there!", default);
 
         var loaded = await _sut.GetSessionAsync(session.Id, "user1", default);
         Assert.NotNull(loaded);
         Assert.Equal(2, loaded!.Turns.Count);
+    }
+
+    [Fact]
+    public async Task AddTurnAsync_IgnoresTurnForWrongUser()
+    {
+        var session = await _sut.CreateSessionAsync("user1", "Hello", default);
+
+        await _sut.AddTurnAsync(session.Id, "user2", "user", "Should be ignored", default);
+
+        var loaded = await _sut.GetSessionAsync(session.Id, "user1", default);
+        Assert.NotNull(loaded);
+        Assert.Empty(loaded!.Turns);
     }
 
     [Fact]

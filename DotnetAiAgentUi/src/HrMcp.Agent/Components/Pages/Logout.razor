@@ -2,6 +2,7 @@
 @page "/logout"
 @using HrMcp.Core.Entities
 @using Microsoft.AspNetCore.Identity
+@attribute [ExcludeFromInteractiveRouting]
 @inject SignInManager<ApplicationUser> SignInManager
 @inject NavigationManager Nav
 

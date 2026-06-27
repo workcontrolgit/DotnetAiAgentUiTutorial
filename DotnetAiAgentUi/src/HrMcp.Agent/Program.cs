@@ -5,6 +5,7 @@ using HrMcp.Agent.Components;
 using HrMcp.Agent;
 using HrMcp.Agent.Web.Services;
 using HrMcp.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -237,6 +238,19 @@ static async Task RunWebAsync(string[] args)
     app.UseAuthentication();
     app.UseAuthorization();
     app.UseAntiforgery();
+
+    if (enableOidc)
+    {
+        app.MapGet("/challenge/oidc", async (HttpContext ctx, string? returnUrl) =>
+        {
+            var props = new AuthenticationProperties
+            {
+                RedirectUri = string.IsNullOrWhiteSpace(returnUrl) ? "/" : returnUrl
+            };
+            await ctx.ChallengeAsync("oidc", props);
+        });
+    }
+
     app.MapRazorComponents<App>()
         .AddInteractiveServerRenderMode();
 

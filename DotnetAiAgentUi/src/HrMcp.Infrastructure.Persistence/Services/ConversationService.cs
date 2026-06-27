@@ -35,8 +35,14 @@ public sealed class ConversationService(HrDbContext db) : IConversationService
             .FirstOrDefaultAsync(s => s.Id == sessionId && s.UserId == userId, ct);
     }
 
-    public async Task AddTurnAsync(Guid sessionId, string role, string text, CancellationToken ct = default)
+    public async Task AddTurnAsync(Guid sessionId, string userId, string role, string text, CancellationToken ct = default)
     {
+        var session = await db.ConversationSessions
+            .FirstOrDefaultAsync(s => s.Id == sessionId && s.UserId == userId, ct);
+
+        if (session is null)
+            return;
+
         var turn = new ConversationTurn
         {
             SessionId = sessionId,
@@ -45,9 +51,7 @@ public sealed class ConversationService(HrDbContext db) : IConversationService
         };
         db.ConversationTurns.Add(turn);
 
-        var session = await db.ConversationSessions.FindAsync([sessionId], ct);
-        if (session is not null)
-            session.UpdatedAt = DateTimeOffset.UtcNow;
+        session.UpdatedAt = DateTimeOffset.UtcNow;
 
         await db.SaveChangesAsync(ct);
     }
