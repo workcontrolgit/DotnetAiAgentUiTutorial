@@ -208,10 +208,34 @@ static async Task RunWebAsync(string[] args)
         ?? throw new InvalidOperationException("Missing ConnectionStrings:HrDb");
     builder.Services.AddPersistence(connectionString);
     builder.Services.AddScoped<IAgentDraftService, AgentDraftService>();
+    // TODO: UserContext full implementation is Task B5; stub registered here so DI compiles.
+    builder.Services.AddScoped<UserContext>();
+
+    // Cookie auth (set by Identity above) + optional OIDC federation
+    var enableOidc = builder.Configuration.GetValue<bool>("Features:EnableOidc");
+    if (enableOidc)
+    {
+        builder.Services.AddAuthentication()
+            .AddOpenIdConnect("oidc", options =>
+            {
+                options.Authority = builder.Configuration["Oidc:UserLogin:Authority"]
+                    ?? throw new InvalidOperationException("Missing Oidc:UserLogin:Authority");
+                options.ClientId = builder.Configuration["Oidc:UserLogin:ClientId"]
+                    ?? throw new InvalidOperationException("Missing Oidc:UserLogin:ClientId");
+                options.ClientSecret = builder.Configuration["Oidc:UserLogin:ClientSecret"];
+                options.ResponseType = "code";
+                options.SaveTokens = true;
+                options.GetClaimsFromUserInfoEndpoint = true;
+            });
+    }
+
+    builder.Services.AddAuthorization();
 
     var app = builder.Build();
     app.UseStaticFiles();
     app.MapStaticAssets();
+    app.UseAuthentication();
+    app.UseAuthorization();
     app.UseAntiforgery();
     app.MapRazorComponents<App>()
         .AddInteractiveServerRenderMode();
