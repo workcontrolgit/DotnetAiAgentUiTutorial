@@ -445,3 +445,84 @@ html, body {
 .session-item:hover .ghost-btn--icon {
     opacity: 1;
 }
+
+/* Auth Pages */
+.auth-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #1e1e2e;
+}
+
+.auth-card {
+    background: #24273a;
+    border: 1px solid #313244;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: #cdd6f4;
+}
+
+.auth-card h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.auth-field label {
+    font-size: 0.8rem;
+    color: #a6adc8;
+}
+
+.auth-field input {
+    padding: 0.5rem 0.75rem;
+    background: #313244;
+    border: 1px solid #45475a;
+    border-radius: 6px;
+    color: #cdd6f4;
+    font-size: 0.9rem;
+}
+
+.auth-field input:focus {
+    outline: none;
+    border-color: #89b4fa;
+}
+
+.auth-error {
+    background: #f38ba826;
+    border: 1px solid #f38ba8;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    color: #f38ba8;
+}
+
+.auth-link {
+    font-size: 0.8rem;
+    text-align: center;
+    color: #a6adc8;
+    margin: 0;
+}
+
+.auth-link a {
+    color: #89b4fa;
+    text-decoration: none;
+}
+
+.auth-oidc-btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+}

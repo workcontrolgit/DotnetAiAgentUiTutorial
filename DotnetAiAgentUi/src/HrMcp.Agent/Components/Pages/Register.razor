@@ -1,0 +1,57 @@
+@* DotnetAiAgentUi/src/HrMcp.Agent/Components/Pages/Register.razor *@
+@page "/register"
+@using HrMcp.Core.Entities
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Nav
+
+<div class="auth-page">
+    <div class="auth-card">
+        <h2>Create Account</h2>
+
+        @if (!string.IsNullOrWhiteSpace(_error))
+        {
+            <div class="auth-error">@_error</div>
+        }
+
+        <div class="auth-field">
+            <label>Email</label>
+            <input type="email" @bind="_email" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+            <label>Password</label>
+            <input type="password" @bind="_password" placeholder="At least 6 characters" />
+        </div>
+        <button class="primary-btn" @onclick="RegisterAsync" disabled="@_busy">Create Account</button>
+        <p class="auth-link">Already have an account? <a href="/login">Sign in</a></p>
+    </div>
+</div>
+
+@code {
+    private string _email = string.Empty;
+    private string _password = string.Empty;
+    private string _error = string.Empty;
+    private bool _busy;
+
+    private async Task RegisterAsync()
+    {
+        _busy = true;
+        _error = string.Empty;
+
+        var user = new ApplicationUser { UserName = _email, Email = _email };
+        var result = await UserManager.CreateAsync(user, _password);
+
+        if (result.Succeeded)
+        {
+            await SignInManager.SignInAsync(user, isPersistent: false);
+            Nav.NavigateTo("/", forceLoad: true);
+        }
+        else
+        {
+            _error = string.Join(" ", result.Errors.Select(e => e.Description));
+        }
+
+        _busy = false;
+    }
+}

@@ -1,0 +1,68 @@
+@* DotnetAiAgentUi/src/HrMcp.Agent/Components/Pages/Login.razor *@
+@page "/login"
+@using HrMcp.Core.Entities
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Nav
+
+<div class="auth-page">
+    <div class="auth-card">
+        <h2>Sign In</h2>
+
+        @if (!string.IsNullOrWhiteSpace(_error))
+        {
+            <div class="auth-error">@_error</div>
+        }
+
+        <div class="auth-field">
+            <label>Email</label>
+            <input type="email" @bind="_email" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+            <label>Password</label>
+            <input type="password" @bind="_password" placeholder="Password" />
+        </div>
+        <button class="primary-btn" @onclick="SignInAsync" disabled="@_busy">Sign In</button>
+
+        <p class="auth-link">No account? <a href="/register">Register</a></p>
+
+        @if (_showOidc)
+        {
+            <hr />
+            <a class="ghost-btn auth-oidc-btn" href="/challenge/oidc">Sign in with Identity Provider</a>
+        }
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
+
+    private string _email = string.Empty;
+    private string _password = string.Empty;
+    private string _error = string.Empty;
+    private bool _busy;
+    private bool _showOidc;
+
+    [Inject] private IConfiguration Configuration { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        _showOidc = Configuration.GetValue<bool>("Features:EnableOidc");
+    }
+
+    private async Task SignInAsync()
+    {
+        _busy = true;
+        _error = string.Empty;
+
+        var result = await SignInManager.PasswordSignInAsync(
+            _email, _password, isPersistent: false, lockoutOnFailure: false);
+
+        if (result.Succeeded)
+            Nav.NavigateTo(ReturnUrl ?? "/", forceLoad: true);
+        else
+            _error = "Invalid email or password.";
+
+        _busy = false;
+    }
+}
