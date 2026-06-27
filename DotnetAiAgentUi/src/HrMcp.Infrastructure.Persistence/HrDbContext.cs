@@ -1,10 +1,12 @@
 // src/HrMcp.Infrastructure.Persistence/HrDbContext.cs
 using HrMcp.Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace HrMcp.Infrastructure.Persistence;
 
-public class HrDbContext(DbContextOptions<HrDbContext> options) : DbContext(options)
+public class HrDbContext(DbContextOptions<HrDbContext> options)
+    : IdentityDbContext<ApplicationUser>(options)
 {
     public DbSet<HiringOrganization>   HiringOrganizations   => Set<HiringOrganization>();
     public DbSet<Position>             Positions             => Set<Position>();
@@ -14,6 +16,8 @@ public class HrDbContext(DbContextOptions<HrDbContext> options) : DbContext(opti
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<PositionRemuneration>()
             .Property(r => r.MinimumRange).HasPrecision(18, 2);
         modelBuilder.Entity<PositionRemuneration>()
