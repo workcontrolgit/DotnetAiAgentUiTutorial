@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 
 <div class="main-layout">
-    <SessionsSidebar />
+    <SessionsSidebar @rendermode="RenderMode.InteractiveServer" />
     <div class="main-content">
         <div class="topbar-auth">
             <AuthorizeView>

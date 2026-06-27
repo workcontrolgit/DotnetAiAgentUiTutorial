@@ -15,7 +15,7 @@ public static class DependencyInjection
         this IServiceCollection services,
         string connectionString)
     {
-        services.AddDbContext<HrDbContext>(options =>
+        services.AddDbContextFactory<HrDbContext>(options =>
             options.UseSqlServer(connectionString));
 
         services.AddIdentity<ApplicationUser, IdentityRole>(options =>
