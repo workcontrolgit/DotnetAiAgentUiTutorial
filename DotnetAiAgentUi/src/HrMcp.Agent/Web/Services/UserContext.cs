@@ -1,14 +1,19 @@
-// src/HrMcp.Agent/Web/Services/UserContext.cs
-// TODO (Task B5): Replace this stub with the full implementation.
+using Microsoft.AspNetCore.Components.Authorization;
+
 namespace HrMcp.Agent.Web.Services;
 
-/// <summary>
-/// Provides the current authenticated user's context to Blazor components and services.
-/// Full implementation is delivered in Task B5.
-/// </summary>
-public sealed class UserContext
+public sealed class UserContext(AuthenticationStateProvider authStateProvider)
 {
-    public string? UserId { get; set; }
-    public string? UserName { get; set; }
-    public bool IsAuthenticated => UserId is not null;
+    public async Task<string?> GetUserIdAsync()
+    {
+        var state = await authStateProvider.GetAuthenticationStateAsync();
+        return state.User.FindFirst(
+            System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    }
+
+    public async Task<bool> IsAuthenticatedAsync()
+    {
+        var state = await authStateProvider.GetAuthenticationStateAsync();
+        return state.User.Identity?.IsAuthenticated == true;
+    }
 }
