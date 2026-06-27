@@ -1,5 +1,6 @@
 using Azure.AI.OpenAI;
 using Azure.Identity;
+using HrMcp.Core.Interfaces;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -10,7 +11,7 @@ namespace HrMcp.Agent.Web.Services;
 
 public interface IAgentDraftService
 {
-    Task<string> SendPromptAsync(string prompt, CancellationToken ct = default);
+    Task<string> SendPromptAsync(string prompt, Guid? sessionId = null, CancellationToken ct = default);
     Task<(string Message, string? FileName, byte[]? FileBytes)> ExportDraftToWordAsync(string draftText, CancellationToken ct = default);
 }
 
@@ -18,13 +19,37 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
 {
     private const int DefaultExportContextPositionId = 1;
 
+    private readonly IConversationService _conversationService;
     private HrAgent? _agent;
     private McpClient? _mcpClient;
     private IConfiguration? _configuration;
 
-    public async Task<string> SendPromptAsync(string prompt, CancellationToken ct = default)
+    public AgentDraftService(IConversationService conversationService)
+    {
+        _conversationService = conversationService;
+    }
+
+    public async Task<string> SendPromptAsync(string prompt, Guid? sessionId = null, CancellationToken ct = default)
     {
         await EnsureInitializedAsync(ct);
+
+        if (sessionId.HasValue)
+        {
+            var session = await _conversationService.GetSessionAsync(sessionId.Value, "dev-user", ct);
+            if (session is not null && session.Turns.Count > 0)
+            {
+                var priorMessages = session.Turns
+                    .OrderBy(t => t.Timestamp)
+                    .Select(t => new ChatMessage(
+                        string.Equals(t.Role, "user", StringComparison.OrdinalIgnoreCase)
+                            ? ChatRole.User
+                            : ChatRole.Assistant,
+                        t.Text))
+                    .ToList();
+                _agent!.ResetHistory(priorMessages);
+            }
+        }
+
         return await _agent!.AskAsync(prompt, ct);
     }
 
