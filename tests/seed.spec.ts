@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
 
 test('seed', async ({ page }) => {
-  await page.goto('https://medium.com');
+  await page.goto('http://localhost:5000');
 });
