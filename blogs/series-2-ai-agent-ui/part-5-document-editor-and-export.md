@@ -14,7 +14,7 @@ In Series 1 Part 5, we wired Claude Desktop directly to the MCP server and ran a
 
 The three pieces that make this work:
 
-1. **`DraftDocumentState`** — a lightweight model that carries the current draft text and a revision counter so the UI knows when to reload the editor.
+1. **Draft state fields** — `_draftVisible` (bool) controls whether the right panel renders, and `_currentDraftMarkdown` (string) holds the latest draft so Markdown export works without re-reading from Quill.
 2. **`Blazored.TextEditor`** — a Blazor wrapper around the Quill rich-text editor, giving us a browser-native WYSIWYG surface without writing JavaScript widget code ourselves.
 3. **A resizable split-panel layout** — CSS Grid with a draggable splitter, because `MudGrid` does not give us pixel-level column control at drag time.
 
@@ -377,7 +377,7 @@ The end-to-end flow:
 2. The agent calls `GetPositionById` via MCP to retrieve reference data, then writes a structured draft.
 3. The Blazor component detects draft intent in the response, converts the Markdown to HTML, and loads it into Quill.
 4. The user refines the draft directly in the editor — formatting, reordering, adding qualifications.
-5. The user clicks **Export Word**. The component reads the current HTML from Quill, passes it to `ExportDraftToWordAsync`, the agent calls the `ExportDraftToWord` MCP tool, and the browser downloads the `.docx` file.
+5. The user clicks **Export ▾** to open the export dropdown and selects Word (.docx), Markdown (.md), or JSON (.json). For Word, the component reads the current HTML from Quill, passes it to `ExportDraftToWordAsync`, the agent calls the `ExportDraftToWord` MCP tool, and the browser downloads the `.docx` file. Markdown and JSON export directly from component state without a round-trip to the agent.
 
 The only piece missing from a production-ready deployment is authentication. Any user who can reach the URL can use the agent and export documents.
 

@@ -88,15 +88,17 @@ The list of `ChatTurn` objects *is* the conversation state. There is no separate
 
 ## Component State Design for Async AI Responses
 
-Every AI chat component has three states. Most developers think of two (idle and loading) and discover the third one when they try to stream tokens.
+Every AI chat component has at least two states, and typically three once you add streaming.
 
 **Idle.** The component is waiting for the user to type and submit. Input is enabled. No spinner.
 
 **Busy.** A prompt has been submitted. The agent is working. Input is disabled. A spinner or progress indicator is visible. The user cannot submit another prompt until this one completes.
 
-**Streaming.** Tokens are arriving. The UI is updating in place as each token comes back. Input is still disabled, but the response is visibly growing.
+**Streaming** *(optional enhancement).* Tokens are arriving one by one. The UI updates in place as each token comes back. Input is still disabled, but the response is visibly growing.
 
-In Blazor, these three states map to a straightforward pattern:
+This application uses the **Idle / Busy** two-state model. The agent calls `chatClient.GetResponseAsync` — a single blocking call that waits for the complete response — so there is no in-flight token stream to display. The full response appears at once when the model finishes.
+
+In Blazor, these states map to a straightforward pattern:
 
 - `_busy` — a `bool` field that gates the submit button and shows the progress indicator
 - `_turns` — the `List<ChatTurn>` that the render loop iterates
@@ -107,7 +109,7 @@ The last point is the one that trips up developers new to Blazor's rendering mod
 - a user event handler completes
 - a bound parameter changes
 
-It does **not** re-render automatically when an awaited continuation resumes on a background thread or inside a streaming callback. If you are updating `_turns` inside a `foreach` loop that processes streaming tokens, you must call `StateHasChanged()` yourself after each update or after each meaningful batch. Without it, the UI does not update until the entire operation completes — you lose the streaming feel entirely.
+It does **not** re-render automatically when an awaited continuation resumes on a background thread. If you ever move to a streaming model and update `_turns` inside an `await foreach` loop, you must call `StateHasChanged()` yourself after each update or after each meaningful batch. Without it, the UI does not update until the entire operation completes — you lose the streaming feel entirely.
 
 The practical rule: any time you update component state from inside an `async` method that was not triggered by a direct user interaction, call `StateHasChanged()` after the update.
 
@@ -121,7 +123,7 @@ The Blazor component talks to exactly one thing: `IAgentDraftService`. That is t
 // DotnetAiAgentUI/src/HrMcp.Agent/Web/Services/AgentDraftService.cs
 public interface IAgentDraftService
 {
-    Task<string> SendPromptAsync(string prompt, CancellationToken ct = default);
+    Task<string> SendPromptAsync(string prompt, Guid? sessionId = null, CancellationToken ct = default);
     Task<(string Message, string? FileName, byte[]? FileBytes)> ExportDraftToWordAsync(
         string draftText, CancellationToken ct = default);
 }
