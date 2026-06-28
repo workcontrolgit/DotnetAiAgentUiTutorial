@@ -6,9 +6,9 @@ test('fresh account shows empty sessions state in sidebar', async ({ page }) => 
   const password = 'Password123!';
 
   // Register a new account
-  await page.goto(`${BASE_URL}/register`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/register`, { waitUntil: 'load' });
   await page.fill('[placeholder="you@example.com"]', uniqueEmail);
-  await page.fill('[placeholder="Password"]', password);
+  await page.fill('[placeholder="At least 6 characters"]', password);
   await page.click('button:has-text("Register"), button:has-text("Sign Up"), button[type="submit"]');
 
   // Wait to be logged in

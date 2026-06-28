@@ -2,7 +2,7 @@
 
 **Series:** [AI Agent UI with Blazor United & .NET 10](preface.md) | **Part 6 of 6**
 **GitHub:** [workcontrolgit/DotnetAiAgentUiTutorial](https://github.com/workcontrolgit/DotnetAiAgentUiTutorial)
-![Series 2 cover](screenshots/blog-cover.png)
+![Series 2 cover](screenshots/blog_cover.png)
 
 ---
 
@@ -302,14 +302,12 @@ Combined with Series 1's MCP server (Clean Architecture, 8 tools, dual transport
 
 ## The Series at a Glance
 
-| # | Title | What You Built |
-|---|---|---|
-| 1 | Blazor United Foundation | Solution scaffold, MudBlazor layout, routing |
-| 2 | AI Agent UI Patterns | Concepts — `IChatClient`, state, component design |
-| 3 | Building the Chat UI | Chat component, message turns, `IAgentDraftService` wiring |
-| 4 | Streaming Responses & Real-Time UX | Token streaming, loading states, cancellation |
-| 5 | Document Editor & Word Export | Split-panel layout, WYSIWYG editor, Word export |
-| 6 | Securing the UI with OIDC | Blazor auth, token acquisition, protected routes |
+- **Part 1** — Blazor United Foundation: Solution scaffold, MudBlazor layout, routing
+- **Part 2** — AI Agent UI Patterns: Concepts — `IChatClient`, state, component design
+- **Part 3** — Building the Chat UI: Chat component, message turns, `IAgentDraftService` wiring
+- **Part 4** — Streaming Responses & Real-Time UX: Token streaming, loading states, cancellation
+- **Part 5** — Document Editor & Word Export: Split-panel layout, WYSIWYG editor, Word export
+- **Part 6** — Securing the UI with OIDC: Blazor auth, token acquisition, protected routes
 
 ---
 

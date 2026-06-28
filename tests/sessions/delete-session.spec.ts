@@ -3,7 +3,7 @@ import { login, BASE_URL, EXISTING_SESSION_ID } from '../helpers';
 
 test('delete a non-primary session removes it from the sidebar', async ({ page }) => {
   await login(page);
-  await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
 
   // Wait for sessions to load
   await expect(page.locator('.session-item').first()).toBeVisible({ timeout: 10_000 });
@@ -18,12 +18,12 @@ test('delete a non-primary session removes it from the sidebar', async ({ page }
     return;
   }
 
-  // Find a session that is NOT the existing session ID
+  // Find a session that is NOT the existing session ID (uses data-session-id attribute)
   let targetIndex = -1;
   for (let i = 0; i < sessionCount; i++) {
     const sessionItem = allSessions.nth(i);
-    const html = await sessionItem.innerHTML();
-    if (!html.includes(EXISTING_SESSION_ID)) {
+    const sessionId = await sessionItem.evaluate((el: Element) => el.getAttribute('data-session-id'));
+    if (sessionId !== EXISTING_SESSION_ID) {
       targetIndex = i;
       break;
     }
@@ -35,7 +35,7 @@ test('delete a non-primary session removes it from the sidebar', async ({ page }
   }
 
   const targetSession = allSessions.nth(targetIndex);
-  const sessionNameText = await targetSession.locator('.session-name').textContent() ?? '';
+  const targetSessionId = await targetSession.evaluate((el: Element) => el.getAttribute('data-session-id'));
 
   // Click the delete button on the target session
   await targetSession.locator('button.ghost-btn--icon[title="Delete"]').click();
@@ -53,9 +53,7 @@ test('delete a non-primary session removes it from the sidebar', async ({ page }
   const newCount = await remainingSessions.count();
   expect(newCount).toBe(sessionCount - 1);
 
-  // Verify the deleted session name is no longer visible in the sidebar
-  if (sessionNameText.trim()) {
-    const sessionNames = await page.locator('.session-name').allTextContents();
-    expect(sessionNames).not.toContain(sessionNameText.trim());
-  }
+  // Verify the deleted session is no longer present (by ID, not name — names can be duplicates)
+  const deletedItemStillPresent = await page.locator(`.session-item[data-session-id="${targetSessionId}"]`).count();
+  expect(deletedItemStillPresent).toBe(0);
 });

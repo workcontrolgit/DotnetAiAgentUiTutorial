@@ -3,7 +3,7 @@ import { login, WORKSPACE_SESSION_URL } from '../helpers';
 
 test('pressing Escape during rename reverts to original name', async ({ page }) => {
   await login(page);
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
 
   const sessionNameLocator = page.locator('.session-item--active .session-name');
   await expect(sessionNameLocator).toBeVisible({ timeout: 10_000 });

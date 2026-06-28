@@ -285,6 +285,40 @@ html, body {
     margin: 0;
 }
 
+.export-menu-wrap {
+    position: relative;
+}
+
+.export-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #ccd6ea;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    min-width: 160px;
+    padding: 4px 0;
+}
+
+.export-menu-item {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #2b3a57;
+    white-space: nowrap;
+}
+
+.export-menu-item:hover {
+    background: #f5f8ff;
+}
+
 .primary-btn {
     align-self: flex-start;
     border: 1px solid #2f62d8;

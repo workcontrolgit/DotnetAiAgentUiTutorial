@@ -3,7 +3,7 @@ import { login, BASE_URL } from '../helpers';
 
 test('clicking Send without typing does not navigate or create a message', async ({ page }) => {
   await login(page);
-  await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
 
   // Click the Send button without typing anything
   await page.locator('button.primary-btn').click();

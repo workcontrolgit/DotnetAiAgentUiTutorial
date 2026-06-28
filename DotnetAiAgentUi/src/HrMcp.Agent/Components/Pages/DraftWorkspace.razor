@@ -1,5 +1,6 @@
 @page "/"
 @page "/workspace/{SessionId:guid}"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [Authorize]
 @using HrMcp.Agent.Web.Models
 @using HrMcp.Agent.Web.Services
@@ -17,9 +18,12 @@
 
 <div class="workspace-topbar">
     <h1>Position Description Builder</h1>
-    <button class="ghost-btn" @onclick="ToggleLeftPanel">
-        @(_leftPanelHidden ? "Show Chat" : "Hide Chat")
-    </button>
+    @if (_draftVisible)
+    {
+        <button class="ghost-btn" @onclick="ToggleLeftPanel">
+            @(_leftPanelHidden ? "Show Chat" : "Hide Chat")
+        </button>
+    }
 </div>
 
 <div class="workspace" style="@WorkspaceGridStyle" @onmousemove="HandleResize" @onmouseup="EndResize" @onmouseleave="EndResize">
@@ -71,7 +75,7 @@
                             class="help-icon"
                             title="Enter to send, Shift+Enter for a new line. Draft updates automatically for draft/refine prompts."
                             aria-label="Help: Enter to send, Shift+Enter for a new line. Draft updates automatically for draft/refine prompts.">?</span>
-                        <button class="primary-btn primary-btn--compact" @onclick="SendPromptAsync" disabled="@_busy">Send</button>
+                        <button class="primary-btn primary-btn--compact" @onclick="SendPromptAsync" disabled="@(_busy || string.IsNullOrEmpty(_userId))">Send</button>
                     </div>
                 </div>
             </div>
@@ -88,7 +92,29 @@
         <section class="right-editor">
             <div class="right-header">
                 <h3>Your Position Description Draft</h3>
+                <div class="export-menu-wrap">
+                    <button class="ghost-btn" @onclick="ToggleExportMenu" disabled="@_busy">Export ▾</button>
+                    @if (_exportMenuOpen)
+                    {
+                        <div class="export-menu">
+                            <button class="export-menu-item" @onclick="ExportWordAsync">Word (.docx)</button>
+                            <button class="export-menu-item" @onclick="ExportMarkdownAsync">Markdown (.md)</button>
+                            <button class="export-menu-item" @onclick="ExportJsonAsync">JSON (.json)</button>
+                        </div>
+                    }
+                </div>
             </div>
+            @if (_exportBusy)
+            {
+                <div class="export-status">
+                    <span class="chat-spinner" aria-hidden="true"></span>
+                    <span>Generating export...</span>
+                </div>
+            }
+            else if (!string.IsNullOrWhiteSpace(_status))
+            {
+                <div class="chat-item panel-status">@_status</div>
+            }
 
             <div id="quill-editor-wrapper">
                 <BlazoredTextEditor @ref="_richEditor"
@@ -116,22 +142,6 @@
                 </BlazoredTextEditor>
             </div>
 
-            <div class="panel-actions panel-actions--editor">
-                <div class="panel-actions-row panel-actions-row--end">
-                    <button class="primary-btn primary-btn--compact" @onclick="ExportWordAsync" disabled="@_busy">Export Word</button>
-                    @if (_exportBusy)
-                    {
-                        <span class="export-status">
-                            <span class="chat-spinner" aria-hidden="true"></span>
-                            <span>Generating Word document...</span>
-                        </span>
-                    }
-                    else if (!string.IsNullOrWhiteSpace(_status))
-                    {
-                        <div class="chat-item panel-status">@_status</div>
-                    }
-                </div>
-            </div>
         </section>
     }
 </div>
@@ -144,6 +154,8 @@
     private string _status = string.Empty;
     private bool _leftPanelHidden;
     private bool _draftVisible;
+    private bool _exportMenuOpen;
+    private string? _currentDraftMarkdown;
     private BlazoredTextEditor _richEditor = default!;
     private string? _pendingHtml;
     private bool _resizing;
@@ -209,26 +221,33 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _userId = await UserContext.GetUserIdAsync() ?? string.Empty;
-
-        if (SessionId is null)
+        try
         {
+            _userId = await UserContext.GetUserIdAsync() ?? string.Empty;
+
+            if (SessionId is null)
+            {
+                _turns.Clear();
+                return;
+            }
+
+            var session = await ConversationService.GetSessionAsync(SessionId.Value, _userId);
+            if (session is null)
+            {
+                Nav.NavigateTo("/");
+                return;
+            }
+
             _turns.Clear();
-            return;
+            foreach (var turn in session.Turns.OrderBy(t => t.Timestamp))
+            {
+                var role = string.Equals(turn.Role, "user", StringComparison.OrdinalIgnoreCase) ? "You" : "Assistant";
+                _turns.Add(new ChatTurn(role, turn.Text, turn.Timestamp));
+            }
         }
-
-        var session = await ConversationService.GetSessionAsync(SessionId.Value, _userId);
-        if (session is null)
+        catch (Exception ex)
         {
-            Nav.NavigateTo("/");
-            return;
-        }
-
-        _turns.Clear();
-        foreach (var turn in session.Turns.OrderBy(t => t.Timestamp))
-        {
-            var role = string.Equals(turn.Role, "user", StringComparison.OrdinalIgnoreCase) ? "You" : "Assistant";
-            _turns.Add(new ChatTurn(role, turn.Text, turn.Timestamp));
+            _status = $"Error loading session: {ex.Message}";
         }
     }
 
@@ -273,19 +292,19 @@
         var input = Prompt.Trim();
         Prompt = string.Empty;
 
-        // Create a new session on the first turn
-        if (SessionId is null)
-        {
-            var newSession = await ConversationService.CreateSessionAsync(_userId, input);
-            SessionId = newSession.Id;
-            Nav.NavigateTo($"/workspace/{SessionId}", forceLoad: false);
-        }
-
-        _turns.Add(new ChatTurn("You", input, DateTimeOffset.UtcNow));
-        await ConversationService.AddTurnAsync(SessionId.Value, _userId, "user", input);
-
         try
         {
+            // Create a new session on the first turn
+            if (SessionId is null)
+            {
+                var newSession = await ConversationService.CreateSessionAsync(_userId, input);
+                SessionId = newSession.Id;
+                Nav.NavigateTo($"/workspace/{SessionId}", forceLoad: false);
+            }
+
+            _turns.Add(new ChatTurn("You", input, DateTimeOffset.UtcNow));
+            await ConversationService.AddTurnAsync(SessionId.Value, _userId, "user", input);
+
             var response = await AgentDraftService.SendPromptAsync(input, SessionId);
             _turns.Add(new ChatTurn("Assistant", response, DateTimeOffset.UtcNow));
             await ConversationService.AddTurnAsync(SessionId.Value, _userId, "assistant", response);
@@ -295,6 +314,7 @@
                 var draftMarkdown = ExtractDraftMarkdown(response);
                 if (draftMarkdown is not null)
                 {
+                    _currentDraftMarkdown = draftMarkdown;
                     var html = NormalizeHtmlForQuill(Markdown.ToHtml(draftMarkdown, ChatMarkdownPipeline));
                     if (!_draftVisible)
                     {
@@ -318,8 +338,11 @@
         }
     }
 
+    private void ToggleExportMenu() => _exportMenuOpen = !_exportMenuOpen;
+
     private async Task ExportWordAsync()
     {
+        _exportMenuOpen = false;
         var currentHtml = await JS.InvokeAsync<string>("getQuillContent", "quill-editor-wrapper");
         if (_busy || string.IsNullOrWhiteSpace(currentHtml) || currentHtml == "<p><br></p>")
         {
@@ -354,6 +377,42 @@
             _busy = false;
             _exportBusy = false;
         }
+    }
+
+    private async Task ExportMarkdownAsync()
+    {
+        _exportMenuOpen = false;
+        if (string.IsNullOrWhiteSpace(_currentDraftMarkdown))
+        {
+            _status = "Draft is empty. Add content before exporting.";
+            return;
+        }
+
+        var bytes = System.Text.Encoding.UTF8.GetBytes(_currentDraftMarkdown);
+        await JS.InvokeVoidAsync("downloadFile", "position-description.md", Convert.ToBase64String(bytes));
+        _status = "\u2705 Markdown file ready.";
+    }
+
+    private async Task ExportJsonAsync()
+    {
+        _exportMenuOpen = false;
+        if (_turns.Count == 0)
+        {
+            _status = "No conversation to export.";
+            return;
+        }
+
+        var export = new
+        {
+            exportedAt = DateTimeOffset.UtcNow,
+            draft = _currentDraftMarkdown,
+            turns = _turns.Select(t => new { t.Role, t.Text, t.Timestamp })
+        };
+
+        var json = System.Text.Json.JsonSerializer.Serialize(export, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+        var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+        await JS.InvokeVoidAsync("downloadFile", "position-description.json", Convert.ToBase64String(bytes));
+        _status = "\u2705 JSON file ready.";
     }
 
     // Extracts the markdown draft body from an AI response that may include conversational

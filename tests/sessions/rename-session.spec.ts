@@ -3,7 +3,7 @@ import { login, WORKSPACE_SESSION_URL } from '../helpers';
 
 test('double-clicking session name allows renaming and Enter saves the new name', async ({ page }) => {
   await login(page);
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
 
   // Get the current session name
   const sessionNameLocator = page.locator('.session-item--active .session-name');

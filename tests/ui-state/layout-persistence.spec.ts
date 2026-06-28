@@ -5,10 +5,10 @@ test('sidebar remains visible when navigating between new workspace and existing
   await login(page);
 
   // Navigate to root workspace
-  await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
   await expect(page.locator('.sessions-sidebar')).toBeVisible();
 
   // Navigate to existing session
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
   await expect(page.locator('.sessions-sidebar')).toBeVisible();
 });

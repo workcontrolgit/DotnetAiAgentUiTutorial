@@ -5,7 +5,7 @@ test.setTimeout(150_000);
 
 test('pressing Enter in chat input sends prompt and navigates to session', async ({ page }) => {
   await login(page);
-  await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
 
   const prompt = 'what are the duties of an HR manager';
   const chatInput = page.locator('textarea.chat-input');

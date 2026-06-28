@@ -2,7 +2,7 @@
 
 **Series:** AI Agent UI with Blazor United & .NET 10  
 **GitHub:** [workcontrolgit/DotnetAiAgentUiTutorial](https://github.com/workcontrolgit/DotnetAiAgentUiTutorial)  
-![Series 2 cover](screenshots/blog-cover.png)
+![Series 2 cover](screenshots/blog_cover.png)
 
 ---
 
@@ -97,15 +97,13 @@ The OIDC security from Series 1 Part 6 is the server-side auth gate. The MCP ser
 
 ## The Series at a Glance
 
-| # | Title | What You Build |
-|---|---|---|
-| Preface | Series Overview | Context, goals, prerequisites |
-| 1 | [Blazor United Foundation](part-1-blazor-united-foundation.md) | Solution scaffold, MudBlazor layout, routing |
-| 2 | [AI Agent UI Patterns](part-2-ai-agent-ui-patterns.md) | `IChatClient`, `ChatTurn`, state model, `IAgentDraftService` |
-| 3 | [Building the Chat UI](part-3-building-the-chat-ui.md) | Chat component, message turns, MCP pipeline wired |
-| 4 | [Streaming Responses & Real-Time UX](part-4-streaming-responses-realtime-ux.md) | Token streaming, loading states, cancellation |
-| 5 | [Document Editor & Word Export](part-5-document-editor-and-export.md) | Split-panel layout, WYSIWYG editor, Word export |
-| 6 | [Securing the UI with OIDC](part-6-securing-ui-with-oidc.md) | Client credentials flow, bearer token injection, feature flag |
+- **Preface** — Series Overview: Context, goals, prerequisites
+- **Part 1** — [Blazor United Foundation](part-1-blazor-united-foundation.md): Solution scaffold, MudBlazor layout, routing
+- **Part 2** — [AI Agent UI Patterns](part-2-ai-agent-ui-patterns.md): `IChatClient`, `ChatTurn`, state model, `IAgentDraftService`
+- **Part 3** — [Building the Chat UI](part-3-building-the-chat-ui.md): Chat component, message turns, MCP pipeline wired
+- **Part 4** — [Streaming Responses & Real-Time UX](part-4-streaming-responses-realtime-ux.md): Token streaming, loading states, cancellation
+- **Part 5** — [Document Editor & Word Export](part-5-document-editor-and-export.md): Split-panel layout, WYSIWYG editor, Word export
+- **Part 6** — [Securing the UI with OIDC](part-6-securing-ui-with-oidc.md): Client credentials flow, bearer token injection, feature flag
 
 ---
 

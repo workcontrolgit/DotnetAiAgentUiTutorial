@@ -8,13 +8,13 @@ const BASE_URL = 'http://localhost:5000';
 // Existing session that has a previous assistant response.
 // Using a pre-existing session means SendPromptAsync skips CreateSessionAsync + Nav.NavigateTo,
 // so SessionsSidebar.OnLocationChanged never fires during the send — no concurrent EF Core race.
-const EXISTING_SESSION_ID = 'e57987e2-d833-456e-ab6d-06f3ea8bbe9f';
+const EXISTING_SESSION_ID = '7cfc32b1-1112-4891-ac9b-79f38aa4165f';
 
 test('login and list open positions', async ({ page }) => {
   test.setTimeout(150_000); // AI + MCP startup can take a while
 
   // 1. Log in
-  await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
   await expect(page).toHaveURL(/\/login/);
   await page.fill('[placeholder="you@example.com"]', EMAIL);
   await page.fill('[placeholder="Password"]', PASSWORD);
@@ -25,7 +25,7 @@ test('login and list open positions', async ({ page }) => {
   // 2. Navigate directly to an existing workspace (auth cookie already set).
   //    This sets SessionId on the component so Send won't call CreateSessionAsync
   //    or Nav.NavigateTo — no LocationChanged fires, no concurrent DbContext race.
-  await page.goto(`${BASE_URL}/workspace/${EXISTING_SESSION_ID}`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/workspace/${EXISTING_SESSION_ID}`, { waitUntil: 'load' });
   console.log('On workspace:', page.url());
 
   // 3. Wait for Send button to be enabled, then add extra settle time so all

@@ -2,11 +2,11 @@ import { test, expect } from '@playwright/test';
 import { EMAIL, BASE_URL } from '../helpers';
 
 test('register with existing email shows error and stays on /register', async ({ page }) => {
-  await page.goto(`${BASE_URL}/register`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/register`, { waitUntil: 'load' });
 
   // Use an email that already exists
   await page.fill('[placeholder="you@example.com"]', EMAIL);
-  await page.fill('[placeholder="Password"]', 'Password123!');
+  await page.fill('[placeholder="At least 6 characters"]', 'Password123!');
 
   await page.click('button:has-text("Register"), button:has-text("Sign Up"), button[type="submit"]');
 

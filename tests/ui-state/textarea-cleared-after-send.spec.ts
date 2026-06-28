@@ -5,7 +5,7 @@ test.setTimeout(150_000);
 
 test('textarea is cleared immediately after clicking Send', async ({ page }) => {
   await login(page);
-  await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
 
   const chatInput = page.locator('textarea.chat-input');
   const typedText = 'this should be cleared after sending';

@@ -6,7 +6,7 @@ import { login, WORKSPACE_SESSION_URL } from '../helpers';
 
 test('Export > Markdown triggers a .md file download', async ({ page }) => {
   await login(page);
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
 
   // Check if right editor is visible — skip if not
   const rightEditor = page.locator('section.right-editor');

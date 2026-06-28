@@ -19,8 +19,8 @@ using Spectre.Console;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-var runWeb = args.Contains("--web", StringComparer.OrdinalIgnoreCase);
-if (runWeb)
+var runConsole = args.Contains("--console", StringComparer.OrdinalIgnoreCase);
+if (!runConsole)
 {
     await RunWebAsync(args);
     return;
@@ -208,6 +208,11 @@ static async Task RunWebAsync(string[] args)
     var connectionString = builder.Configuration.GetConnectionString("HrDb")
         ?? throw new InvalidOperationException("Missing ConnectionStrings:HrDb");
     builder.Services.AddPersistence(connectionString);
+    builder.Services.ConfigureApplicationCookie(options =>
+    {
+        options.LoginPath = "/login";
+        options.LogoutPath = "/logout";
+    });
     builder.Services.AddScoped<IAgentDraftService, AgentDraftService>();
     // TODO: UserContext full implementation is Task B5; stub registered here so DI compiles.
     builder.Services.AddScoped<UserContext>();
@@ -254,7 +259,7 @@ static async Task RunWebAsync(string[] args)
     app.MapRazorComponents<App>()
         .AddInteractiveServerRenderMode();
 
-    Console.WriteLine("HrMcp.Agent starting in --web mode.");
+    Console.WriteLine("HrMcp.Agent starting in web mode. Pass --console to run the console agent instead.");
     await app.RunAsync();
 }
 
@@ -342,7 +347,7 @@ static IList<string> GetStdioArguments(IConfiguration configuration, string work
     var projectPath = configuration["McpServer:Transport:Stdio:ProjectPath"];
     if (string.IsNullOrWhiteSpace(projectPath))
     {
-        projectPath = Path.Combine(workingDirectory, "DotnetAiAgentMcp", "src", "HrMcp.McpServer", "HrMcp.McpServer.csproj");
+        projectPath = Path.Combine(workingDirectory, "DotnetAiAgentUi", "src", "HrMcp.McpServer", "HrMcp.McpServer.csproj");
     }
 
     return new List<string>

@@ -3,7 +3,7 @@ import { login, EXISTING_SESSION_ID, WORKSPACE_SESSION_URL } from '../helpers';
 
 test('navigating to existing session shows conversation history and highlights session', async ({ page }) => {
   await login(page);
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
 
   // Conversation history should be visible
   await expect(

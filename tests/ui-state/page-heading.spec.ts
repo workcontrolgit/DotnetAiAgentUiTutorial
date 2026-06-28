@@ -5,10 +5,10 @@ test('h1 reads "Position Description Builder" on both new and existing session p
   await login(page);
 
   // Check heading on new workspace
-  await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
   await expect(page.locator('h1')).toContainText('Position Description Builder');
 
   // Check heading on existing session
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
   await expect(page.locator('h1')).toContainText('Position Description Builder');
 });

@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { BASE_URL } from '../helpers';
 
 test('empty submit remains on /login', async ({ page }) => {
-  await page.goto(`${BASE_URL}/login`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/login`, { waitUntil: 'load' });
 
   // Click Sign In without filling any fields
   await page.click('button:has-text("Sign In")');

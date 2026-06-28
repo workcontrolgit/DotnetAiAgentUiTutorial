@@ -7,7 +7,7 @@ import { BASE_URL } from '../helpers';
 test.describe('Authentication', () => {
   test('Unauthenticated access to root redirects to login with ReturnUrl', async ({ page }) => {
     // 1. Start in a fresh browser context (no auth cookies) and navigate to http://localhost:5000/
-    await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+    await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
 
     // expect: Page redirects to /login?ReturnUrl=%2F
     await expect(page).toHaveURL(`${BASE_URL}/login?ReturnUrl=%2F`);

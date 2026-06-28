@@ -5,7 +5,7 @@ test.setTimeout(150_000);
 
 test('loading indicator appears while AI is responding', async ({ page }) => {
   await login(page);
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
 
   const chatInput = page.locator('textarea.chat-input');
   await chatInput.pressSequentially('briefly explain onboarding', { delay: 50 });

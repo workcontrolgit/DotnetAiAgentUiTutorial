@@ -3,7 +3,7 @@ import { login, BASE_URL, WORKSPACE_SESSION_URL } from '../helpers';
 
 test('clicking + New button navigates to /', async ({ page }) => {
   await login(page);
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
 
   // Click + New button
   await page.click('button:has-text("+ New")');

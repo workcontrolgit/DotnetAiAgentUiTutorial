@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { BASE_URL } from '../helpers';
 
 test('non-existent email stays on /login and shows error', async ({ page }) => {
-  await page.goto(`${BASE_URL}/login`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/login`, { waitUntil: 'load' });
   await page.fill('[placeholder="you@example.com"]', 'nobody@doesnotexist.invalid');
   await page.fill('[placeholder="Password"]', 'SomePassword1!');
   await page.click('button:has-text("Sign In")');

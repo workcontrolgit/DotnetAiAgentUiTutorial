@@ -3,7 +3,7 @@ import { login, BASE_URL } from '../helpers';
 
 test('help icon has title attribute containing "Enter to send"', async ({ page }) => {
   await login(page);
-  await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
 
   const helpIcon = page.locator('span.help-icon');
   await expect(helpIcon).toBeVisible();

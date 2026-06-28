@@ -2,10 +2,10 @@ import { test, expect } from '@playwright/test';
 import { BASE_URL } from '../helpers';
 
 test('register with 3-char password shows validation error on /register', async ({ page }) => {
-  await page.goto(`${BASE_URL}/register`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/register`, { waitUntil: 'load' });
 
   await page.fill('[placeholder="you@example.com"]', `shortpass+${Date.now()}@example.com`);
-  await page.fill('[placeholder="Password"]', 'abc');
+  await page.fill('[placeholder="At least 6 characters"]', 'abc');
 
   await page.click('button:has-text("Register"), button:has-text("Sign Up"), button[type="submit"]');
 

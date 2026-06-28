@@ -3,7 +3,7 @@ import { login, WORKSPACE_SESSION_URL } from '../helpers';
 
 test('existing session shows assistant response bubble without loading indicator', async ({ page }) => {
   await login(page);
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
 
   // Assistant response should be visible
   await expect(

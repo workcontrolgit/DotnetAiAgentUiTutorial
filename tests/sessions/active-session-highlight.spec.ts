@@ -3,7 +3,7 @@ import { login, EXISTING_SESSION_ID, WORKSPACE_SESSION_URL } from '../helpers';
 
 test('navigating to existing session highlights correct sidebar item', async ({ page }) => {
   await login(page);
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
 
   // The active session item should be present
   const activeItem = page.locator('.session-item--active');

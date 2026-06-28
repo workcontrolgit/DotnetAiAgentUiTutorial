@@ -5,7 +5,7 @@ test.setTimeout(150_000);
 
 test('Send button is disabled while loading indicator is visible', async ({ page }) => {
   await login(page);
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
 
   const chatInput = page.locator('textarea.chat-input');
   await chatInput.pressSequentially('briefly describe performance reviews', { delay: 50 });

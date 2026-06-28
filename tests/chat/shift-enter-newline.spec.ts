@@ -3,7 +3,7 @@ import { login, BASE_URL } from '../helpers';
 
 test('Shift+Enter inserts a newline without sending the message', async ({ page }) => {
   await login(page);
-  await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
 
   const chatInput = page.locator('textarea.chat-input');
 

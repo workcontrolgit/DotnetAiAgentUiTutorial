@@ -6,7 +6,7 @@ import { login, WORKSPACE_SESSION_URL } from '../helpers';
 
 test('clicking Quill editor and typing text inserts it into the editor', async ({ page }) => {
   await login(page);
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
 
   // Check if right editor is visible — skip if not
   const rightEditor = page.locator('section.right-editor');

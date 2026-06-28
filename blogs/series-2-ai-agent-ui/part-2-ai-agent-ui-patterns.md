@@ -2,7 +2,7 @@
 
 **Series:** [AI Agent UI with Blazor United & .NET 10](preface.md) | **Part 2 of 6**
 **GitHub:** [workcontrolgit/DotnetAiAgentUiTutorial](https://github.com/workcontrolgit/DotnetAiAgentUiTutorial)
-![Series 2 cover](screenshots/blog-cover.png)
+![Series 2 cover](screenshots/blog_cover.png)
 
 ---
 
@@ -165,15 +165,13 @@ Browser
 
 Each layer owns exactly one concern:
 
-| Layer | Concern |
-|---|---|
-| Blazor Component | Render state, user input, display results |
-| `IAgentDraftService` | Contract between UI and agent infrastructure |
-| `AgentDraftService` | Initialize `IChatClient`, `McpClient`, and `HrAgent`; lazy on first call |
-| `HrAgent` | Manage the chat loop, tool-call roundtrips, conversation history |
-| `IChatClient` | Abstract the model provider |
-| MCP Client | Connect to `HrMcp.McpServer`, negotiate tools, invoke them |
-| `HrMcp.McpServer` | Expose tools over `stdio` or Streamable HTTP |
+- **Blazor Component** — Render state, user input, display results
+- **`IAgentDraftService`** — Contract between UI and agent infrastructure
+- **`AgentDraftService`** — Initialize `IChatClient`, `McpClient`, and `HrAgent`; lazy on first call
+- **`HrAgent`** — Manage the chat loop, tool-call roundtrips, conversation history
+- **`IChatClient`** — Abstract the model provider
+- **MCP Client** — Connect to `HrMcp.McpServer`, negotiate tools, invoke them
+- **`HrMcp.McpServer`** — Expose tools over `stdio` or Streamable HTTP
 
 The Blazor component is at the very top of this chain. It knows nothing below `IAgentDraftService`. It has no reference to `HrAgent`, `McpClient`, `OllamaApiClient`, or any transport type.
 

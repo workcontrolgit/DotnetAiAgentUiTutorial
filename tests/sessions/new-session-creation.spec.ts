@@ -5,7 +5,7 @@ test.setTimeout(150_000);
 
 test('typing a prompt creates a new session and user message appears', async ({ page }) => {
   await login(page);
-  await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
 
   const prompt = 'what is a job description';
 

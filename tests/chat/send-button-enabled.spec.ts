@@ -3,7 +3,7 @@ import { login, BASE_URL } from '../helpers';
 
 test('Send button becomes enabled after typing text into chat input', async ({ page }) => {
   await login(page);
-  await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
 
   const sendButton = page.locator('button.primary-btn');
   const chatInput = page.locator('textarea.chat-input');

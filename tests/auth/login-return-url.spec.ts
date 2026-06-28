@@ -3,7 +3,7 @@ import { EMAIL, PASSWORD, BASE_URL, EXISTING_SESSION_ID, WORKSPACE_SESSION_URL }
 
 test('login with ReturnUrl redirects back to session and loads history', async ({ page }) => {
   // Navigate to session URL while unauthenticated to set ReturnUrl
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
   await expect(page).toHaveURL(/\/login/);
 
   // Login

@@ -5,7 +5,7 @@ test.setTimeout(150_000);
 
 test('user message appears immediately after clicking Send before AI responds', async ({ page }) => {
   await login(page);
-  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'networkidle' });
+  await page.goto(WORKSPACE_SESSION_URL, { waitUntil: 'load' });
 
   const prompt = 'describe recruitment briefly';
   const chatInput = page.locator('textarea.chat-input');

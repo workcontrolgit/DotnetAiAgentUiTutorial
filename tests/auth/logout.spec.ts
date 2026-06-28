@@ -10,6 +10,6 @@ test('logout redirects to /login and protects / afterwards', async ({ page }) =>
   await expect(page).toHaveURL(/\/login/);
 
   // Try to access the root while unauthenticated — should redirect back to /login
-  await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/`, { waitUntil: 'load' });
   await expect(page).toHaveURL(/\/login/);
 });

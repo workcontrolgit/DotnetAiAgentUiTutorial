@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { EMAIL, BASE_URL } from '../helpers';
 
 test('wrong password stays on /login and shows error', async ({ page }) => {
-  await page.goto(`${BASE_URL}/login`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/login`, { waitUntil: 'load' });
   await page.fill('[placeholder="you@example.com"]', EMAIL);
   await page.fill('[placeholder="Password"]', 'wrongpassword123');
   await page.click('button:has-text("Sign In")');
