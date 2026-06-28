@@ -1,9 +1,9 @@
 import { Page } from '@playwright/test';
 
-export const EMAIL = 'fuji.nguyen@workcontrol.com';
-export const PASSWORD = 'gasoline87';
-export const BASE_URL = 'http://localhost:5000';
-export const EXISTING_SESSION_ID = '7cfc32b1-1112-4891-ac9b-79f38aa4165f';
+export const EMAIL    = process.env.TEST_EMAIL    ?? '';
+export const PASSWORD = process.env.TEST_PASSWORD ?? '';
+export const BASE_URL = process.env.TEST_BASE_URL ?? 'http://localhost:5000';
+export const EXISTING_SESSION_ID = process.env.TEST_SESSION_ID ?? '';
 export const WORKSPACE_SESSION_URL = `${BASE_URL}/workspace/${EXISTING_SESSION_ID}`;
 
 export async function login(page: Page) {
