@@ -61,6 +61,11 @@
             }, 50);
         };
 
+        window.scrollToBottom = function (elementId) {
+            var el = document.getElementById(elementId);
+            if (el) el.scrollTop = el.scrollHeight;
+        };
+
         window.downloadFile = function (fileName, base64Content) {
             const byteChars = atob(base64Content);
             const byteNums = new Array(byteChars.length);

@@ -31,7 +31,7 @@
     {
         <section class="left-chat">
             <h3>Writing Assistant</h3>
-            <div class="chat-thread">
+            <div class="chat-thread" id="chat-thread">
                 @if (_turns.Count == 0)
                 {
                     <div class="chat-item">Chat responses appear here after you send a prompt.</div>
@@ -304,10 +304,14 @@
 
             _turns.Add(new ChatTurn("You", input, DateTimeOffset.UtcNow));
             await ConversationService.AddTurnAsync(SessionId.Value, _userId, "user", input);
+            await InvokeAsync(StateHasChanged);
+            await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
 
             var response = await AgentDraftService.SendPromptAsync(input, SessionId);
             _turns.Add(new ChatTurn("Assistant", response, DateTimeOffset.UtcNow));
             await ConversationService.AddTurnAsync(SessionId.Value, _userId, "assistant", response);
+            await InvokeAsync(StateHasChanged);
+            await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
 
             if (ShouldSyncDraft(input, response))
             {

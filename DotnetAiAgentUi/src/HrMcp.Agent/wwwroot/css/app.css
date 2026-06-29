@@ -112,6 +112,26 @@ html, body {
     padding: 10px;
     margin-bottom: 8px;
     background: var(--mantle);
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface1) var(--mantle);
+}
+
+.chat-thread::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-thread::-webkit-scrollbar-track {
+    background: var(--mantle);
+    border-radius: 3px;
+}
+
+.chat-thread::-webkit-scrollbar-thumb {
+    background: var(--surface1);
+    border-radius: 3px;
+}
+
+.chat-thread::-webkit-scrollbar-thumb:hover {
+    background: var(--surface2);
 }
 
 .chat-item {
@@ -280,6 +300,25 @@ html, body {
     font-size: 0.95rem;
     background: var(--mantle);
     color: var(--text);
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface1) var(--mantle);
+}
+
+.right-editor .ql-container.ql-snow::-webkit-scrollbar {
+    width: 6px;
+}
+
+.right-editor .ql-container.ql-snow::-webkit-scrollbar-track {
+    background: var(--mantle);
+}
+
+.right-editor .ql-container.ql-snow::-webkit-scrollbar-thumb {
+    background: var(--surface1);
+    border-radius: 3px;
+}
+
+.right-editor .ql-container.ql-snow::-webkit-scrollbar-thumb:hover {
+    background: var(--surface2);
 }
 
 .right-editor .ql-editor {
@@ -559,6 +598,25 @@ html, body {
     flex: 1;
     overflow-y: auto;
     min-height: 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface1) transparent;
+}
+
+.sessions-body::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sessions-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sessions-body::-webkit-scrollbar-thumb {
+    background: var(--surface1);
+    border-radius: 2px;
+}
+
+.sessions-body::-webkit-scrollbar-thumb:hover {
+    background: var(--surface2);
 }
 
 .sessions-empty {
