@@ -1,7 +1,7 @@
 # AI Agent UI with Blazor United & .NET 10 — Blog Series
 
-**Series:** AI Agent UI with Blazor United & .NET 10  
-**GitHub:** [workcontrolgit/DotnetAiAgentUiTutorial](https://github.com/workcontrolgit/DotnetAiAgentUiTutorial)  
+Series: AI Agent UI with Blazor United & .NET 10
+GitHub: workcontrolgit/DotnetAiAgentUiTutorial
 ![Series 2 cover](screenshots/blog_cover.png)
 
 ---

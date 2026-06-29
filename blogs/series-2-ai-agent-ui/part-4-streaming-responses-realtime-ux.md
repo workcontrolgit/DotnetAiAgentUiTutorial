@@ -1,7 +1,7 @@
 # Part 4: Real-Time UX & Session Persistence
 
-**Series:** [AI Agent UI with Blazor United & .NET 10](preface.md) | **Part 4 of 6**
-**GitHub:** [workcontrolgit/DotnetAiAgentUiTutorial](https://github.com/workcontrolgit/DotnetAiAgentUiTutorial)
+Series: AI Agent UI with Blazor United & .NET 10 | Part 4 of 8
+GitHub: workcontrolgit/DotnetAiAgentUiTutorial
 ![Series 2 cover](screenshots/blog_cover.png)
 
 ---

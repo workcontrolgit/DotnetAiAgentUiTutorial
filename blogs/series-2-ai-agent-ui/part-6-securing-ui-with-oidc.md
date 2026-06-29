@@ -1,7 +1,7 @@
 # Part 6: Securing the UI with OIDC
 
-**Series:** [AI Agent UI with Blazor United & .NET 10](preface.md) | **Part 6 of 6**
-**GitHub:** [workcontrolgit/DotnetAiAgentUiTutorial](https://github.com/workcontrolgit/DotnetAiAgentUiTutorial)
+Series: AI Agent UI with Blazor United & .NET 10 | Part 6 of 8
+GitHub: workcontrolgit/DotnetAiAgentUiTutorial
 ![Series 2 cover](screenshots/blog_cover.png)
 
 ---
