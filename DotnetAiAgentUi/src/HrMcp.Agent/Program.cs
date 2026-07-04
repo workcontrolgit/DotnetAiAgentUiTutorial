@@ -392,7 +392,8 @@ static string FindWorkspaceRoot()
     var dir = new DirectoryInfo(AppContext.BaseDirectory);
     for (var i = 0; i < 8 && dir is not null; i++, dir = dir.Parent)
     {
-        if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentMcp")))
+        if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentUi")) ||
+            Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentMcp")))
             return dir.FullName;
     }
 
