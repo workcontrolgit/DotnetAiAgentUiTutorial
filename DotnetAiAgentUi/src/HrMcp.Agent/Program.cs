@@ -221,17 +221,36 @@ static async Task RunWebAsync(string[] args)
     var enableOidc = builder.Configuration.GetValue<bool>("Features:EnableOidc");
     if (enableOidc)
     {
+        var oidcAuthority = builder.Configuration["Oidc:UserLogin:Authority"]
+            ?? throw new InvalidOperationException("Missing Oidc:UserLogin:Authority");
+        var devSslHandler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+        var devHttpClient = new HttpClient(devSslHandler);
         builder.Services.AddAuthentication()
             .AddOpenIdConnect("oidc", options =>
             {
-                options.Authority = builder.Configuration["Oidc:UserLogin:Authority"]
-                    ?? throw new InvalidOperationException("Missing Oidc:UserLogin:Authority");
+                options.Authority = oidcAuthority;
                 options.ClientId = builder.Configuration["Oidc:UserLogin:ClientId"]
                     ?? throw new InvalidOperationException("Missing Oidc:UserLogin:ClientId");
                 options.ClientSecret = builder.Configuration["Oidc:UserLogin:ClientSecret"];
                 options.ResponseType = "code";
                 options.SaveTokens = true;
                 options.GetClaimsFromUserInfoEndpoint = true;
+                options.RequireHttpsMetadata = false;
+                // Write the application cookie directly after callback — skips the
+                // external-scheme bridge so [Authorize] on workspace passes immediately
+                options.SignInScheme = Microsoft.AspNetCore.Identity.IdentityConstants.ApplicationScheme;
+                // Use the same SSL-bypassing HttpClient for both the discovery doc (ConfigurationManager)
+                // and all backchannel calls (PAR, token endpoint, userinfo)
+                options.Backchannel = devHttpClient;
+                options.ConfigurationManager =
+                    new Microsoft.IdentityModel.Protocols.ConfigurationManager<Microsoft.IdentityModel.Protocols.OpenIdConnect.OpenIdConnectConfiguration>(
+                        $"{oidcAuthority.TrimEnd('/')}/.well-known/openid-configuration",
+                        new Microsoft.IdentityModel.Protocols.OpenIdConnect.OpenIdConnectConfigurationRetriever(),
+                        new Microsoft.IdentityModel.Protocols.HttpDocumentRetriever(devHttpClient) { RequireHttps = false });
             });
     }
 
@@ -248,11 +267,19 @@ static async Task RunWebAsync(string[] args)
     {
         app.MapGet("/challenge/oidc", async (HttpContext ctx, string? returnUrl) =>
         {
-            var props = new AuthenticationProperties
+            try
             {
-                RedirectUri = string.IsNullOrWhiteSpace(returnUrl) ? "/" : returnUrl
-            };
-            await ctx.ChallengeAsync("oidc", props);
+                var props = new AuthenticationProperties
+                {
+                    RedirectUri = string.IsNullOrWhiteSpace(returnUrl) ? "/" : returnUrl
+                };
+                await ctx.ChallengeAsync("oidc", props);
+            }
+            catch (Exception ex)
+            {
+                ctx.Response.StatusCode = 500;
+                await ctx.Response.WriteAsync($"OIDC challenge failed: {ex.GetType().Name}: {ex.Message}\n\n{ex}");
+            }
         });
     }
 

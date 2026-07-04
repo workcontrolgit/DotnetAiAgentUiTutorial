@@ -99,13 +99,13 @@ The OIDC security from Series 1 Part 6 is the server-side auth gate. The MCP ser
 
 ## The Series at a Glance
 
-- **Preface** — Series Overview: Context, goals, prerequisites
-- **Part 1** — [Blazor United Foundation](part-1-blazor-united-foundation.md): Solution scaffold, MudBlazor layout, routing
-- **Part 2** — [AI Agent UI Patterns](part-2-ai-agent-ui-patterns.md): `IChatClient`, `ChatTurn`, state model, `IAgentDraftService`
-- **Part 3** — [Building the Chat UI](part-3-building-the-chat-ui.md): Chat component, message turns, MCP pipeline wired
-- **Part 4** — [Real-Time UX & Session Persistence](part-4-streaming-responses-realtime-ux.md): Loading states, session persistence, draft intelligence
-- **Part 5** — [Document Editor & Word Export](part-5-document-editor-and-export.md): Split-panel layout, WYSIWYG editor, Word export
-- **Part 6** — [Securing the UI with OIDC](part-6-securing-ui-with-oidc.md): Client credentials flow, bearer token injection, feature flag
+- **[Preface](https://medium.com/scrum-and-coke/ai-agent-ui-with-blazor-united-net-10-series-preface-2915c25fe566)** — Series Overview: Context, goals, prerequisites
+- **Part 1** — [Blazor United Foundation](https://medium.com/scrum-and-coke/part-1-blazor-united-foundation-525944403001): Solution scaffold, MudBlazor layout, routing
+- **Part 2** — [AI Agent UI Patterns](https://medium.com/scrum-and-coke/part-2-ai-agent-ui-patterns-12449cfb4afb): `IChatClient`, `ChatTurn`, state model, `IAgentDraftService`
+- **Part 3** — [Building the Chat UI](https://medium.com/scrum-and-coke/part-3-building-the-chat-ui-621de114b954): Chat component, message turns, MCP pipeline wired
+- **Part 4** — [Real-Time UX & Session Persistence](https://medium.com/scrum-and-coke/part-4-real-time-ux-session-persistence-15ba4a2ddcbe): Loading states, session persistence, draft intelligence
+- **Part 5** — [Document Editor & Word Export](https://medium.com/scrum-and-coke/part-5-document-editor-word-export-56cf152fc7b5): Split-panel layout, WYSIWYG editor, Word export
+- **Part 6** — [Securing the UI with OIDC](https://medium.com/scrum-and-coke/part-6-securing-the-ui-with-oidc-7308cb893cbe): Client credentials flow, bearer token injection, feature flag
 
 ---
 
@@ -144,6 +144,6 @@ Every code listing in this series is in the companion GitHub repository. You can
 
 *Ready? Start with Part 1.*
 
-→ **[Part 1: Blazor United Foundation](part-1-blazor-united-foundation.md)**
+→ **[Part 1: Blazor United Foundation](https://medium.com/scrum-and-coke/part-1-blazor-united-foundation-525944403001)**
 
 *Tags: .NET, Blazor, AI, MudBlazor, Agent UI, MCP*
