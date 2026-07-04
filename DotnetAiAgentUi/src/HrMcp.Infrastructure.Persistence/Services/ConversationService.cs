@@ -5,10 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HrMcp.Infrastructure.Persistence.Services;
 
-public sealed class ConversationService(HrDbContext db) : IConversationService
+public sealed class ConversationService(IDbContextFactory<HrDbContext> factory) : IConversationService
 {
     public async Task<IReadOnlyList<ConversationSession>> GetSessionsAsync(string userId, CancellationToken ct = default)
     {
+        await using var db = await factory.CreateDbContextAsync(ct);
         return await db.ConversationSessions
             .Where(s => s.UserId == userId)
             .OrderByDescending(s => s.UpdatedAt)
@@ -17,6 +18,7 @@ public sealed class ConversationService(HrDbContext db) : IConversationService
 
     public async Task<ConversationSession> CreateSessionAsync(string userId, string firstPrompt, CancellationToken ct = default)
     {
+        await using var db = await factory.CreateDbContextAsync(ct);
         var name = firstPrompt.Length <= 50 ? firstPrompt : firstPrompt[..50];
         var session = new ConversationSession
         {
@@ -30,6 +32,7 @@ public sealed class ConversationService(HrDbContext db) : IConversationService
 
     public async Task<ConversationSession?> GetSessionAsync(Guid sessionId, string userId, CancellationToken ct = default)
     {
+        await using var db = await factory.CreateDbContextAsync(ct);
         return await db.ConversationSessions
             .Include(s => s.Turns.OrderBy(t => t.Timestamp))
             .FirstOrDefaultAsync(s => s.Id == sessionId && s.UserId == userId, ct);
@@ -37,6 +40,7 @@ public sealed class ConversationService(HrDbContext db) : IConversationService
 
     public async Task AddTurnAsync(Guid sessionId, string userId, string role, string text, CancellationToken ct = default)
     {
+        await using var db = await factory.CreateDbContextAsync(ct);
         var session = await db.ConversationSessions
             .FirstOrDefaultAsync(s => s.Id == sessionId && s.UserId == userId, ct);
 
@@ -58,6 +62,7 @@ public sealed class ConversationService(HrDbContext db) : IConversationService
 
     public async Task RenameSessionAsync(Guid sessionId, string userId, string newName, CancellationToken ct = default)
     {
+        await using var db = await factory.CreateDbContextAsync(ct);
         var session = await db.ConversationSessions
             .FirstOrDefaultAsync(s => s.Id == sessionId && s.UserId == userId, ct);
         if (session is not null)
@@ -69,6 +74,7 @@ public sealed class ConversationService(HrDbContext db) : IConversationService
 
     public async Task DeleteSessionAsync(Guid sessionId, string userId, CancellationToken ct = default)
     {
+        await using var db = await factory.CreateDbContextAsync(ct);
         var session = await db.ConversationSessions
             .FirstOrDefaultAsync(s => s.Id == sessionId && s.UserId == userId, ct);
         if (session is not null)

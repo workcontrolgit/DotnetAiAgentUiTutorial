@@ -1,17 +1,8 @@
 @inherits LayoutComponentBase
-@using Microsoft.AspNetCore.Components.Authorization
 
 <div class="main-layout">
-    <SessionsSidebar />
+    <SessionsSidebar @rendermode="RenderMode.InteractiveServer" />
     <div class="main-content">
-        <div class="topbar-auth">
-            <AuthorizeView>
-                <Authorized>
-                    <span class="topbar-user">@context.User.Identity?.Name</span>
-                    <a href="/logout" class="ghost-btn ghost-btn--sm">Sign out</a>
-                </Authorized>
-            </AuthorizeView>
-        </div>
         @Body
     </div>
 </div>
