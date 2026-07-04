@@ -1,4 +1,5 @@
 @inherits LayoutComponentBase
+<<<<<<< HEAD
 @inject IConfiguration Config
 
 <div class="app-shell">
@@ -80,3 +81,12 @@
             : Config["AI:Ollama:Model"] ?? "—";
     }
 }
+=======
+
+<div class="main-layout">
+    <SessionsSidebar @rendermode="RenderMode.InteractiveServer" />
+    <div class="main-content">
+        @Body
+    </div>
+</div>
+>>>>>>> release/v1

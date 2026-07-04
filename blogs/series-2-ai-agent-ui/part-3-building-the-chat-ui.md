@@ -1,8 +1,14 @@
 # Part 3: Building the Chat UI
 
+<<<<<<< HEAD
 **Series:** [AI Agent UI with Blazor United & .NET 10](preface.md) | **Part 3 of 6**
 **GitHub:** [workcontrolgit/DotnetAiAgentUiTutorial](https://github.com/workcontrolgit/DotnetAiAgentUiTutorial)
 ![Series 2 cover](screenshots/blog-cover.png)
+=======
+Series: AI Agent UI with Blazor United & .NET 10 | Part 3 of 8
+GitHub: workcontrolgit/DotnetAiAgentUiTutorial
+![Series 2 cover](screenshots/blog_cover.png)
+>>>>>>> release/v1
 
 ---
 
@@ -10,7 +16,11 @@
 
 Part 2 was all concepts — `IChatClient`, the three-state UI model, the service seam, the request round-trip. This part makes every one of those concepts real.
 
+<<<<<<< HEAD
 By the end of this post you will have a working chat panel: type a prompt, press Enter, see a loading indicator while the agent calls the MCP server, and read the response rendered as markdown in the conversation thread. Nothing streams yet — that arrives in Part 4 — but the full pipeline is wired and functional.
+=======
+By the end of this post you will have a working chat panel: type a prompt, press Enter, see a loading indicator while the agent calls the MCP server, and read the response rendered as markdown in the conversation thread. The full pipeline is wired and functional. Part 4 covers the session persistence and draft intelligence built on top of this foundation.
+>>>>>>> release/v1
 
 The structure here is the direct parallel to [Series 1 Part 3](../series-1-ai-agent-mcp/part-3-mcp-server-dotnet.md), which built the MCP server tool-by-tool. Here we build the UI layer piece-by-piece: model first, then service interface, then implementation, then component.
 
@@ -47,7 +57,11 @@ The Blazor component never calls a model provider. It calls `IAgentDraftService`
 // DotnetAiAgentUI/src/HrMcp.Agent/Web/Services/AgentDraftService.cs
 public interface IAgentDraftService
 {
+<<<<<<< HEAD
     Task<string> SendPromptAsync(string prompt, CancellationToken ct = default);
+=======
+    Task<string> SendPromptAsync(string prompt, Guid? sessionId = null, CancellationToken ct = default);
+>>>>>>> release/v1
     Task<(string Message, string? FileName, byte[]? FileBytes)> ExportDraftToWordAsync(string draftText, CancellationToken ct = default);
 }
 ```
@@ -68,16 +82,40 @@ static async Task RunWebAsync(string[] args)
     builder.WebHost.UseStaticWebAssets();
     builder.Services.AddRazorComponents()
         .AddInteractiveServerComponents();
+<<<<<<< HEAD
     builder.Services.AddScoped<IAgentDraftService, AgentDraftService>();
+=======
+
+    var connectionString = builder.Configuration.GetConnectionString("HrDb")
+        ?? throw new InvalidOperationException("Missing ConnectionStrings:HrDb");
+    builder.Services.AddPersistence(connectionString);   // registers IConversationService via EF Core
+    builder.Services.ConfigureApplicationCookie(options =>
+    {
+        options.LoginPath = "/login";
+        options.LogoutPath = "/logout";
+    });
+    builder.Services.AddScoped<IAgentDraftService, AgentDraftService>();
+    builder.Services.AddScoped<UserContext>();
+    builder.Services.AddAuthorization();
+>>>>>>> release/v1
 
     var app = builder.Build();
     app.UseStaticFiles();
     app.MapStaticAssets();
+<<<<<<< HEAD
+=======
+    app.UseAuthentication();
+    app.UseAuthorization();
+>>>>>>> release/v1
     app.UseAntiforgery();
     app.MapRazorComponents<App>()
         .AddInteractiveServerRenderMode();
 
+<<<<<<< HEAD
     Console.WriteLine("HrMcp.Agent starting in --web mode.");
+=======
+    Console.WriteLine("HrMcp.Agent starting in web mode. Pass --console to run the console agent instead.");
+>>>>>>> release/v1
     await app.RunAsync();
 }
 ```
@@ -90,18 +128,64 @@ static async Task RunWebAsync(string[] args)
 
 `AgentDraftService` implements `IAgentDraftService` and `IAsyncDisposable`. It holds `HrAgent` and `McpClient` as nullable fields — both are created lazily on the first call, not at DI registration time.
 
+<<<<<<< HEAD
+=======
+### Constructor
+
+`AgentDraftService` takes two constructor parameters injected by the DI container:
+
+```csharp
+public AgentDraftService(IConversationService conversationService, UserContext userContext)
+{
+    _conversationService = conversationService;
+    _userContext = userContext;
+}
+```
+
+Both are `Scoped` — they are resolved once per Blazor circuit (browser tab). `IConversationService` provides the EF Core session store. `UserContext` resolves the authenticated user's ID for database queries.
+
+>>>>>>> release/v1
 ### SendPromptAsync
 
 ```csharp
 // DotnetAiAgentUI/src/HrMcp.Agent/Web/Services/AgentDraftService.cs
+<<<<<<< HEAD
 public async Task<string> SendPromptAsync(string prompt, CancellationToken ct = default)
 {
     await EnsureInitializedAsync(ct);
+=======
+public async Task<string> SendPromptAsync(string prompt, Guid? sessionId = null, CancellationToken ct = default)
+{
+    await EnsureInitializedAsync(ct);
+
+    if (sessionId.HasValue)
+    {
+        var userId = await _userContext.GetUserIdAsync() ?? "dev-user";
+        var session = await _conversationService.GetSessionAsync(sessionId.Value, userId, ct);
+        if (session is not null && session.Turns.Count > 0)
+        {
+            var priorMessages = session.Turns
+                .OrderBy(t => t.Timestamp)
+                .Select(t => new ChatMessage(
+                    string.Equals(t.Role, "user", StringComparison.OrdinalIgnoreCase)
+                        ? ChatRole.User
+                        : ChatRole.Assistant,
+                    t.Text))
+                .ToList();
+            _agent!.ResetHistory(priorMessages);
+        }
+    }
+
+>>>>>>> release/v1
     return await _agent!.AskAsync(prompt, ct);
 }
 ```
 
+<<<<<<< HEAD
 Two lines. The real work is in `EnsureInitializedAsync`.
+=======
+When a `sessionId` is provided, the method loads the full conversation history from the database and replays it into `HrAgent` before sending the new prompt. This ensures the LLM has full context even after a page refresh — the agent's in-memory history is rebuilt from the persisted turns on every call. The real work is in `EnsureInitializedAsync`.
+>>>>>>> release/v1
 
 ### EnsureInitializedAsync — lazy initialization
 
@@ -212,17 +296,36 @@ The chat panel lives in `DraftWorkspace.razor`. The workspace is a two-panel lay
 
 ```razor
 @inject IAgentDraftService AgentDraftService
+<<<<<<< HEAD
 @inject IJSRuntime JS
 ```
 
 The component holds two state fields for the chat UI:
+=======
+@inject IConversationService ConversationService
+@inject UserContext UserContext
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+```
+
+The component holds the core state fields for the chat UI:
+>>>>>>> release/v1
 
 ```csharp
 private readonly List<ChatTurn> _turns = [];
 private bool _busy;
+<<<<<<< HEAD
 ```
 
 `_turns` is the conversation history. `_busy` disables the Send button and renders the loading indicator while a request is in flight.
+=======
+private string _userId = string.Empty;
+
+[Parameter] public Guid? SessionId { get; set; }
+```
+
+`_turns` is the conversation history. `_busy` disables the Send button and renders the loading indicator while a request is in flight. `_userId` is resolved in `OnParametersSetAsync` from `UserContext` — the Send button stays disabled until it is populated. `SessionId` is a route parameter — `/workspace/{SessionId:guid}`.
+>>>>>>> release/v1
 
 ### The chat thread markup
 
@@ -284,7 +387,11 @@ The empty-state message prevents a jarring blank panel on first load. User turns
                     class="help-icon"
                     title="Enter to send, Shift+Enter for a new line. Draft updates automatically for draft/refine prompts."
                     aria-label="Help: Enter to send, Shift+Enter for a new line. Draft updates automatically for draft/refine prompts.">?</span>
+<<<<<<< HEAD
                 <button class="primary-btn primary-btn--compact" @onclick="SendPromptAsync" disabled="@_busy">Send</button>
+=======
+                <button class="primary-btn primary-btn--compact" @onclick="SendPromptAsync" disabled="@(_busy || string.IsNullOrEmpty(_userId))">Send</button>
+>>>>>>> release/v1
             </div>
         </div>
     </div>
@@ -320,12 +427,32 @@ private async Task SendPromptAsync()
     _status = string.Empty;
     var input = Prompt.Trim();
     Prompt = string.Empty;
+<<<<<<< HEAD
     _turns.Add(new ChatTurn("You", input, DateTimeOffset.UtcNow));
 
     try
     {
         var response = await AgentDraftService.SendPromptAsync(input);
         _turns.Add(new ChatTurn("Assistant", response, DateTimeOffset.UtcNow));
+=======
+
+    try
+    {
+        // Create a new session on the first turn
+        if (SessionId is null)
+        {
+            var newSession = await ConversationService.CreateSessionAsync(_userId, input);
+            SessionId = newSession.Id;
+            Nav.NavigateTo($"/workspace/{SessionId}", forceLoad: false);
+        }
+
+        _turns.Add(new ChatTurn("You", input, DateTimeOffset.UtcNow));
+        await ConversationService.AddTurnAsync(SessionId.Value, _userId, "user", input);
+
+        var response = await AgentDraftService.SendPromptAsync(input, SessionId);
+        _turns.Add(new ChatTurn("Assistant", response, DateTimeOffset.UtcNow));
+        await ConversationService.AddTurnAsync(SessionId.Value, _userId, "assistant", response);
+>>>>>>> release/v1
 
         if (ShouldSyncDraft(input, response))
         {
@@ -361,11 +488,20 @@ The sequence on each Send:
 1. Guard: bail if busy or empty.
 2. Set `_busy = true` — disables Send button, triggers re-render showing the loading indicator.
 3. Capture and clear `Prompt` — the textarea empties immediately so the user sees feedback.
+<<<<<<< HEAD
 4. Add the user turn to `_turns` — the user message appears in the thread before the request goes out.
 5. `await AgentDraftService.SendPromptAsync(input)` — blocks here until the agent has a full response. This is the non-streaming version; Part 4 replaces this with a token stream.
 6. Add the assistant turn — the response appears rendered as markdown.
 7. `ShouldSyncDraft` checks whether the prompt contained drafting intent keywords (like "draft", "refine", "rewrite"). If it did, `ExtractDraftMarkdown` strips the conversational preamble and closing question from the response to get the pure document body, which is then pushed into the Quill editor on the right panel.
 8. `finally` always clears `_busy` — the loading indicator goes away and Send re-enables regardless of success or failure.
+=======
+4. **First turn only:** create a new session via `ConversationService.CreateSessionAsync` and update the URL to `/workspace/{SessionId}` without a page reload.
+5. Add the user turn to `_turns` and persist it to the database via `AddTurnAsync`.
+6. `await AgentDraftService.SendPromptAsync(input, SessionId)` — blocks until the agent returns the complete response.
+7. Add the assistant turn and persist it to the database.
+8. `ShouldSyncDraft` checks whether the prompt contained drafting intent keywords (like "draft", "refine", "rewrite"). If it did, `ExtractDraftMarkdown` strips the conversational preamble and closing question from the response to get the pure document body, which is then pushed into the Quill editor on the right panel.
+9. `finally` always clears `_busy` — the loading indicator goes away and Send re-enables regardless of success or failure.
+>>>>>>> release/v1
 
 ---
 
@@ -382,11 +518,20 @@ Wait for the server to log that it is listening (`Now listening on: http://local
 
 ```bash
 # Terminal 2 — Agent Web UI (from the DotnetAiAgentUiTutorial repo root)
+<<<<<<< HEAD
 dotnet run --project DotnetAiAgentUI/src/HrMcp.Agent -- --web --stream-http
+=======
+dotnet run --project DotnetAiAgentUI/src/HrMcp.Agent -- --stream-http
+>>>>>>> release/v1
 ```
 
 Open `http://localhost:5000` (or whatever port the agent logs) in your browser.
 
+<<<<<<< HEAD
+=======
+![Chat panel with AI response](screenshots/chat-with-response.png)
+
+>>>>>>> release/v1
 You will see the workspace with the chat panel on the left. The right draft panel is hidden until the agent returns a response that contains a markdown document — send a prompt like _"Draft a position description for a software engineer"_ and both panels appear.
 
 A non-drafting prompt like _"List open positions"_ triggers the MCP `GetOpenPositions` tool and returns a formatted list directly into the chat thread — the right panel stays hidden.
@@ -404,15 +549,25 @@ If the MCP server is not running when you send the first prompt, the `WaitForHtt
 - `AgentDraftService` — lazy-initialized service that resolves transport type from CLI args, creates the MCP client, wires `IChatClient`, and manages the `HrAgent` lifecycle per Blazor circuit
 - `DraftWorkspace.razor` (chat panel) — a thread renderer, a composer with Enter-to-send, a loading indicator, and a `SendPromptAsync` dispatch that adds user and assistant turns, handles errors, and optionally syncs the right-panel editor when the response contains a draft
 
+<<<<<<< HEAD
 The response arrives as a complete string — no streaming. The user types, waits, reads. It works, but for long responses the wait is uncomfortable. That changes in Part 4.
+=======
+The response arrives as a complete string. The user types, sees the loading indicator, then reads the response when the model finishes. Part 4 covers the loading indicator lifecycle in detail, along with session persistence and the draft intelligence that decides when to populate the right editor panel.
+>>>>>>> release/v1
 
 ---
 
 ## Next Up
 
+<<<<<<< HEAD
 Part 4 adds token-by-token streaming so responses appear as they are generated, with a cancel button for long responses.
 
 → **[Part 4: Streaming Responses & Real-Time UX](part-4-streaming-responses-realtime-ux.md)**
+=======
+Part 4 digs into the real-time UX details: the `_busy` lifecycle, session persistence, and how the component decides which responses belong in the draft editor.
+
+→ **[Part 4: Real-Time UX & Session Persistence](part-4-streaming-responses-realtime-ux.md)**
+>>>>>>> release/v1
 
 ---
 

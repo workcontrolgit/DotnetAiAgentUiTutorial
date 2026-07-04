@@ -1,8 +1,14 @@
 # Part 6: Securing the UI with OIDC
 
+<<<<<<< HEAD
 **Series:** [AI Agent UI with Blazor United & .NET 10](preface.md) | **Part 6 of 6**
 **GitHub:** [workcontrolgit/DotnetAiAgentUiTutorial](https://github.com/workcontrolgit/DotnetAiAgentUiTutorial)
 ![Series 2 cover](screenshots/blog-cover.png)
+=======
+Series: AI Agent UI with Blazor United & .NET 10 | Part 6 of 8
+GitHub: workcontrolgit/DotnetAiAgentUiTutorial
+![Series 2 cover](screenshots/blog_cover.png)
+>>>>>>> release/v1
 
 ---
 
@@ -161,11 +167,16 @@ static async Task RunWebAsync(string[] args)
     app.MapRazorComponents<App>()
         .AddInteractiveServerRenderMode();
 
+<<<<<<< HEAD
     Console.WriteLine("HrMcp.Agent starting in --web mode.");
+=======
+    Console.WriteLine("HrMcp.Agent starting in web mode. Pass --console to run the console agent instead.");
+>>>>>>> release/v1
     await app.RunAsync();
 }
 ```
 
+<<<<<<< HEAD
 Then wrap the main workspace in `AuthorizeView`. The pattern is the same across every Blazor Server app:
 
 ```razor
@@ -190,6 +201,32 @@ Then wrap the main workspace in `AuthorizeView`. The pattern is the same across 
 </AuthorizeView>
 ```
 
+=======
+Then protect the workspace page with the `[Authorize]` attribute. Unauthorized users are redirected to `/login` automatically via `ConfigureApplicationCookie`:
+
+```razor
+@* DotnetAiAgentUI/src/HrMcp.Agent/Components/Pages/DraftWorkspace.razor *@
+@page "/"
+@page "/workspace/{SessionId:guid}"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [Authorize]
+```
+
+And register the cookie login path in `Program.cs`:
+
+```csharp
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/login";
+    options.LogoutPath = "/logout";
+});
+```
+
+Any unauthenticated request to `/` or `/workspace/{id}` is redirected to `/login` by the cookie middleware — no manual `AuthorizeView` wrapper needed.
+
+![Login page](screenshots/login-page.png)
+
+>>>>>>> release/v1
 **A note on Blazor Server vs. Blazor WASM auth.** In Blazor WebAssembly, the authentication state is client-side — the token lives in the browser, and `AuthorizeView` checks it locally. In Blazor Server (which is what this project uses via Interactive Server render mode), the auth state is managed server-side over the SignalR connection. The `AuthenticationStateProvider` is a server-side service; the component just asks it for the current identity. This is actually simpler in practice: there's no token storage in browser memory, no silent refresh headache, and no CORS configuration needed for the identity provider.
 
 The tradeoff is that Blazor Server auth requires the server to know who the user is before rendering. That means you need `UseAuthentication()` and `UseAuthorization()` in the pipeline — which is why the middleware registration above is conditional on `Features:EnableOidc`.
@@ -265,13 +302,18 @@ The MCP server's own `Features:EnableOidc` must also be `true` for it to validat
 
 ```bash
 cd DotnetAiAgentUI
+<<<<<<< HEAD
 dotnet run --project src/HrMcp.Agent -- --web --stream-http
+=======
+dotnet run --project src/HrMcp.Agent -- --stream-http
+>>>>>>> release/v1
 ```
 
 With `Features:EnableOidc = true` in the UI's `appsettings.json`, the startup sequence is:
 
 1. User navigates to `https://localhost:5001` (or wherever the Blazor app is hosted)
 2. Blazor checks `AuthenticationStateProvider` — user is anonymous
+<<<<<<< HEAD
 3. `AuthorizeView` renders the `<NotAuthorized>` branch
 4. User signs in (redirect to Duende, Okta, or Entra ID login page)
 5. Provider redirects back with an authorization code
@@ -280,6 +322,17 @@ With `Features:EnableOidc = true` in the UI's `appsettings.json`, the startup se
 8. When the user sends their first message, `EnsureInitializedAsync` runs, calls `TryGetOidcHeadersAsync`, acquires a bearer token via client credentials, and attaches it to all subsequent MCP HTTP requests
 
 Unauthenticated users never see the workspace. They see the "Sign in required" message and a lock icon. The MCP server, even if it receives a request somehow, will reject it with `401 Unauthorized` because no valid bearer token is present.
+=======
+3. Cookie middleware detects unauthenticated request, redirects to `/login`
+4. User enters email and password (or clicks "Sign in with Identity Provider" if OIDC is enabled)
+5. On success, `SignInManager.PasswordSignInAsync` establishes a cookie session and redirects back to the original URL
+6. The `[Authorize]` attribute now passes — the full Writing Assistant renders
+7. When the user sends their first message, `EnsureInitializedAsync` runs, calls `TryGetOidcHeadersAsync`, acquires a bearer token via client credentials, and attaches it to all subsequent MCP HTTP requests
+
+![Register page](screenshots/register-page.png)
+
+Unauthenticated users are redirected to `/login` before the page renders. The MCP server, even if it receives a request somehow, will reject it with `401 Unauthorized` because no valid bearer token is present.
+>>>>>>> release/v1
 
 ---
 
@@ -302,6 +355,7 @@ Combined with Series 1's MCP server (Clean Architecture, 8 tools, dual transport
 
 ## The Series at a Glance
 
+<<<<<<< HEAD
 | # | Title | What You Built |
 |---|---|---|
 | 1 | Blazor United Foundation | Solution scaffold, MudBlazor layout, routing |
@@ -310,6 +364,14 @@ Combined with Series 1's MCP server (Clean Architecture, 8 tools, dual transport
 | 4 | Streaming Responses & Real-Time UX | Token streaming, loading states, cancellation |
 | 5 | Document Editor & Word Export | Split-panel layout, WYSIWYG editor, Word export |
 | 6 | Securing the UI with OIDC | Blazor auth, token acquisition, protected routes |
+=======
+- **Part 1** — Blazor United Foundation: Solution scaffold, MudBlazor layout, routing
+- **Part 2** — AI Agent UI Patterns: Concepts — `IChatClient`, state, component design
+- **Part 3** — Building the Chat UI: Chat component, message turns, `IAgentDraftService` wiring
+- **Part 4** — Real-Time UX & Session Persistence: Loading states, session persistence, draft intelligence
+- **Part 5** — Document Editor & Word Export: Split-panel layout, WYSIWYG editor, Word export
+- **Part 6** — Securing the UI with OIDC: Blazor auth, token acquisition, protected routes
+>>>>>>> release/v1
 
 ---
 

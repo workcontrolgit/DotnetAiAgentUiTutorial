@@ -1,19 +1,35 @@
+<<<<<<< HEAD
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+=======
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+>>>>>>> release/v1
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
     <PackageReference Include="xunit" Version="2.*" />
+=======
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.*" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+>>>>>>> release/v1
     <PackageReference Include="xunit.runner.visualstudio" Version="2.*">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+<<<<<<< HEAD
     <PackageReference Include="bunit" Version="1.*" />
     <PackageReference Include="coverlet.collector" Version="6.*">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -23,6 +39,12 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/HrMcp.Agent/HrMcp.Agent.csproj" />
+=======
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\HrMcp.Infrastructure.Persistence\HrMcp.Infrastructure.Persistence.csproj" />
+>>>>>>> release/v1
   </ItemGroup>
 
 </Project>

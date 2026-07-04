@@ -1,0 +1,93 @@
+// DotnetAiAgentUi/tests/HrMcp.Agent.Tests/ConversationServiceTests.cs
+using HrMcp.Core.Interfaces;
+using HrMcp.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using Xunit;
+
+namespace HrMcp.Agent.Tests;
+
+public sealed class ConversationServiceTests : IDisposable
+{
+    private readonly HrDbContext _db;
+    private readonly IConversationService _sut;
+
+    public ConversationServiceTests()
+    {
+        var options = new DbContextOptionsBuilder<HrDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
+        _db = new HrDbContext(options);
+        _sut = new HrMcp.Infrastructure.Persistence.Services.ConversationService(_db);
+    }
+
+    [Fact]
+    public async Task CreateSessionAsync_StoresSessionWithTruncatedName()
+    {
+        var session = await _sut.CreateSessionAsync("user1", "Draft a job description for a software engineer role", default);
+
+        Assert.NotEqual(Guid.Empty, session.Id);
+        Assert.Equal("user1", session.UserId);
+        Assert.True(session.Name.Length <= 50);
+        Assert.StartsWith("Draft a job description", session.Name);
+    }
+
+    [Fact]
+    public async Task GetSessionsAsync_ReturnsOnlyUserSessions()
+    {
+        await _sut.CreateSessionAsync("user1", "First session", default);
+        await _sut.CreateSessionAsync("user2", "Other user session", default);
+
+        var sessions = await _sut.GetSessionsAsync("user1", default);
+
+        Assert.Single(sessions);
+        Assert.Equal("user1", sessions[0].UserId);
+    }
+
+    [Fact]
+    public async Task AddTurnAsync_AppendsTurnToSession()
+    {
+        var session = await _sut.CreateSessionAsync("user1", "Hello", default);
+
+        await _sut.AddTurnAsync(session.Id, "user1", "user", "Hello", default);
+        await _sut.AddTurnAsync(session.Id, "user1", "assistant", "Hi there!", default);
+
+        var loaded = await _sut.GetSessionAsync(session.Id, "user1", default);
+        Assert.NotNull(loaded);
+        Assert.Equal(2, loaded!.Turns.Count);
+    }
+
+    [Fact]
+    public async Task AddTurnAsync_IgnoresTurnForWrongUser()
+    {
+        var session = await _sut.CreateSessionAsync("user1", "Hello", default);
+
+        await _sut.AddTurnAsync(session.Id, "user2", "user", "Should be ignored", default);
+
+        var loaded = await _sut.GetSessionAsync(session.Id, "user1", default);
+        Assert.NotNull(loaded);
+        Assert.Empty(loaded!.Turns);
+    }
+
+    [Fact]
+    public async Task GetSessionAsync_ReturnsNullForWrongUser()
+    {
+        var session = await _sut.CreateSessionAsync("user1", "My session", default);
+
+        var result = await _sut.GetSessionAsync(session.Id, "user2", default);
+
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public async Task DeleteSessionAsync_RemovesSession()
+    {
+        var session = await _sut.CreateSessionAsync("user1", "To delete", default);
+
+        await _sut.DeleteSessionAsync(session.Id, "user1", default);
+
+        var result = await _sut.GetSessionAsync(session.Id, "user1", default);
+        Assert.Null(result);
+    }
+
+    public void Dispose() => _db.Dispose();
+}

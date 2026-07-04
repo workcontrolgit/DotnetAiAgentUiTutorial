@@ -11,7 +11,11 @@ Complete all items in a part's checklist before starting the next part.
 | 1 | Blazor United Foundation | ⬜ | ⬜ | ⬜ |
 | 2 | AI Agent UI Patterns | ⬜ | ⬜ | ⬜ |
 | 3 | Building the Chat UI | ⬜ | ⬜ | ⬜ |
+<<<<<<< HEAD
 | 4 | Streaming Responses & Real-Time UX | ⬜ | ⬜ | ⬜ |
+=======
+| 4 | Real-Time UX & Session Persistence | ⬜ | ⬜ | ⬜ |
+>>>>>>> release/v1
 | 5 | Document Editor & Word Export | ⬜ | ⬜ | ⬜ |
 | 6 | Securing the UI with OIDC | ⬜ | ⬜ | ⬜ |
 
@@ -137,7 +141,11 @@ Complete all items in a part's checklist before starting the next part.
 
 ---
 
+<<<<<<< HEAD
 ## Part 4 — Streaming Responses & Real-Time UX
+=======
+## Part 4 — Real-Time UX & Session Persistence
+>>>>>>> release/v1
 
 **File:** `blogs/series-2-ai-agent-ui/part-4-streaming-responses-realtime-ux.md`  
 **Code:** `DotnetAiAgentUI/src/HrMcp.Agent/Web/Services/AgentDraftService.cs` (streaming upgrade), `DotnetAiAgentUI/src/HrMcp.Agent/Components/Pages/Chat.razor` (real-time update)

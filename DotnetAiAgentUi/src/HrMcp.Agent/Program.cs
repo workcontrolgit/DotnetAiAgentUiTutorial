@@ -4,6 +4,11 @@ using Azure.Identity;
 using HrMcp.Agent.Components;
 using HrMcp.Agent;
 using HrMcp.Agent.Web.Services;
+<<<<<<< HEAD
+=======
+using HrMcp.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authentication;
+>>>>>>> release/v1
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -202,16 +207,101 @@ static async Task RunWebAsync(string[] args)
     builder.WebHost.UseStaticWebAssets();
     builder.Services.AddRazorComponents()
         .AddInteractiveServerComponents();
+<<<<<<< HEAD
     builder.Services.AddScoped<IAgentDraftService, AgentDraftService>();
+=======
+
+    var connectionString = builder.Configuration.GetConnectionString("HrDb")
+        ?? throw new InvalidOperationException("Missing ConnectionStrings:HrDb");
+    builder.Services.AddPersistence(connectionString);
+    builder.Services.ConfigureApplicationCookie(options =>
+    {
+        options.LoginPath = "/login";
+        options.LogoutPath = "/logout";
+    });
+    builder.Services.AddScoped<IAgentDraftService, AgentDraftService>();
+    // TODO: UserContext full implementation is Task B5; stub registered here so DI compiles.
+    builder.Services.AddScoped<UserContext>();
+
+    // Cookie auth (set by Identity above) + optional OIDC federation
+    var enableOidc = builder.Configuration.GetValue<bool>("Features:EnableOidc");
+    if (enableOidc)
+    {
+        var oidcAuthority = builder.Configuration["Oidc:UserLogin:Authority"]
+            ?? throw new InvalidOperationException("Missing Oidc:UserLogin:Authority");
+        var devSslHandler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+        var devHttpClient = new HttpClient(devSslHandler);
+        builder.Services.AddAuthentication()
+            .AddOpenIdConnect("oidc", options =>
+            {
+                options.Authority = oidcAuthority;
+                options.ClientId = builder.Configuration["Oidc:UserLogin:ClientId"]
+                    ?? throw new InvalidOperationException("Missing Oidc:UserLogin:ClientId");
+                options.ClientSecret = builder.Configuration["Oidc:UserLogin:ClientSecret"];
+                options.ResponseType = "code";
+                options.SaveTokens = true;
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.RequireHttpsMetadata = false;
+                // Write the application cookie directly after callback — skips the
+                // external-scheme bridge so [Authorize] on workspace passes immediately
+                options.SignInScheme = Microsoft.AspNetCore.Identity.IdentityConstants.ApplicationScheme;
+                // Use the same SSL-bypassing HttpClient for both the discovery doc (ConfigurationManager)
+                // and all backchannel calls (PAR, token endpoint, userinfo)
+                options.Backchannel = devHttpClient;
+                options.ConfigurationManager =
+                    new Microsoft.IdentityModel.Protocols.ConfigurationManager<Microsoft.IdentityModel.Protocols.OpenIdConnect.OpenIdConnectConfiguration>(
+                        $"{oidcAuthority.TrimEnd('/')}/.well-known/openid-configuration",
+                        new Microsoft.IdentityModel.Protocols.OpenIdConnect.OpenIdConnectConfigurationRetriever(),
+                        new Microsoft.IdentityModel.Protocols.HttpDocumentRetriever(devHttpClient) { RequireHttps = false });
+            });
+    }
+
+    builder.Services.AddAuthorization();
+>>>>>>> release/v1
 
     var app = builder.Build();
     app.UseStaticFiles();
     app.MapStaticAssets();
+<<<<<<< HEAD
     app.UseAntiforgery();
     app.MapRazorComponents<App>()
         .AddInteractiveServerRenderMode();
 
     Console.WriteLine("HrMcp.Agent starting in web mode (use --console for terminal mode).");
+=======
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseAntiforgery();
+
+    if (enableOidc)
+    {
+        app.MapGet("/challenge/oidc", async (HttpContext ctx, string? returnUrl) =>
+        {
+            try
+            {
+                var props = new AuthenticationProperties
+                {
+                    RedirectUri = string.IsNullOrWhiteSpace(returnUrl) ? "/" : returnUrl
+                };
+                await ctx.ChallengeAsync("oidc", props);
+            }
+            catch (Exception ex)
+            {
+                ctx.Response.StatusCode = 500;
+                await ctx.Response.WriteAsync($"OIDC challenge failed: {ex.GetType().Name}: {ex.Message}\n\n{ex}");
+            }
+        });
+    }
+
+    app.MapRazorComponents<App>()
+        .AddInteractiveServerRenderMode();
+
+    Console.WriteLine("HrMcp.Agent starting in web mode. Pass --console to run the console agent instead.");
+>>>>>>> release/v1
     await app.RunAsync();
 }
 
@@ -317,7 +407,12 @@ static string FindWorkspaceRoot()
     var dir = new DirectoryInfo(AppContext.BaseDirectory);
     for (var i = 0; i < 8 && dir is not null; i++, dir = dir.Parent)
     {
+<<<<<<< HEAD
         if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentUi")))
+=======
+        if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentUi")) ||
+            Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentMcp")))
+>>>>>>> release/v1
             return dir.FullName;
     }
 

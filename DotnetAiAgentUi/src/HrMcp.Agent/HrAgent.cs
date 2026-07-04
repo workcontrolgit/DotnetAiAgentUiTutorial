@@ -52,6 +52,14 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         new(ChatRole.System, SystemPrompt)
     ];
 
+    public void ResetHistory(IReadOnlyList<ChatMessage> priorMessages)
+    {
+        _history.Clear();
+        _history.Add(new ChatMessage(ChatRole.System, SystemPrompt));
+        foreach (var msg in priorMessages)
+            _history.Add(msg);
+    }
+
     public async Task RunAsync(CancellationToken ct = default)
     {
         RenderWelcome();
@@ -64,7 +72,7 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
 
             _history.Add(new ChatMessage(ChatRole.User, input));
 
-            var text = await RunToolLoopAsync(ct);
+            var text = await RunToolLoopAsync(useSpinner: true, ct);
             RenderResponse(text);
         }
     }
@@ -75,20 +83,25 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
             return string.Empty;
 
         _history.Add(new ChatMessage(ChatRole.User, input));
+<<<<<<< HEAD
         return await RunToolLoopAsync(ct);
+=======
+        return await RunToolLoopAsync(useSpinner: false, ct);
+>>>>>>> release/v1
     }
 
     // ── Manual tool call loop ────────────────────────────────────────────────
 
-    private async Task<string> RunToolLoopAsync(CancellationToken ct)
+    private async Task<string> RunToolLoopAsync(bool useSpinner, CancellationToken ct)
     {
         var additional = new AdditionalPropertiesDictionary();
         if (numCtx.HasValue) additional["num_ctx"] = numCtx.Value;
 
         var options = new ChatOptions { Tools = tools, AdditionalProperties = additional };
 
-        var response = await Spin("Thinking…", _ =>
-            chatClient.GetResponseAsync(_history, options, ct));
+        var response = useSpinner
+            ? await Spin("Thinking…", _ => chatClient.GetResponseAsync(_history, options, ct))
+            : await chatClient.GetResponseAsync(_history, options, ct);
 
         while (true)
         {
@@ -146,8 +159,9 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
                     [new FunctionResultContent(call.CallId ?? string.Empty, rawResult)]));
             }
 
-            response = await Spin("Thinking…", _ =>
-                chatClient.GetResponseAsync(_history, options, ct));
+            response = useSpinner
+                ? await Spin("Thinking…", _ => chatClient.GetResponseAsync(_history, options, ct))
+                : await chatClient.GetResponseAsync(_history, options, ct);
         }
     }
 

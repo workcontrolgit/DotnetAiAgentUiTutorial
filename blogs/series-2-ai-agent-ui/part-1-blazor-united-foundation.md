@@ -1,8 +1,14 @@
 # Part 1: Blazor United Foundation
 
+<<<<<<< HEAD
 **Series:** [AI Agent UI with Blazor United & .NET 10](preface.md) | **Part 1 of 6**
 **GitHub:** [workcontrolgit/DotnetAiAgentUiTutorial](https://github.com/workcontrolgit/DotnetAiAgentUiTutorial)
 ![Series 2 cover](screenshots/blog-cover.png)
+=======
+Series: AI Agent UI with Blazor United & .NET 10 | Part 1 of 8
+GitHub: workcontrolgit/DotnetAiAgentUiTutorial
+![Series 2 cover](screenshots/blog_cover.png)
+>>>>>>> release/v1
 
 ---
 
@@ -14,7 +20,11 @@ Part 1 here is the exact parallel of Series 1 Part 1. We are not wiring up the A
 
 By the end of this post you will have the project created, MudBlazor installed, a working layout, and a browser window showing the navigation shell. No AI, no chat, no MCP. Just a clean Blazor United app you can extend across the next five parts.
 
+<<<<<<< HEAD
 The `--web` flag that launches the web UI is already in `Program.cs`. We will look at exactly what it does and why I structured startup that way.
+=======
+The dual-mode startup in `Program.cs` defaults to the web UI. Pass `--console` to run the terminal agent instead. We will look at exactly what that means and why I structured startup that way.
+>>>>>>> release/v1
 
 ---
 
@@ -46,7 +56,11 @@ dotnet new blazor -n HrMcp.Agent --interactivity Auto --all-interactive
 
 The `--interactivity Auto` flag sets the default render mode to Auto. The `--all-interactive` flag applies that render mode globally at the app level rather than requiring you to annotate each page individually.
 
+<<<<<<< HEAD
 The resulting project file uses `Microsoft.NET.Sdk.Web` as the SDK and `OutputType = Exe` so the project can be run directly as an executable. That `OutputType = Exe` is important: it is what allows the same binary to behave as a console application when launched without `--web`, and as an ASP.NET Core web host when launched with `--web`.
+=======
+The resulting project file uses `Microsoft.NET.Sdk.Web` as the SDK and `OutputType = Exe` so the project can be run directly as an executable. That `OutputType = Exe` is important: it is what allows the same binary to behave as an ASP.NET Core web host by default, and as a console AI agent when launched with `--console`.
+>>>>>>> release/v1
 
 Here is the actual project file for `HrMcp.Agent`:
 
@@ -246,6 +260,7 @@ This is different from Blazor Server's routing setup in one important way: the r
 
 ## Step 5 — Run the Shell
 
+<<<<<<< HEAD
 The project uses a dual-mode startup pattern. Without any flags, `dotnet run` launches the console AI agent. With `--web`, it launches the Blazor web UI.
 
 ```bash
@@ -257,13 +272,30 @@ The `--` separator tells `dotnet run` that everything after it is arguments for 
 ```csharp
 var runWeb = args.Contains("--web", StringComparer.OrdinalIgnoreCase);
 if (runWeb)
+=======
+The project uses a dual-mode startup pattern. By default, `dotnet run` launches the Blazor web UI. Pass `--console` to run the interactive terminal agent instead.
+
+```bash
+dotnet run --project DotnetAiAgentUI/src/HrMcp.Agent
+```
+
+The `--` separator tells `dotnet run` that everything after it is arguments for the application itself, not for the `dotnet` CLI. The mode check is at the very first lines of `Program.cs`:
+
+```csharp
+var runConsole = args.Contains("--console", StringComparer.OrdinalIgnoreCase);
+if (!runConsole)
+>>>>>>> release/v1
 {
     await RunWebAsync(args);
     return;
 }
 ```
 
+<<<<<<< HEAD
 If `--web` is present, execution jumps immediately to `RunWebAsync` and returns. The entire console agent setup — MCP client creation, tool discovery, Spectre.Console menus, the agent loop — is bypassed. This is a deliberate design choice: the two modes share the same binary and the same configuration file, but they are entirely independent execution paths.
+=======
+If `--console` is **not** present, execution jumps immediately to `RunWebAsync` and returns. The entire console agent setup — MCP client creation, tool discovery, Spectre.Console menus, the agent loop — is bypassed. This is a deliberate design choice: the two modes share the same binary and the same configuration file, but they are entirely independent execution paths.
+>>>>>>> release/v1
 
 Here is the full `RunWebAsync` method:
 
@@ -283,7 +315,11 @@ static async Task RunWebAsync(string[] args)
     app.MapRazorComponents<App>()
         .AddInteractiveServerRenderMode();
 
+<<<<<<< HEAD
     Console.WriteLine("HrMcp.Agent starting in --web mode.");
+=======
+    Console.WriteLine("HrMcp.Agent starting in web mode. Pass --console to run the console agent instead.");
+>>>>>>> release/v1
     await app.RunAsync();
 }
 ```
@@ -298,13 +334,27 @@ Line by line:
 - `app.UseAntiforgery()` — required by Blazor United to protect form endpoints
 - `app.MapRazorComponents<App>().AddInteractiveServerRenderMode()` — maps the component hierarchy starting at `App` and enables the interactive server render mode on the endpoint
 
+<<<<<<< HEAD
 When you run with `--web` and open the browser, you should see the MudBlazor layout shell: the app bar at the top, the navigation drawer on the left, and the main content area ready for pages. There is no AI, no chat panel, no MCP connection at this stage. That is correct. This is the foundation.
+=======
+When you run and open the browser, you will see the workspace shell with the dark sidebar on the left and the main content area ready for pages. There is no AI, no chat panel, no MCP connection at this stage. That is correct. This is the foundation.
+
+![Workspace empty state](screenshots/workspace-empty.png)
+>>>>>>> release/v1
 
 ---
 
 ## What We Have
 
+<<<<<<< HEAD
 At this point the project builds, starts, and shows a working layout in the browser.
+=======
+At this point the project builds, starts, and shows a working layout in the browser. The sidebar on the left shows conversation sessions and the user account at the bottom. The gear icon opens a Settings modal showing the active AI provider and transport.
+
+![Settings modal showing AI provider and model](screenshots/settings-modal.png)
+
+![Sidebar collapsed to narrow strip](screenshots/sidebar-collapsed.png)
+>>>>>>> release/v1
 
 - A Blazor United app using `Microsoft.NET.Sdk.Web` and `OutputType = Exe`
 - `net10.0` as the target framework
@@ -312,7 +362,11 @@ At this point the project builds, starts, and shows a working layout in the brow
 - A `MainLayout.razor` that wraps `@Body` and can be expanded with MudBlazor navigation components
 - `App.razor` with `HeadOutlet` and `Routes` both set to `RenderMode.InteractiveServer`
 - `Routes.razor` with a `Router` scanning the assembly for `@page` components
+<<<<<<< HEAD
 - A `RunWebAsync` method in `Program.cs` that branches on the `--web` argument and starts the ASP.NET Core host
+=======
+- A `RunWebAsync` method in `Program.cs` that runs by default; pass `--console` to switch to the terminal agent instead
+>>>>>>> release/v1
 
 This is the same milestone as Series 1 Part 1: a clean, stable foundation that every other part builds on. The AI still knows nothing about this UI. We have not connected to the MCP server. We have not written a single chat component. That is exactly right.
 

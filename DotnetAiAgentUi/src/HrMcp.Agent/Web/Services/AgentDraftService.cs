@@ -1,5 +1,9 @@
 using Azure.AI.OpenAI;
 using Azure.Identity;
+<<<<<<< HEAD
+=======
+using HrMcp.Core.Interfaces;
+>>>>>>> release/v1
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -10,7 +14,11 @@ namespace HrMcp.Agent.Web.Services;
 
 public interface IAgentDraftService
 {
+<<<<<<< HEAD
     Task<string> SendPromptAsync(string prompt, CancellationToken ct = default);
+=======
+    Task<string> SendPromptAsync(string prompt, Guid? sessionId = null, CancellationToken ct = default);
+>>>>>>> release/v1
     Task<(string Message, string? FileName, byte[]? FileBytes)> ExportDraftToWordAsync(string draftText, CancellationToken ct = default);
 }
 
@@ -18,13 +26,49 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
 {
     private const int DefaultExportContextPositionId = 1;
 
+<<<<<<< HEAD
+=======
+    private readonly IConversationService _conversationService;
+    private readonly UserContext _userContext;
+>>>>>>> release/v1
     private HrAgent? _agent;
     private McpClient? _mcpClient;
     private IConfiguration? _configuration;
 
+<<<<<<< HEAD
     public async Task<string> SendPromptAsync(string prompt, CancellationToken ct = default)
     {
         await EnsureInitializedAsync(ct);
+=======
+    public AgentDraftService(IConversationService conversationService, UserContext userContext)
+    {
+        _conversationService = conversationService;
+        _userContext = userContext;
+    }
+
+    public async Task<string> SendPromptAsync(string prompt, Guid? sessionId = null, CancellationToken ct = default)
+    {
+        await EnsureInitializedAsync(ct);
+
+        if (sessionId.HasValue)
+        {
+            var userId = await _userContext.GetUserIdAsync() ?? "dev-user";
+            var session = await _conversationService.GetSessionAsync(sessionId.Value, userId, ct);
+            if (session is not null && session.Turns.Count > 0)
+            {
+                var priorMessages = session.Turns
+                    .OrderBy(t => t.Timestamp)
+                    .Select(t => new ChatMessage(
+                        string.Equals(t.Role, "user", StringComparison.OrdinalIgnoreCase)
+                            ? ChatRole.User
+                            : ChatRole.Assistant,
+                        t.Text))
+                    .ToList();
+                _agent!.ResetHistory(priorMessages);
+            }
+        }
+
+>>>>>>> release/v1
         return await _agent!.AskAsync(prompt, ct);
     }
 
@@ -214,7 +258,11 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         for (var i = 0; i < 8 && dir is not null; i++, dir = dir.Parent)
         {
+<<<<<<< HEAD
             if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentUi")))
+=======
+            if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentMcp")))
+>>>>>>> release/v1
                 return dir.FullName;
         }
 

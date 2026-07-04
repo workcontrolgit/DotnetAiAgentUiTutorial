@@ -1,0 +1,15 @@
+@* DotnetAiAgentUi/src/HrMcp.Agent/Components/Pages/Logout.razor *@
+@page "/logout"
+@using HrMcp.Core.Entities
+@using Microsoft.AspNetCore.Identity
+@attribute [ExcludeFromInteractiveRouting]
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Nav
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await SignInManager.SignOutAsync();
+        Nav.NavigateTo("/login", forceLoad: true);
+    }
+}
