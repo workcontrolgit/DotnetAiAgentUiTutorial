@@ -83,7 +83,11 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
 
         var transportType = ResolveTransportType(_configuration);
 
-        var additionalHeaders = await TryGetOidcHeadersAsync(_configuration, ct);
+        // OIDC headers are only needed for streamHttp transport (Bearer token in HTTP request).
+        // Skip the token fetch for stdio — it spawns a local process with no HTTP auth.
+        var additionalHeaders = string.Equals(transportType, "stdio", StringComparison.OrdinalIgnoreCase)
+            ? []
+            : await TryGetOidcHeadersAsync(_configuration, ct);
         var clientTransport = await CreateClientTransportAsync(_configuration, transportType, additionalHeaders);
 
         using var mcpLoggerFactory = LoggerFactory.Create(b => b
@@ -242,7 +246,7 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         for (var i = 0; i < 8 && dir is not null; i++, dir = dir.Parent)
         {
-            if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentMcp")))
+            if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentUi")))
                 return dir.FullName;
         }
 

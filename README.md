@@ -39,22 +39,22 @@ The solution follows Clean Architecture with five projects:
 
 ```bash
 # Clone
-git clone https://github.com/workcontrolgit/DotnetAiAgentMcp.git
-cd DotnetAiAgentMcp
+git clone https://github.com/workcontrolgit/DotnetAiAgentUiTutorial.git
+cd DotnetAiAgentUiTutorial
 
 # Restore and build
-dotnet build DotnetAiAgentMcp/DotnetAiAgentMcp.slnx
+dotnet build DotnetAiAgentUi/DotnetAiAgentUi.slnx
 
 # Run database migrations
 dotnet ef database update \
-  --project DotnetAiAgentMcp/src/HrMcp.Infrastructure.Persistence \
-  --startup-project DotnetAiAgentMcp/src/HrMcp.McpServer
+  --project DotnetAiAgentUi/src/HrMcp.Infrastructure.Persistence \
+  --startup-project DotnetAiAgentUi/src/HrMcp.McpServer
 
 # Start the MCP server with the default transport (stdio)
-dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stdio
+dotnet run --project DotnetAiAgentUi/src/HrMcp.McpServer -- --stdio
 
 # Or start the MCP server with stream HTTP on port 5100
-dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stream-http
+dotnet run --project DotnetAiAgentUi/src/HrMcp.McpServer -- --stream-http
 ```
 
 ### Transport Modes
@@ -69,7 +69,7 @@ Both the server and agent support two transports, selectable via command-line fl
 **Web mode (MVP default)** — start the agent UI in Blazor Server:
 
 ```bash
-dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --web
+dotnet run --project DotnetAiAgentUi/src/HrMcp.Agent -- --web
 ```
 
 Use `--web --stream-http` when running the MCP server in a separate terminal.
@@ -77,17 +77,17 @@ Use `--web --stream-http` when running the MCP server in a separate terminal.
 **stdio mode** — agent auto-spawns the server as a subprocess (one terminal):
 
 ```bash
-dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent
+dotnet run --project DotnetAiAgentUi/src/HrMcp.Agent
 ```
 
 **Stream HTTP mode** — server and agent run as separate processes (two terminals):
 
 ```bash
 # Terminal 1 — start the server
-dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stream-http
+dotnet run --project DotnetAiAgentUi/src/HrMcp.McpServer -- --stream-http
 
 # Terminal 2 — start the agent
-dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --stream-http
+dotnet run --project DotnetAiAgentUi/src/HrMcp.Agent -- --stream-http
 ```
 
 The `--stream-http` flag overrides `appsettings.json` at runtime. No config file changes needed.
@@ -100,23 +100,23 @@ Both the server and agent support a `--debug` flag that enables verbose logging 
 
 ```bash
 # Start server with debug logging
-dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --debug
+dotnet run --project DotnetAiAgentUi/src/HrMcp.McpServer -- --debug
 
 # Start agent with debug logging
-dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --debug
+dotnet run --project DotnetAiAgentUi/src/HrMcp.Agent -- --debug
 
 # Combine flags (server)
-dotnet run --project DotnetAiAgentMcp/src/HrMcp.McpServer -- --stream-http --debug
+dotnet run --project DotnetAiAgentUi/src/HrMcp.McpServer -- --stream-http --debug
 
 # Combine flags (agent)
-dotnet run --project DotnetAiAgentMcp/src/HrMcp.Agent -- --stream-http --debug
+dotnet run --project DotnetAiAgentUi/src/HrMcp.Agent -- --stream-http --debug
 ```
 
 To enable debug mode permanently, set `Features:EnableDebug` to `true` in `appsettings.json` for either project.
 
 ### Ollama Context Window (NumCtx)
 
-The agent sends `num_ctx` to Ollama on every request. Configure it in `DotnetAiAgentMcp/src/HrMcp.Agent/appsettings.json`:
+The agent sends `num_ctx` to Ollama on every request. Configure it in `DotnetAiAgentUi/src/HrMcp.Agent/appsettings.json`:
 
 ```json
 "Ollama": {
@@ -145,17 +145,17 @@ Sensitive configuration (API keys, endpoints) is stored in .NET user secrets and
 
 ```bash
 # List secrets for the MCP server
-dotnet user-secrets list --project DotnetAiAgentMcp/src/HrMcp.McpServer
+dotnet user-secrets list --project DotnetAiAgentUi/src/HrMcp.McpServer
 
 # List secrets for the AI agent
-dotnet user-secrets list --project DotnetAiAgentMcp/src/HrMcp.Agent
+dotnet user-secrets list --project DotnetAiAgentUi/src/HrMcp.Agent
 ```
 
 To set a secret:
 
 ```bash
 dotnet user-secrets set "AI:AzureOpenAI:ApiKey" "<your-key>" \
-  --project DotnetAiAgentMcp/src/HrMcp.Agent
+  --project DotnetAiAgentUi/src/HrMcp.Agent
 ```
 
 The agent connects to the MCP server, discovers the available tools, and answers HR questions in natural language using Ollama locally.

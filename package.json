@@ -9,15 +9,15 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/workcontrolgit/DotnetAiAgentMcp.git"
+    "url": "git+https://github.com/workcontrolgit/DotnetAiAgentUiTutorial.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/workcontrolgit/DotnetAiAgentMcp/issues"
+    "url": "https://github.com/workcontrolgit/DotnetAiAgentUiTutorial/issues"
   },
-  "homepage": "https://github.com/workcontrolgit/DotnetAiAgentMcp#readme",
+  "homepage": "https://github.com/workcontrolgit/DotnetAiAgentUiTutorial#readme",
   "devDependencies": {
     "@playwright/test": "^1.59.1",
     "@types/node": "^25.6.0",
