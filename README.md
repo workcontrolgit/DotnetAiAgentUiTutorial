@@ -10,7 +10,7 @@ This series builds a federal HR MCP server — a real, runnable .NET 10 applicat
 
 The solution follows Clean Architecture with five projects:
 
-![HR MCP Server — Full System Architecture](blogs/series-1-ai-agent-mcp/diagrams/preface-diagram-2-system-architecture.png)
+![HR MCP Server — Full System Architecture](blogs/series-2-ai-agent-ui/diagrams/preface-diagram-2-system-architecture.png)
 
 | Project | Role |
 |---|---|
@@ -22,7 +22,7 @@ The solution follows Clean Architecture with five projects:
 
 **Why MCP?** Traditional AI integration requires a custom connector for every AI tool × every data source (N×M). MCP replaces that with a shared protocol — N+M integrations instead.
 
-![Before and After MCP — N×M vs N+M integrations](blogs/series-1-ai-agent-mcp/diagrams/preface-diagram-1-nm-problem.png)
+![Before and After MCP — N×M vs N+M integrations](blogs/series-2-ai-agent-ui/diagrams/preface-diagram-1-nm-problem.png)
 
 ---
 
