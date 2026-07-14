@@ -1,14 +1,8 @@
 # AI Agent UI with Blazor United & .NET 10 — Blog Series
 
-<<<<<<< HEAD
-**Series:** AI Agent UI with Blazor United & .NET 10  
-**GitHub:** [workcontrolgit/DotnetAiAgentUiTutorial](https://github.com/workcontrolgit/DotnetAiAgentUiTutorial)  
-![Series 2 cover](screenshots/blog-cover.png)
-=======
 Series: AI Agent UI with Blazor United & .NET 10
 GitHub: workcontrolgit/DotnetAiAgentUiTutorial
 ![Series 2 cover](screenshots/blog_cover.png)
->>>>>>> release/v1
 
 ---
 
@@ -44,13 +38,6 @@ That is what this series does.
 
 The application is a **Position Description Builder** — a Blazor United web app that helps HR professionals draft federal job descriptions using an AI Writing Assistant.
 
-<<<<<<< HEAD
-The layout is a split panel. On the left: a chat interface where the user talks to the AI agent, asks it to draft a position description, and refines the output through conversation. On the right: a WYSIWYG editor where the agent's output appears, the user can edit it directly, and a Word export button downloads the finished document.
-
-Under the hood:
-
-- The Blazor app is a single `HrMcp.Agent` project running with `--web`. The same binary that ran as a console agent in Series 1 now hosts a full web UI.
-=======
 The layout is a split panel. On the left: a chat interface where the user talks to the AI agent, asks it to draft a position description, and refines the output through conversation. On the right: a WYSIWYG editor where the agent's output appears, the user can edit it directly, and an export dropdown downloads the finished document as Word (.docx), Markdown (.md), or JSON (.json). A collapsible conversation sidebar and a settings modal round out the shell.
 
 ![Workspace with chat response and session sidebar](screenshots/chat-with-response.png)
@@ -58,7 +45,6 @@ The layout is a split panel. On the left: a chat interface where the user talks 
 Under the hood:
 
 - The Blazor app is a single `HrMcp.Agent` project. By default `dotnet run` starts the web UI; pass `--console` to run the terminal agent instead. The same binary that ran as a console agent in Series 1 now hosts a full web UI.
->>>>>>> release/v1
 - The chat panel calls `IAgentDraftService`, which talks to `IChatClient`, which reaches the Series 1 MCP server over Streamable HTTP.
 - Streaming is real: `CompleteStreamingAsync` pushes tokens through `IAsyncEnumerable`, each token triggers a `StateHasChanged`, and the user watches the draft appear word by word.
 - The Word export calls the MCP server's `ExportDraftToWord` tool and delivers the file as a browser download via JS interop — no server-side file storage required.
@@ -113,17 +99,6 @@ The OIDC security from Series 1 Part 6 is the server-side auth gate. The MCP ser
 
 ## The Series at a Glance
 
-<<<<<<< HEAD
-| # | Title | What You Build |
-|---|---|---|
-| Preface | Series Overview | Context, goals, prerequisites |
-| 1 | [Blazor United Foundation](part-1-blazor-united-foundation.md) | Solution scaffold, MudBlazor layout, routing |
-| 2 | [AI Agent UI Patterns](part-2-ai-agent-ui-patterns.md) | `IChatClient`, `ChatTurn`, state model, `IAgentDraftService` |
-| 3 | [Building the Chat UI](part-3-building-the-chat-ui.md) | Chat component, message turns, MCP pipeline wired |
-| 4 | [Streaming Responses & Real-Time UX](part-4-streaming-responses-realtime-ux.md) | Token streaming, loading states, cancellation |
-| 5 | [Document Editor & Word Export](part-5-document-editor-and-export.md) | Split-panel layout, WYSIWYG editor, Word export |
-| 6 | [Securing the UI with OIDC](part-6-securing-ui-with-oidc.md) | Client credentials flow, bearer token injection, feature flag |
-=======
 - **[Preface](https://medium.com/scrum-and-coke/ai-agent-ui-with-blazor-united-net-10-series-preface-2915c25fe566)** — Series Overview: Context, goals, prerequisites
 - **Part 1** — [Blazor United Foundation](https://medium.com/scrum-and-coke/part-1-blazor-united-foundation-525944403001): Solution scaffold, MudBlazor layout, routing
 - **Part 2** — [AI Agent UI Patterns](https://medium.com/scrum-and-coke/part-2-ai-agent-ui-patterns-12449cfb4afb): `IChatClient`, `ChatTurn`, state model, `IAgentDraftService`
@@ -131,7 +106,6 @@ The OIDC security from Series 1 Part 6 is the server-side auth gate. The MCP ser
 - **Part 4** — [Real-Time UX & Session Persistence](https://medium.com/scrum-and-coke/part-4-real-time-ux-session-persistence-15ba4a2ddcbe): Loading states, session persistence, draft intelligence
 - **Part 5** — [Document Editor & Word Export](https://medium.com/scrum-and-coke/part-5-document-editor-word-export-56cf152fc7b5): Split-panel layout, WYSIWYG editor, Word export
 - **Part 6** — [Securing the UI with OIDC](https://medium.com/scrum-and-coke/part-6-securing-the-ui-with-oidc-7308cb893cbe): Client credentials flow, bearer token injection, feature flag
->>>>>>> release/v1
 
 ---
 
