@@ -474,7 +474,8 @@
         }
         catch (Exception ex)
         {
-            _status = $"Error: {ex.Message}";
+            _turns.Add(new ChatTurn("Assistant", $"⚠ Error: {ex.Message}", DateTimeOffset.UtcNow));
+            await InvokeAsync(StateHasChanged);
         }
         finally
         {

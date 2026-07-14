@@ -36,7 +36,7 @@ artifacts/
 appsDotnetMcpTutorialpublishMcpServer/
 
 ## USAJobs fetcher output
-DotnetAiAgentMcp/usajobs/output/
+DotnetAiAgentUi/usajobs/output/
 
 ## NuGet
 *.nupkg

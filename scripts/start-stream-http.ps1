@@ -12,8 +12,8 @@ param(
 )
 
 $RepoRoot     = Split-Path -Parent $PSScriptRoot
-$McpProject   = Join-Path $RepoRoot "DotnetAiAgentMcp\src\HrMcp.McpServer\HrMcp.McpServer.csproj"
-$AgentProject = Join-Path $RepoRoot "DotnetAiAgentMcp\src\HrMcp.Agent\HrMcp.Agent.csproj"
+$McpProject   = Join-Path $RepoRoot "DotnetAiAgentUi\src\HrMcp.McpServer\HrMcp.McpServer.csproj"
+$AgentProject = Join-Path $RepoRoot "DotnetAiAgentUi\src\HrMcp.Agent\HrMcp.Agent.csproj"
 
 if (-not (Test-Path $McpProject)) {
     Write-Error "McpServer project not found: $McpProject"
