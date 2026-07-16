@@ -1,5 +1,25 @@
-/* ── Design tokens (Catppuccin Mocha) ─────────────────────────────────────── */
-:root {
+/* ── Design tokens ─────────────────────────────────────────────────────────── */
+
+/* Light theme (Catppuccin Latte) — default, applied before JS loads */
+:root,
+:root[data-theme="light"] {
+    --base:      #eff1f5;
+    --mantle:    #e6e9ef;
+    --crust:     #dce0e8;
+    --surface0:  #ccd0da;
+    --surface1:  #bcc0cc;
+    --surface2:  #acb0be;
+    --overlay1:  #8c8fa1;
+    --subtext0:  #6c6f85;
+    --text:      #4c4f69;
+    --blue:      #1e66f5;
+    --blue-dark: #1a5ce0;
+    --red:       #d20f39;
+    --border:    #ccd0da;
+}
+
+/* Dark theme (Catppuccin Mocha) */
+:root[data-theme="dark"] {
     --base:      #1e1e2e;
     --mantle:    #181825;
     --crust:     #11111b;
@@ -13,6 +33,23 @@
     --blue-dark: #6495f4;
     --red:       #f38ba8;
     --border:    #313244;
+}
+
+/* Sepia theme */
+:root[data-theme="sepia"] {
+    --base:      #f4f0e8;
+    --mantle:    #ede8dc;
+    --crust:     #e3ddd0;
+    --surface0:  #d5cfc2;
+    --surface1:  #c8c2b4;
+    --surface2:  #b8b2a4;
+    --overlay1:  #8a8070;
+    --subtext0:  #6a6055;
+    --text:      #3c3228;
+    --blue:      #7c5c3a;
+    --blue-dark: #6b4e30;
+    --red:       #a0402a;
+    --border:    #d5cfc2;
 }
 
 html, body {
@@ -929,4 +966,32 @@ html, body {
         flex-direction: column;
         align-items: stretch;
     }
+}
+
+/* ── Theme switcher button group ──────────────────────────────────────────── */
+
+.theme-btn-group {
+    display: flex;
+    gap: 6px;
+}
+
+.theme-btn {
+    border: 1px solid var(--surface1);
+    background: var(--surface0);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.theme-btn--active {
+    border-color: var(--blue);
+    background: var(--surface1);
+    color: var(--text);
+    font-weight: 600;
+}
+
+.theme-btn:hover:not(.theme-btn--active) {
+    background: var(--surface1);
 }
