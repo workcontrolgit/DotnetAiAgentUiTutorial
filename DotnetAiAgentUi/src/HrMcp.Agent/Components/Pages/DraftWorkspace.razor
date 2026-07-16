@@ -23,6 +23,11 @@
         <button class="ghost-btn" @onclick="ToggleLeftPanel">
             @(_leftPanelHidden ? "Show Chat" : "Hide Chat")
         </button>
+        <button class="ghost-btn" @onclick="ToggleRightPanel">Hide Draft</button>
+    }
+    else if (_hasDraft)
+    {
+        <button class="ghost-btn" @onclick="ToggleRightPanel">Show Draft</button>
     }
 </div>
 
@@ -157,6 +162,7 @@
     private string? _currentDraftMarkdown;
     private BlazoredTextEditor _richEditor = default!;
     private string? _pendingHtml;
+    private bool _hasDraft;
     private bool _resizing;
     private int _leftPanelWidth = 420;
     private const int MinLeftPanelWidth = 320;
@@ -205,6 +211,21 @@
     {
         _leftPanelHidden = !_leftPanelHidden;
         _resizing = false;
+    }
+
+    private void ToggleRightPanel()
+    {
+        if (_draftVisible)
+        {
+            _draftVisible = false;
+            _leftPanelHidden = false; // ensure chat is visible when draft is hidden
+        }
+        else if (_hasDraft && _currentDraftMarkdown is not null)
+        {
+            // Quill will be re-mounted; queue the content for OnAfterRenderAsync
+            _pendingHtml = NormalizeHtmlForQuill(Markdown.ToHtml(_currentDraftMarkdown, ChatMarkdownPipeline));
+            _draftVisible = true;
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -325,6 +346,7 @@
                     {
                         _pendingHtml = html;
                         _draftVisible = true;
+                        _hasDraft = true;
                     }
                     else
                     {
