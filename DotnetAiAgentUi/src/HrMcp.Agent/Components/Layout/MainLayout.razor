@@ -1,4 +1,6 @@
 @inherits LayoutComponentBase
+@inject ThemeService ThemeService
+@inject IJSRuntime JS
 
 <div class="main-layout">
     <SessionsSidebar @rendermode="RenderMode.InteractiveServer" />
@@ -6,3 +8,11 @@
         @Body
     </div>
 </div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await ThemeService.InitAsync(JS);
+    }
+}
