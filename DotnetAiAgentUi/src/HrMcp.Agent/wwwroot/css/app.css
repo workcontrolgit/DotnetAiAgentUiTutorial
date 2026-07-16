@@ -658,7 +658,7 @@ html, body {
 
 .sessions-empty {
     font-size: 0.8rem;
-    color: var(--surface2);
+    color: var(--subtext0);
     padding: 0.5rem;
     text-align: center;
 }
@@ -682,11 +682,13 @@ html, body {
 }
 
 .session-item:hover {
-    background: var(--surface0);
+    background: var(--crust);
 }
 
 .session-item--active {
-    background: var(--surface1);
+    background: var(--mantle);
+    border-left: 2px solid var(--blue);
+    padding-left: calc(0.5rem - 2px);
 }
 
 .session-name {

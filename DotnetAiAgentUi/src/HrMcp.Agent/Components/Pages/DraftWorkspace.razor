@@ -290,19 +290,21 @@
         _status = string.Empty;
         var input = Prompt.Trim();
         Prompt = string.Empty;
+        // Track whether this is the first message so we can navigate after the full
+        // exchange completes. Navigating early disposes the component mid-request,
+        // which prevents the AI response from ever reaching the UI.
+        var isFirstMessage = SessionId is null;
 
         try
         {
-            // Create a new session on the first turn
-            if (SessionId is null)
+            if (isFirstMessage)
             {
                 var newSession = await ConversationService.CreateSessionAsync(_userId, input);
                 SessionId = newSession.Id;
-                Nav.NavigateTo($"/workspace/{SessionId}", forceLoad: false);
             }
 
             _turns.Add(new ChatTurn("You", input, DateTimeOffset.UtcNow));
-            await ConversationService.AddTurnAsync(SessionId.Value, _userId, "user", input);
+            await ConversationService.AddTurnAsync(SessionId!.Value, _userId, "user", input);
             await InvokeAsync(StateHasChanged);
             await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
 
@@ -340,6 +342,11 @@
         {
             _busy = false;
         }
+
+        // Navigate only after the full exchange is saved so the URL update doesn't
+        // recreate the component and discard the in-progress AI response.
+        if (isFirstMessage && SessionId.HasValue)
+            Nav.NavigateTo($"/workspace/{SessionId}", forceLoad: false);
     }
 
     private void ToggleExportMenu() => _exportMenuOpen = !_exportMenuOpen;

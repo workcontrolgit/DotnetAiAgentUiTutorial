@@ -37,17 +37,27 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
         {
             var userId = await _userContext.GetUserIdAsync() ?? "dev-user";
             var session = await _conversationService.GetSessionAsync(sessionId.Value, userId, ct);
-            if (session is not null && session.Turns.Count > 0)
+            if (session is not null)
             {
-                var priorMessages = session.Turns
-                    .OrderBy(t => t.Timestamp)
-                    .Select(t => new ChatMessage(
-                        string.Equals(t.Role, "user", StringComparison.OrdinalIgnoreCase)
-                            ? ChatRole.User
-                            : ChatRole.Assistant,
-                        t.Text))
-                    .ToList();
-                _agent!.ResetHistory(priorMessages);
+                var allTurns = session.Turns.OrderBy(t => t.Timestamp).ToList();
+                // The last saved turn is the current user prompt (saved before this call).
+                // Exclude it: AskAsync will send it, so including it here duplicates the message.
+                var historyTurns = allTurns.Count > 0 &&
+                    string.Equals(allTurns[^1].Role, "user", StringComparison.OrdinalIgnoreCase)
+                    ? allTurns[..^1]
+                    : allTurns;
+
+                if (historyTurns.Count > 0)
+                {
+                    var priorMessages = historyTurns
+                        .Select(t => new ChatMessage(
+                            string.Equals(t.Role, "user", StringComparison.OrdinalIgnoreCase)
+                                ? ChatRole.User
+                                : ChatRole.Assistant,
+                            t.Text))
+                        .ToList();
+                    _agent!.ResetHistory(priorMessages);
+                }
             }
         }
 
