@@ -214,6 +214,7 @@ static async Task RunWebAsync(string[] args)
         options.LogoutPath = "/logout";
     });
     builder.Services.AddScoped<IAgentDraftService, AgentDraftService>();
+    builder.Services.AddScoped<ThemeService>();
     // TODO: UserContext full implementation is Task B5; stub registered here so DI compiles.
     builder.Services.AddScoped<UserContext>();
 

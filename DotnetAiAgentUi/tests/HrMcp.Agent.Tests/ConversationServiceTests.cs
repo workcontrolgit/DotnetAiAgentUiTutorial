@@ -2,6 +2,7 @@
 using HrMcp.Core.Interfaces;
 using HrMcp.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace HrMcp.Agent.Tests;
@@ -10,14 +11,23 @@ public sealed class ConversationServiceTests : IDisposable
 {
     private readonly HrDbContext _db;
     private readonly IConversationService _sut;
+    private readonly ServiceProvider _serviceProvider;
 
     public ConversationServiceTests()
     {
+        var dbName = Guid.NewGuid().ToString();
+        var services = new ServiceCollection();
+        services.AddDbContextFactory<HrDbContext>(opts =>
+            opts.UseInMemoryDatabase(dbName));
+        _serviceProvider = services.BuildServiceProvider();
+
         var options = new DbContextOptionsBuilder<HrDbContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .UseInMemoryDatabase(dbName)
             .Options;
         _db = new HrDbContext(options);
-        _sut = new HrMcp.Infrastructure.Persistence.Services.ConversationService(_db);
+
+        var factory = _serviceProvider.GetRequiredService<IDbContextFactory<HrDbContext>>();
+        _sut = new HrMcp.Infrastructure.Persistence.Services.ConversationService(factory);
     }
 
     [Fact]
@@ -89,5 +99,9 @@ public sealed class ConversationServiceTests : IDisposable
         Assert.Null(result);
     }
 
-    public void Dispose() => _db.Dispose();
+    public void Dispose()
+    {
+        _db.Dispose();
+        _serviceProvider.Dispose();
+    }
 }

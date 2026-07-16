@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\HrMcp.Infrastructure.Persistence\HrMcp.Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\..\src\HrMcp.Agent\HrMcp.Agent.csproj" />
   </ItemGroup>
 
 </Project>
