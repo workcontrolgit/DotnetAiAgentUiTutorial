@@ -17,8 +17,6 @@ public interface IAgentDraftService
 
 public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
 {
-    private const int DefaultExportContextPositionId = 1;
-
     private readonly IConversationService _conversationService;
     private readonly UserContext _userContext;
     private HrAgent? _agent;
@@ -60,7 +58,8 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
     {
         await EnsureInitializedAsync(ct);
         var request =
-            $"Export this draft to Word by calling ExportDraftToWord with positionId={DefaultExportContextPositionId}. Keep content unchanged.\n" +
+            "Call ExportDraftToWord using the positionId from our conversation. " +
+            "Pass the following as the draftContent argument exactly as-is — do not regenerate or modify it:\n\n" +
             draftText;
         var message = await _agent!.AskAsync(request, ct);
         return (message, _agent.LastExportedFileName, _agent.LastExportedFileBytes);
