@@ -26,6 +26,7 @@
             for (var i = 0; i < nodes.length; i++) {
                 var q = nodes[i].__quill;
                 if (q && q.root && q.clipboard) {
+                    q.setContents([]);
                     q.clipboard.dangerouslyPasteHTML(0, html);
                     return true;
                 }
