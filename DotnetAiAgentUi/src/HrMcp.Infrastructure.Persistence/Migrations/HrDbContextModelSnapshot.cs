@@ -4,10 +4,6 @@ using HrMcp.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-<<<<<<< HEAD
-using Microsoft.EntityFrameworkCore.Migrations;
-=======
->>>>>>> release/v1
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -15,17 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrMcp.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(HrDbContext))]
-<<<<<<< HEAD
-    [Migration("20260626225410_AddConversationHistory")]
-    partial class AddConversationHistory
-    {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
-=======
     partial class HrDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
->>>>>>> release/v1
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,8 +22,6 @@ namespace HrMcp.Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-<<<<<<< HEAD
-=======
             modelBuilder.Entity("HrMcp.Core.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -101,7 +87,6 @@ namespace HrMcp.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
->>>>>>> release/v1
             modelBuilder.Entity("HrMcp.Core.Entities.ConversationSession", b =>
                 {
                     b.Property<Guid>("Id")
@@ -413,8 +398,6 @@ namespace HrMcp.Infrastructure.Persistence.Migrations
                     b.ToTable("PositionRemunerations");
                 });
 
-<<<<<<< HEAD
-=======
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -548,7 +531,6 @@ namespace HrMcp.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
->>>>>>> release/v1
             modelBuilder.Entity("HrMcp.Core.Entities.ConversationTurn", b =>
                 {
                     b.HasOne("HrMcp.Core.Entities.ConversationSession", "Session")
@@ -582,8 +564,6 @@ namespace HrMcp.Infrastructure.Persistence.Migrations
                     b.Navigation("Position");
                 });
 
-<<<<<<< HEAD
-=======
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -635,7 +615,6 @@ namespace HrMcp.Infrastructure.Persistence.Migrations
                         .IsRequired();
                 });
 
->>>>>>> release/v1
             modelBuilder.Entity("HrMcp.Core.Entities.ConversationSession", b =>
                 {
                     b.Navigation("Turns");

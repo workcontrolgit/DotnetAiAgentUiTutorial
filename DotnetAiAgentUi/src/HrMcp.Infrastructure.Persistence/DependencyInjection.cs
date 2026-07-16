@@ -1,14 +1,9 @@
 // src/HrMcp.Infrastructure.Persistence/DependencyInjection.cs
-<<<<<<< HEAD
-using HrMcp.Core.Interfaces;
-using HrMcp.Infrastructure.Persistence.Repositories;
-=======
 using HrMcp.Core.Entities;
 using HrMcp.Core.Interfaces;
 using HrMcp.Infrastructure.Persistence.Repositories;
 using HrMcp.Infrastructure.Persistence.Services;
 using Microsoft.AspNetCore.Identity;
->>>>>>> release/v1
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,13 +15,6 @@ public static class DependencyInjection
         this IServiceCollection services,
         string connectionString)
     {
-<<<<<<< HEAD
-        services.AddDbContext<HrDbContext>(options =>
-            options.UseSqlServer(connectionString));
-
-        services.AddScoped<IPositionRepository, PositionRepository>();
-        services.AddScoped<IHiringOrganizationRepository, HiringOrganizationRepository>();
-=======
         services.AddDbContextFactory<HrDbContext>(options =>
             options.UseSqlServer(connectionString));
 
@@ -44,7 +32,6 @@ public static class DependencyInjection
         services.AddScoped<IPositionRepository, PositionRepository>();
         services.AddScoped<IHiringOrganizationRepository, HiringOrganizationRepository>();
         services.AddScoped<IConversationService, ConversationService>();
->>>>>>> release/v1
 
         return services;
     }

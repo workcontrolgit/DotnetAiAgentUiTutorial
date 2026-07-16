@@ -1,9 +1,4 @@
 @page "/"
-<<<<<<< HEAD
-@using HrMcp.Agent.Web.Models
-@using HrMcp.Agent.Web.Services
-@using Markdig
-=======
 @page "/workspace/{SessionId:guid}"
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [Authorize]
@@ -12,69 +7,10 @@
 @using HrMcp.Core.Interfaces
 @using Markdig
 @using Microsoft.AspNetCore.Authorization
->>>>>>> release/v1
 @using Microsoft.AspNetCore.Components.Web
 @using System.Text
 @using System.Text.RegularExpressions
 @inject IAgentDraftService AgentDraftService
-<<<<<<< HEAD
-@inject IJSRuntime JS
-
-<div class="workspace" style="@WorkspaceGridStyle" @onmousemove="HandleResize" @onmouseup="EndResize" @onmouseleave="EndResize">
-    <section class="left-chat">
-        <div class="chat-thread" id="chat-thread">
-            @if (_turns.Count == 0)
-            {
-                <div class="chat-item">Chat responses appear here after you send a prompt.</div>
-            }
-            else
-            {
-                @foreach (var turn in _turns)
-                {
-                    var isUser = string.Equals(turn.Role, "You", StringComparison.OrdinalIgnoreCase);
-                    <div class="chat-bubble-row @(isUser ? "chat-bubble-row--user" : "chat-bubble-row--assistant")">
-                        <div class="chat-bubble">
-                            @if (isUser)
-                            {
-                                <span>@turn.Text</span>
-                            }
-                            else
-                            {
-                                <div class="chat-bubble-content">@RenderAssistantMarkdown(turn.Text)</div>
-                            }
-                        </div>
-                    </div>
-                }
-
-                @if (_busy)
-                {
-                    <div class="chat-bubble-row chat-bubble-row--assistant">
-                        <div class="chat-bubble chat-bubble--loading" role="status" aria-live="polite">
-                            <span class="chat-spinner" aria-hidden="true"></span>
-                            <span>Assistant is drafting your response...</span>
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-        <div class="chat-composer">
-            <textarea class="chat-input" @bind="Prompt" @bind:event="oninput" @onkeydown="HandlePromptKeyDown" placeholder='Message the assistant — e.g. "Draft a mid-level software engineer PD"'></textarea>
-            <div class="panel-actions panel-actions--chat">
-                <div class="panel-actions-row panel-actions-row--end">
-                    <span
-                        class="help-icon"
-                        title="Enter to send, Shift+Enter for a new line. Draft updates automatically for draft/refine prompts."
-                        aria-label="Help: Enter to send, Shift+Enter for a new line. Draft updates automatically for draft/refine prompts.">?</span>
-                    <button class="primary-btn primary-btn--compact" @onclick="SendPromptAsync" disabled="@_busy">Send</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    @if (_draftVisible)
-    {
-        <div class="splitter" role="separator" aria-label="Resize chat and draft panels" @onmousedown="StartResize"></div>
-=======
 @inject IConversationService ConversationService
 @inject UserContext UserContext
 @inject NavigationManager Nav
@@ -107,10 +43,9 @@
                         var isUser = string.Equals(turn.Role, "You", StringComparison.OrdinalIgnoreCase);
                         <div class="chat-bubble-row @(isUser ? "chat-bubble-row--user" : "chat-bubble-row--assistant")">
                             <div class="chat-bubble">
-                                <strong>@turn.Role:</strong>
                                 @if (isUser)
                                 {
-                                    <span> @turn.Text</span>
+                                    <span>@turn.Text</span>
                                 }
                                 else
                                 {
@@ -132,7 +67,7 @@
                 }
             </div>
             <div class="chat-composer">
-                <textarea class="chat-input" @bind="Prompt" @bind:event="oninput" @onkeydown="HandlePromptKeyDown" placeholder="Ask for help drafting or improving your position description..."></textarea>
+                <textarea class="chat-input" @bind="Prompt" @bind:event="oninput" @onkeydown="HandlePromptKeyDown" placeholder="Message the assistant"></textarea>
                 <div class="panel-actions panel-actions--chat">
                     <div class="panel-actions-row panel-actions-row--end">
                         <span
@@ -149,7 +84,6 @@
         {
             <div class="splitter" role="separator" aria-label="Resize chat and draft panels" @onmousedown="StartResize"></div>
         }
->>>>>>> release/v1
     }
 
     @if (_draftVisible)
@@ -157,9 +91,6 @@
         <section class="right-editor">
             <div class="right-header">
                 <h3>Your Position Description Draft</h3>
-<<<<<<< HEAD
-            </div>
-=======
                 <div class="export-menu-wrap">
                     <button class="ghost-btn" @onclick="ToggleExportMenu" disabled="@_busy">Export ▾</button>
                     @if (_exportMenuOpen)
@@ -183,7 +114,6 @@
             {
                 <div class="chat-item panel-status">@_status</div>
             }
->>>>>>> release/v1
 
             <div id="quill-editor-wrapper">
                 <BlazoredTextEditor @ref="_richEditor"
@@ -211,25 +141,6 @@
                 </BlazoredTextEditor>
             </div>
 
-<<<<<<< HEAD
-            <div class="panel-actions panel-actions--editor">
-                <div class="panel-actions-row panel-actions-row--end">
-                    <button class="primary-btn primary-btn--compact" @onclick="ExportWordAsync" disabled="@_busy">Export Word</button>
-                    @if (_exportBusy)
-                    {
-                        <span class="export-status">
-                            <span class="chat-spinner" aria-hidden="true"></span>
-                            <span>Generating Word document...</span>
-                        </span>
-                    }
-                    else if (!string.IsNullOrWhiteSpace(_status))
-                    {
-                        <div class="chat-item panel-status">@_status</div>
-                    }
-                </div>
-            </div>
-=======
->>>>>>> release/v1
         </section>
     }
 </div>
@@ -240,16 +151,10 @@
     private bool _busy;
     private bool _exportBusy;
     private string _status = string.Empty;
-<<<<<<< HEAD
-    private bool _draftVisible;
-    private int _lastScrollTurnCount;
-    private bool _lastScrollBusy;
-=======
     private bool _leftPanelHidden;
     private bool _draftVisible;
     private bool _exportMenuOpen;
     private string? _currentDraftMarkdown;
->>>>>>> release/v1
     private BlazoredTextEditor _richEditor = default!;
     private string? _pendingHtml;
     private bool _resizing;
@@ -288,12 +193,6 @@
         .UseAdvancedExtensions()
         .DisableHtml()
         .Build();
-<<<<<<< HEAD
-    private string WorkspaceGridStyle => !_draftVisible
-        ? "grid-template-columns: minmax(0, 1fr);"
-        : $"grid-template-columns: {_leftPanelWidth}px 8px minmax(0, 1fr);";
-
-=======
     private string WorkspaceGridStyle => _leftPanelHidden || !_draftVisible
         ? "grid-template-columns: minmax(0, 1fr);"
         : $"grid-template-columns: {_leftPanelWidth}px 8px minmax(0, 1fr);";
@@ -308,24 +207,12 @@
         _resizing = false;
     }
 
->>>>>>> release/v1
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (_pendingHtml is not null)
         {
             var html = _pendingHtml;
             _pendingHtml = null;
-<<<<<<< HEAD
-            await JS.InvokeVoidAsync("loadQuillWhenReady", "quill-editor-wrapper", html);
-        }
-
-        var shouldScroll = _turns.Count != _lastScrollTurnCount || _busy != _lastScrollBusy;
-        if (shouldScroll)
-        {
-            _lastScrollTurnCount = _turns.Count;
-            _lastScrollBusy = _busy;
-            await JS.InvokeVoidAsync("scrollChatToBottom", "chat-thread");
-=======
             // Quill may not be initialized yet — JS function polls until ready, then loads via dangerouslyPasteHTML
             await JS.InvokeVoidAsync("loadQuillWhenReady", "quill-editor-wrapper", html);
         }
@@ -360,18 +247,14 @@
         catch (Exception ex)
         {
             _status = $"Error loading session: {ex.Message}";
->>>>>>> release/v1
         }
     }
 
     private void StartResize()
     {
-<<<<<<< HEAD
-=======
         if (_leftPanelHidden)
             return;
 
->>>>>>> release/v1
         _resizing = true;
     }
 
@@ -382,11 +265,7 @@
 
     private void HandleResize(MouseEventArgs args)
     {
-<<<<<<< HEAD
-        if (!_resizing)
-=======
         if (!_resizing || _leftPanelHidden)
->>>>>>> release/v1
             return;
 
         var nextWidth = (int)args.ClientX - 24;
@@ -411,14 +290,6 @@
         _status = string.Empty;
         var input = Prompt.Trim();
         Prompt = string.Empty;
-<<<<<<< HEAD
-        _turns.Add(new ChatTurn("You", input, DateTimeOffset.UtcNow));
-
-        try
-        {
-            var response = await AgentDraftService.SendPromptAsync(input);
-            _turns.Add(new ChatTurn("Assistant", response, DateTimeOffset.UtcNow));
-=======
 
         try
         {
@@ -440,33 +311,21 @@
             await ConversationService.AddTurnAsync(SessionId.Value, _userId, "assistant", response);
             await InvokeAsync(StateHasChanged);
             await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
->>>>>>> release/v1
 
             if (ShouldSyncDraft(input, response))
             {
                 var draftMarkdown = ExtractDraftMarkdown(response);
                 if (draftMarkdown is not null)
                 {
-<<<<<<< HEAD
-                    var html = NormalizeHtmlForQuill(Markdown.ToHtml(draftMarkdown, ChatMarkdownPipeline));
-                    if (!_draftVisible)
-                    {
-                        // First draft: show the panel and let OnAfterRenderAsync load content via JS polling
-=======
                     _currentDraftMarkdown = draftMarkdown;
                     var html = NormalizeHtmlForQuill(Markdown.ToHtml(draftMarkdown, ChatMarkdownPipeline));
                     if (!_draftVisible)
                     {
->>>>>>> release/v1
                         _pendingHtml = html;
                         _draftVisible = true;
                     }
                     else
                     {
-<<<<<<< HEAD
-                        // Editor already initialized — set content via custom Delta builder
-=======
->>>>>>> release/v1
                         await JS.InvokeVoidAsync("setQuillContent", "quill-editor-wrapper", html);
                     }
                 }
@@ -483,16 +342,11 @@
         }
     }
 
-<<<<<<< HEAD
-    private async Task ExportWordAsync()
-    {
-=======
     private void ToggleExportMenu() => _exportMenuOpen = !_exportMenuOpen;
 
     private async Task ExportWordAsync()
     {
         _exportMenuOpen = false;
->>>>>>> release/v1
         var currentHtml = await JS.InvokeAsync<string>("getQuillContent", "quill-editor-wrapper");
         if (_busy || string.IsNullOrWhiteSpace(currentHtml) || currentHtml == "<p><br></p>")
         {
@@ -529,12 +383,6 @@
         }
     }
 
-<<<<<<< HEAD
-    // Extracts the markdown draft body from an AI response that may include conversational
-    // preamble (before the first ## heading) and a closing question/offer at the end.
-    // Returns null when the response contains no markdown headings — caller skips draft update.
-    internal static string? ExtractDraftMarkdown(string response)
-=======
     private async Task ExportMarkdownAsync()
     {
         _exportMenuOpen = false;
@@ -574,8 +422,7 @@
     // Extracts the markdown draft body from an AI response that may include conversational
     // preamble (before the first ## heading) and a closing question/offer at the end.
     // Returns null when the response contains no markdown headings — caller skips draft update.
-    private static string? ExtractDraftMarkdown(string response)
->>>>>>> release/v1
+    internal static string? ExtractDraftMarkdown(string response)
     {
         var lines = response.Split(["\r\n", "\n"], StringSplitOptions.None);
 
@@ -602,11 +449,7 @@
         return string.Join("\n", lines[start..(end + 1)]).Trim();
     }
 
-<<<<<<< HEAD
     internal static bool IsClosingLine(string line)
-=======
-    private static bool IsClosingLine(string line)
->>>>>>> release/v1
     {
         var t = line.Trim();
         if (string.IsNullOrWhiteSpace(t)) return true;
@@ -633,11 +476,7 @@
         return IsDraftIntentPrompt(prompt);
     }
 
-<<<<<<< HEAD
     internal static bool IsDraftIntentPrompt(string prompt)
-=======
-    private static bool IsDraftIntentPrompt(string prompt)
->>>>>>> release/v1
     {
         var normalized = prompt.ToLowerInvariant();
 

@@ -4,11 +4,8 @@ using Azure.Identity;
 using HrMcp.Agent.Components;
 using HrMcp.Agent;
 using HrMcp.Agent.Web.Services;
-<<<<<<< HEAD
-=======
 using HrMcp.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication;
->>>>>>> release/v1
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -207,9 +204,6 @@ static async Task RunWebAsync(string[] args)
     builder.WebHost.UseStaticWebAssets();
     builder.Services.AddRazorComponents()
         .AddInteractiveServerComponents();
-<<<<<<< HEAD
-    builder.Services.AddScoped<IAgentDraftService, AgentDraftService>();
-=======
 
     var connectionString = builder.Configuration.GetConnectionString("HrDb")
         ?? throw new InvalidOperationException("Missing ConnectionStrings:HrDb");
@@ -220,6 +214,7 @@ static async Task RunWebAsync(string[] args)
         options.LogoutPath = "/logout";
     });
     builder.Services.AddScoped<IAgentDraftService, AgentDraftService>();
+    builder.Services.AddScoped<ThemeService>();
     // TODO: UserContext full implementation is Task B5; stub registered here so DI compiles.
     builder.Services.AddScoped<UserContext>();
 
@@ -261,18 +256,10 @@ static async Task RunWebAsync(string[] args)
     }
 
     builder.Services.AddAuthorization();
->>>>>>> release/v1
 
     var app = builder.Build();
     app.UseStaticFiles();
     app.MapStaticAssets();
-<<<<<<< HEAD
-    app.UseAntiforgery();
-    app.MapRazorComponents<App>()
-        .AddInteractiveServerRenderMode();
-
-    Console.WriteLine("HrMcp.Agent starting in web mode (use --console for terminal mode).");
-=======
     app.UseAuthentication();
     app.UseAuthorization();
     app.UseAntiforgery();
@@ -301,7 +288,6 @@ static async Task RunWebAsync(string[] args)
         .AddInteractiveServerRenderMode();
 
     Console.WriteLine("HrMcp.Agent starting in web mode. Pass --console to run the console agent instead.");
->>>>>>> release/v1
     await app.RunAsync();
 }
 
@@ -407,12 +393,8 @@ static string FindWorkspaceRoot()
     var dir = new DirectoryInfo(AppContext.BaseDirectory);
     for (var i = 0; i < 8 && dir is not null; i++, dir = dir.Parent)
     {
-<<<<<<< HEAD
-        if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentUi")))
-=======
         if (Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentUi")) ||
             Directory.Exists(Path.Combine(dir.FullName, "DotnetAiAgentMcp")))
->>>>>>> release/v1
             return dir.FullName;
     }
 

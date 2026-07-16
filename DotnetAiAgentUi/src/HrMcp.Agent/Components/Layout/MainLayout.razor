@@ -1,87 +1,6 @@
 @inherits LayoutComponentBase
-<<<<<<< HEAD
-@inject IConfiguration Config
-
-<div class="app-shell">
-    <aside class="history-sidebar @(_sidebarOpen ? "" : "history-sidebar--collapsed")">
-        <div class="sidebar-top">
-            <button class="new-chat-btn" disabled title="Coming soon">+ New Chat</button>
-        </div>
-        <nav class="sidebar-history">
-            <span class="sidebar-empty">No history yet</span>
-        </nav>
-        <div class="sidebar-footer">
-            <button class="sidebar-user-btn" disabled title="Login coming soon">
-                <span>&#128100;</span>
-                <span class="sidebar-user-label">Sign in</span>
-            </button>
-        </div>
-    </aside>
-
-    <div class="main-area">
-        <header class="main-topbar">
-            <div class="topbar-left">
-                <button class="icon-btn" @onclick="ToggleSidebar" title="Toggle sidebar">&#9776;</button>
-                <span class="app-title">Position Description Builder</span>
-            </div>
-            <div class="topbar-actions">
-                <button class="ghost-btn" @onclick="OpenSettings">&#9881; Settings</button>
-            </div>
-        </header>
-
-        <div class="main-body">
-            @Body
-        </div>
-    </div>
-</div>
-
-@if (_settingsOpen)
-{
-    <div class="modal-overlay" @onclick="CloseSettings">
-        <div class="modal-card" @onclick:stopPropagation="true">
-            <div class="modal-header">
-                <h2>Settings</h2>
-                <button class="modal-close-btn" @onclick="CloseSettings" title="Close">&times;</button>
-            </div>
-            <table class="settings-table">
-                <tr>
-                    <td>AI Provider</td>
-                    <td>@(Config["AI:Provider"] ?? "—")</td>
-                </tr>
-                <tr>
-                    <td>Model</td>
-                    <td>@ResolveModel()</td>
-                </tr>
-                <tr>
-                    <td>Transport</td>
-                    <td>@(Config["McpServer:Transport:Type"] ?? "—")</td>
-                </tr>
-                <tr>
-                    <td>App Version</td>
-                    <td>1.0</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-}
-
-@code {
-    private bool _sidebarOpen = true;
-    private bool _settingsOpen;
-
-    private void ToggleSidebar() => _sidebarOpen = !_sidebarOpen;
-    private void OpenSettings() => _settingsOpen = true;
-    private void CloseSettings() => _settingsOpen = false;
-
-    private string ResolveModel()
-    {
-        var provider = Config["AI:Provider"] ?? "Ollama";
-        return string.Equals(provider, "AzureOpenAI", StringComparison.OrdinalIgnoreCase)
-            ? Config["AI:AzureOpenAI:Deployment"] ?? "—"
-            : Config["AI:Ollama:Model"] ?? "—";
-    }
-}
-=======
+@inject ThemeService ThemeService
+@inject IJSRuntime JS
 
 <div class="main-layout">
     <SessionsSidebar @rendermode="RenderMode.InteractiveServer" />
@@ -89,4 +8,11 @@
         @Body
     </div>
 </div>
->>>>>>> release/v1
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await ThemeService.InitAsync(JS);
+    }
+}

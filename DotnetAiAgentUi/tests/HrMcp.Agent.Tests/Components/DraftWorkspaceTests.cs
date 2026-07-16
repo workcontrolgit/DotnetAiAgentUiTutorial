@@ -1,7 +1,11 @@
 using Bunit;
 using HrMcp.Agent.Components.Pages;
 using HrMcp.Agent.Web.Services;
+using HrMcp.Core.Entities;
+using HrMcp.Core.Interfaces;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 using Xunit;
 
 namespace HrMcp.Agent.Tests.Components;
@@ -12,7 +16,7 @@ public sealed class DraftWorkspaceTests : TestContext
     {
         public string NextResponse { get; set; } = "Hello from assistant";
 
-        public Task<string> SendPromptAsync(string prompt, CancellationToken ct = default) =>
+        public Task<string> SendPromptAsync(string prompt, Guid? sessionId = null, CancellationToken ct = default) =>
             Task.FromResult(NextResponse);
 
         public Task<(string Message, string? FileName, byte[]? FileBytes)> ExportDraftToWordAsync(
@@ -20,12 +24,43 @@ public sealed class DraftWorkspaceTests : TestContext
             Task.FromResult(("ok", (string?)null, (byte[]?)null));
     }
 
+    private sealed class FakeConversationService : IConversationService
+    {
+        public Task<IReadOnlyList<ConversationSession>> GetSessionsAsync(string userId, CancellationToken ct = default) =>
+            Task.FromResult<IReadOnlyList<ConversationSession>>([]);
+
+        public Task<ConversationSession> CreateSessionAsync(string userId, string firstPrompt, CancellationToken ct = default) =>
+            Task.FromResult(new ConversationSession { Id = Guid.NewGuid(), UserId = userId, Name = firstPrompt });
+
+        public Task<ConversationSession?> GetSessionAsync(Guid sessionId, string userId, CancellationToken ct = default) =>
+            Task.FromResult<ConversationSession?>(null);
+
+        public Task AddTurnAsync(Guid sessionId, string userId, string role, string text, CancellationToken ct = default) =>
+            Task.CompletedTask;
+
+        public Task RenameSessionAsync(Guid sessionId, string userId, string newName, CancellationToken ct = default) =>
+            Task.CompletedTask;
+
+        public Task DeleteSessionAsync(Guid sessionId, string userId, CancellationToken ct = default) =>
+            Task.CompletedTask;
+    }
+
+    private sealed class FakeAuthStateProvider : AuthenticationStateProvider
+    {
+        public override Task<AuthenticationState> GetAuthenticationStateAsync() =>
+            Task.FromResult(new AuthenticationState(new ClaimsPrincipal(
+                new ClaimsIdentity([new Claim(ClaimTypes.NameIdentifier, "testuser")], "test"))));
+    }
+
     private readonly FakeAgentDraftService _fake = new();
 
     public DraftWorkspaceTests()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddSingleton<AuthenticationStateProvider>(new FakeAuthStateProvider());
         Services.AddScoped<IAgentDraftService>(_ => _fake);
+        Services.AddScoped<IConversationService>(_ => new FakeConversationService());
+        Services.AddScoped<UserContext>();
     }
 
     [Fact]

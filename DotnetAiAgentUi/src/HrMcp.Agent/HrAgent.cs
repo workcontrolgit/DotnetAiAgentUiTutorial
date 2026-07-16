@@ -83,11 +83,7 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
             return string.Empty;
 
         _history.Add(new ChatMessage(ChatRole.User, input));
-<<<<<<< HEAD
-        return await RunToolLoopAsync(ct);
-=======
         return await RunToolLoopAsync(useSpinner: false, ct);
->>>>>>> release/v1
     }
 
     // ── Manual tool call loop ────────────────────────────────────────────────
