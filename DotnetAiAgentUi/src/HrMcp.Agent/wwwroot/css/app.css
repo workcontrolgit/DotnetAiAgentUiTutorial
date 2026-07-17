@@ -96,6 +96,49 @@ html, body {
     color: var(--text);
 }
 
+.layout-switcher {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    background: var(--crust);
+    border: 1px solid var(--surface0);
+    border-radius: 8px;
+    padding: 3px;
+}
+
+.layout-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--subtext0);
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.layout-btn:hover:not(.layout-btn--active) {
+    background: var(--surface0);
+    color: var(--text);
+}
+
+.layout-btn--active {
+    background: var(--base);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.layout-icon {
+    font-size: 0.7rem;
+    letter-spacing: -1px;
+    opacity: 0.7;
+}
+
 /* ── Workspace grid ───────────────────────────────────────────────────────── */
 
 .workspace {

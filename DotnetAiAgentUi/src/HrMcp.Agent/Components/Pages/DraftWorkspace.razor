@@ -18,16 +18,28 @@
 
 <div class="workspace-topbar">
     <h1>Position Description Builder</h1>
-    @if (_draftVisible)
+    @if (_hasDraft)
     {
-        <button class="ghost-btn" @onclick="ToggleLeftPanel">
-            @(_leftPanelHidden ? "Show Chat" : "Hide Chat")
-        </button>
-        <button class="ghost-btn" @onclick="ToggleRightPanel">Hide Draft</button>
-    }
-    else if (_hasDraft)
-    {
-        <button class="ghost-btn" @onclick="ToggleRightPanel">Show Draft</button>
+        <div class="layout-switcher" role="group" aria-label="Panel layout">
+            <button class="layout-btn @(LayoutMode == "chat" ? "layout-btn--active" : "")"
+                    title="Chat only"
+                    @onclick='() => SetLayout("chat")'>
+                <span class="layout-icon">&#9646;</span>
+                <span class="layout-label">Chat</span>
+            </button>
+            <button class="layout-btn @(LayoutMode == "both" ? "layout-btn--active" : "")"
+                    title="Chat and draft"
+                    @onclick='() => SetLayout("both")'>
+                <span class="layout-icon">&#9646;&#9646;</span>
+                <span class="layout-label">Both</span>
+            </button>
+            <button class="layout-btn @(LayoutMode == "draft" ? "layout-btn--active" : "")"
+                    title="Draft only"
+                    @onclick='() => SetLayout("draft")'>
+                <span class="layout-icon">&#9646;</span>
+                <span class="layout-label">Draft</span>
+            </button>
+        </div>
     }
 </div>
 
@@ -199,32 +211,44 @@
         .UseAdvancedExtensions()
         .DisableHtml()
         .Build();
-    private string WorkspaceGridStyle => _leftPanelHidden || !_draftVisible
-        ? "grid-template-columns: minmax(0, 1fr);"
-        : $"grid-template-columns: {_leftPanelWidth}px 8px minmax(0, 1fr);";
+    private string WorkspaceGridStyle => LayoutMode == "both"
+        ? $"grid-template-columns: {_leftPanelWidth}px 8px minmax(0, 1fr);"
+        : "grid-template-columns: minmax(0, 1fr);";
 
     [Parameter] public Guid? SessionId { get; set; }
 
     private string _userId = string.Empty;
 
-    private void ToggleLeftPanel()
-    {
-        _leftPanelHidden = !_leftPanelHidden;
-        _resizing = false;
-    }
+    private string LayoutMode =>
+        !_draftVisible ? "chat" :
+        _leftPanelHidden ? "draft" :
+        "both";
 
-    private void ToggleRightPanel()
+    private void SetLayout(string mode)
     {
-        if (_draftVisible)
+        _resizing = false;
+        switch (mode)
         {
-            _draftVisible = false;
-            _leftPanelHidden = false; // ensure chat is visible when draft is hidden
-        }
-        else if (_hasDraft && _currentDraftMarkdown is not null)
-        {
-            // Quill will be re-mounted; queue the content for OnAfterRenderAsync
-            _pendingHtml = NormalizeHtmlForQuill(Markdown.ToHtml(_currentDraftMarkdown, ChatMarkdownPipeline));
-            _draftVisible = true;
+            case "chat":
+                _leftPanelHidden = false;
+                _draftVisible = false;
+                break;
+            case "draft":
+                _leftPanelHidden = true;
+                if (!_draftVisible && _hasDraft && _currentDraftMarkdown is not null)
+                {
+                    _pendingHtml = NormalizeHtmlForQuill(Markdown.ToHtml(_currentDraftMarkdown, ChatMarkdownPipeline));
+                    _draftVisible = true;
+                }
+                break;
+            case "both":
+                _leftPanelHidden = false;
+                if (!_draftVisible && _hasDraft && _currentDraftMarkdown is not null)
+                {
+                    _pendingHtml = NormalizeHtmlForQuill(Markdown.ToHtml(_currentDraftMarkdown, ChatMarkdownPipeline));
+                    _draftVisible = true;
+                }
+                break;
         }
     }
 
