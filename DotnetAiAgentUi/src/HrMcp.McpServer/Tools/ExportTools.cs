@@ -63,6 +63,23 @@ public sealed class ExportTools(PositionService positions, ILogger<ExportTools> 
         return result;
     }
 
+    [McpServerTool(Name = "ExportNewDraftToWord"),
+     Description("Exports a new (unsaved) AI-generated Position Description draft to a Word (.docx) file. Use this when there is no existing position ID — for example, when drafting a brand-new PD from scratch. Returns a JSON payload with fileName and base64-encoded content for the agent to save locally.")]
+    public Task<string> ExportNewDraftToWord(
+        [Description("The full Position Description draft content. Accepts HTML (from web editor) or markdown. Headings, bullets, and bold text are preserved in the Word output.")] string draftContent,
+        CancellationToken ct = default)
+    {
+        logger.LogInformation("[Request ] ExportNewDraftToWord");
+
+        if (string.IsNullOrWhiteSpace(draftContent))
+            return Task.FromResult("Draft content is empty — nothing to export.");
+
+        var bytes = BuildDraftDocx("Position Description Draft", "", draftContent);
+        var result = ToBase64Json("pd-draft.docx", bytes);
+        logger.LogInformation("[Response] ExportNewDraftToWord => {Bytes} bytes", bytes.Length);
+        return Task.FromResult(result);
+    }
+
     [McpServerTool(Name = "ExportPositionsToExcel"),
      Description("Exports all open positions to an Excel (.xlsx) spreadsheet. Returns a JSON payload with fileName and base64-encoded content for the agent to save locally.")]
     public async Task<string> ExportPositionsToExcel(CancellationToken ct = default)

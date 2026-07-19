@@ -1,0 +1,25 @@
+@if (!string.IsNullOrWhiteSpace(SuggestedSeries))
+{
+    <div class="series-banner" role="alert">
+        <div class="series-banner-title">ℹ️ Series Suggestion</div>
+        <div class="series-banner-body">
+            The duties described align more closely with
+            <strong>@SuggestedSeries (@SuggestedSeriesName)</strong>
+            than <strong>@CurrentSeries</strong>.
+        </div>
+        <div class="series-banner-actions">
+            <button class="ghost-btn" @onclick="OnKeep">Keep @CurrentSeries</button>
+            <button class="primary-btn primary-btn--compact" @onclick="OnSwitch">
+                Switch to @SuggestedSeries
+            </button>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public string? SuggestedSeries { get; set; }
+    [Parameter] public string? SuggestedSeriesName { get; set; }
+    [Parameter] public string? CurrentSeries { get; set; }
+    [Parameter] public EventCallback OnKeep { get; set; }
+    [Parameter] public EventCallback OnSwitch { get; set; }
+}

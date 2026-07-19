@@ -1040,3 +1040,120 @@ html, body {
 .theme-btn:hover:not(.theme-btn--active) {
     background: var(--surface1);
 }
+
+/* ── PD Section Checklist ───────────────────────────────────────────────────── */
+.pd-checklist {
+    border: 1px solid var(--border-color, #e0e0e0);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 0.82rem;
+}
+
+.pd-checklist-summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 5px 10px;
+    background: var(--surface-alt, #f8f8f8);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: left;
+    font-size: inherit;
+}
+
+.pd-checklist-summary[aria-expanded="true"] {
+    border-radius: 6px 6px 0 0;
+    border-bottom: 1px solid var(--border-color, #e0e0e0);
+}
+
+.pd-checklist-header-label {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.pd-checklist-counts {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+}
+
+.pd-checklist-toggle {
+    font-size: 0.7rem;
+    color: var(--text-muted, #6b7280);
+    flex-shrink: 0;
+}
+
+.pd-checklist-list {
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+}
+
+.pd-checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+}
+
+.pd-checklist-icon {
+    flex-shrink: 0;
+    width: 18px;
+    text-align: center;
+}
+
+.pd-checklist-name {
+    flex: 1;
+}
+
+.pd-checklist-name--link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--accent, #2563eb);
+    cursor: pointer;
+    text-align: left;
+    font-size: inherit;
+    text-decoration: underline;
+}
+
+.pd-checklist-name--link:hover {
+    opacity: 0.75;
+}
+
+.pd-checklist-ack {
+    font-size: 0.75rem;
+    padding: 1px 6px;
+}
+
+.pd-checklist-item--missing .pd-checklist-name { color: var(--text-muted, #6b7280); }
+.pd-checklist-item--warning .pd-checklist-name { color: var(--warning, #d97706); }
+.pd-checklist-item--complete .pd-checklist-name { color: var(--text, inherit); }
+.pd-checklist-item--locked .pd-checklist-name { color: var(--text-muted, #6b7280); font-style: italic; }
+
+/* ── Series Recommendation Banner ──────────────────────────────────────────── */
+.series-banner {
+    border: 1px solid var(--info-border, #93c5fd);
+    background: var(--info-bg, #eff6ff);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 0.85rem;
+}
+
+.series-banner-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.series-banner-body {
+    margin-bottom: 8px;
+    color: var(--text, inherit);
+}
+
+.series-banner-actions {
+    display: flex;
+    gap: 8px;
+}

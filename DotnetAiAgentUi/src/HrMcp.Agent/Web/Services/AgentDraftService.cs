@@ -67,12 +67,8 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
     public async Task<(string Message, string? FileName, byte[]? FileBytes)> ExportDraftToWordAsync(string draftText, CancellationToken ct = default)
     {
         await EnsureInitializedAsync(ct);
-        var request =
-            "Call ExportDraftToWord using the positionId from our conversation. " +
-            "Pass the following as the draftContent argument exactly as-is — do not regenerate or modify it:\n\n" +
-            draftText;
-        var message = await _agent!.AskAsync(request, ct);
-        return (message, _agent.LastExportedFileName, _agent.LastExportedFileBytes);
+        var (fileName, fileBytes, message) = await _agent!.ExportNewDraftDirectAsync(draftText, ct);
+        return (message, fileName, fileBytes);
     }
 
     private async Task EnsureInitializedAsync(CancellationToken ct)

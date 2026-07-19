@@ -1,0 +1,74 @@
+@using HrMcp.Agent.Web.Models
+
+<div class="pd-checklist">
+    <button class="pd-checklist-summary" @onclick="ToggleExpanded" aria-expanded="@_expanded">
+        <span class="pd-checklist-header-label">Section Checklist</span>
+        <span class="pd-checklist-counts">
+            @if (CompleteCount > 0) { <span title="Complete">✅ @CompleteCount</span> }
+            @if (WarningCount > 0)  { <span title="Needs review">⚠️ @WarningCount</span> }
+            @if (MissingCount > 0)  { <span title="Missing">❌ @MissingCount</span> }
+            @if (LockedCount > 0)   { <span title="Auto-filled">🔒 @LockedCount</span> }
+        </span>
+        <span class="pd-checklist-toggle" aria-hidden="true">@(_expanded ? "▲" : "▼")</span>
+    </button>
+    @if (_expanded)
+    {
+        <ul class="pd-checklist-list">
+            @foreach (var section in State.Sections)
+            {
+                var icon = section.Status switch
+                {
+                    PdSectionStatus.Complete   => "✅",
+                    PdSectionStatus.Warning    => "⚠️",
+                    PdSectionStatus.AutoFilled => "🔒",
+                    _                          => "❌"
+                };
+                var cssClass = section.Status switch
+                {
+                    PdSectionStatus.Complete   => "pd-checklist-item--complete",
+                    PdSectionStatus.Warning    => "pd-checklist-item--warning",
+                    PdSectionStatus.AutoFilled => "pd-checklist-item--locked",
+                    _                          => "pd-checklist-item--missing"
+                };
+                var isClickable = section.Status is PdSectionStatus.Missing or PdSectionStatus.Warning;
+
+                <li class="pd-checklist-item @cssClass">
+                    <span class="pd-checklist-icon">@icon</span>
+                    @if (isClickable)
+                    {
+                        <button class="pd-checklist-name pd-checklist-name--link"
+                                @onclick="() => OnSectionClicked.InvokeAsync(section.Name)">
+                            @section.Name
+                        </button>
+                    }
+                    else
+                    {
+                        <span class="pd-checklist-name">@section.Name</span>
+                    }
+                    @if (section.Status == PdSectionStatus.Warning && !section.IsLocked)
+                    {
+                        <button class="pd-checklist-ack ghost-btn"
+                                @onclick="() => OnAcknowledge.InvokeAsync(section.Name)">
+                            Ack
+                        </button>
+                    }
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public PdChecklistState State { get; set; } = default!;
+    [Parameter] public EventCallback<string> OnSectionClicked { get; set; }
+    [Parameter] public EventCallback<string> OnAcknowledge { get; set; }
+
+    private bool _expanded;
+
+    private void ToggleExpanded() => _expanded = !_expanded;
+
+    private int CompleteCount => State.Sections.Count(s => s.Status == PdSectionStatus.Complete);
+    private int WarningCount  => State.Sections.Count(s => s.Status == PdSectionStatus.Warning);
+    private int MissingCount  => State.Sections.Count(s => s.Status == PdSectionStatus.Missing);
+    private int LockedCount   => State.Sections.Count(s => s.Status == PdSectionStatus.AutoFilled);
+}
