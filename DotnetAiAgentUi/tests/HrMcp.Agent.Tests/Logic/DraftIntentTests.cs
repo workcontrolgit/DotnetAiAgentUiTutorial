@@ -63,4 +63,19 @@ public sealed class DraftIntentTests
     [Fact]
     public void IsClosingLine_ContentLine_ReturnsFalse() =>
         Assert.False(DraftWorkspace.IsClosingLine("## Summary"));
+
+    // New terms for extended draft-intent detection
+    [Theory]
+    [InlineData("I need a GS-13 cloud architect")]
+    [InlineData("create a position for a software engineer")]
+    [InlineData("we're hiring a data scientist at grade 12")]
+    [InlineData("the title should be IT Specialist")]
+    [InlineData("the series is 2210")]
+    [InlineData("duties include leading the cloud migration")]
+    [InlineData("clearance is required for this role")]
+    [InlineData("the position is remote eligible")]
+    [InlineData("education requirement is a bachelor's degree")]
+    [InlineData("this will be a supervisory position")]
+    public void IsDraftIntentPrompt_ExtendedTerms_ReturnsTrue(string prompt) =>
+        Assert.True(DraftWorkspace.IsDraftIntentPrompt(prompt));
 }
