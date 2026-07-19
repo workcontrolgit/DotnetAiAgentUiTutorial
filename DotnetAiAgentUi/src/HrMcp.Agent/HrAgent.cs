@@ -58,6 +58,12 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         After drafting, ask one follow-up question about the highest-priority missing or unclear section.
         Never present a numbered menu of options or ask what the manager wants to do next.
 
+        When the manager answers a follow-up question or provides new information:
+        1. Begin your response with a brief change summary: "Updated: **[Section Name]** — [one sentence describing what changed]."
+           If multiple sections changed, list each on its own line.
+        2. Output the complete updated PD draft with ALL sections (never just the changed section alone).
+        3. Then ask the next follow-up question if required sections are still missing or unclear.
+
         Tool guidance:
         - Always call GetHiringOrganizations before GetPositionsByOrganization.
         - Use GetOpenPositions for overview; GetPositionById for full detail.

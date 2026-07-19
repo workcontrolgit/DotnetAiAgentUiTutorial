@@ -617,8 +617,19 @@
         if (string.IsNullOrWhiteSpace(response) || string.IsNullOrWhiteSpace(prompt))
             return false;
 
-        return IsDraftIntentPrompt(prompt);
+        // Sync when the user's prompt has draft intent OR when the response itself
+        // contains a PD draft (covers follow-up answers that cause section updates).
+        return IsDraftIntentPrompt(prompt) || ResponseContainsDraft(response);
     }
+
+    // Detects a PD draft in the response by checking for known section headings.
+    private static bool ResponseContainsDraft(string response) =>
+        response.Contains("## Position", StringComparison.OrdinalIgnoreCase) ||
+        response.Contains("## Major Duties", StringComparison.OrdinalIgnoreCase) ||
+        response.Contains("## Pay Plan", StringComparison.OrdinalIgnoreCase) ||
+        response.Contains("## Qualifications", StringComparison.OrdinalIgnoreCase) ||
+        response.Contains("## Security Clearance", StringComparison.OrdinalIgnoreCase) ||
+        response.Contains("## Remote Work", StringComparison.OrdinalIgnoreCase);
 
     internal static bool IsDraftIntentPrompt(string prompt)
     {
