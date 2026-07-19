@@ -281,4 +281,4 @@ Word export requires all items to be ✅ or ⚠️ — no ❌ items remaining. M
 - What is the agency name to insert into the system prompt?
 - Does the agency have a locked EEO/Reasonable Accommodation statement to embed verbatim?
 - Which OPM series codes are most commonly used at this agency? (Informs AI series recommendation priority)
-- Should the JSON export log ⚠️ acknowledgements for audit trail purposes?
+- Should the JSON export log ⚠️ acknowledgments for audit trail purposes?
