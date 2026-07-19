@@ -73,6 +73,7 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
             "ExportPositionToHtml",
             "ExportPositionToWord",
             "ExportDraftToWord",
+            "ExportNewDraftToWord",
             "ExportPositionsToExcel"
         };
 

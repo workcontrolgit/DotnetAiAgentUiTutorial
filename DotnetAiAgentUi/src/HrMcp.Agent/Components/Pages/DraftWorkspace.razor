@@ -480,17 +480,22 @@
 
             if (fileName is not null && fileBytes is not null)
             {
-                _status = $"\u2705 Word document ready: {fileName}";
+                _turns.Add(new ChatTurn("Assistant", $"\u2705 Word document ready: **{fileName}**", DateTimeOffset.UtcNow));
+                await InvokeAsync(StateHasChanged);
+                await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
                 await JS.InvokeVoidAsync("downloadFile", fileName, Convert.ToBase64String(fileBytes));
             }
             else
             {
-                _status = message;
+                _turns.Add(new ChatTurn("Assistant", message, DateTimeOffset.UtcNow));
+                await InvokeAsync(StateHasChanged);
+                await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
             }
         }
         catch (Exception ex)
         {
-            _status = $"Export failed: {ex.Message}";
+            _turns.Add(new ChatTurn("Assistant", $"\u26a0 Export failed: {ex.Message}", DateTimeOffset.UtcNow));
+            await InvokeAsync(StateHasChanged);
         }
         finally
         {
