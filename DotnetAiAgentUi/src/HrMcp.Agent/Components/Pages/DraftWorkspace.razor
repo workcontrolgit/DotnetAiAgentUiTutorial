@@ -320,6 +320,21 @@
                 var role = string.Equals(turn.Role, "user", StringComparison.OrdinalIgnoreCase) ? "You" : "Assistant";
                 _turns.Add(new ChatTurn(role, turn.Text, turn.Timestamp));
             }
+
+            // Restore draft state from the last assistant turn that contains a draft
+            var lastDraftTurn = _turns
+                .LastOrDefault(t => string.Equals(t.Role, "Assistant", StringComparison.OrdinalIgnoreCase)
+                                 && t.Text.Contains('#'));
+            if (lastDraftTurn is not null)
+            {
+                var restoredMarkdown = ExtractDraftMarkdown(lastDraftTurn.Text);
+                if (restoredMarkdown is not null)
+                {
+                    _currentDraftMarkdown = restoredMarkdown;
+                    _checklistState.UpdateFromDraft(_currentDraftMarkdown);
+                    _hasDraft = true;
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -487,6 +502,14 @@
     private async Task ExportMarkdownAsync()
     {
         _exportMenuOpen = false;
+        if (_checklistState.HasBlockingItems)
+        {
+            var missing = _checklistState.Sections
+                .Where(s => s.IsRequired && !s.IsLocked && s.Status == PdSectionStatus.Missing)
+                .Select(s => s.Name);
+            _status = $"Complete all required sections before exporting: {string.Join(", ", missing)}.";
+            return;
+        }
         if (string.IsNullOrWhiteSpace(_currentDraftMarkdown))
         {
             _status = "Draft is empty. Add content before exporting.";
@@ -748,11 +771,14 @@
         _seriesSuggestion = null;
     }
 
-    private void AcceptSeriesSuggestion()
+    private async Task AcceptSeriesSuggestion()
     {
-        // Dismiss the banner; the manager's next prompt will reference the new series.
-        // The AI will update the draft on the next exchange.
+        if (!_seriesSuggestion.HasValue) return;
+        var accepted = _seriesSuggestion.Value;
         _seriesSuggestion = null;
+        // Inject a follow-up prompt so the AI updates the draft series
+        Prompt = $"Please update the Pay Plan / Series / Grade section to use {accepted.Suggested} ({accepted.SuggestedName}).";
+        await SendPromptAsync();
     }
 
     // Detects series suggestion phrases produced by the updated system prompt.

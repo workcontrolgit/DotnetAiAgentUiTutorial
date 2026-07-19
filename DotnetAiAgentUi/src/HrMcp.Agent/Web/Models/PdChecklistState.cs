@@ -85,7 +85,7 @@ public sealed class PdChecklistState
 
     private static string[] SectionKeywords(string sectionName) => sectionName switch
     {
-        "Position Title"            => ["position title", "job title", "title"],
+        "Position Title"            => ["position title", "job title"],
         "Pay Plan / Series / Grade" => ["pay plan", "series", "grade", "classification"],
         "Supervisory Status"        => ["supervisory", "supervision"],
         "Position Summary"          => ["summary", "position summary", "overview"],
