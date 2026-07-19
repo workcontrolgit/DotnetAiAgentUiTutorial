@@ -121,6 +121,44 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         return await RunToolLoopAsync(useSpinner: false, ct);
     }
 
+    // Invokes ExportNewDraftToWord directly — no LLM round-trip.
+    // Returns (fileName, fileBytes, message). fileName/fileBytes are null on failure.
+    public async Task<(string? FileName, byte[]? FileBytes, string Message)> ExportNewDraftDirectAsync(
+        string draftContent, CancellationToken ct = default)
+    {
+        LastExportedFileName = null;
+        LastExportedFileBytes = null;
+
+        var fn = tools.FirstOrDefault(t => t.Name == "ExportNewDraftToWord") as AIFunction;
+        if (fn is null)
+            return (null, null, "ExportNewDraftToWord tool not available.");
+
+        object? rawResult;
+        try
+        {
+            var args = new AIFunctionArguments(new Dictionary<string, object?> { ["draftContent"] = draftContent });
+            rawResult = await fn.InvokeAsync(args, ct);
+        }
+        catch (Exception ex)
+        {
+            return (null, null, $"Export failed: {ex.Message}");
+        }
+
+        var json = rawResult switch
+        {
+            string s => s,
+            TextContent tc => tc.Text ?? string.Empty,
+            JsonElement je when je.ValueKind == JsonValueKind.String => je.GetString() ?? string.Empty,
+            JsonElement je => je.GetRawText(),
+            _ => JsonSerializer.Serialize(rawResult)
+        };
+
+        var saved = TrySaveExportFile(json, _outputFolder);
+        return saved is not null
+            ? (LastExportedFileName, LastExportedFileBytes, saved)
+            : (null, null, json);
+    }
+
     // ── Manual tool call loop ────────────────────────────────────────────────
 
     private async Task<string> RunToolLoopAsync(bool useSpinner, CancellationToken ct)
