@@ -78,4 +78,23 @@ public sealed class DraftIntentTests
     [InlineData("this will be a supervisory position")]
     public void IsDraftIntentPrompt_ExtendedTerms_ReturnsTrue(string prompt) =>
         Assert.True(DraftWorkspace.IsDraftIntentPrompt(prompt));
+
+    [Fact]
+    public void TryExtractSeriesSuggestion_WithSeriesSuggestionPhrase_ReturnsParsedValues()
+    {
+        const string response = "Series Suggestion: The duties align more closely with GS-0343 (Management & Program Analysis) than GS-2210.";
+        var result = DraftWorkspace.TryExtractSeriesSuggestion(response);
+        Assert.NotNull(result);
+        Assert.Equal("GS-0343", result!.Value.Suggested);
+        Assert.Equal("Management & Program Analysis", result.Value.SuggestedName);
+        Assert.Equal("GS-2210", result.Value.Current);
+    }
+
+    [Fact]
+    public void TryExtractSeriesSuggestion_WithoutPhrase_ReturnsNull()
+    {
+        const string response = "Here is your draft. ## Position Summary\n\nThis position...";
+        var result = DraftWorkspace.TryExtractSeriesSuggestion(response);
+        Assert.Null(result);
+    }
 }

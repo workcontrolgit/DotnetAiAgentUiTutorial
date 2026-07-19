@@ -699,4 +699,22 @@
     {
         return cells.All(cell => Regex.IsMatch(cell, "^:?-{3,}:?$"));
     }
+
+    // Detects series suggestion phrases produced by the updated system prompt.
+    // Expected AI format: "Series Suggestion: ... GS-XXXX (Name) ... GS-YYYY"
+    // Returns (suggestedSeries, suggestedName, currentSeries) or null if not detected.
+    internal static (string Suggested, string SuggestedName, string Current)? TryExtractSeriesSuggestion(string aiResponse)
+    {
+        if (string.IsNullOrWhiteSpace(aiResponse)) return null;
+
+        var match = System.Text.RegularExpressions.Regex.Match(
+            aiResponse,
+            @"Series Suggestion.*?GS-(\d{4})\s*\(([^)]+)\).*?GS-(\d{4})",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase |
+            System.Text.RegularExpressions.RegexOptions.Singleline);
+
+        if (!match.Success) return null;
+
+        return ($"GS-{match.Groups[1].Value}", match.Groups[2].Value.Trim(), $"GS-{match.Groups[3].Value}");
+    }
 }
