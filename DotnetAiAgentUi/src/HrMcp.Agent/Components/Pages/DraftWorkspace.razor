@@ -579,13 +579,26 @@
     {
         var t = line.Trim();
         if (string.IsNullOrWhiteSpace(t)) return true;
-        // Conversational closers typically start with these patterns
+        // Any sentence ending in a question mark is conversational
+        if (t.EndsWith("?")) return true;
+        // Bullet-list question items (e.g. "- What is the clearance level?")
+        if ((t.StartsWith("- ") || t.StartsWith("* ")) && t.Contains("?")) return true;
+        // Conversational closers / follow-up starters
         return t.StartsWith("Do you", StringComparison.OrdinalIgnoreCase)
             || t.StartsWith("Would you", StringComparison.OrdinalIgnoreCase)
             || t.StartsWith("Let me know", StringComparison.OrdinalIgnoreCase)
             || t.StartsWith("Feel free", StringComparison.OrdinalIgnoreCase)
             || t.StartsWith("Please let me know", StringComparison.OrdinalIgnoreCase)
-            || t.StartsWith("If you", StringComparison.OrdinalIgnoreCase);
+            || t.StartsWith("If you", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("I still need", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("I need ", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("Could you", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("Can you", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("Please provide", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("Please confirm", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("To complete", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("Once you", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("Once I", StringComparison.OrdinalIgnoreCase);
     }
 
     // Markdig UseAdvancedExtensions produces loose lists: <li><p>text</p></li>.
