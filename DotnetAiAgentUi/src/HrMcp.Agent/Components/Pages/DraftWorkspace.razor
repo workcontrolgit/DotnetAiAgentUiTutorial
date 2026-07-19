@@ -4,6 +4,7 @@
 @attribute [Authorize]
 @using HrMcp.Agent.Web.Models
 @using HrMcp.Agent.Web.Services
+@using HrMcp.Agent.Components.Shared
 @using HrMcp.Core.Interfaces
 @using Markdig
 @using Microsoft.AspNetCore.Authorization
@@ -18,11 +19,28 @@
 
 <div class="workspace-topbar">
     <h1>Position Description Builder</h1>
-    @if (_draftVisible)
+    @if (_hasDraft)
     {
-        <button class="ghost-btn" @onclick="ToggleLeftPanel">
-            @(_leftPanelHidden ? "Show Chat" : "Hide Chat")
-        </button>
+        <div class="layout-switcher" role="group" aria-label="Panel layout">
+            <button class="layout-btn @(LayoutMode == "chat" ? "layout-btn--active" : "")"
+                    title="Chat only"
+                    @onclick='() => SetLayout("chat")'>
+                <span class="layout-icon">&#9646;</span>
+                <span class="layout-label">Chat</span>
+            </button>
+            <button class="layout-btn @(LayoutMode == "both" ? "layout-btn--active" : "")"
+                    title="Chat and draft"
+                    @onclick='() => SetLayout("both")'>
+                <span class="layout-icon">&#9646;&#9646;</span>
+                <span class="layout-label">Both</span>
+            </button>
+            <button class="layout-btn @(LayoutMode == "draft" ? "layout-btn--active" : "")"
+                    title="Draft only"
+                    @onclick='() => SetLayout("draft")'>
+                <span class="layout-icon">&#9646;</span>
+                <span class="layout-label">Draft</span>
+            </button>
+        </div>
     }
 </div>
 
@@ -53,6 +71,15 @@
                                 }
                             </div>
                         </div>
+                        @if (!isUser && turn == _turns[^1] && _seriesSuggestion.HasValue)
+                        {
+                            <SeriesRecommendationBanner
+                                SuggestedSeries="@_seriesSuggestion.Value.Suggested"
+                                SuggestedSeriesName="@_seriesSuggestion.Value.SuggestedName"
+                                CurrentSeries="@_seriesSuggestion.Value.Current"
+                                OnKeep="DismissSeriesSuggestion"
+                                OnSwitch="AcceptSeriesSuggestion" />
+                        }
                     }
 
                     @if (_busy)
@@ -103,6 +130,9 @@
                     }
                 </div>
             </div>
+            <PdSectionChecklist State="_checklistState"
+                                OnSectionClicked="HandleChecklistSectionClicked"
+                                OnAcknowledge="HandleChecklistAcknowledge" />
             @if (_exportBusy)
             {
                 <div class="export-status">
@@ -157,6 +187,9 @@
     private string? _currentDraftMarkdown;
     private BlazoredTextEditor _richEditor = default!;
     private string? _pendingHtml;
+    private bool _hasDraft;
+    private PdChecklistState _checklistState = new();
+    private (string Suggested, string SuggestedName, string Current)? _seriesSuggestion;
     private bool _resizing;
     private int _leftPanelWidth = 420;
     private const int MinLeftPanelWidth = 320;
@@ -178,7 +211,24 @@
         "qualification",
         "qualifications",
         "requirement",
-        "requirements"
+        "requirements",
+        // Extended terms for freeform / paste / Q&A input modes
+        "position",
+        "create a",
+        "we're hiring",
+        "we are hiring",
+        "need a",
+        "i need a",
+        "title",
+        "series",
+        "grade",
+        "duties",
+        "clearance",
+        "remote",
+        "telework",
+        "education",
+        "supervisory",
+        "gs-",
     ];
     private static readonly string[] NonDraftIntentTerms =
     [
@@ -193,18 +243,45 @@
         .UseAdvancedExtensions()
         .DisableHtml()
         .Build();
-    private string WorkspaceGridStyle => _leftPanelHidden || !_draftVisible
-        ? "grid-template-columns: minmax(0, 1fr);"
-        : $"grid-template-columns: {_leftPanelWidth}px 8px minmax(0, 1fr);";
+    private string WorkspaceGridStyle => LayoutMode == "both"
+        ? $"grid-template-columns: {_leftPanelWidth}px 8px minmax(0, 1fr);"
+        : "grid-template-columns: minmax(0, 1fr);";
 
     [Parameter] public Guid? SessionId { get; set; }
 
     private string _userId = string.Empty;
 
-    private void ToggleLeftPanel()
+    private string LayoutMode =>
+        !_draftVisible ? "chat" :
+        _leftPanelHidden ? "draft" :
+        "both";
+
+    private void SetLayout(string mode)
     {
-        _leftPanelHidden = !_leftPanelHidden;
         _resizing = false;
+        switch (mode)
+        {
+            case "chat":
+                _leftPanelHidden = false;
+                _draftVisible = false;
+                break;
+            case "draft":
+                _leftPanelHidden = true;
+                if (!_draftVisible && _hasDraft && _currentDraftMarkdown is not null)
+                {
+                    _pendingHtml = NormalizeHtmlForQuill(Markdown.ToHtml(_currentDraftMarkdown, ChatMarkdownPipeline));
+                    _draftVisible = true;
+                }
+                break;
+            case "both":
+                _leftPanelHidden = false;
+                if (!_draftVisible && _hasDraft && _currentDraftMarkdown is not null)
+                {
+                    _pendingHtml = NormalizeHtmlForQuill(Markdown.ToHtml(_currentDraftMarkdown, ChatMarkdownPipeline));
+                    _draftVisible = true;
+                }
+                break;
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -242,6 +319,21 @@
             {
                 var role = string.Equals(turn.Role, "user", StringComparison.OrdinalIgnoreCase) ? "You" : "Assistant";
                 _turns.Add(new ChatTurn(role, turn.Text, turn.Timestamp));
+            }
+
+            // Restore draft state from the last assistant turn that contains a draft
+            var lastDraftTurn = _turns
+                .LastOrDefault(t => string.Equals(t.Role, "Assistant", StringComparison.OrdinalIgnoreCase)
+                                 && t.Text.Contains('#'));
+            if (lastDraftTurn is not null)
+            {
+                var restoredMarkdown = ExtractDraftMarkdown(lastDraftTurn.Text);
+                if (restoredMarkdown is not null)
+                {
+                    _currentDraftMarkdown = restoredMarkdown;
+                    _checklistState.UpdateFromDraft(_currentDraftMarkdown);
+                    _hasDraft = true;
+                }
             }
         }
         catch (Exception ex)
@@ -290,19 +382,21 @@
         _status = string.Empty;
         var input = Prompt.Trim();
         Prompt = string.Empty;
+        // Track whether this is the first message so we can navigate after the full
+        // exchange completes. Navigating early disposes the component mid-request,
+        // which prevents the AI response from ever reaching the UI.
+        var isFirstMessage = SessionId is null;
 
         try
         {
-            // Create a new session on the first turn
-            if (SessionId is null)
+            if (isFirstMessage)
             {
                 var newSession = await ConversationService.CreateSessionAsync(_userId, input);
                 SessionId = newSession.Id;
-                Nav.NavigateTo($"/workspace/{SessionId}", forceLoad: false);
             }
 
             _turns.Add(new ChatTurn("You", input, DateTimeOffset.UtcNow));
-            await ConversationService.AddTurnAsync(SessionId.Value, _userId, "user", input);
+            await ConversationService.AddTurnAsync(SessionId!.Value, _userId, "user", input);
             await InvokeAsync(StateHasChanged);
             await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
 
@@ -323,6 +417,7 @@
                     {
                         _pendingHtml = html;
                         _draftVisible = true;
+                        _hasDraft = true;
                     }
                     else
                     {
@@ -330,6 +425,13 @@
                     }
                 }
             }
+
+            // Update checklist from the new draft markdown
+            if (_currentDraftMarkdown is not null)
+                _checklistState.UpdateFromDraft(_currentDraftMarkdown);
+
+            // Detect series suggestion from AI response
+            _seriesSuggestion = TryExtractSeriesSuggestion(response);
         }
         catch (Exception ex)
         {
@@ -340,6 +442,11 @@
         {
             _busy = false;
         }
+
+        // Navigate only after the full exchange is saved so the URL update doesn't
+        // recreate the component and discard the in-progress AI response.
+        if (isFirstMessage && SessionId.HasValue)
+            Nav.NavigateTo($"/workspace/{SessionId}", forceLoad: false);
     }
 
     private void ToggleExportMenu() => _exportMenuOpen = !_exportMenuOpen;
@@ -354,6 +461,15 @@
             return;
         }
 
+        if (_checklistState.HasBlockingItems)
+        {
+            var missing = _checklistState.Sections
+                .Where(s => s.IsRequired && !s.IsLocked && s.Status == PdSectionStatus.Missing)
+                .Select(s => s.Name);
+            _status = $"Complete all required sections before exporting: {string.Join(", ", missing)}.";
+            return;
+        }
+
         _busy = true;
         _exportBusy = true;
         _status = string.Empty;
@@ -364,17 +480,22 @@
 
             if (fileName is not null && fileBytes is not null)
             {
-                _status = $"\u2705 Word document ready: {fileName}";
+                _turns.Add(new ChatTurn("Assistant", $"\u2705 Word document ready: **{fileName}**", DateTimeOffset.UtcNow));
+                await InvokeAsync(StateHasChanged);
+                await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
                 await JS.InvokeVoidAsync("downloadFile", fileName, Convert.ToBase64String(fileBytes));
             }
             else
             {
-                _status = message;
+                _turns.Add(new ChatTurn("Assistant", message, DateTimeOffset.UtcNow));
+                await InvokeAsync(StateHasChanged);
+                await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
             }
         }
         catch (Exception ex)
         {
-            _status = $"Export failed: {ex.Message}";
+            _turns.Add(new ChatTurn("Assistant", $"\u26a0 Export failed: {ex.Message}", DateTimeOffset.UtcNow));
+            await InvokeAsync(StateHasChanged);
         }
         finally
         {
@@ -386,6 +507,14 @@
     private async Task ExportMarkdownAsync()
     {
         _exportMenuOpen = false;
+        if (_checklistState.HasBlockingItems)
+        {
+            var missing = _checklistState.Sections
+                .Where(s => s.IsRequired && !s.IsLocked && s.Status == PdSectionStatus.Missing)
+                .Select(s => s.Name);
+            _status = $"Complete all required sections before exporting: {string.Join(", ", missing)}.";
+            return;
+        }
         if (string.IsNullOrWhiteSpace(_currentDraftMarkdown))
         {
             _status = "Draft is empty. Add content before exporting.";
@@ -410,6 +539,8 @@
         {
             exportedAt = DateTimeOffset.UtcNow,
             draft = _currentDraftMarkdown,
+            acknowledgments = _checklistState.Acknowledgments
+                .Select(a => new { a.SectionName, a.AcknowledgedAt }),
             turns = _turns.Select(t => new { t.Role, t.Text, t.Timestamp })
         };
 
@@ -453,13 +584,26 @@
     {
         var t = line.Trim();
         if (string.IsNullOrWhiteSpace(t)) return true;
-        // Conversational closers typically start with these patterns
+        // Any sentence ending in a question mark is conversational
+        if (t.EndsWith("?")) return true;
+        // Bullet-list question items (e.g. "- What is the clearance level?")
+        if ((t.StartsWith("- ") || t.StartsWith("* ")) && t.Contains("?")) return true;
+        // Conversational closers / follow-up starters
         return t.StartsWith("Do you", StringComparison.OrdinalIgnoreCase)
             || t.StartsWith("Would you", StringComparison.OrdinalIgnoreCase)
             || t.StartsWith("Let me know", StringComparison.OrdinalIgnoreCase)
             || t.StartsWith("Feel free", StringComparison.OrdinalIgnoreCase)
             || t.StartsWith("Please let me know", StringComparison.OrdinalIgnoreCase)
-            || t.StartsWith("If you", StringComparison.OrdinalIgnoreCase);
+            || t.StartsWith("If you", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("I still need", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("I need ", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("Could you", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("Can you", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("Please provide", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("Please confirm", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("To complete", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("Once you", StringComparison.OrdinalIgnoreCase)
+            || t.StartsWith("Once I", StringComparison.OrdinalIgnoreCase);
     }
 
     // Markdig UseAdvancedExtensions produces loose lists: <li><p>text</p></li>.
@@ -473,8 +617,19 @@
         if (string.IsNullOrWhiteSpace(response) || string.IsNullOrWhiteSpace(prompt))
             return false;
 
-        return IsDraftIntentPrompt(prompt);
+        // Sync when the user's prompt has draft intent OR when the response itself
+        // contains a PD draft (covers follow-up answers that cause section updates).
+        return IsDraftIntentPrompt(prompt) || ResponseContainsDraft(response);
     }
+
+    // Detects a PD draft in the response by checking for known section headings.
+    private static bool ResponseContainsDraft(string response) =>
+        response.Contains("## Position", StringComparison.OrdinalIgnoreCase) ||
+        response.Contains("## Major Duties", StringComparison.OrdinalIgnoreCase) ||
+        response.Contains("## Pay Plan", StringComparison.OrdinalIgnoreCase) ||
+        response.Contains("## Qualifications", StringComparison.OrdinalIgnoreCase) ||
+        response.Contains("## Security Clearance", StringComparison.OrdinalIgnoreCase) ||
+        response.Contains("## Remote Work", StringComparison.OrdinalIgnoreCase);
 
     internal static bool IsDraftIntentPrompt(string prompt)
     {
@@ -628,5 +783,48 @@
     private static bool IsSeparatorRow(string[] cells)
     {
         return cells.All(cell => Regex.IsMatch(cell, "^:?-{3,}:?$"));
+    }
+
+    private async Task HandleChecklistSectionClicked(string sectionName)
+    {
+        await JS.InvokeVoidAsync("scrollQuillToHeading", "quill-editor-wrapper", sectionName);
+    }
+
+    private void HandleChecklistAcknowledge(string sectionName)
+    {
+        _checklistState.Acknowledge(sectionName);
+    }
+
+    private void DismissSeriesSuggestion()
+    {
+        _seriesSuggestion = null;
+    }
+
+    private async Task AcceptSeriesSuggestion()
+    {
+        if (!_seriesSuggestion.HasValue) return;
+        var accepted = _seriesSuggestion.Value;
+        _seriesSuggestion = null;
+        // Inject a follow-up prompt so the AI updates the draft series
+        Prompt = $"Please update the Pay Plan / Series / Grade section to use {accepted.Suggested} ({accepted.SuggestedName}).";
+        await SendPromptAsync();
+    }
+
+    // Detects series suggestion phrases produced by the updated system prompt.
+    // Expected AI format: "Series Suggestion: ... GS-XXXX (Name) ... GS-YYYY"
+    // Returns (suggestedSeries, suggestedName, currentSeries) or null if not detected.
+    internal static (string Suggested, string SuggestedName, string Current)? TryExtractSeriesSuggestion(string aiResponse)
+    {
+        if (string.IsNullOrWhiteSpace(aiResponse)) return null;
+
+        var match = System.Text.RegularExpressions.Regex.Match(
+            aiResponse,
+            @"Series Suggestion.*?GS-(\d{4})\s*\(([^)]+)\).*?GS-(\d{4})",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase |
+            System.Text.RegularExpressions.RegexOptions.Singleline);
+
+        if (!match.Success) return null;
+
+        return ($"GS-{match.Groups[1].Value}", match.Groups[2].Value.Trim(), $"GS-{match.Groups[3].Value}");
     }
 }

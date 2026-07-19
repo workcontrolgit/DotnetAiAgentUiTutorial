@@ -37,17 +37,27 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
         {
             var userId = await _userContext.GetUserIdAsync() ?? "dev-user";
             var session = await _conversationService.GetSessionAsync(sessionId.Value, userId, ct);
-            if (session is not null && session.Turns.Count > 0)
+            if (session is not null)
             {
-                var priorMessages = session.Turns
-                    .OrderBy(t => t.Timestamp)
-                    .Select(t => new ChatMessage(
-                        string.Equals(t.Role, "user", StringComparison.OrdinalIgnoreCase)
-                            ? ChatRole.User
-                            : ChatRole.Assistant,
-                        t.Text))
-                    .ToList();
-                _agent!.ResetHistory(priorMessages);
+                var allTurns = session.Turns.OrderBy(t => t.Timestamp).ToList();
+                // The last saved turn is the current user prompt (saved before this call).
+                // Exclude it: AskAsync will send it, so including it here duplicates the message.
+                var historyTurns = allTurns.Count > 0 &&
+                    string.Equals(allTurns[^1].Role, "user", StringComparison.OrdinalIgnoreCase)
+                    ? allTurns[..^1]
+                    : allTurns;
+
+                if (historyTurns.Count > 0)
+                {
+                    var priorMessages = historyTurns
+                        .Select(t => new ChatMessage(
+                            string.Equals(t.Role, "user", StringComparison.OrdinalIgnoreCase)
+                                ? ChatRole.User
+                                : ChatRole.Assistant,
+                            t.Text))
+                        .ToList();
+                    _agent!.ResetHistory(priorMessages);
+                }
             }
         }
 
@@ -57,12 +67,8 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
     public async Task<(string Message, string? FileName, byte[]? FileBytes)> ExportDraftToWordAsync(string draftText, CancellationToken ct = default)
     {
         await EnsureInitializedAsync(ct);
-        var request =
-            "Call ExportDraftToWord using the positionId from our conversation. " +
-            "Pass the following as the draftContent argument exactly as-is — do not regenerate or modify it:\n\n" +
-            draftText;
-        var message = await _agent!.AskAsync(request, ct);
-        return (message, _agent.LastExportedFileName, _agent.LastExportedFileBytes);
+        var (fileName, fileBytes, message) = await _agent!.ExportNewDraftDirectAsync(draftText, ct);
+        return (message, fileName, fileBytes);
     }
 
     private async Task EnsureInitializedAsync(CancellationToken ct)
