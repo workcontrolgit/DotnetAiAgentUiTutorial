@@ -735,8 +735,7 @@
 
     private async Task HandleChecklistSectionClicked(string sectionName)
     {
-        // TODO: scrollQuillToHeading will be added by Task 7; no-op for now
-        await Task.CompletedTask;
+        await JS.InvokeVoidAsync("scrollQuillToHeading", "quill-editor-wrapper", sectionName);
     }
 
     private void HandleChecklistAcknowledge(string sectionName)
