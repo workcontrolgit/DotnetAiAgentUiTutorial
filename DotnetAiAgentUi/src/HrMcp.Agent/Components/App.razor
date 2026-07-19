@@ -68,6 +68,20 @@
             if (el) el.scrollTop = el.scrollHeight;
         };
 
+        window.scrollQuillToHeading = function (wrapperId, headingText) {
+            const wrapper = document.getElementById(wrapperId);
+            if (!wrapper) return;
+            const editor = wrapper.querySelector('.ql-editor');
+            if (!editor) return;
+            const headings = editor.querySelectorAll('h1, h2, h3, h4');
+            for (const h of headings) {
+                if (h.textContent.trim().toLowerCase().includes(headingText.toLowerCase())) {
+                    h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    return;
+                }
+            }
+        };
+
         window.downloadFile = function (fileName, base64Content) {
             const byteChars = atob(base64Content);
             const byteNums = new Array(byteChars.length);

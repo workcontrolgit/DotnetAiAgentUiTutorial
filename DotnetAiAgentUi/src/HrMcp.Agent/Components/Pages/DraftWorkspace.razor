@@ -4,6 +4,7 @@
 @attribute [Authorize]
 @using HrMcp.Agent.Web.Models
 @using HrMcp.Agent.Web.Services
+@using HrMcp.Agent.Components.Shared
 @using HrMcp.Core.Interfaces
 @using Markdig
 @using Microsoft.AspNetCore.Authorization
@@ -70,6 +71,15 @@
                                 }
                             </div>
                         </div>
+                        @if (!isUser && turn == _turns[^1] && _seriesSuggestion.HasValue)
+                        {
+                            <SeriesRecommendationBanner
+                                SuggestedSeries="@_seriesSuggestion.Value.Suggested"
+                                SuggestedSeriesName="@_seriesSuggestion.Value.SuggestedName"
+                                CurrentSeries="@_seriesSuggestion.Value.Current"
+                                OnKeep="DismissSeriesSuggestion"
+                                OnSwitch="AcceptSeriesSuggestion" />
+                        }
                     }
 
                     @if (_busy)
@@ -120,6 +130,9 @@
                     }
                 </div>
             </div>
+            <PdSectionChecklist State="_checklistState"
+                                OnSectionClicked="HandleChecklistSectionClicked"
+                                OnAcknowledge="HandleChecklistAcknowledge" />
             @if (_exportBusy)
             {
                 <div class="export-status">
@@ -175,6 +188,8 @@
     private BlazoredTextEditor _richEditor = default!;
     private string? _pendingHtml;
     private bool _hasDraft;
+    private PdChecklistState _checklistState = new();
+    private (string Suggested, string SuggestedName, string Current)? _seriesSuggestion;
     private bool _resizing;
     private int _leftPanelWidth = 420;
     private const int MinLeftPanelWidth = 320;
@@ -395,6 +410,13 @@
                     }
                 }
             }
+
+            // Update checklist from the new draft markdown
+            if (_currentDraftMarkdown is not null)
+                _checklistState.UpdateFromDraft(_currentDraftMarkdown);
+
+            // Detect series suggestion from AI response
+            _seriesSuggestion = TryExtractSeriesSuggestion(response);
         }
         catch (Exception ex)
         {
@@ -421,6 +443,15 @@
         if (_busy || string.IsNullOrWhiteSpace(currentHtml) || currentHtml == "<p><br></p>")
         {
             _status = "Draft is empty. Add content before exporting.";
+            return;
+        }
+
+        if (_checklistState.HasBlockingItems)
+        {
+            var missing = _checklistState.Sections
+                .Where(s => s.IsRequired && !s.IsLocked && s.Status == PdSectionStatus.Missing)
+                .Select(s => s.Name);
+            _status = $"Complete all required sections before exporting: {string.Join(", ", missing)}.";
             return;
         }
 
@@ -480,6 +511,8 @@
         {
             exportedAt = DateTimeOffset.UtcNow,
             draft = _currentDraftMarkdown,
+            acknowledgments = _checklistState.Acknowledgments
+                .Select(a => new { a.SectionName, a.AcknowledgedAt }),
             turns = _turns.Select(t => new { t.Role, t.Text, t.Timestamp })
         };
 
@@ -698,6 +731,29 @@
     private static bool IsSeparatorRow(string[] cells)
     {
         return cells.All(cell => Regex.IsMatch(cell, "^:?-{3,}:?$"));
+    }
+
+    private async Task HandleChecklistSectionClicked(string sectionName)
+    {
+        // TODO: scrollQuillToHeading will be added by Task 7; no-op for now
+        await Task.CompletedTask;
+    }
+
+    private void HandleChecklistAcknowledge(string sectionName)
+    {
+        _checklistState.Acknowledge(sectionName);
+    }
+
+    private void DismissSeriesSuggestion()
+    {
+        _seriesSuggestion = null;
+    }
+
+    private void AcceptSeriesSuggestion()
+    {
+        // Dismiss the banner; the manager's next prompt will reference the new series.
+        // The AI will update the draft on the next exchange.
+        _seriesSuggestion = null;
     }
 
     // Detects series suggestion phrases produced by the updated system prompt.
