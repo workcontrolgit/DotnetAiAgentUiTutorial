@@ -152,4 +152,48 @@ public sealed class DraftIntentTests
         var result = DraftWorkspace.ExtractPositionTitle(draft);
         Assert.Null(result);
     }
+
+    [Fact]
+    public void BuildChatSummary_FirstDraft_ContainsCreatedAndTitle()
+    {
+        const string draft = "# IT Specialist\n\n## Position Info\n\nText.\n\n## Major Duties\n\nDuties.";
+        var result = DraftWorkspace.BuildChatSummary(null, draft);
+        Assert.Contains("Draft created", result);
+        Assert.Contains("IT Specialist", result);
+        Assert.Contains("Position Info", result);
+        Assert.Contains("Major Duties", result);
+    }
+
+    [Fact]
+    public void BuildChatSummary_FirstDraft_NoTitle_OmitsTitleLine()
+    {
+        const string draft = "## Position Info\n\nText.";
+        var result = DraftWorkspace.BuildChatSummary(null, draft);
+        Assert.Contains("Draft created", result);
+        Assert.DoesNotContain(" \u2014 ", result);
+    }
+
+    [Fact]
+    public void BuildChatSummary_UpdatedDraft_ContainsUpdatedAndChanges()
+    {
+        const string previous = "# IT Specialist\n\n## Position Info\n\nOld text.";
+        const string updated = "# IT Specialist\n\n## Position Info\n\nNew text.\n\n## Major Duties\n\nDuties.";
+        var result = DraftWorkspace.BuildChatSummary(previous, updated);
+        Assert.Contains("Draft updated", result);
+        Assert.Contains("Added", result);
+        Assert.Contains("Major Duties", result);
+        Assert.Contains("Revised", result);
+        Assert.Contains("Position Info", result);
+    }
+
+    [Fact]
+    public void BuildChatSummary_UpdatedDraft_AllNewSections_NoRevisedLine()
+    {
+        const string previous = "## Section A\n\nText.";
+        const string updated = "## Section B\n\nText.\n\n## Section C\n\nMore.";
+        var result = DraftWorkspace.BuildChatSummary(previous, updated);
+        Assert.Contains("Added", result);
+        Assert.Contains("Section B", result);
+        Assert.DoesNotContain("Revised", result);
+    }
 }

@@ -622,6 +622,34 @@
         return line?[2..].Trim();
     }
 
+    internal static string BuildChatSummary(string? previousDraftMarkdown, string newDraftMarkdown)
+    {
+        var newSections = GetDraftSectionNames(newDraftMarkdown);
+        var title = ExtractPositionTitle(newDraftMarkdown);
+        var titleLine = title is not null ? $" \u2014 {title}" : string.Empty;
+
+        if (previousDraftMarkdown is null)
+        {
+            var sectionList = newSections.Count > 0
+                ? $"\nSections: {string.Join(", ", newSections)}"
+                : string.Empty;
+            return $"\u2705 **Draft created**{titleLine}{sectionList}";
+        }
+
+        var oldSections = GetDraftSectionNames(previousDraftMarkdown);
+        var added = newSections.Except(oldSections).ToList();
+        var revised = newSections.Intersect(oldSections).ToList();
+
+        var sb = new StringBuilder();
+        sb.Append($"\u2705 **Draft updated**{titleLine}");
+        if (added.Count > 0)
+            sb.Append($"\nAdded: {string.Join(", ", added)}");
+        if (revised.Count > 0)
+            sb.Append($"\nRevised: {string.Join(", ", revised)}");
+
+        return sb.ToString();
+    }
+
     // Markdig UseAdvancedExtensions produces loose lists: <li><p>text</p></li>.
     // Quill's MutationObserver normalizes <p> inside <li> and truncates the content.
     // Strip the <p> wrapper so Quill receives simple <li>text</li> elements.
