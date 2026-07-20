@@ -117,4 +117,52 @@ public sealed class DraftWorkspaceTests : TestContext
             Assert.Empty(cut.FindAll(".chat-bubble strong"));
         });
     }
+
+    [Fact]
+    public void DraftResponse_ShowsSummaryInChat_NotFullDraftMarkdown()
+    {
+        _fake.NextResponse =
+            "# IT Specialist\n\n## Position Info\n\nThis is a test.\n\n## Major Duties\n\nDuties here.";
+        var cut = RenderComponent<DraftWorkspace>();
+        cut.Find("textarea").Input("draft a pd for IT specialist");
+        cut.Find("button.primary-btn").Click();
+        cut.WaitForAssertion(() =>
+        {
+            var assistantBubbles = cut.FindAll(".chat-bubble-row--assistant");
+            Assert.NotEmpty(assistantBubbles);
+            var lastText = assistantBubbles[^1].TextContent;
+            Assert.Contains("Draft created", lastText);
+            Assert.DoesNotContain("## Position Info", lastText);
+            Assert.DoesNotContain("## Major Duties", lastText);
+        });
+    }
+
+    [Fact]
+    public void DraftResponse_MakesDraftPanelVisible()
+    {
+        _fake.NextResponse =
+            "# IT Specialist\n\n## Position Info\n\nTest.\n\n## Major Duties\n\nDuties.";
+        var cut = RenderComponent<DraftWorkspace>();
+        cut.Find("textarea").Input("draft a pd");
+        cut.Find("button.primary-btn").Click();
+        cut.WaitForAssertion(() =>
+            Assert.NotEmpty(cut.FindAll(".right-editor")));
+    }
+
+    [Fact]
+    public void ConversationalResponse_ShowsFullTextInChat()
+    {
+        _fake.NextResponse = "Here are some open positions: Software Engineer, Data Analyst.";
+        var cut = RenderComponent<DraftWorkspace>();
+        cut.Find("textarea").Input("list open positions");
+        cut.Find("button.primary-btn").Click();
+        cut.WaitForAssertion(() =>
+        {
+            var assistantBubbles = cut.FindAll(".chat-bubble-row--assistant");
+            Assert.NotEmpty(assistantBubbles);
+            var lastText = assistantBubbles[^1].TextContent;
+            Assert.Contains("open positions", lastText);
+            Assert.DoesNotContain("Draft created", lastText);
+        });
+    }
 }

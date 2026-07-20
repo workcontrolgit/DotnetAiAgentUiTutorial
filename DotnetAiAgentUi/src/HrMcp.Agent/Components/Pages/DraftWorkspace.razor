@@ -401,29 +401,38 @@
             await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
 
             var response = await AgentDraftService.SendPromptAsync(input, SessionId);
-            _turns.Add(new ChatTurn("Assistant", response, DateTimeOffset.UtcNow));
-            await ConversationService.AddTurnAsync(SessionId.Value, _userId, "assistant", response);
-            await InvokeAsync(StateHasChanged);
-            await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
 
+            string? routedDraftMarkdown = null;
             if (ShouldSyncDraft(input, response))
+                routedDraftMarkdown = ExtractDraftMarkdown(response);
+
+            if (routedDraftMarkdown is not null)
             {
-                var draftMarkdown = ExtractDraftMarkdown(response);
-                if (draftMarkdown is not null)
+                var summary = BuildChatSummary(_currentDraftMarkdown, routedDraftMarkdown);
+                _turns.Add(new ChatTurn("Assistant", summary, DateTimeOffset.UtcNow));
+                await ConversationService.AddTurnAsync(SessionId.Value, _userId, "assistant", response);
+                await InvokeAsync(StateHasChanged);
+                await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
+
+                _currentDraftMarkdown = routedDraftMarkdown;
+                var html = NormalizeHtmlForQuill(Markdown.ToHtml(routedDraftMarkdown, ChatMarkdownPipeline));
+                if (!_draftVisible)
                 {
-                    _currentDraftMarkdown = draftMarkdown;
-                    var html = NormalizeHtmlForQuill(Markdown.ToHtml(draftMarkdown, ChatMarkdownPipeline));
-                    if (!_draftVisible)
-                    {
-                        _pendingHtml = html;
-                        _draftVisible = true;
-                        _hasDraft = true;
-                    }
-                    else
-                    {
-                        await JS.InvokeVoidAsync("setQuillContent", "quill-editor-wrapper", html);
-                    }
+                    _pendingHtml = html;
+                    _draftVisible = true;
+                    _hasDraft = true;
                 }
+                else
+                {
+                    await JS.InvokeVoidAsync("setQuillContent", "quill-editor-wrapper", html);
+                }
+            }
+            else
+            {
+                _turns.Add(new ChatTurn("Assistant", response, DateTimeOffset.UtcNow));
+                await ConversationService.AddTurnAsync(SessionId.Value, _userId, "assistant", response);
+                await InvokeAsync(StateHasChanged);
+                await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
             }
 
             // Update checklist from the new draft markdown
