@@ -97,4 +97,35 @@ public sealed class DraftIntentTests
         var result = DraftWorkspace.TryExtractSeriesSuggestion(response);
         Assert.Null(result);
     }
+
+    [Fact]
+    public void GetDraftSectionNames_ReturnsSectionHeadings()
+    {
+        const string draft = "# IT Specialist\n\n## Position Info\n\nText.\n\n## Major Duties\n\nMore text.";
+        var result = DraftWorkspace.GetDraftSectionNames(draft);
+        Assert.Equal(["Position Info", "Major Duties"], result);
+    }
+
+    [Fact]
+    public void GetDraftSectionNames_IgnoresH1AndH3()
+    {
+        const string draft = "# Title\n\n## Section A\n\n### Sub\n\n## Section B";
+        var result = DraftWorkspace.GetDraftSectionNames(draft);
+        Assert.Equal(["Section A", "Section B"], result);
+    }
+
+    [Fact]
+    public void GetDraftSectionNames_EmptyDraft_ReturnsEmpty()
+    {
+        var result = DraftWorkspace.GetDraftSectionNames("No headings here.");
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public void GetDraftSectionNames_HandlesCrLf()
+    {
+        const string draft = "# Title\r\n\r\n## Section A\r\n\r\nText.";
+        var result = DraftWorkspace.GetDraftSectionNames(draft);
+        Assert.Equal(["Section A"], result);
+    }
 }

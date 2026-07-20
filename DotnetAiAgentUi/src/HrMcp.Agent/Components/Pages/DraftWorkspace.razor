@@ -606,6 +606,13 @@
             || t.StartsWith("Once I", StringComparison.OrdinalIgnoreCase);
     }
 
+    internal static List<string> GetDraftSectionNames(string draftMarkdown) =>
+        draftMarkdown
+            .Split(["\r\n", "\n"], StringSplitOptions.None)
+            .Where(line => line.StartsWith("## ", StringComparison.Ordinal))
+            .Select(line => line[3..].Trim())
+            .ToList();
+
     // Markdig UseAdvancedExtensions produces loose lists: <li><p>text</p></li>.
     // Quill's MutationObserver normalizes <p> inside <li> and truncates the content.
     // Strip the <p> wrapper so Quill receives simple <li>text</li> elements.
