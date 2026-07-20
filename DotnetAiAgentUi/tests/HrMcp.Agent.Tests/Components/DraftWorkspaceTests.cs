@@ -15,6 +15,7 @@ public sealed class DraftWorkspaceTests : TestContext
     private sealed class FakeAgentDraftService : IAgentDraftService
     {
         public string NextResponse { get; set; } = "Hello from assistant";
+        public string SelfReviewResponse { get; set; } = "";
 
         public Task<string> SendPromptAsync(string prompt, Guid? sessionId = null, CancellationToken ct = default) =>
             Task.FromResult(NextResponse);
@@ -22,6 +23,9 @@ public sealed class DraftWorkspaceTests : TestContext
         public Task<(string Message, string? FileName, byte[]? FileBytes)> ExportDraftToWordAsync(
             string draftText, CancellationToken ct = default) =>
             Task.FromResult(("ok", (string?)null, (byte[]?)null));
+
+        public Task<string> GetDraftSelfReviewAsync(string draftMarkdown, CancellationToken ct = default) =>
+            Task.FromResult(SelfReviewResponse);
     }
 
     private sealed class FakeConversationService : IConversationService

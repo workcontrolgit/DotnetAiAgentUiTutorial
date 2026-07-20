@@ -13,6 +13,7 @@ public interface IAgentDraftService
 {
     Task<string> SendPromptAsync(string prompt, Guid? sessionId = null, CancellationToken ct = default);
     Task<(string Message, string? FileName, byte[]? FileBytes)> ExportDraftToWordAsync(string draftText, CancellationToken ct = default);
+    Task<string> GetDraftSelfReviewAsync(string draftMarkdown, CancellationToken ct = default);
 }
 
 public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
@@ -69,6 +70,27 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
         await EnsureInitializedAsync(ct);
         var (fileName, fileBytes, message) = await _agent!.ExportNewDraftDirectAsync(draftText, ct);
         return (message, fileName, fileBytes);
+    }
+
+    public async Task<string> GetDraftSelfReviewAsync(string draftMarkdown, CancellationToken ct = default)
+    {
+        await EnsureInitializedAsync(ct);
+        try
+        {
+            var chatClient = CreateChatClient(_configuration!);
+            var messages = new List<ChatMessage>
+            {
+                new(ChatRole.System,
+                    "You are an expert HR specialist and federal hiring specialist reviewing a U.S. federal government position description draft."),
+                new(ChatRole.User, BuildSelfReviewPrompt(draftMarkdown))
+            };
+            var result = await chatClient.GetResponseAsync(messages, cancellationToken: ct);
+            return result.Text ?? "";
+        }
+        catch
+        {
+            return "";
+        }
     }
 
     private async Task EnsureInitializedAsync(CancellationToken ct)
@@ -296,4 +318,36 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
 
         return client.GetChatClient(azureDeployment).AsIChatClient();
     }
+
+    internal static string BuildSelfReviewPrompt(string draftMarkdown) =>
+        $"""
+        Review this GS position description draft across three lenses and list findings by severity.
+
+        Lenses:
+        1. OPM Compliance — required sections present, qualifications cite OPM minimum standards,
+           duties start with grade-calibrated action verbs, no prohibited language
+        2. Completeness — supervisory status, remote/telework eligibility, security clearance,
+           education/experience requirements present or explicitly marked N/A
+        3. Candidate Appeal — duties and qualifications attract qualified candidates;
+           language is clear, specific, and avoids jargon
+
+        Format your response as:
+        **Draft Self-Review**
+
+        🔴 Critical (must fix before posting):
+        - [issue] — [brief explanation]
+
+        🟡 Important (strongly recommended):
+        - [issue] — [brief explanation]
+
+        🟢 Minor (nice to have):
+        - [issue] — [brief explanation]
+
+        If a category has no findings, write "None."
+
+        End with: "What would you like to address first?"
+
+        Draft:
+        {draftMarkdown}
+        """;
 }
