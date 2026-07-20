@@ -239,6 +239,13 @@
         "show open position",
         "show open positions"
     ];
+    private static readonly ChatTurn WelcomeTurn = new(
+        "Assistant",
+        "Hi! I'm your Position Description Writing Assistant. Let's build your PD together \u2014 " +
+        "I'll ask a few quick questions first so the draft fits your position accurately.\n\n" +
+        "**What position are you hiring for?** *(e.g., IT Specialist, Program Analyst, Contracting Officer)*",
+        DateTimeOffset.MinValue
+    );
     private static readonly MarkdownPipeline ChatMarkdownPipeline = new MarkdownPipelineBuilder()
         .UseAdvancedExtensions()
         .DisableHtml()
@@ -304,6 +311,7 @@
             if (SessionId is null)
             {
                 _turns.Clear();
+                _turns.Add(WelcomeTurn);
                 return;
             }
 

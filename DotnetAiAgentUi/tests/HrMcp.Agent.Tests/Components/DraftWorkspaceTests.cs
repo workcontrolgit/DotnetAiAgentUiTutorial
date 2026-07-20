@@ -98,10 +98,11 @@ public sealed class DraftWorkspaceTests : TestContext
     }
 
     [Fact]
-    public void Renders_EmptyState_NoBubbles()
+    public void Renders_EmptyState_ShowsWelcomeBubbleOnly()
     {
         var cut = RenderComponent<DraftWorkspace>();
-        Assert.Empty(cut.FindAll(".chat-bubble"));
+        var bubbles = cut.FindAll(".chat-bubble");
+        Assert.Single(bubbles);
     }
 
     [Fact]
@@ -134,13 +135,24 @@ public sealed class DraftWorkspaceTests : TestContext
     [Fact]
     public void NoRoleLabels_InBubbles()
     {
+        _fake.NextResponse = "Hello! How can I help?";
         var cut = RenderComponent<DraftWorkspace>();
         cut.Find("textarea").Input("hello");
         cut.Find("button.primary-btn").Click();
         cut.WaitForAssertion(() =>
         {
-            Assert.NotEmpty(cut.FindAll(".chat-bubble"));
-            Assert.Empty(cut.FindAll(".chat-bubble strong"));
+            var rows = cut.FindAll(".chat-bubble-row");
+            Assert.NotEmpty(rows);
+            // No bubble should contain a role label like "You" or "Assistant" in bold
+            foreach (var row in rows)
+            {
+                var strongs = row.QuerySelectorAll("strong");
+                foreach (var strong in strongs)
+                {
+                    Assert.DoesNotContain("You", strong.TextContent);
+                    Assert.DoesNotContain("Assistant", strong.TextContent);
+                }
+            }
         });
     }
 
@@ -271,5 +283,42 @@ public sealed class DraftWorkspaceTests : TestContext
 
         cut.WaitForAssertion(() =>
             Assert.NotEmpty(cut.FindAll(".right-editor")));
+    }
+
+    [Fact]
+    public void NewSession_ShowsWelcomeBubble()
+    {
+        // No SessionId parameter — WelcomeTurn should be injected
+        var cut = RenderComponent<DraftWorkspace>();
+        var bubbles = cut.FindAll(".chat-bubble-row--assistant");
+        Assert.Single(bubbles);
+        Assert.Contains("Position Description Writing Assistant", bubbles[0].TextContent);
+    }
+
+    [Fact]
+    public void ExistingSession_DoesNotShowWelcomeBubble()
+    {
+        var sessionId = Guid.NewGuid();
+        var session = new ConversationSession
+        {
+            Id = sessionId,
+            UserId = "testuser",
+            Name = "Test",
+            Turns =
+            [
+                new ConversationTurn
+                {
+                    Role = "user",
+                    Text = "draft a pd",
+                    Timestamp = DateTimeOffset.UtcNow
+                }
+            ]
+        };
+        Services.AddScoped<IConversationService>(_ => new FakeConversationServiceWithSession(session));
+        var cut = RenderComponent<DraftWorkspace>(p => p.Add(w => w.SessionId, sessionId));
+        cut.WaitForAssertion(() =>
+            Assert.DoesNotContain(
+                "Position Description Writing Assistant",
+                cut.Find(".chat-thread").TextContent));
     }
 }
