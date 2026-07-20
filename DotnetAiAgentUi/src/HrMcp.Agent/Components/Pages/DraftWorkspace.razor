@@ -321,6 +321,16 @@
                 _turns.Add(new ChatTurn(role, turn.Text, turn.Timestamp));
             }
 
+            // Replace draft-containing assistant turns with chat summaries
+            for (var i = 0; i < _turns.Count; i++)
+            {
+                if (!string.Equals(_turns[i].Role, "Assistant", StringComparison.OrdinalIgnoreCase))
+                    continue;
+                var md = ExtractDraftMarkdown(_turns[i].Text);
+                if (md is null) continue;
+                _turns[i] = _turns[i] with { Text = BuildChatSummary(null, md) };
+            }
+
             // Restore draft state from the last assistant turn that contains a draft
             var lastDraftTurn = _turns
                 .LastOrDefault(t => string.Equals(t.Role, "Assistant", StringComparison.OrdinalIgnoreCase)

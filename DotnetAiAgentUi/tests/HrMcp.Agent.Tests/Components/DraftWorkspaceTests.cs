@@ -45,6 +45,32 @@ public sealed class DraftWorkspaceTests : TestContext
             Task.CompletedTask;
     }
 
+    private sealed class FakeConversationServiceWithSession : IConversationService
+    {
+        private readonly ConversationSession _session;
+
+        public FakeConversationServiceWithSession(ConversationSession session) =>
+            _session = session;
+
+        public Task<IReadOnlyList<ConversationSession>> GetSessionsAsync(string userId, CancellationToken ct = default) =>
+            Task.FromResult<IReadOnlyList<ConversationSession>>([_session]);
+
+        public Task<ConversationSession> CreateSessionAsync(string userId, string firstPrompt, CancellationToken ct = default) =>
+            Task.FromResult(_session);
+
+        public Task<ConversationSession?> GetSessionAsync(Guid sessionId, string userId, CancellationToken ct = default) =>
+            Task.FromResult<ConversationSession?>(_session);
+
+        public Task AddTurnAsync(Guid sessionId, string userId, string role, string text, CancellationToken ct = default) =>
+            Task.CompletedTask;
+
+        public Task RenameSessionAsync(Guid sessionId, string userId, string newName, CancellationToken ct = default) =>
+            Task.CompletedTask;
+
+        public Task DeleteSessionAsync(Guid sessionId, string userId, CancellationToken ct = default) =>
+            Task.CompletedTask;
+    }
+
     private sealed class FakeAuthStateProvider : AuthenticationStateProvider
     {
         public override Task<AuthenticationState> GetAuthenticationStateAsync() =>
@@ -163,6 +189,50 @@ public sealed class DraftWorkspaceTests : TestContext
             var lastText = assistantBubbles[^1].TextContent;
             Assert.Contains("open positions", lastText);
             Assert.DoesNotContain("Draft created", lastText);
+        });
+    }
+
+    [Fact]
+    public void SessionRestore_DraftTurns_ShowSummaryNotRawMarkdown()
+    {
+        const string draftText =
+            "# IT Specialist\n\n## Position Info\n\nTest.\n\n## Major Duties\n\nDuties.";
+        var sessionId = Guid.NewGuid();
+        var session = new ConversationSession
+        {
+            Id = sessionId,
+            UserId = "testuser",
+            Name = "Test Session",
+            Turns =
+            [
+                new ConversationTurn
+                {
+                    Role = "user",
+                    Text = "draft a pd",
+                    Timestamp = DateTimeOffset.UtcNow.AddMinutes(-2)
+                },
+                new ConversationTurn
+                {
+                    Role = "assistant",
+                    Text = draftText,
+                    Timestamp = DateTimeOffset.UtcNow.AddMinutes(-1)
+                }
+            ]
+        };
+
+        Services.AddScoped<IConversationService>(_ => new FakeConversationServiceWithSession(session));
+
+        var cut = RenderComponent<DraftWorkspace>(p =>
+            p.Add(w => w.SessionId, sessionId));
+
+        cut.WaitForAssertion(() =>
+        {
+            var assistantBubbles = cut.FindAll(".chat-bubble-row--assistant");
+            Assert.NotEmpty(assistantBubbles);
+            var text = assistantBubbles[0].TextContent;
+            Assert.Contains("Draft created", text);
+            Assert.DoesNotContain("## Position Info", text);
+            Assert.DoesNotContain("## Major Duties", text);
         });
     }
 }
