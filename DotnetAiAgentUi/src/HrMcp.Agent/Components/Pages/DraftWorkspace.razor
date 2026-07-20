@@ -613,6 +613,15 @@
             .Select(line => line[3..].Trim())
             .ToList();
 
+    internal static string? ExtractPositionTitle(string draftMarkdown)
+    {
+        var line = draftMarkdown
+            .Split(["\r\n", "\n"], StringSplitOptions.None)
+            .FirstOrDefault(l => l.StartsWith("# ", StringComparison.Ordinal)
+                              && !l.StartsWith("## ", StringComparison.Ordinal));
+        return line?[2..].Trim();
+    }
+
     // Markdig UseAdvancedExtensions produces loose lists: <li><p>text</p></li>.
     // Quill's MutationObserver normalizes <p> inside <li> and truncates the content.
     // Strip the <p> wrapper so Quill receives simple <li>text</li> elements.

@@ -128,4 +128,28 @@ public sealed class DraftIntentTests
         var result = DraftWorkspace.GetDraftSectionNames(draft);
         Assert.Equal(["Section A"], result);
     }
+
+    [Fact]
+    public void ExtractPositionTitle_ReturnsH1Text()
+    {
+        const string draft = "# IT Specialist, GS-2210-14\n\n## Position Info\n\nText.";
+        var result = DraftWorkspace.ExtractPositionTitle(draft);
+        Assert.Equal("IT Specialist, GS-2210-14", result);
+    }
+
+    [Fact]
+    public void ExtractPositionTitle_NoH1_ReturnsNull()
+    {
+        const string draft = "## Position Info\n\nText.";
+        var result = DraftWorkspace.ExtractPositionTitle(draft);
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void ExtractPositionTitle_DoesNotReturnH2()
+    {
+        const string draft = "## Major Duties\n\nText.";
+        var result = DraftWorkspace.ExtractPositionTitle(draft);
+        Assert.Null(result);
+    }
 }
