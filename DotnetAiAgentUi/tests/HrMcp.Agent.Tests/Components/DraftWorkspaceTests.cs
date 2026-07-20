@@ -325,4 +325,86 @@ public sealed class DraftWorkspaceTests : TestContext
                 "Position Description Writing Assistant",
                 cut.Find(".chat-thread").TextContent));
     }
+
+    [Fact]
+    public void FirstDraft_AddsSelfReviewTurnToChat()
+    {
+        _fake.NextResponse = "## Position Title\n\n## Major Duties\n\nDevelops software applications.";
+        _fake.SelfReviewResponse = "**Draft Self-Review**\n\n🔴 Critical:\n- None.\n\nWhat would you like to address first?";
+        var cut = RenderComponent<DraftWorkspace>();
+        cut.Find("textarea").Input("draft a pd");
+        cut.Find("button.primary-btn").Click();
+        cut.WaitForAssertion(() =>
+            Assert.Contains("Draft Self-Review", cut.Find(".chat-thread").TextContent));
+    }
+
+    [Fact]
+    public void SecondDraft_DoesNotAddSelfReviewTurnAgain()
+    {
+        _fake.NextResponse = "## Position Title\n\n## Major Duties\n\nDevelops software applications.";
+        _fake.SelfReviewResponse = "**Draft Self-Review**\n\nWhat would you like to address first?";
+        var cut = RenderComponent<DraftWorkspace>();
+
+        // First draft
+        cut.Find("textarea").Input("draft a pd");
+        cut.Find("button.primary-btn").Click();
+        cut.WaitForAssertion(() =>
+            Assert.Contains("Draft Self-Review", cut.Find(".chat-thread").TextContent));
+
+        // Second draft (revision)
+        cut.Find("textarea").Input("revise the duties section");
+        cut.Find("button.primary-btn").Click();
+        cut.WaitForAssertion(() =>
+        {
+            var reviewCount = cut.FindAll(".chat-bubble-row--assistant")
+                .Count(b => b.TextContent.Contains("Draft Self-Review"));
+            Assert.Equal(1, reviewCount);
+        });
+    }
+
+    [Fact]
+    public void SelfReview_EmptyResponse_DoesNotAddChatTurn()
+    {
+        _fake.NextResponse = "## Position Title\n\n## Major Duties\n\nDevelops software applications.";
+        _fake.SelfReviewResponse = "";
+        var cut = RenderComponent<DraftWorkspace>();
+        cut.Find("textarea").Input("draft a pd");
+        cut.Find("button.primary-btn").Click();
+        // Wait for the draft summary to appear, then verify no review turn
+        cut.WaitForAssertion(() =>
+            Assert.Contains("Position Title", cut.Find(".chat-thread").TextContent));
+        Assert.DoesNotContain("Draft Self-Review", cut.Find(".chat-thread").TextContent);
+    }
+
+    [Fact]
+    public void ExistingSession_DoesNotTriggerSelfReview()
+    {
+        var sessionId = Guid.NewGuid();
+        var session = new ConversationSession
+        {
+            Id = sessionId,
+            UserId = "testuser",
+            Name = "Test",
+            Turns =
+            [
+                new ConversationTurn
+                {
+                    Role = "user",
+                    Text = "draft a pd",
+                    Timestamp = DateTimeOffset.UtcNow.AddMinutes(-2)
+                },
+                new ConversationTurn
+                {
+                    Role = "assistant",
+                    Text = "## Job Title\n\n## Major Duties\n\nDuties here.",
+                    Timestamp = DateTimeOffset.UtcNow.AddMinutes(-1)
+                }
+            ]
+        };
+        Services.AddScoped<IConversationService>(_ => new FakeConversationServiceWithSession(session));
+        _fake.SelfReviewResponse = "**Draft Self-Review** — must not appear";
+        var cut = RenderComponent<DraftWorkspace>(p => p.Add(w => w.SessionId, sessionId));
+        cut.WaitForAssertion(() =>
+            Assert.DoesNotContain("Draft Self-Review", cut.Find(".chat-thread").TextContent));
+    }
 }
