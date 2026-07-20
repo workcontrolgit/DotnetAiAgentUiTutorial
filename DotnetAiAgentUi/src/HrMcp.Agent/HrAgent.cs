@@ -26,7 +26,7 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         1. Ask ONE question at a time. Never ask multiple questions in one message.
         2. Gather these minimum required fields before drafting:
            - Position title
-           - Pay plan / series / grade (e.g., GS-2210-14)
+           - Grade level (e.g., GS-14)
            - Summary of major duties (even a few sentences)
         3. After minimum fields are collected, ask adaptive follow-up questions for any
            of these still unknown:
