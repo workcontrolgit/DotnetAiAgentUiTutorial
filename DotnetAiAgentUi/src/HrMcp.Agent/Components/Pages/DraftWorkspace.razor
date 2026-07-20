@@ -332,17 +332,20 @@
             }
 
             // Restore draft state from the last assistant turn that contains a draft
-            var lastDraftTurn = _turns
-                .LastOrDefault(t => string.Equals(t.Role, "Assistant", StringComparison.OrdinalIgnoreCase)
-                                 && t.Text.Contains('#'));
-            if (lastDraftTurn is not null)
+            var lastStoredDraftTurn = session.Turns
+                .OrderBy(t => t.Timestamp)
+                .LastOrDefault(t => string.Equals(t.Role, "assistant", StringComparison.OrdinalIgnoreCase)
+                                 && ExtractDraftMarkdown(t.Text) is not null);
+            if (lastStoredDraftTurn is not null)
             {
-                var restoredMarkdown = ExtractDraftMarkdown(lastDraftTurn.Text);
+                var restoredMarkdown = ExtractDraftMarkdown(lastStoredDraftTurn.Text);
                 if (restoredMarkdown is not null)
                 {
                     _currentDraftMarkdown = restoredMarkdown;
                     _checklistState.UpdateFromDraft(_currentDraftMarkdown);
                     _hasDraft = true;
+                    _pendingHtml = NormalizeHtmlForQuill(Markdown.ToHtml(_currentDraftMarkdown, ChatMarkdownPipeline));
+                    _draftVisible = true;
                 }
             }
         }

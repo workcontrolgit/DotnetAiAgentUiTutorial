@@ -235,4 +235,41 @@ public sealed class DraftWorkspaceTests : TestContext
             Assert.DoesNotContain("## Major Duties", text);
         });
     }
+
+    [Fact]
+    public void SessionRestore_DraftTurns_MakesDraftPanelVisible()
+    {
+        const string draftText =
+            "# IT Specialist\n\n## Position Info\n\nTest.\n\n## Major Duties\n\nDuties.";
+        var sessionId = Guid.NewGuid();
+        var session = new ConversationSession
+        {
+            Id = sessionId,
+            UserId = "testuser",
+            Name = "Test Session",
+            Turns =
+            [
+                new ConversationTurn
+                {
+                    Role = "user",
+                    Text = "draft a pd",
+                    Timestamp = DateTimeOffset.UtcNow.AddMinutes(-2)
+                },
+                new ConversationTurn
+                {
+                    Role = "assistant",
+                    Text = draftText,
+                    Timestamp = DateTimeOffset.UtcNow.AddMinutes(-1)
+                }
+            ]
+        };
+
+        Services.AddScoped<IConversationService>(_ => new FakeConversationServiceWithSession(session));
+
+        var cut = RenderComponent<DraftWorkspace>(p =>
+            p.Add(w => w.SessionId, sessionId));
+
+        cut.WaitForAssertion(() =>
+            Assert.NotEmpty(cut.FindAll(".right-editor")));
+    }
 }
