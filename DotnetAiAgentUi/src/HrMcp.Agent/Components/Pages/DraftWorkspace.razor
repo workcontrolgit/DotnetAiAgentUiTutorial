@@ -91,6 +91,15 @@
                             </div>
                         </div>
                     }
+                    @if (_selfReviewLoading)
+                    {
+                        <div class="chat-bubble-row chat-bubble-row--assistant">
+                            <div class="chat-bubble chat-bubble--loading" role="status" aria-live="polite">
+                                <span class="chat-spinner" aria-hidden="true"></span>
+                                <span>Reviewing your draft…</span>
+                            </div>
+                        </div>
+                    }
                 }
             </div>
             <div class="chat-composer">
@@ -190,6 +199,8 @@
     private bool _hasDraft;
     private PdChecklistState _checklistState = new();
     private (string Suggested, string SuggestedName, string Current)? _seriesSuggestion;
+    private bool _selfReviewLoading;
+    private bool _selfReviewDone;
     private bool _resizing;
     private int _leftPanelWidth = 420;
     private const int MinLeftPanelWidth = 320;
@@ -435,6 +446,7 @@
                 await InvokeAsync(StateHasChanged);
                 await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
 
+                bool isFirstDraft = _selfReviewDone is false;
                 _currentDraftMarkdown = routedDraftMarkdown;
                 var html = NormalizeHtmlForQuill(Markdown.ToHtml(routedDraftMarkdown, ChatMarkdownPipeline));
                 if (!_draftVisible)
@@ -446,6 +458,23 @@
                 else
                 {
                     await JS.InvokeVoidAsync("setQuillContent", "quill-editor-wrapper", html);
+                }
+
+                if (isFirstDraft)
+                {
+                    _selfReviewDone = true;
+                    _selfReviewLoading = true;
+                    await InvokeAsync(StateHasChanged);
+
+                    _ = Task.Run(async () =>
+                    {
+                        var review = await AgentDraftService.GetDraftSelfReviewAsync(routedDraftMarkdown);
+                        if (!string.IsNullOrWhiteSpace(review))
+                            _turns.Add(new ChatTurn("Assistant", review, DateTimeOffset.UtcNow));
+                        _selfReviewLoading = false;
+                        await InvokeAsync(StateHasChanged);
+                        await InvokeAsync(() => JS.InvokeVoidAsync("scrollToBottom", "chat-thread"));
+                    });
                 }
             }
             else
