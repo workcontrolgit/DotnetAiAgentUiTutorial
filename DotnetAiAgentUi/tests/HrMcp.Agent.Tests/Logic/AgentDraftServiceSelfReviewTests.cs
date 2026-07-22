@@ -48,4 +48,11 @@ public sealed class AgentDraftServiceSelfReviewTests
         var result = AgentDraftService.BuildSelfReviewPrompt("some draft");
         Assert.Contains("What would you like to address first?", result);
     }
+
+    [Fact]
+    public void BuildSelfReviewPrompt_ContainsProhibitedLanguageLens()
+    {
+        var result = AgentDraftService.BuildSelfReviewPrompt("some draft");
+        Assert.Contains("Prohibited Language", result);
+    }
 }

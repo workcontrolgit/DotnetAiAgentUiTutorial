@@ -39,27 +39,71 @@ public sealed class PdChecklistState
     public bool HasBlockingItems =>
         _sections.Any(s => s.IsRequired && !s.IsLocked && s.Status == PdSectionStatus.Missing);
 
-    // Parses the markdown draft headings and marks detected sections as Complete.
+    // Parses the markdown draft headings and marks detected sections as Complete or Warning
+    // based on whether the body content meets the depth threshold for that section.
     // Locked sections always stay AutoFilled regardless of draft content.
     public void UpdateFromDraft(string draftMarkdown)
     {
         if (string.IsNullOrWhiteSpace(draftMarkdown))
             return;
 
-        var headings = draftMarkdown
+        var lines = draftMarkdown
             .Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries)
-            .Where(l => l.StartsWith('#'))
-            .Select(l => l.TrimStart('#').Trim().ToLowerInvariant())
             .ToList();
+
+        // Build a map of normalized heading text → body lines beneath it.
+        // Body lines are everything between this heading and the next ## heading.
+        var bodyMap = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+        string? currentHeading = null;
+        foreach (var line in lines)
+        {
+            if (line.StartsWith('#'))
+            {
+                currentHeading = line.TrimStart('#').Trim().ToLowerInvariant();
+                bodyMap[currentHeading] = [];
+            }
+            else if (currentHeading is not null)
+            {
+                bodyMap[currentHeading].Add(line);
+            }
+        }
+
+        var headings = bodyMap.Keys.ToList();
 
         foreach (var section in _sections)
         {
             if (section.IsLocked) continue;
 
             var keywords = SectionKeywords(section.Name);
-            if (headings.Any(h => keywords.Any(k => h.Contains(k, StringComparison.Ordinal))))
-                section.Status = PdSectionStatus.Complete;
+            var matchedHeading = headings.FirstOrDefault(h =>
+                keywords.Any(k => h.Contains(k, StringComparison.Ordinal)));
+
+            if (matchedHeading is null) continue;
+
+            var body = bodyMap[matchedHeading];
+            section.Status = MeetsDepthThreshold(section.Name, body)
+                ? PdSectionStatus.Complete
+                : PdSectionStatus.Warning;
         }
+    }
+
+    private static bool MeetsDepthThreshold(string sectionName, List<string> bodyLines)
+    {
+        return sectionName switch
+        {
+            "Major Duties" =>
+                bodyLines.Count(l => l.TrimStart().StartsWith("- ", StringComparison.Ordinal)
+                                  || l.TrimStart().StartsWith("* ", StringComparison.Ordinal)) >= 5,
+
+            "Position Summary" =>
+                bodyLines.Count(l =>
+                {
+                    var t = l.TrimEnd();
+                    return t.EndsWith('.') || t.EndsWith('!') || t.EndsWith('?');
+                }) >= 3,
+
+            _ => bodyLines.Any(l => !string.IsNullOrWhiteSpace(l))
+        };
     }
 
     // Converts a Warning section to Complete and records the acknowledgment timestamp.

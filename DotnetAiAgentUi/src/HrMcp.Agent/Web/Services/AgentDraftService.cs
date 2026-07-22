@@ -321,7 +321,7 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
 
     internal static string BuildSelfReviewPrompt(string draftMarkdown) =>
         $"""
-        Review this GS position description draft across three lenses and list findings by severity.
+        Review this GS position description draft across four lenses and list findings by severity.
 
         Lenses:
         1. OPM Compliance — required sections present, qualifications cite OPM minimum standards,
@@ -330,6 +330,12 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
            education/experience requirements present or explicitly marked N/A
         3. Candidate Appeal — duties and qualifications attract qualified candidates;
            language is clear, specific, and avoids jargon
+        4. Prohibited Language — flag any of the following:
+           - Age indicators (e.g., "young professional", "recent graduate", "under 40")
+           - Gender-specific role titles (e.g., "manpower", "chairman", "journeyman")
+           - Disability restrictions not tied to a documented bona fide occupational requirement
+           - Citizenship/nationality phrasing beyond the standard "U.S. Citizen" or "U.S. National" statements
+           - Any pre-employment inquiry language prohibited by EEO law or OPM policy
 
         Format your response as:
         **Draft Self-Review**
