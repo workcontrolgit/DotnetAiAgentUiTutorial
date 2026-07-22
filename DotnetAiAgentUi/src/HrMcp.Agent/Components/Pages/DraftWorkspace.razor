@@ -128,6 +128,10 @@
         <section class="right-editor">
             <div class="right-header">
                 <h3>Your Position Description Draft</h3>
+                @if (_hasDraft && !_selfReviewLoading && !_busy)
+                {
+                    <button class="ghost-btn" @onclick="ReReviewDraftAsync">Re-review draft</button>
+                }
                 <div class="export-menu-wrap">
                     <button class="ghost-btn" @onclick="ToggleExportMenu" disabled="@_busy">Export ▾</button>
                     @if (_exportMenuOpen)
@@ -536,6 +540,25 @@
         // recreate the component and discard the in-progress AI response.
         if (isFirstMessage && SessionId.HasValue)
             Nav.NavigateTo($"/workspace/{SessionId}", forceLoad: false);
+    }
+
+    private async Task ReReviewDraftAsync()
+    {
+        if (_currentDraftMarkdown is null || _selfReviewLoading || _busy)
+            return;
+
+        _selfReviewLoading = true;
+        await InvokeAsync(StateHasChanged);
+
+        _ = Task.Run(async () =>
+        {
+            var review = await AgentDraftService.GetDraftSelfReviewAsync(_currentDraftMarkdown);
+            if (!string.IsNullOrWhiteSpace(review))
+                _turns.Add(new ChatTurn("Assistant", review, DateTimeOffset.UtcNow));
+            _selfReviewLoading = false;
+            await InvokeAsync(StateHasChanged);
+            await InvokeAsync(() => JS.InvokeVoidAsync("scrollToBottom", "chat-thread"));
+        });
     }
 
     private void ToggleExportMenu() => _exportMenuOpen = !_exportMenuOpen;
