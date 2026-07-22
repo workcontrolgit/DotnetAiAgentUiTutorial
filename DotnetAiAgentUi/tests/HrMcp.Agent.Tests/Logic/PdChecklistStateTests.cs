@@ -40,7 +40,12 @@ public sealed class PdChecklistStateTests
     public void UpdateFromDraft_WithPositionSummaryHeading_MarksComplete()
     {
         var state = new PdChecklistState();
-        state.UpdateFromDraft("## Position Summary\n\nThis position serves as...");
+        state.UpdateFromDraft("""
+            ## Position Summary
+            This position serves as the lead cloud architect for the agency.
+            The incumbent designs and implements AWS-based infrastructure supporting mission-critical applications.
+            This role reports to the Deputy CIO and collaborates with enterprise architecture teams.
+            """);
         var section = state.Sections.Single(s => s.Name == "Position Summary");
         Assert.Equal(PdSectionStatus.Complete, section.Status);
     }
@@ -49,7 +54,14 @@ public sealed class PdChecklistStateTests
     public void UpdateFromDraft_WithDutiesHeading_MarksComplete()
     {
         var state = new PdChecklistState();
-        state.UpdateFromDraft("## Major Duties\n\n- Independently leads cloud infrastructure projects.");
+        state.UpdateFromDraft("""
+            ## Major Duties
+            - Independently leads cloud infrastructure projects.
+            - Designs and implements AWS migration strategy.
+            - Serves as technical expert for cloud security.
+            - Provides authoritative guidance on IaC tooling.
+            - Establishes policy for cloud cost governance.
+            """);
         var section = state.Sections.Single(s => s.Name == "Major Duties");
         Assert.Equal(PdSectionStatus.Complete, section.Status);
     }
@@ -113,6 +125,76 @@ public sealed class PdChecklistStateTests
         var state = new PdChecklistState();
         state.UpdateFromDraft(fullDraft);
         Assert.False(state.HasBlockingItems);
+    }
+
+    [Fact]
+    public void UpdateFromDraft_MajorDutiesWithThreeBullets_MarksWarning()
+    {
+        var state = new PdChecklistState();
+        state.UpdateFromDraft("""
+            ## Major Duties
+            - Leads cloud projects.
+            - Manages stakeholders.
+            - Develops architecture documents.
+            """);
+        var section = state.Sections.Single(s => s.Name == "Major Duties");
+        Assert.Equal(PdSectionStatus.Warning, section.Status);
+    }
+
+    [Fact]
+    public void UpdateFromDraft_MajorDutiesWithFiveBullets_MarksComplete()
+    {
+        var state = new PdChecklistState();
+        state.UpdateFromDraft("""
+            ## Major Duties
+            - Independently leads cloud infrastructure projects.
+            - Designs and implements AWS migration strategy.
+            - Serves as technical expert for cloud security.
+            - Provides authoritative guidance on IaC tooling.
+            - Establishes policy for cloud cost governance.
+            """);
+        var section = state.Sections.Single(s => s.Name == "Major Duties");
+        Assert.Equal(PdSectionStatus.Complete, section.Status);
+    }
+
+    [Fact]
+    public void UpdateFromDraft_PositionSummaryWithTwoSentences_MarksWarning()
+    {
+        var state = new PdChecklistState();
+        state.UpdateFromDraft("""
+            ## Position Summary
+            This position leads cloud migration. It reports to the CTO.
+            """);
+        var section = state.Sections.Single(s => s.Name == "Position Summary");
+        Assert.Equal(PdSectionStatus.Warning, section.Status);
+    }
+
+    [Fact]
+    public void UpdateFromDraft_PositionSummaryWithThreeSentences_MarksComplete()
+    {
+        var state = new PdChecklistState();
+        state.UpdateFromDraft("""
+            ## Position Summary
+            This position serves as the lead cloud architect for the agency's digital modernization initiative.
+            The incumbent designs and implements AWS-based infrastructure supporting mission-critical applications.
+            This role reports to the Deputy CIO and collaborates with enterprise architecture teams.
+            """);
+        var section = state.Sections.Single(s => s.Name == "Position Summary");
+        Assert.Equal(PdSectionStatus.Complete, section.Status);
+    }
+
+    [Fact]
+    public void UpdateFromDraft_RequiredSectionWithEmptyBody_MarksWarning()
+    {
+        var state = new PdChecklistState();
+        state.UpdateFromDraft("""
+            ## Security Clearance
+
+            ## Remote Work Eligibility
+            Hybrid — duty station Washington, DC.
+            """);
+        var clearance = state.Sections.Single(s => s.Name == "Security Clearance");
+        Assert.Equal(PdSectionStatus.Warning, clearance.Status);
     }
 
     // ── Acknowledge ───────────────────────────────────────────────────────────
