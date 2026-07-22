@@ -548,11 +548,12 @@
             return;
 
         _selfReviewLoading = true;
+        var draftSnapshot = _currentDraftMarkdown;
         await InvokeAsync(StateHasChanged);
 
         _ = Task.Run(async () =>
         {
-            var review = await AgentDraftService.GetDraftSelfReviewAsync(_currentDraftMarkdown);
+            var review = await AgentDraftService.GetDraftSelfReviewAsync(draftSnapshot);
             if (!string.IsNullOrWhiteSpace(review))
                 _turns.Add(new ChatTurn("Assistant", review, DateTimeOffset.UtcNow));
             _selfReviewLoading = false;

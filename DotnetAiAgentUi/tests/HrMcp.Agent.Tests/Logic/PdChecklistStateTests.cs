@@ -98,10 +98,16 @@ public sealed class PdChecklistStateTests
             Non-Supervisory
 
             ## Position Summary
-            This position leads cloud migration efforts.
+            This position serves as the lead cloud architect for the agency's digital modernization initiative.
+            The incumbent designs and implements AWS-based infrastructure supporting mission-critical applications.
+            This role reports to the Deputy CIO and collaborates with enterprise architecture teams.
 
             ## Major Duties
-            - Independently leads AWS migration projects.
+            - Independently leads cloud infrastructure projects.
+            - Designs and implements AWS migration strategy.
+            - Serves as technical expert for cloud security.
+            - Provides authoritative guidance on IaC tooling.
+            - Establishes policy for cloud cost governance.
 
             ## Qualifications Required
             Expert knowledge of cloud infrastructure.
