@@ -11,6 +11,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @using System.Text
 @using System.Text.RegularExpressions
+@implements IAsyncDisposable
 @inject IAgentDraftService AgentDraftService
 @inject IConversationService ConversationService
 @inject UserContext UserContext
@@ -201,6 +202,8 @@
     private (string Suggested, string SuggestedName, string Current)? _seriesSuggestion;
     private bool _selfReviewLoading;
     private bool _selfReviewDone;
+    private bool _unloadGuardRegistered;
+    private bool _pendingUnloadGuardRegistration;
     private bool _resizing;
     private int _leftPanelWidth = 420;
     private const int MinLeftPanelWidth = 320;
@@ -311,6 +314,22 @@
             // Quill may not be initialized yet — JS function polls until ready, then loads via dangerouslyPasteHTML
             await JS.InvokeVoidAsync("loadQuillWhenReady", "quill-editor-wrapper", html);
         }
+
+        if (_pendingUnloadGuardRegistration)
+        {
+            _pendingUnloadGuardRegistration = false;
+            try { await JS.InvokeVoidAsync("registerDraftUnloadGuard"); }
+            catch { /* ignore if JS not ready */ }
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_unloadGuardRegistered)
+        {
+            try { await JS.InvokeVoidAsync("unregisterDraftUnloadGuard"); }
+            catch { /* component may be disposed before JS is available */ }
+        }
     }
 
     protected override async Task OnParametersSetAsync()
@@ -365,6 +384,12 @@
                     _hasDraft = true;
                     _pendingHtml = NormalizeHtmlForQuill(Markdown.ToHtml(_currentDraftMarkdown, ChatMarkdownPipeline));
                     _draftVisible = true;
+                    if (!_unloadGuardRegistered)
+                    {
+                        _unloadGuardRegistered = true;
+                        // Guard registered after render in OnAfterRenderAsync to ensure JS is ready
+                        _pendingUnloadGuardRegistration = true;
+                    }
                 }
             }
         }
@@ -454,6 +479,11 @@
                     _pendingHtml = html;
                     _draftVisible = true;
                     _hasDraft = true;
+                    if (!_unloadGuardRegistered)
+                    {
+                        _unloadGuardRegistered = true;
+                        await JS.InvokeVoidAsync("registerDraftUnloadGuard");
+                    }
                 }
                 else
                 {
