@@ -52,7 +52,10 @@ else
                     <option value="@org">@org</option>
                 }
             </select>
-            @if (!Filtered.Any())
+            @{
+                var filtered = Filtered.ToList();
+            }
+            @if (!filtered.Any())
             {
                 <p class="pd-browser-empty">
                     @(_allPositions.Count == 0
@@ -63,7 +66,7 @@ else
             else
             {
                 <div class="pd-browser-list">
-                    @foreach (var pos in Filtered)
+                    @foreach (var pos in filtered)
                     {
                         var capturedPos = pos;
                         <button class="pd-browser-card" @onclick="() => SelectPreview(capturedPos)">
@@ -105,8 +108,8 @@ else
              string.Equals(p.HiringOrganization?.OrganizationName, _selectedOrg, StringComparison.OrdinalIgnoreCase)) &&
             (string.IsNullOrWhiteSpace(_searchText) ||
              p.Title.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ||
-             p.Description.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ||
-             p.Duties.Contains(_searchText, StringComparison.OrdinalIgnoreCase)))
+             (p.Description?.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+             (p.Duties?.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ?? false)))
         .OrderBy(p => p.Title);
 
     protected override async Task OnInitializedAsync()
@@ -178,5 +181,6 @@ else
         p.IsOpen ? "🟢 Open" : "🔴 Closed";
 
     private static string TruncateDescription(string desc) =>
+        string.IsNullOrEmpty(desc) ? string.Empty :
         desc.Length > 300 ? string.Concat(desc.AsSpan(0, 297), "…") : desc;
 }
