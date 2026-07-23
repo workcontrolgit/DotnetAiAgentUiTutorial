@@ -164,13 +164,8 @@ static void ConfigureCommonServices(IServiceCollection services, IConfiguration 
 
 static async Task InitializeDatabaseAsync(IServiceProvider services, bool forceReseed = false)
 {
-    using var scope = services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<HrDbContext>();
-
-    await db.Database.MigrateAsync();
-
     var seedPath = FindSeedFile("data/usajobs-seed.json");
-    DbSeeder.Seed(db, seedPath, force: forceReseed);
+    await PersistenceInitialization.InitializeAsync(services, seedPath, forceReseed);
 }
 
 static string? FindSeedFile(string relativePath)
