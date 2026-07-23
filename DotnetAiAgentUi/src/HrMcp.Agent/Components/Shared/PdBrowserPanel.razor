@@ -1,0 +1,186 @@
+@using HrMcp.Application.Services
+@inject PositionService PositionService
+
+@if (_loadError)
+{
+    <div class="chat-bubble-row chat-bubble-row--assistant">
+        <div class="chat-bubble pd-browser">
+            <p class="pd-browser-error">Unable to load position descriptions. Please try again later.</p>
+            <button class="secondary-btn" @onclick="() => OnCancel.InvokeAsync()">Close</button>
+        </div>
+    </div>
+}
+else if (_preview is not null)
+{
+    <div class="chat-bubble-row chat-bubble-row--assistant">
+        <div class="chat-bubble pd-browser pd-browser--preview">
+            <div class="pd-browser-preview-header">
+                <span class="pd-browser-preview-title">📋 @_preview.Title (@GradeRange(_preview))</span>
+                <span class="pd-browser-badge @BadgeClass(_preview)">@BadgeText(_preview)</span>
+            </div>
+            <div class="pd-browser-preview-org">@(_preview.HiringOrganization?.OrganizationName ?? string.Empty)</div>
+            <div class="pd-browser-preview-meta">Series @_preview.OccupationalSeries · @_preview.DutyLocation</div>
+            <hr class="pd-browser-divider" />
+            <p class="pd-browser-preview-desc">@TruncateDescription(_preview.Description)</p>
+            @if (_confirmError)
+            {
+                <p class="pd-browser-error">Could not load this PD. Please try another.</p>
+            }
+            <div class="pd-browser-actions">
+                <button class="secondary-btn" @onclick="BackToList" disabled="@_confirming">← Back</button>
+                <button class="primary-btn" @onclick="ConfirmSelectionAsync" disabled="@_confirming">
+                    @(_confirming ? "Loading…" : "Use this PD →")
+                </button>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="chat-bubble-row chat-bubble-row--assistant">
+        <div class="chat-bubble pd-browser">
+            <div class="pd-browser-header">📂 Browse Existing Position Descriptions</div>
+            <input class="pd-browser-search"
+                   type="text"
+                   placeholder="Search by title, keyword…"
+                   @bind="_searchText"
+                   @bind:event="oninput" />
+            <select class="pd-browser-org-filter" @bind="_selectedOrg">
+                <option value="">All organizations</option>
+                @foreach (var org in _orgOptions)
+                {
+                    <option value="@org">@org</option>
+                }
+            </select>
+            @{
+                var filtered = Filtered.ToList();
+            }
+            @if (!filtered.Any())
+            {
+                <p class="pd-browser-empty">
+                    @(_allPositions.Count == 0
+                        ? "No existing PDs found. Start a new one by describing your position above."
+                        : "No positions match your search.")
+                </p>
+            }
+            else
+            {
+                <div class="pd-browser-list">
+                    @foreach (var pos in filtered)
+                    {
+                        var capturedPos = pos;
+                        <button class="pd-browser-card" @onclick="() => SelectPreview(capturedPos)">
+                            <div class="pd-browser-card-title">@pos.Title</div>
+                            <div class="pd-browser-card-meta">
+                                <span>@(pos.HiringOrganization?.OrganizationName ?? string.Empty)</span>
+                                <span class="pd-browser-badge @BadgeClass(pos)">@BadgeText(pos)</span>
+                            </div>
+                            <div class="pd-browser-card-detail">
+                                Series @pos.OccupationalSeries · @GradeRange(pos) · @pos.DutyLocation
+                            </div>
+                        </button>
+                    }
+                </div>
+            }
+            <div class="pd-browser-footer">
+                <button class="secondary-btn" @onclick="() => OnCancel.InvokeAsync()">Cancel</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback<int> OnPositionSelected { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    private List<HrMcp.Core.Entities.Position> _allPositions = [];
+    private List<string> _orgOptions = [];
+    private HrMcp.Core.Entities.Position? _preview;
+    private string _searchText = string.Empty;
+    private string _selectedOrg = string.Empty;
+    private bool _confirming;
+    private bool _confirmError;
+    private bool _loadError;
+
+    private IEnumerable<HrMcp.Core.Entities.Position> Filtered => _allPositions
+        .Where(p =>
+            (string.IsNullOrWhiteSpace(_selectedOrg) ||
+             string.Equals(p.HiringOrganization?.OrganizationName, _selectedOrg, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrWhiteSpace(_searchText) ||
+             p.Title.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ||
+             (p.Description?.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+             (p.Duties?.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ?? false)))
+        .OrderBy(p => p.Title);
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var all = await PositionService.GetAllPositionsAsync();
+            _allPositions = all.ToList();
+            _orgOptions = _allPositions
+                .Select(p => p.HiringOrganization?.OrganizationName ?? string.Empty)
+                .Where(n => !string.IsNullOrEmpty(n))
+                .Distinct()
+                .OrderBy(n => n)
+                .ToList();
+        }
+        catch
+        {
+            _loadError = true;
+        }
+    }
+
+    private void SelectPreview(HrMcp.Core.Entities.Position pos)
+    {
+        _preview = pos;
+        _confirmError = false;
+    }
+
+    private void BackToList()
+    {
+        _preview = null;
+        _confirmError = false;
+    }
+
+    private async Task ConfirmSelectionAsync()
+    {
+        if (_preview is null) return;
+        _confirming = true;
+        _confirmError = false;
+        var id = _preview.Id;
+        try
+        {
+            var pos = await PositionService.GetPositionByIdAsync(id);
+            if (pos is null)
+            {
+                _confirmError = true;
+                return;
+            }
+            await OnPositionSelected.InvokeAsync(id);
+        }
+        catch
+        {
+            _confirmError = true;
+        }
+        finally
+        {
+            _confirming = false;
+        }
+    }
+
+    private static string GradeRange(HrMcp.Core.Entities.Position p) =>
+        string.IsNullOrWhiteSpace(p.PayGradeMax) || p.PayGradeMax == p.PayGradeMin
+            ? p.PayGradeMin
+            : $"{p.PayGradeMin}–{p.PayGradeMax}";
+
+    private static string BadgeClass(HrMcp.Core.Entities.Position p) =>
+        p.IsOpen ? "pd-browser-badge--open" : "pd-browser-badge--closed";
+
+    private static string BadgeText(HrMcp.Core.Entities.Position p) =>
+        p.IsOpen ? "🟢 Open" : "🔴 Closed";
+
+    private static string TruncateDescription(string desc) =>
+        string.IsNullOrEmpty(desc) ? string.Empty :
+        desc.Length > 300 ? string.Concat(desc.AsSpan(0, 297), "…") : desc;
+}

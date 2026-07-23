@@ -217,6 +217,7 @@ static async Task RunWebAsync(string[] args)
     builder.Services.AddScoped<ThemeService>();
     // TODO: UserContext full implementation is Task B5; stub registered here so DI compiles.
     builder.Services.AddScoped<UserContext>();
+    builder.Services.AddScoped<HrMcp.Application.Services.PositionService>();
 
     // Cookie auth (set by Identity above) + optional OIDC federation
     var enableOidc = builder.Configuration.GetValue<bool>("Features:EnableOidc");
@@ -258,6 +259,8 @@ static async Task RunWebAsync(string[] args)
     builder.Services.AddAuthorization();
 
     var app = builder.Build();
+    await PersistenceInitialization.InitializeAsync(app.Services, FindSeedFile("data/usajobs-seed.json"));
+
     app.UseStaticFiles();
     app.MapStaticAssets();
     app.UseAuthentication();
@@ -299,16 +302,17 @@ static async Task<IClientTransport> CreateClientTransportAsync(
     if (string.Equals(transportType, "stdio", StringComparison.OrdinalIgnoreCase))
     {
         var command = configuration["McpServer:Transport:Stdio:Command"] ?? "dotnet";
-        var workingDirectory = configuration["McpServer:Transport:Stdio:WorkingDirectory"];
-        if (string.IsNullOrWhiteSpace(workingDirectory))
-            workingDirectory = FindWorkspaceRoot();
-        var arguments = GetStdioArguments(configuration, workingDirectory);
+        var resolved = McpStdioPathResolver.Resolve(
+            configuration["McpServer:Transport:Stdio:WorkingDirectory"],
+            configuration["McpServer:Transport:Stdio:ProjectPath"],
+            FindWorkspaceRoot());
+        var arguments = GetStdioArguments(configuration, resolved.ProjectPath);
 
         return new StdioClientTransport(new StdioClientTransportOptions
         {
             Command = command,
             Arguments = arguments,
-            WorkingDirectory = workingDirectory,
+            WorkingDirectory = resolved.WorkingDirectory,
             Name = "hr-mcp-stdio"
         });
     }
@@ -359,7 +363,7 @@ static async Task WaitForHttpServerAsync(string mcpServerUrl)
     throw new TimeoutException($"MCP server at {mcpServerUrl} did not become available after {maxAttempts} attempts.");
 }
 
-static IList<string> GetStdioArguments(IConfiguration configuration, string workingDirectory)
+static IList<string> GetStdioArguments(IConfiguration configuration, string resolvedProjectPath)
 {
     var configuredArgs = configuration
         .GetSection("McpServer:Transport:Stdio:Arguments")
@@ -373,9 +377,9 @@ static IList<string> GetStdioArguments(IConfiguration configuration, string work
         return configuredArgs;
 
     var projectPath = configuration["McpServer:Transport:Stdio:ProjectPath"];
-    if (string.IsNullOrWhiteSpace(projectPath))
+    if (string.IsNullOrWhiteSpace(projectPath) || !File.Exists(projectPath))
     {
-        projectPath = Path.Combine(workingDirectory, "DotnetAiAgentUi", "src", "HrMcp.McpServer", "HrMcp.McpServer.csproj");
+        projectPath = resolvedProjectPath;
     }
 
     return new List<string>
@@ -412,6 +416,19 @@ static string FindOutputFolder()
     }
     // Fallback: relative to current working directory
     return Path.GetFullPath("usajobs/output");
+}
+
+static string? FindSeedFile(string relativePath)
+{
+    var dir = new DirectoryInfo(AppContext.BaseDirectory);
+    for (var i = 0; i < 8 && dir is not null; i++, dir = dir.Parent)
+    {
+        var candidate = Path.Combine(dir.FullName, relativePath);
+        if (File.Exists(candidate))
+            return candidate;
+    }
+
+    return null;
 }
 
 static int? ParseIntArg(string[] args, string flag)

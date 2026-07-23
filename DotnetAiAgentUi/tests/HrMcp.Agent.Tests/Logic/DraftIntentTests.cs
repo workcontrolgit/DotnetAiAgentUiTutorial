@@ -57,6 +57,10 @@ public sealed class DraftIntentTests
     [InlineData("If you need anything, just ask.")]
     [InlineData("")]
     [InlineData("   ")]
+    // Mid-sentence question mark (e.g. "Next follow-up: Is this remote? If so, specify.")
+    [InlineData("Next follow-up: Is this position eligible for remote work? If so, please specify.")]
+    [InlineData("Next question: Is this a supervisory role? Please clarify.")]
+    [InlineData("Follow-up: What clearance level is required? Provide details.")]
     public void IsClosingLine_ReturnsTrue(string line) =>
         Assert.True(DraftWorkspace.IsClosingLine(line));
 
@@ -208,5 +212,59 @@ public sealed class DraftIntentTests
         Assert.Contains("Added", result);
         Assert.Contains("Section B", result);
         Assert.DoesNotContain("Revised", result);
+    }
+
+    [Theory]
+    [InlineData("browse pd")]
+    [InlineData("browse pds")]
+    [InlineData("browse position")]
+    [InlineData("browse positions")]
+    [InlineData("list pd")]
+    [InlineData("list pds")]
+    [InlineData("list position")]
+    [InlineData("list positions")]
+    [InlineData("show pd")]
+    [InlineData("show pds")]
+    [InlineData("show positions")]
+    [InlineData("find pd")]
+    [InlineData("find pds")]
+    [InlineData("search pd")]
+    [InlineData("search pds")]
+    [InlineData("search positions")]
+    [InlineData("use existing")]
+    [InlineData("start from existing")]
+    [InlineData("copy existing")]
+    [InlineData("existing pd")]
+    [InlineData("existing pds")]
+    public void BrowsePhrases_AreBrowseIntentPrompts(string input)
+    {
+        Assert.True(DraftWorkspace.IsBrowseIntent(input));
+    }
+
+    [Theory]
+    [InlineData("browse pd")]
+    [InlineData("browse pds")]
+    [InlineData("browse position")]
+    [InlineData("browse positions")]
+    [InlineData("list pd")]
+    [InlineData("list pds")]
+    [InlineData("list position")]
+    [InlineData("list positions")]
+    [InlineData("show pd")]
+    [InlineData("show pds")]
+    [InlineData("show positions")]
+    [InlineData("find pd")]
+    [InlineData("find pds")]
+    [InlineData("search pd")]
+    [InlineData("search pds")]
+    [InlineData("search positions")]
+    [InlineData("use existing")]
+    [InlineData("start from existing")]
+    [InlineData("copy existing")]
+    [InlineData("existing pd")]
+    [InlineData("existing pds")]
+    public void BrowsePhrases_AreNotDraftIntentPrompts(string input)
+    {
+        Assert.False(DraftWorkspace.IsDraftIntentPrompt(input));
     }
 }

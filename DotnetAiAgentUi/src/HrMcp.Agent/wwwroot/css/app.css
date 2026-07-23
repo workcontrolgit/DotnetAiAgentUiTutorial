@@ -1157,3 +1157,163 @@ html, body {
     display: flex;
     gap: 8px;
 }
+
+/* ── PD Browser Panel ──────────────────────────────────────── */
+.pd-browser {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 540px;
+    width: 100%;
+}
+
+.pd-browser-header {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.pd-browser-search,
+.pd-browser-org-filter {
+    width: 100%;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--color-border, #ccc);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: var(--color-input-bg, #fff);
+    color: var(--color-text, inherit);
+}
+
+.pd-browser-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.pd-browser-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.6rem 0.75rem;
+    background: var(--color-card-bg, #f8f8f8);
+    border: 1px solid var(--color-border, #ddd);
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.pd-browser-card:hover {
+    background: var(--color-card-hover, #eef4ff);
+    border-color: var(--color-primary, #3b82f6);
+}
+
+.pd-browser-card-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.pd-browser-card-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    color: var(--color-muted, #666);
+}
+
+.pd-browser-card-detail {
+    font-size: 0.8rem;
+    color: var(--color-muted, #888);
+}
+
+.pd-browser-badge {
+    font-size: 0.78rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    font-weight: 500;
+}
+
+.pd-browser-badge--open {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.pd-browser-badge--closed {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.pd-browser-empty {
+    color: var(--color-muted, #888);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.pd-browser-error {
+    color: #b91c1c;
+    font-size: 0.9rem;
+}
+
+.pd-browser-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 0.25rem;
+}
+
+.pd-browser-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    padding-top: 0.5rem;
+}
+
+/* Preview state */
+.pd-browser--preview {
+    gap: 0.4rem;
+}
+
+.pd-browser-preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+
+.pd-browser-preview-title {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.pd-browser-preview-org {
+    font-size: 0.88rem;
+    color: var(--color-muted, #555);
+}
+
+.pd-browser-preview-meta {
+    font-size: 0.82rem;
+    color: var(--color-muted, #888);
+}
+
+.pd-browser-divider {
+    border: none;
+    border-top: 1px solid var(--color-border, #ddd);
+    margin: 0.25rem 0;
+}
+
+.pd-browser-preview-desc {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--color-text, inherit);
+    white-space: pre-wrap;
+}
+
+/* Welcome shortcuts */
+.welcome-shortcuts {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+}
