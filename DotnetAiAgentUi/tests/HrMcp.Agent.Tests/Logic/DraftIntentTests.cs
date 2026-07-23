@@ -64,6 +64,19 @@ public sealed class DraftIntentTests
     public void IsClosingLine_ContentLine_ReturnsFalse() =>
         Assert.False(DraftWorkspace.IsClosingLine("## Summary"));
 
+    [Theory]
+    [InlineData("help")]
+    [InlineData("how do I use this")]
+    [InlineData("what do I do")]
+    [InlineData("how do I start")]
+    [InlineData("what is a GS series code")]
+    [InlineData("what does the checklist mean")]
+    [InlineData("what is OPM")]
+    public void HelpPhrases_AreNotDraftIntentPrompts(string input)
+    {
+        Assert.False(DraftWorkspace.IsDraftIntentPrompt(input));
+    }
+
     // New terms for extended draft-intent detection
     [Theory]
     [InlineData("I need a GS-13 cloud architect")]
