@@ -1,6 +1,7 @@
 using Bunit;
 using HrMcp.Agent.Components.Pages;
 using HrMcp.Agent.Web.Services;
+using HrMcp.Application.Services;
 using HrMcp.Core.Entities;
 using HrMcp.Core.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -75,6 +76,21 @@ public sealed class DraftWorkspaceTests : TestContext
             Task.CompletedTask;
     }
 
+    private sealed class FakePositionRepository : IPositionRepository
+    {
+        public Task<IEnumerable<Position>> GetAllAsync(CancellationToken ct = default) =>
+            Task.FromResult(Enumerable.Empty<Position>());
+
+        public Task<IEnumerable<Position>> GetOpenPositionsAsync(CancellationToken ct = default) =>
+            Task.FromResult(Enumerable.Empty<Position>());
+
+        public Task<Position?> GetByIdAsync(int id, CancellationToken ct = default) =>
+            Task.FromResult<Position?>(null);
+
+        public Task<IEnumerable<Position>> GetByOrganizationAsync(int organizationId, CancellationToken ct = default) =>
+            Task.FromResult(Enumerable.Empty<Position>());
+    }
+
     private sealed class FakeAuthStateProvider : AuthenticationStateProvider
     {
         public override Task<AuthenticationState> GetAuthenticationStateAsync() =>
@@ -91,6 +107,8 @@ public sealed class DraftWorkspaceTests : TestContext
         Services.AddScoped<IAgentDraftService>(_ => _fake);
         Services.AddScoped<IConversationService>(_ => new FakeConversationService());
         Services.AddScoped<UserContext>();
+        Services.AddScoped<IPositionRepository>(_ => new FakePositionRepository());
+        Services.AddScoped<PositionService>();
     }
 
     [Fact]
