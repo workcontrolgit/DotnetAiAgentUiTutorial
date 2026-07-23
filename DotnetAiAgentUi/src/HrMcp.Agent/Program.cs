@@ -217,6 +217,7 @@ static async Task RunWebAsync(string[] args)
     builder.Services.AddScoped<ThemeService>();
     // TODO: UserContext full implementation is Task B5; stub registered here so DI compiles.
     builder.Services.AddScoped<UserContext>();
+    builder.Services.AddScoped<HrMcp.Application.Services.PositionService>();
 
     // Cookie auth (set by Identity above) + optional OIDC federation
     var enableOidc = builder.Configuration.GetValue<bool>("Features:EnableOidc");
