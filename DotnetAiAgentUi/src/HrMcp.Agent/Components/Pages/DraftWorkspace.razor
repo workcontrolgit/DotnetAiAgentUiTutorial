@@ -248,6 +248,30 @@
         "supervisory",
         "gs-",
     ];
+    private static readonly string[] BrowseIntentTerms =
+    [
+        "browse pd",
+        "browse pds",
+        "browse position",
+        "browse positions",
+        "list pd",
+        "list pds",
+        "list position",
+        "list positions",
+        "show pd",
+        "show pds",
+        "show positions",
+        "find pd",
+        "find pds",
+        "search pd",
+        "search pds",
+        "search positions",
+        "use existing",
+        "start from existing",
+        "copy existing",
+        "existing pd",
+        "existing pds",
+    ];
     private static readonly string[] NonDraftIntentTerms =
     [
         "list open position",
@@ -256,7 +280,30 @@
         "open positions",
         "show open position",
         "show open positions",
-        "what is a gs"
+        "what is a gs",
+        // Browse intent terms — IsBrowseIntent checked first in SendPromptAsync;
+        // these entries are a safety net so IsDraftIntentPrompt never fires for them.
+        "browse pd",
+        "browse pds",
+        "browse position",
+        "browse positions",
+        "list pd",
+        "list pds",
+        "list position",
+        "list positions",
+        "show pd",
+        "show pds",
+        "show positions",
+        "find pd",
+        "find pds",
+        "search pd",
+        "search pds",
+        "search positions",
+        "use existing",
+        "start from existing",
+        "copy existing",
+        "existing pd",
+        "existing pds",
     ];
     private static readonly ChatTurn WelcomeTurn = new(
         "Assistant",
@@ -799,6 +846,9 @@
 
         return DraftIntentTerms.Any(term => normalized.Contains(term, StringComparison.Ordinal));
     }
+
+    public static bool IsBrowseIntent(string prompt) =>
+        BrowseIntentTerms.Any(t => prompt.ToLowerInvariant().Contains(t));
 
     private static MarkupString RenderAssistantMarkdown(string? text)
     {
