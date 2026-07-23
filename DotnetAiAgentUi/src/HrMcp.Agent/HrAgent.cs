@@ -80,6 +80,13 @@ public sealed class HrAgent(IChatClient chatClient, IList<AITool> tools, UiStyle
         After a help response, ask: "Is there anything else I can help you with,
         or are you ready to continue with the draft?"
 
+        Browsing existing PDs:
+        - Questions about reusing, copying, or starting from an existing PD,
+          how to find a PD, or what PDs are in the system
+        → Tell the manager to type "browse PDs" in the chat to open the
+          PD browser, where they can search by title, keyword, or organization
+          and select a PD to use as their starting point. Do not draft.
+
         When drafting or updating a PD, always output the draft using these section headings in order:
         ## Position Title
         ## Pay Plan / Series / Grade

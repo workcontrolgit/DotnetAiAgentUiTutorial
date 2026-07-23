@@ -5,6 +5,7 @@
 @using HrMcp.Agent.Web.Models
 @using HrMcp.Agent.Web.Services
 @using HrMcp.Agent.Components.Shared
+@using HrMcp.Application.Services
 @using HrMcp.Core.Interfaces
 @using Markdig
 @using Microsoft.AspNetCore.Authorization
@@ -14,6 +15,7 @@
 @implements IAsyncDisposable
 @inject IAgentDraftService AgentDraftService
 @inject IConversationService ConversationService
+@inject PositionService PositionService
 @inject UserContext UserContext
 @inject NavigationManager Nav
 @inject IJSRuntime JS
@@ -81,6 +83,21 @@
                                 OnKeep="DismissSeriesSuggestion"
                                 OnSwitch="AcceptSeriesSuggestion" />
                         }
+                    }
+
+                    @if (_turns.Count == 1 && _turns[0] == WelcomeTurn && !_browsing)
+                    {
+                        <div class="welcome-shortcuts">
+                            <button class="secondary-btn" @onclick="() => { }" disabled="@_busy">✏️ Start from scratch</button>
+                            <button class="secondary-btn" @onclick="() => { _browsing = true; }" disabled="@_busy">📂 Browse existing PDs</button>
+                        </div>
+                    }
+
+                    @if (_browsing)
+                    {
+                        <PdBrowserPanel
+                            OnPositionSelected="OnPositionSelectedAsync"
+                            OnCancel="OnBrowseCancel" />
                     }
 
                     @if (_busy)
@@ -193,6 +210,7 @@
     private string Prompt { get; set; } = string.Empty;
     private readonly List<ChatTurn> _turns = [];
     private bool _busy;
+    private bool _browsing;
     private bool _exportBusy;
     private string _status = string.Empty;
     private bool _leftPanelHidden;
@@ -248,6 +266,30 @@
         "supervisory",
         "gs-",
     ];
+    private static readonly string[] BrowseIntentTerms =
+    [
+        "browse pd",
+        "browse pds",
+        "browse position",
+        "browse positions",
+        "list pd",
+        "list pds",
+        "list position",
+        "list positions",
+        "show pd",
+        "show pds",
+        "show positions",
+        "find pd",
+        "find pds",
+        "search pd",
+        "search pds",
+        "search positions",
+        "use existing",
+        "start from existing",
+        "copy existing",
+        "existing pd",
+        "existing pds",
+    ];
     private static readonly string[] NonDraftIntentTerms =
     [
         "list open position",
@@ -256,14 +298,38 @@
         "open positions",
         "show open position",
         "show open positions",
-        "what is a gs"
+        "what is a gs",
+        // Browse intent terms — IsBrowseIntent checked first in SendPromptAsync;
+        // these entries are a safety net so IsDraftIntentPrompt never fires for them.
+        "browse pd",
+        "browse pds",
+        "browse position",
+        "browse positions",
+        "list pd",
+        "list pds",
+        "list position",
+        "list positions",
+        "show pd",
+        "show pds",
+        "show positions",
+        "find pd",
+        "find pds",
+        "search pd",
+        "search pds",
+        "search positions",
+        "use existing",
+        "start from existing",
+        "copy existing",
+        "existing pd",
+        "existing pds",
     ];
     private static readonly ChatTurn WelcomeTurn = new(
         "Assistant",
         "Hi! I'm your Position Description Writing Assistant. Let's build your PD together \u2014 " +
         "I'll ask a few quick questions first so the draft fits your position accurately.\n\n" +
         "**What position are you hiring for?** *(e.g., IT Specialist, Program Analyst, Contracting Officer)*\n\n" +
-        "*Type **help** at any time if you need guidance on how to use this tool.*",
+        "*Type **help** at any time if you need guidance on how to use this tool.*\n\n" +
+        "*Type **browse PDs** to find and reuse an existing position description.*",
         DateTimeOffset.MinValue
     );
     private static readonly MarkdownPipeline ChatMarkdownPipeline = new MarkdownPipelineBuilder()
@@ -445,6 +511,18 @@
         _status = string.Empty;
         var input = Prompt.Trim();
         Prompt = string.Empty;
+
+        // Browse intent: show PD browser panel without calling AI
+        if (IsBrowseIntent(input))
+        {
+            _turns.Add(new ChatTurn("You", input, DateTimeOffset.UtcNow));
+            _browsing = true;
+            _busy = false;
+            await InvokeAsync(StateHasChanged);
+            await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
+            return;
+        }
+
         // Track whether this is the first message so we can navigate after the full
         // exchange completes. Navigating early disposes the component mid-request,
         // which prevents the AI response from ever reaching the UI.
@@ -665,6 +743,47 @@
         _status = "\u2705 JSON file ready.";
     }
 
+    public static string BuildDraftSkeleton(HrMcp.Core.Entities.Position pos)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine($"# {pos.Title}");
+        sb.AppendLine();
+        sb.AppendLine("## Pay Plan / Series / Grade");
+        var seriesLine = !string.IsNullOrWhiteSpace(pos.OccupationalSeriesTitle)
+            ? $"Series: {pos.OccupationalSeries} – {pos.OccupationalSeriesTitle}"
+            : $"Series: {pos.OccupationalSeries}";
+        var gradeLine = !string.IsNullOrWhiteSpace(pos.PayGradeMax) && pos.PayGradeMax != pos.PayGradeMin
+            ? $"Grade: {pos.PayGradeMin}–{pos.PayGradeMax}"
+            : $"Grade: {pos.PayGradeMin}";
+        sb.AppendLine(seriesLine);
+        sb.AppendLine(gradeLine);
+        if (!string.IsNullOrWhiteSpace(pos.Description))
+        {
+            sb.AppendLine();
+            sb.AppendLine("## Position Summary");
+            sb.AppendLine(pos.Description);
+        }
+        if (!string.IsNullOrWhiteSpace(pos.Duties))
+        {
+            sb.AppendLine();
+            sb.AppendLine("## Major Duties");
+            sb.AppendLine(pos.Duties);
+        }
+        if (!string.IsNullOrWhiteSpace(pos.Qualifications))
+        {
+            sb.AppendLine();
+            sb.AppendLine("## Qualifications Required");
+            sb.AppendLine(pos.Qualifications);
+        }
+        if (!string.IsNullOrWhiteSpace(pos.Education))
+        {
+            sb.AppendLine();
+            sb.AppendLine("## Education Requirements");
+            sb.AppendLine(pos.Education);
+        }
+        return sb.ToString().TrimEnd();
+    }
+
     // Extracts the markdown draft body from an AI response that may include conversational
     // preamble (before the first ## heading) and a closing question/offer at the end.
     // Returns null when the response contains no markdown headings — caller skips draft update.
@@ -799,6 +918,9 @@
 
         return DraftIntentTerms.Any(term => normalized.Contains(term, StringComparison.Ordinal));
     }
+
+    public static bool IsBrowseIntent(string prompt) =>
+        BrowseIntentTerms.Any(t => prompt.ToLowerInvariant().Contains(t));
 
     private static MarkupString RenderAssistantMarkdown(string? text)
     {
@@ -967,6 +1089,88 @@
         // Inject a follow-up prompt so the AI updates the draft series
         Prompt = $"Please update the Pay Plan / Series / Grade section to use {accepted.Suggested} ({accepted.SuggestedName}).";
         await SendPromptAsync();
+    }
+
+    private async Task OnPositionSelectedAsync(int positionId)
+    {
+        _browsing = false;
+        _busy = true;
+        await InvokeAsync(StateHasChanged);
+
+        try
+        {
+            var pos = await PositionService.GetPositionByIdAsync(positionId);
+            if (pos is null)
+            {
+                _turns.Add(new ChatTurn("Assistant", "⚠ Could not load the selected position. Please try again.", DateTimeOffset.UtcNow));
+                await InvokeAsync(StateHasChanged);
+                return;
+            }
+
+            var visibleLabel = $"Using **{pos.Title}** as starting point";
+            var seededPrompt = $"The manager has loaded an existing Position Description as their starting point: " +
+                $"Title = \"{pos.Title}\", Series = {pos.OccupationalSeries}, " +
+                $"Grade = {pos.PayGradeMin}–{pos.PayGradeMax}. " +
+                $"The draft has been pre-loaded. Ask what they would like to update — " +
+                $"duties, qualifications, grade level, or something else.";
+
+            var draftSkeleton = BuildDraftSkeleton(pos);
+            _currentDraftMarkdown = draftSkeleton;
+            var html = NormalizeHtmlForQuill(Markdown.ToHtml(draftSkeleton, ChatMarkdownPipeline));
+            _hasDraft = true;
+            _selfReviewDone = true;
+            if (!_draftVisible)
+            {
+                _pendingHtml = html;
+                _draftVisible = true;
+                if (!_unloadGuardRegistered)
+                {
+                    _unloadGuardRegistered = true;
+                    _pendingUnloadGuardRegistration = true;
+                }
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("setQuillContent", "quill-editor-wrapper", html);
+            }
+
+            _turns.Add(new ChatTurn("You", visibleLabel, DateTimeOffset.UtcNow));
+            _checklistState.UpdateFromDraft(draftSkeleton);
+
+            var isFirstMessage = SessionId is null;
+            if (isFirstMessage)
+            {
+                var newSession = await ConversationService.CreateSessionAsync(_userId, seededPrompt);
+                SessionId = newSession.Id;
+            }
+
+            await ConversationService.AddTurnAsync(SessionId!.Value, _userId, "user", seededPrompt);
+            await InvokeAsync(StateHasChanged);
+            await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
+
+            var response = await AgentDraftService.SendPromptAsync(seededPrompt, SessionId);
+            _turns.Add(new ChatTurn("Assistant", response, DateTimeOffset.UtcNow));
+            await ConversationService.AddTurnAsync(SessionId.Value, _userId, "assistant", response);
+            await InvokeAsync(StateHasChanged);
+            await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
+
+            if (isFirstMessage && SessionId.HasValue)
+                Nav.NavigateTo($"/workspace/{SessionId}", forceLoad: false);
+        }
+        catch (Exception ex)
+        {
+            _turns.Add(new ChatTurn("Assistant", $"⚠ Error: {ex.Message}", DateTimeOffset.UtcNow));
+            await InvokeAsync(StateHasChanged);
+        }
+        finally
+        {
+            _busy = false;
+        }
+    }
+
+    private void OnBrowseCancel()
+    {
+        _browsing = false;
     }
 
     // Detects series suggestion phrases produced by the updated system prompt.
