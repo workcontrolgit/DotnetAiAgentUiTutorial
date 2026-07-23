@@ -57,6 +57,10 @@ public sealed class DraftIntentTests
     [InlineData("If you need anything, just ask.")]
     [InlineData("")]
     [InlineData("   ")]
+    // Mid-sentence question mark (e.g. "Next follow-up: Is this remote? If so, specify.")
+    [InlineData("Next follow-up: Is this position eligible for remote work? If so, please specify.")]
+    [InlineData("Next question: Is this a supervisory role? Please clarify.")]
+    [InlineData("Follow-up: What clearance level is required? Provide details.")]
     public void IsClosingLine_ReturnsTrue(string line) =>
         Assert.True(DraftWorkspace.IsClosingLine(line));
 
