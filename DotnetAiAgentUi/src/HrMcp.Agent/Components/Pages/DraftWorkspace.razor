@@ -11,6 +11,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @using System.Text
 @using System.Text.RegularExpressions
+@implements IAsyncDisposable
 @inject IAgentDraftService AgentDraftService
 @inject IConversationService ConversationService
 @inject UserContext UserContext
@@ -91,6 +92,15 @@
                             </div>
                         </div>
                     }
+                    @if (_selfReviewLoading)
+                    {
+                        <div class="chat-bubble-row chat-bubble-row--assistant">
+                            <div class="chat-bubble chat-bubble--loading" role="status" aria-live="polite">
+                                <span class="chat-spinner" aria-hidden="true"></span>
+                                <span>Reviewing your draft…</span>
+                            </div>
+                        </div>
+                    }
                 }
             </div>
             <div class="chat-composer">
@@ -118,6 +128,10 @@
         <section class="right-editor">
             <div class="right-header">
                 <h3>Your Position Description Draft</h3>
+                @if (_hasDraft && !_selfReviewLoading && !_busy)
+                {
+                    <button class="ghost-btn" @onclick="ReReviewDraftAsync">Re-review draft</button>
+                }
                 <div class="export-menu-wrap">
                     <button class="ghost-btn" @onclick="ToggleExportMenu" disabled="@_busy">Export ▾</button>
                     @if (_exportMenuOpen)
@@ -190,6 +204,10 @@
     private bool _hasDraft;
     private PdChecklistState _checklistState = new();
     private (string Suggested, string SuggestedName, string Current)? _seriesSuggestion;
+    private bool _selfReviewLoading;
+    private bool _selfReviewDone;
+    private bool _unloadGuardRegistered;
+    private bool _pendingUnloadGuardRegistration;
     private bool _resizing;
     private int _leftPanelWidth = 420;
     private const int MinLeftPanelWidth = 320;
@@ -237,8 +255,17 @@
         "open position",
         "open positions",
         "show open position",
-        "show open positions"
+        "show open positions",
+        "what is a gs"
     ];
+    private static readonly ChatTurn WelcomeTurn = new(
+        "Assistant",
+        "Hi! I'm your Position Description Writing Assistant. Let's build your PD together \u2014 " +
+        "I'll ask a few quick questions first so the draft fits your position accurately.\n\n" +
+        "**What position are you hiring for?** *(e.g., IT Specialist, Program Analyst, Contracting Officer)*\n\n" +
+        "*Type **help** at any time if you need guidance on how to use this tool.*",
+        DateTimeOffset.MinValue
+    );
     private static readonly MarkdownPipeline ChatMarkdownPipeline = new MarkdownPipelineBuilder()
         .UseAdvancedExtensions()
         .DisableHtml()
@@ -293,6 +320,22 @@
             // Quill may not be initialized yet — JS function polls until ready, then loads via dangerouslyPasteHTML
             await JS.InvokeVoidAsync("loadQuillWhenReady", "quill-editor-wrapper", html);
         }
+
+        if (_pendingUnloadGuardRegistration)
+        {
+            _pendingUnloadGuardRegistration = false;
+            try { await JS.InvokeVoidAsync("registerDraftUnloadGuard"); }
+            catch { /* ignore if JS not ready */ }
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_unloadGuardRegistered)
+        {
+            try { await JS.InvokeVoidAsync("unregisterDraftUnloadGuard"); }
+            catch { /* component may be disposed before JS is available */ }
+        }
     }
 
     protected override async Task OnParametersSetAsync()
@@ -304,6 +347,7 @@
             if (SessionId is null)
             {
                 _turns.Clear();
+                _turns.Add(WelcomeTurn);
                 return;
             }
 
@@ -321,18 +365,37 @@
                 _turns.Add(new ChatTurn(role, turn.Text, turn.Timestamp));
             }
 
-            // Restore draft state from the last assistant turn that contains a draft
-            var lastDraftTurn = _turns
-                .LastOrDefault(t => string.Equals(t.Role, "Assistant", StringComparison.OrdinalIgnoreCase)
-                                 && t.Text.Contains('#'));
-            if (lastDraftTurn is not null)
+            // Replace draft-containing assistant turns with chat summaries
+            for (var i = 0; i < _turns.Count; i++)
             {
-                var restoredMarkdown = ExtractDraftMarkdown(lastDraftTurn.Text);
+                if (!string.Equals(_turns[i].Role, "Assistant", StringComparison.OrdinalIgnoreCase))
+                    continue;
+                var md = ExtractDraftMarkdown(_turns[i].Text);
+                if (md is null) continue;
+                _turns[i] = _turns[i] with { Text = BuildChatSummary(null, md) };
+            }
+
+            // Restore draft state from the last assistant turn that contains a draft
+            var lastStoredDraftTurn = session.Turns
+                .OrderBy(t => t.Timestamp)
+                .LastOrDefault(t => string.Equals(t.Role, "assistant", StringComparison.OrdinalIgnoreCase)
+                                 && ExtractDraftMarkdown(t.Text) is not null);
+            if (lastStoredDraftTurn is not null)
+            {
+                var restoredMarkdown = ExtractDraftMarkdown(lastStoredDraftTurn.Text);
                 if (restoredMarkdown is not null)
                 {
                     _currentDraftMarkdown = restoredMarkdown;
                     _checklistState.UpdateFromDraft(_currentDraftMarkdown);
                     _hasDraft = true;
+                    _pendingHtml = NormalizeHtmlForQuill(Markdown.ToHtml(_currentDraftMarkdown, ChatMarkdownPipeline));
+                    _draftVisible = true;
+                    if (!_unloadGuardRegistered)
+                    {
+                        _unloadGuardRegistered = true;
+                        // Guard registered after render in OnAfterRenderAsync to ensure JS is ready
+                        _pendingUnloadGuardRegistration = true;
+                    }
                 }
             }
         }
@@ -401,29 +464,61 @@
             await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
 
             var response = await AgentDraftService.SendPromptAsync(input, SessionId);
-            _turns.Add(new ChatTurn("Assistant", response, DateTimeOffset.UtcNow));
-            await ConversationService.AddTurnAsync(SessionId.Value, _userId, "assistant", response);
-            await InvokeAsync(StateHasChanged);
-            await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
 
+            string? routedDraftMarkdown = null;
             if (ShouldSyncDraft(input, response))
+                routedDraftMarkdown = ExtractDraftMarkdown(response);
+
+            if (routedDraftMarkdown is not null)
             {
-                var draftMarkdown = ExtractDraftMarkdown(response);
-                if (draftMarkdown is not null)
+                var summary = BuildChatSummary(_currentDraftMarkdown, routedDraftMarkdown);
+                _turns.Add(new ChatTurn("Assistant", summary, DateTimeOffset.UtcNow));
+                await ConversationService.AddTurnAsync(SessionId.Value, _userId, "assistant", response);
+                await InvokeAsync(StateHasChanged);
+                await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
+
+                bool isFirstDraft = _selfReviewDone is false;
+                _currentDraftMarkdown = routedDraftMarkdown;
+                var html = NormalizeHtmlForQuill(Markdown.ToHtml(routedDraftMarkdown, ChatMarkdownPipeline));
+                if (!_draftVisible)
                 {
-                    _currentDraftMarkdown = draftMarkdown;
-                    var html = NormalizeHtmlForQuill(Markdown.ToHtml(draftMarkdown, ChatMarkdownPipeline));
-                    if (!_draftVisible)
+                    _pendingHtml = html;
+                    _draftVisible = true;
+                    _hasDraft = true;
+                    if (!_unloadGuardRegistered)
                     {
-                        _pendingHtml = html;
-                        _draftVisible = true;
-                        _hasDraft = true;
-                    }
-                    else
-                    {
-                        await JS.InvokeVoidAsync("setQuillContent", "quill-editor-wrapper", html);
+                        _unloadGuardRegistered = true;
+                        await JS.InvokeVoidAsync("registerDraftUnloadGuard");
                     }
                 }
+                else
+                {
+                    await JS.InvokeVoidAsync("setQuillContent", "quill-editor-wrapper", html);
+                }
+
+                if (isFirstDraft)
+                {
+                    _selfReviewDone = true;
+                    _selfReviewLoading = true;
+                    await InvokeAsync(StateHasChanged);
+
+                    _ = Task.Run(async () =>
+                    {
+                        var review = await AgentDraftService.GetDraftSelfReviewAsync(routedDraftMarkdown);
+                        if (!string.IsNullOrWhiteSpace(review))
+                            _turns.Add(new ChatTurn("Assistant", review, DateTimeOffset.UtcNow));
+                        _selfReviewLoading = false;
+                        await InvokeAsync(StateHasChanged);
+                        await InvokeAsync(() => JS.InvokeVoidAsync("scrollToBottom", "chat-thread"));
+                    });
+                }
+            }
+            else
+            {
+                _turns.Add(new ChatTurn("Assistant", response, DateTimeOffset.UtcNow));
+                await ConversationService.AddTurnAsync(SessionId.Value, _userId, "assistant", response);
+                await InvokeAsync(StateHasChanged);
+                await JS.InvokeVoidAsync("scrollToBottom", "chat-thread");
             }
 
             // Update checklist from the new draft markdown
@@ -447,6 +542,26 @@
         // recreate the component and discard the in-progress AI response.
         if (isFirstMessage && SessionId.HasValue)
             Nav.NavigateTo($"/workspace/{SessionId}", forceLoad: false);
+    }
+
+    private async Task ReReviewDraftAsync()
+    {
+        if (_currentDraftMarkdown is null || _selfReviewLoading || _busy)
+            return;
+
+        _selfReviewLoading = true;
+        var draftSnapshot = _currentDraftMarkdown;
+        await InvokeAsync(StateHasChanged);
+
+        _ = Task.Run(async () =>
+        {
+            var review = await AgentDraftService.GetDraftSelfReviewAsync(draftSnapshot);
+            if (!string.IsNullOrWhiteSpace(review))
+                _turns.Add(new ChatTurn("Assistant", review, DateTimeOffset.UtcNow));
+            _selfReviewLoading = false;
+            await InvokeAsync(StateHasChanged);
+            await InvokeAsync(() => JS.InvokeVoidAsync("scrollToBottom", "chat-thread"));
+        });
     }
 
     private void ToggleExportMenu() => _exportMenuOpen = !_exportMenuOpen;
@@ -604,6 +719,50 @@
             || t.StartsWith("To complete", StringComparison.OrdinalIgnoreCase)
             || t.StartsWith("Once you", StringComparison.OrdinalIgnoreCase)
             || t.StartsWith("Once I", StringComparison.OrdinalIgnoreCase);
+    }
+
+    internal static List<string> GetDraftSectionNames(string draftMarkdown) =>
+        draftMarkdown
+            .Split(["\r\n", "\n"], StringSplitOptions.None)
+            .Where(line => line.StartsWith("## ", StringComparison.Ordinal))
+            .Select(line => line[3..].Trim())
+            .ToList();
+
+    internal static string? ExtractPositionTitle(string draftMarkdown)
+    {
+        var line = draftMarkdown
+            .Split(["\r\n", "\n"], StringSplitOptions.None)
+            .FirstOrDefault(l => l.StartsWith("# ", StringComparison.Ordinal)
+                              && !l.StartsWith("## ", StringComparison.Ordinal));
+        return line?[2..].Trim();
+    }
+
+    internal static string BuildChatSummary(string? previousDraftMarkdown, string newDraftMarkdown)
+    {
+        var newSections = GetDraftSectionNames(newDraftMarkdown);
+        var title = ExtractPositionTitle(newDraftMarkdown);
+        var titleLine = title is not null ? $" \u2014 {title}" : string.Empty;
+
+        if (previousDraftMarkdown is null)
+        {
+            var sectionList = newSections.Count > 0
+                ? $"\nSections: {string.Join(", ", newSections)}"
+                : string.Empty;
+            return $"\u2705 **Draft created**{titleLine}{sectionList}";
+        }
+
+        var oldSections = GetDraftSectionNames(previousDraftMarkdown);
+        var added = newSections.Except(oldSections).ToList();
+        var revised = newSections.Intersect(oldSections).ToList();
+
+        var sb = new StringBuilder();
+        sb.Append($"\u2705 **Draft updated**{titleLine}");
+        if (added.Count > 0)
+            sb.Append($"\nAdded: {string.Join(", ", added)}");
+        if (revised.Count > 0)
+            sb.Append($"\nRevised: {string.Join(", ", revised)}");
+
+        return sb.ToString();
     }
 
     // Markdig UseAdvancedExtensions produces loose lists: <li><p>text</p></li>.

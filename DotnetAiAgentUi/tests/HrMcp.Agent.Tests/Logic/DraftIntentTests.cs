@@ -64,6 +64,19 @@ public sealed class DraftIntentTests
     public void IsClosingLine_ContentLine_ReturnsFalse() =>
         Assert.False(DraftWorkspace.IsClosingLine("## Summary"));
 
+    [Theory]
+    [InlineData("help")]
+    [InlineData("how do I use this")]
+    [InlineData("what do I do")]
+    [InlineData("how do I start")]
+    [InlineData("what is a GS series code")]
+    [InlineData("what does the checklist mean")]
+    [InlineData("what is OPM")]
+    public void HelpPhrases_AreNotDraftIntentPrompts(string input)
+    {
+        Assert.False(DraftWorkspace.IsDraftIntentPrompt(input));
+    }
+
     // New terms for extended draft-intent detection
     [Theory]
     [InlineData("I need a GS-13 cloud architect")]
@@ -96,5 +109,104 @@ public sealed class DraftIntentTests
         const string response = "Here is your draft. ## Position Summary\n\nThis position...";
         var result = DraftWorkspace.TryExtractSeriesSuggestion(response);
         Assert.Null(result);
+    }
+
+    [Fact]
+    public void GetDraftSectionNames_ReturnsSectionHeadings()
+    {
+        const string draft = "# IT Specialist\n\n## Position Info\n\nText.\n\n## Major Duties\n\nMore text.";
+        var result = DraftWorkspace.GetDraftSectionNames(draft);
+        Assert.Equal(["Position Info", "Major Duties"], result);
+    }
+
+    [Fact]
+    public void GetDraftSectionNames_IgnoresH1AndH3()
+    {
+        const string draft = "# Title\n\n## Section A\n\n### Sub\n\n## Section B";
+        var result = DraftWorkspace.GetDraftSectionNames(draft);
+        Assert.Equal(["Section A", "Section B"], result);
+    }
+
+    [Fact]
+    public void GetDraftSectionNames_EmptyDraft_ReturnsEmpty()
+    {
+        var result = DraftWorkspace.GetDraftSectionNames("No headings here.");
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public void GetDraftSectionNames_HandlesCrLf()
+    {
+        const string draft = "# Title\r\n\r\n## Section A\r\n\r\nText.";
+        var result = DraftWorkspace.GetDraftSectionNames(draft);
+        Assert.Equal(["Section A"], result);
+    }
+
+    [Fact]
+    public void ExtractPositionTitle_ReturnsH1Text()
+    {
+        const string draft = "# IT Specialist, GS-2210-14\n\n## Position Info\n\nText.";
+        var result = DraftWorkspace.ExtractPositionTitle(draft);
+        Assert.Equal("IT Specialist, GS-2210-14", result);
+    }
+
+    [Fact]
+    public void ExtractPositionTitle_NoH1_ReturnsNull()
+    {
+        const string draft = "## Position Info\n\nText.";
+        var result = DraftWorkspace.ExtractPositionTitle(draft);
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void ExtractPositionTitle_DoesNotReturnH2()
+    {
+        const string draft = "## Major Duties\n\nText.";
+        var result = DraftWorkspace.ExtractPositionTitle(draft);
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void BuildChatSummary_FirstDraft_ContainsCreatedAndTitle()
+    {
+        const string draft = "# IT Specialist\n\n## Position Info\n\nText.\n\n## Major Duties\n\nDuties.";
+        var result = DraftWorkspace.BuildChatSummary(null, draft);
+        Assert.Contains("Draft created", result);
+        Assert.Contains("IT Specialist", result);
+        Assert.Contains("Position Info", result);
+        Assert.Contains("Major Duties", result);
+    }
+
+    [Fact]
+    public void BuildChatSummary_FirstDraft_NoTitle_OmitsTitleLine()
+    {
+        const string draft = "## Position Info\n\nText.";
+        var result = DraftWorkspace.BuildChatSummary(null, draft);
+        Assert.Contains("Draft created", result);
+        Assert.DoesNotContain(" \u2014 ", result);
+    }
+
+    [Fact]
+    public void BuildChatSummary_UpdatedDraft_ContainsUpdatedAndChanges()
+    {
+        const string previous = "# IT Specialist\n\n## Position Info\n\nOld text.";
+        const string updated = "# IT Specialist\n\n## Position Info\n\nNew text.\n\n## Major Duties\n\nDuties.";
+        var result = DraftWorkspace.BuildChatSummary(previous, updated);
+        Assert.Contains("Draft updated", result);
+        Assert.Contains("Added", result);
+        Assert.Contains("Major Duties", result);
+        Assert.Contains("Revised", result);
+        Assert.Contains("Position Info", result);
+    }
+
+    [Fact]
+    public void BuildChatSummary_UpdatedDraft_AllNewSections_NoRevisedLine()
+    {
+        const string previous = "## Section A\n\nText.";
+        const string updated = "## Section B\n\nText.\n\n## Section C\n\nMore.";
+        var result = DraftWorkspace.BuildChatSummary(previous, updated);
+        Assert.Contains("Added", result);
+        Assert.Contains("Section B", result);
+        Assert.DoesNotContain("Revised", result);
     }
 }

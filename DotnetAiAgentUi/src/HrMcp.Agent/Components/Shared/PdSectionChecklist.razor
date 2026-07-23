@@ -31,6 +31,7 @@
                     _                          => "pd-checklist-item--missing"
                 };
                 var isClickable = section.Status is PdSectionStatus.Missing or PdSectionStatus.Warning;
+                var isPendingAck = _pendingAcknowledgeSectionName == section.Name;
 
                 <li class="pd-checklist-item @cssClass">
                     <span class="pd-checklist-icon">@icon</span>
@@ -47,10 +48,21 @@
                     }
                     @if (section.Status == PdSectionStatus.Warning && !section.IsLocked)
                     {
-                        <button class="pd-checklist-ack ghost-btn"
-                                @onclick="() => OnAcknowledge.InvokeAsync(section.Name)">
-                            Ack
-                        </button>
+                        @if (isPendingAck)
+                        {
+                            <span class="pd-checklist-ack-confirm">
+                                Override this warning?
+                                <button class="ghost-btn" @onclick="() => ConfirmAcknowledge(section.Name)">Confirm</button>
+                                <button class="ghost-btn" @onclick="CancelAcknowledge">Cancel</button>
+                            </span>
+                        }
+                        else
+                        {
+                            <button class="pd-checklist-ack ghost-btn"
+                                    @onclick="() => BeginAcknowledge(section.Name)">
+                                Ack
+                            </button>
+                        }
                     }
                 </li>
             }
@@ -64,8 +76,21 @@
     [Parameter] public EventCallback<string> OnAcknowledge { get; set; }
 
     private bool _expanded;
+    private string? _pendingAcknowledgeSectionName;
 
     private void ToggleExpanded() => _expanded = !_expanded;
+
+    private void BeginAcknowledge(string sectionName) =>
+        _pendingAcknowledgeSectionName = sectionName;
+
+    private async Task ConfirmAcknowledge(string sectionName)
+    {
+        _pendingAcknowledgeSectionName = null;
+        await OnAcknowledge.InvokeAsync(sectionName);
+    }
+
+    private void CancelAcknowledge() =>
+        _pendingAcknowledgeSectionName = null;
 
     private int CompleteCount => State.Sections.Count(s => s.Status == PdSectionStatus.Complete);
     private int WarningCount  => State.Sections.Count(s => s.Status == PdSectionStatus.Warning);

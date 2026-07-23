@@ -15,6 +15,7 @@ public sealed class DraftWorkspaceTests : TestContext
     private sealed class FakeAgentDraftService : IAgentDraftService
     {
         public string NextResponse { get; set; } = "Hello from assistant";
+        public string SelfReviewResponse { get; set; } = "";
 
         public Task<string> SendPromptAsync(string prompt, Guid? sessionId = null, CancellationToken ct = default) =>
             Task.FromResult(NextResponse);
@@ -22,6 +23,9 @@ public sealed class DraftWorkspaceTests : TestContext
         public Task<(string Message, string? FileName, byte[]? FileBytes)> ExportDraftToWordAsync(
             string draftText, CancellationToken ct = default) =>
             Task.FromResult(("ok", (string?)null, (byte[]?)null));
+
+        public Task<string> GetDraftSelfReviewAsync(string draftMarkdown, CancellationToken ct = default) =>
+            Task.FromResult(SelfReviewResponse);
     }
 
     private sealed class FakeConversationService : IConversationService
@@ -34,6 +38,32 @@ public sealed class DraftWorkspaceTests : TestContext
 
         public Task<ConversationSession?> GetSessionAsync(Guid sessionId, string userId, CancellationToken ct = default) =>
             Task.FromResult<ConversationSession?>(null);
+
+        public Task AddTurnAsync(Guid sessionId, string userId, string role, string text, CancellationToken ct = default) =>
+            Task.CompletedTask;
+
+        public Task RenameSessionAsync(Guid sessionId, string userId, string newName, CancellationToken ct = default) =>
+            Task.CompletedTask;
+
+        public Task DeleteSessionAsync(Guid sessionId, string userId, CancellationToken ct = default) =>
+            Task.CompletedTask;
+    }
+
+    private sealed class FakeConversationServiceWithSession : IConversationService
+    {
+        private readonly ConversationSession _session;
+
+        public FakeConversationServiceWithSession(ConversationSession session) =>
+            _session = session;
+
+        public Task<IReadOnlyList<ConversationSession>> GetSessionsAsync(string userId, CancellationToken ct = default) =>
+            Task.FromResult<IReadOnlyList<ConversationSession>>([_session]);
+
+        public Task<ConversationSession> CreateSessionAsync(string userId, string firstPrompt, CancellationToken ct = default) =>
+            Task.FromResult(_session);
+
+        public Task<ConversationSession?> GetSessionAsync(Guid sessionId, string userId, CancellationToken ct = default) =>
+            Task.FromResult<ConversationSession?>(_session);
 
         public Task AddTurnAsync(Guid sessionId, string userId, string role, string text, CancellationToken ct = default) =>
             Task.CompletedTask;
@@ -72,10 +102,11 @@ public sealed class DraftWorkspaceTests : TestContext
     }
 
     [Fact]
-    public void Renders_EmptyState_NoBubbles()
+    public void Renders_EmptyState_ShowsWelcomeBubbleOnly()
     {
         var cut = RenderComponent<DraftWorkspace>();
-        Assert.Empty(cut.FindAll(".chat-bubble"));
+        var bubbles = cut.FindAll(".chat-bubble");
+        Assert.Single(bubbles);
     }
 
     [Fact]
@@ -108,13 +139,272 @@ public sealed class DraftWorkspaceTests : TestContext
     [Fact]
     public void NoRoleLabels_InBubbles()
     {
+        _fake.NextResponse = "Hello! How can I help?";
         var cut = RenderComponent<DraftWorkspace>();
         cut.Find("textarea").Input("hello");
         cut.Find("button.primary-btn").Click();
         cut.WaitForAssertion(() =>
         {
-            Assert.NotEmpty(cut.FindAll(".chat-bubble"));
-            Assert.Empty(cut.FindAll(".chat-bubble strong"));
+            var rows = cut.FindAll(".chat-bubble-row");
+            Assert.NotEmpty(rows);
+            // No bubble should contain a role label like "You" or "Assistant" in bold
+            foreach (var row in rows)
+            {
+                var strongs = row.QuerySelectorAll("strong");
+                foreach (var strong in strongs)
+                {
+                    Assert.DoesNotContain("You", strong.TextContent);
+                    Assert.DoesNotContain("Assistant", strong.TextContent);
+                }
+            }
         });
+    }
+
+    [Fact]
+    public void DraftResponse_ShowsSummaryInChat_NotFullDraftMarkdown()
+    {
+        _fake.NextResponse =
+            "# IT Specialist\n\n## Position Info\n\nThis is a test.\n\n## Major Duties\n\nDuties here.";
+        var cut = RenderComponent<DraftWorkspace>();
+        cut.Find("textarea").Input("draft a pd for IT specialist");
+        cut.Find("button.primary-btn").Click();
+        cut.WaitForAssertion(() =>
+        {
+            var assistantBubbles = cut.FindAll(".chat-bubble-row--assistant");
+            Assert.NotEmpty(assistantBubbles);
+            var lastText = assistantBubbles[^1].TextContent;
+            Assert.Contains("Draft created", lastText);
+            Assert.DoesNotContain("## Position Info", lastText);
+            Assert.DoesNotContain("## Major Duties", lastText);
+        });
+    }
+
+    [Fact]
+    public void DraftResponse_MakesDraftPanelVisible()
+    {
+        _fake.NextResponse =
+            "# IT Specialist\n\n## Position Info\n\nTest.\n\n## Major Duties\n\nDuties.";
+        var cut = RenderComponent<DraftWorkspace>();
+        cut.Find("textarea").Input("draft a pd");
+        cut.Find("button.primary-btn").Click();
+        cut.WaitForAssertion(() =>
+            Assert.NotEmpty(cut.FindAll(".right-editor")));
+    }
+
+    [Fact]
+    public void ConversationalResponse_ShowsFullTextInChat()
+    {
+        _fake.NextResponse = "Here are some open positions: Software Engineer, Data Analyst.";
+        var cut = RenderComponent<DraftWorkspace>();
+        cut.Find("textarea").Input("list open positions");
+        cut.Find("button.primary-btn").Click();
+        cut.WaitForAssertion(() =>
+        {
+            var assistantBubbles = cut.FindAll(".chat-bubble-row--assistant");
+            Assert.NotEmpty(assistantBubbles);
+            var lastText = assistantBubbles[^1].TextContent;
+            Assert.Contains("open positions", lastText);
+            Assert.DoesNotContain("Draft created", lastText);
+        });
+    }
+
+    [Fact]
+    public void SessionRestore_DraftTurns_ShowSummaryNotRawMarkdown()
+    {
+        const string draftText =
+            "# IT Specialist\n\n## Position Info\n\nTest.\n\n## Major Duties\n\nDuties.";
+        var sessionId = Guid.NewGuid();
+        var session = new ConversationSession
+        {
+            Id = sessionId,
+            UserId = "testuser",
+            Name = "Test Session",
+            Turns =
+            [
+                new ConversationTurn
+                {
+                    Role = "user",
+                    Text = "draft a pd",
+                    Timestamp = DateTimeOffset.UtcNow.AddMinutes(-2)
+                },
+                new ConversationTurn
+                {
+                    Role = "assistant",
+                    Text = draftText,
+                    Timestamp = DateTimeOffset.UtcNow.AddMinutes(-1)
+                }
+            ]
+        };
+
+        Services.AddScoped<IConversationService>(_ => new FakeConversationServiceWithSession(session));
+
+        var cut = RenderComponent<DraftWorkspace>(p =>
+            p.Add(w => w.SessionId, sessionId));
+
+        cut.WaitForAssertion(() =>
+        {
+            var assistantBubbles = cut.FindAll(".chat-bubble-row--assistant");
+            Assert.NotEmpty(assistantBubbles);
+            var text = assistantBubbles[0].TextContent;
+            Assert.Contains("Draft created", text);
+            Assert.DoesNotContain("## Position Info", text);
+            Assert.DoesNotContain("## Major Duties", text);
+        });
+    }
+
+    [Fact]
+    public void SessionRestore_DraftTurns_MakesDraftPanelVisible()
+    {
+        const string draftText =
+            "# IT Specialist\n\n## Position Info\n\nTest.\n\n## Major Duties\n\nDuties.";
+        var sessionId = Guid.NewGuid();
+        var session = new ConversationSession
+        {
+            Id = sessionId,
+            UserId = "testuser",
+            Name = "Test Session",
+            Turns =
+            [
+                new ConversationTurn
+                {
+                    Role = "user",
+                    Text = "draft a pd",
+                    Timestamp = DateTimeOffset.UtcNow.AddMinutes(-2)
+                },
+                new ConversationTurn
+                {
+                    Role = "assistant",
+                    Text = draftText,
+                    Timestamp = DateTimeOffset.UtcNow.AddMinutes(-1)
+                }
+            ]
+        };
+
+        Services.AddScoped<IConversationService>(_ => new FakeConversationServiceWithSession(session));
+
+        var cut = RenderComponent<DraftWorkspace>(p =>
+            p.Add(w => w.SessionId, sessionId));
+
+        cut.WaitForAssertion(() =>
+            Assert.NotEmpty(cut.FindAll(".right-editor")));
+    }
+
+    [Fact]
+    public void NewSession_ShowsWelcomeBubble()
+    {
+        // No SessionId parameter — WelcomeTurn should be injected
+        var cut = RenderComponent<DraftWorkspace>();
+        var bubbles = cut.FindAll(".chat-bubble-row--assistant");
+        Assert.Single(bubbles);
+        Assert.Contains("Position Description Writing Assistant", bubbles[0].TextContent);
+    }
+
+    [Fact]
+    public void ExistingSession_DoesNotShowWelcomeBubble()
+    {
+        var sessionId = Guid.NewGuid();
+        var session = new ConversationSession
+        {
+            Id = sessionId,
+            UserId = "testuser",
+            Name = "Test",
+            Turns =
+            [
+                new ConversationTurn
+                {
+                    Role = "user",
+                    Text = "draft a pd",
+                    Timestamp = DateTimeOffset.UtcNow
+                }
+            ]
+        };
+        Services.AddScoped<IConversationService>(_ => new FakeConversationServiceWithSession(session));
+        var cut = RenderComponent<DraftWorkspace>(p => p.Add(w => w.SessionId, sessionId));
+        cut.WaitForAssertion(() =>
+            Assert.DoesNotContain(
+                "Position Description Writing Assistant",
+                cut.Find(".chat-thread").TextContent));
+    }
+
+    [Fact]
+    public void FirstDraft_AddsSelfReviewTurnToChat()
+    {
+        _fake.NextResponse = "## Position Title\n\n## Major Duties\n\nDevelops software applications.";
+        _fake.SelfReviewResponse = "**Draft Self-Review**\n\n🔴 Critical:\n- None.\n\nWhat would you like to address first?";
+        var cut = RenderComponent<DraftWorkspace>();
+        cut.Find("textarea").Input("draft a pd");
+        cut.Find("button.primary-btn").Click();
+        cut.WaitForAssertion(() =>
+            Assert.Contains("Draft Self-Review", cut.Find(".chat-thread").TextContent));
+    }
+
+    [Fact]
+    public void SecondDraft_DoesNotAddSelfReviewTurnAgain()
+    {
+        _fake.NextResponse = "## Position Title\n\n## Major Duties\n\nDevelops software applications.";
+        _fake.SelfReviewResponse = "**Draft Self-Review**\n\nWhat would you like to address first?";
+        var cut = RenderComponent<DraftWorkspace>();
+
+        // First draft
+        cut.Find("textarea").Input("draft a pd");
+        cut.Find("button.primary-btn").Click();
+        cut.WaitForAssertion(() =>
+            Assert.Contains("Draft Self-Review", cut.Find(".chat-thread").TextContent));
+
+        // Second draft (revision)
+        cut.Find("textarea").Input("revise the duties section");
+        cut.Find("button.primary-btn").Click();
+        cut.WaitForAssertion(() =>
+        {
+            var reviewCount = cut.FindAll(".chat-bubble-row--assistant")
+                .Count(b => b.TextContent.Contains("Draft Self-Review"));
+            Assert.Equal(1, reviewCount);
+        });
+    }
+
+    [Fact]
+    public void SelfReview_EmptyResponse_DoesNotAddChatTurn()
+    {
+        _fake.NextResponse = "## Position Title\n\n## Major Duties\n\nDevelops software applications.";
+        _fake.SelfReviewResponse = "";
+        var cut = RenderComponent<DraftWorkspace>();
+        cut.Find("textarea").Input("draft a pd");
+        cut.Find("button.primary-btn").Click();
+        // Wait for the draft summary to appear, then verify no review turn
+        cut.WaitForAssertion(() =>
+            Assert.Contains("Position Title", cut.Find(".chat-thread").TextContent));
+        Assert.DoesNotContain("Draft Self-Review", cut.Find(".chat-thread").TextContent);
+    }
+
+    [Fact]
+    public void ExistingSession_DoesNotTriggerSelfReview()
+    {
+        var sessionId = Guid.NewGuid();
+        var session = new ConversationSession
+        {
+            Id = sessionId,
+            UserId = "testuser",
+            Name = "Test",
+            Turns =
+            [
+                new ConversationTurn
+                {
+                    Role = "user",
+                    Text = "draft a pd",
+                    Timestamp = DateTimeOffset.UtcNow.AddMinutes(-2)
+                },
+                new ConversationTurn
+                {
+                    Role = "assistant",
+                    Text = "## Job Title\n\n## Major Duties\n\nDuties here.",
+                    Timestamp = DateTimeOffset.UtcNow.AddMinutes(-1)
+                }
+            ]
+        };
+        Services.AddScoped<IConversationService>(_ => new FakeConversationServiceWithSession(session));
+        _fake.SelfReviewResponse = "**Draft Self-Review** — must not appear";
+        var cut = RenderComponent<DraftWorkspace>(p => p.Add(w => w.SessionId, sessionId));
+        cut.WaitForAssertion(() =>
+            Assert.DoesNotContain("Draft Self-Review", cut.Find(".chat-thread").TextContent));
     }
 }

@@ -96,6 +96,21 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         };
+
+        window.registerDraftUnloadGuard = function () {
+            window._draftUnloadHandler = function (e) {
+                e.preventDefault();
+                e.returnValue = '';
+            };
+            window.addEventListener('beforeunload', window._draftUnloadHandler);
+        };
+
+        window.unregisterDraftUnloadGuard = function () {
+            if (window._draftUnloadHandler) {
+                window.removeEventListener('beforeunload', window._draftUnloadHandler);
+                window._draftUnloadHandler = null;
+            }
+        };
     </script>
 </body>
 </html>
