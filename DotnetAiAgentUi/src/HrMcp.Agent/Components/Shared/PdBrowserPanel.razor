@@ -152,17 +152,18 @@ else
             if (pos is null)
             {
                 _confirmError = true;
-                _confirming = false;
                 return;
             }
+            await OnPositionSelected.InvokeAsync(id);
         }
         catch
         {
             _confirmError = true;
-            _confirming = false;
-            return;
         }
-        await OnPositionSelected.InvokeAsync(id);
+        finally
+        {
+            _confirming = false;
+        }
     }
 
     private static string GradeRange(HrMcp.Core.Entities.Position p) =>
