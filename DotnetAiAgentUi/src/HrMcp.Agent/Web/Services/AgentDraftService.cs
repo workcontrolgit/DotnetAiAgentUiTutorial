@@ -209,21 +209,16 @@ public sealed class AgentDraftService : IAgentDraftService, IAsyncDisposable
         if (string.Equals(transportType, "stdio", StringComparison.OrdinalIgnoreCase))
         {
             var command = configuration["McpServer:Transport:Stdio:Command"] ?? "dotnet";
-            var workingDirectory = configuration["McpServer:Transport:Stdio:WorkingDirectory"];
-            if (string.IsNullOrWhiteSpace(workingDirectory))
-                workingDirectory = FindWorkspaceRoot();
-
-            var projectPath = configuration["McpServer:Transport:Stdio:ProjectPath"];
-            if (string.IsNullOrWhiteSpace(projectPath))
-            {
-                projectPath = Path.Combine(workingDirectory, "DotnetAiAgentUi", "src", "HrMcp.McpServer", "HrMcp.McpServer.csproj");
-            }
+            var resolved = McpStdioPathResolver.Resolve(
+                configuration["McpServer:Transport:Stdio:WorkingDirectory"],
+                configuration["McpServer:Transport:Stdio:ProjectPath"],
+                FindWorkspaceRoot());
 
             return new StdioClientTransport(new StdioClientTransportOptions
             {
                 Command = command,
-                Arguments = ["run", "--project", projectPath, "--", "--stdio"],
-                WorkingDirectory = workingDirectory,
+                Arguments = ["run", "--project", resolved.ProjectPath, "--", "--stdio"],
+                WorkingDirectory = resolved.WorkingDirectory,
                 Name = "hr-mcp-stdio"
             });
         }

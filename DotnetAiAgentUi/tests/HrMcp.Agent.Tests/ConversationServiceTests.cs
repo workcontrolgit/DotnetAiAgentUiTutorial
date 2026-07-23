@@ -105,3 +105,38 @@ public sealed class ConversationServiceTests : IDisposable
         _serviceProvider.Dispose();
     }
 }
+
+public sealed class PersistenceInitializationTests : IDisposable
+{
+    private readonly Microsoft.Data.Sqlite.SqliteConnection _connection;
+    private readonly ServiceProvider _serviceProvider;
+
+    public PersistenceInitializationTests()
+    {
+        _connection = new Microsoft.Data.Sqlite.SqliteConnection("Data Source=:memory:");
+        _connection.Open();
+
+        var services = new ServiceCollection();
+        services.AddDbContextFactory<HrDbContext>(options => options.UseSqlite(_connection));
+        _serviceProvider = services.BuildServiceProvider();
+    }
+
+    [Fact]
+    public async Task InitializeAsync_AppliesMigrationsThatCreateConversationTables()
+    {
+        await PersistenceInitialization.InitializeAsync(_serviceProvider);
+
+        await using var command = _connection.CreateCommand();
+        command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'ConversationSessions'";
+
+        var result = await command.ExecuteScalarAsync();
+
+        Assert.Equal("ConversationSessions", result);
+    }
+
+    public void Dispose()
+    {
+        _serviceProvider.Dispose();
+        _connection.Dispose();
+    }
+}
