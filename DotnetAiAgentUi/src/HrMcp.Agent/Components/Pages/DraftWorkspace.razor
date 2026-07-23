@@ -11,6 +11,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Web
 @using System.Text
+@using System.Text.Json
 @using System.Text.RegularExpressions
 @implements IAsyncDisposable
 @inject IAgentDraftService AgentDraftService
@@ -722,24 +723,22 @@
     private async Task ExportJsonAsync()
     {
         _exportMenuOpen = false;
-        if (_turns.Count == 0)
+        if (string.IsNullOrWhiteSpace(_currentDraftMarkdown))
         {
-            _status = "No conversation to export.";
+            _status = "No draft to export.";
             return;
         }
 
-        var export = new
-        {
-            exportedAt = DateTimeOffset.UtcNow,
-            draft = _currentDraftMarkdown,
-            acknowledgments = _checklistState.Acknowledgments
-                .Select(a => new { a.SectionName, a.AcknowledgedAt }),
-            turns = _turns.Select(t => new { t.Role, t.Text, t.Timestamp })
-        };
+        var export = PdDraftParser.Parse(
+            _currentDraftMarkdown,
+            _checklistState.Acknowledgments.Select(a => a.SectionName).ToList(),
+            DateTimeOffset.UtcNow);
 
-        var json = System.Text.Json.JsonSerializer.Serialize(export, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
-        var bytes = System.Text.Encoding.UTF8.GetBytes(json);
-        await JS.InvokeVoidAsync("downloadFile", "position-description.json", Convert.ToBase64String(bytes));
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        var json = JsonSerializer.Serialize(export, options);
+        var bytes = Encoding.UTF8.GetBytes(json);
+        var slug = DraftWorkspaceHelper.SlugifyTitle(export.PositionInfo.Title);
+        await JS.InvokeVoidAsync("downloadFile", $"pd-draft-{slug}.json", Convert.ToBase64String(bytes));
         _status = "\u2705 JSON file ready.";
     }
 
